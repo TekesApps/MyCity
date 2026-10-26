@@ -1,7 +1,7 @@
 {
   "schema": "mycity-issue-ledger-v1",
   "date": "2026-10-26",
-  "release": "v0.5.198",
+  "release": "v0.5.199",
   "scope": "完整既定产品；v190有限业务132与缺陷148真实验收关闭，v191仅同步台账，UI单独延期",
   "coordination": "当前root唯一共享writer/串行验证；旧主会话停用",
   "states": [
@@ -2774,7 +2774,7 @@
       "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
       "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
-      "issue_body_sha256": "241cca656a0a3e09f3d13f39a9933daa0d350292d27ab6eb3e6b95f1d2ff142f"
+      "issue_body_sha256": "3dceaeeefc0f701637573946221f86eae30f26ed6ce30782ed1e1984af3d53d8"
     },
     {
       "issue": 121,
@@ -3269,7 +3269,7 @@
       "title": "[业务子任务] 通用开局schema与typed引用：原配置候选到实际provider装配",
       "url": "https://github.com/TekesApps/MyCity/issues/137",
       "parent": 120,
-      "stage": "待验证",
+      "stage": "完成",
       "owner": "01a166fc-e444-7602-ad22-3a8551dda487 root唯一共享writer/集成/串行验收",
       "write_authority": [
         "crates/city-core/src/opening_loader.rs",
@@ -3295,12 +3295,12 @@
         "旧合法输入兼容、失败不发布、新进程/重试无二次初始化",
         "新增provider每个有实际装配与恢复证据"
       ],
-      "remaining": "All finite gates passed; source05 fixed; v198 publication + actual issue backfill/close pending",
-      "evidence": "docs/evidence/typed-opening-provider-20261026/STATUS.md",
-      "implementation_tags": "v0.5.198 pending atomic publication; no PR",
+      "remaining": "No finite contract remainder; parent/future providers/hardware stay open",
+      "evidence": "docs/evidence/typed-opening-provider-20261026/STATUS.md and closure.json",
+      "implementation_tags": "824463c1f3325f86853045475d95e2b8df1811b3 / v0.5.198; v199 only closure ledger",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
-      "issue_body_sha256": "d124d5ecae3930e3e4876093ff70abcdd623c906e06bc017a4f2bd93b90ee504",
-      "execution_state": "active:core-1:validation",
+      "issue_body_sha256": "63333c147bd648a3496c4c9897bb21190665526d32e0dc839387ab702bf359fd",
+      "execution_state": "completed:closed",
       "execution_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "execution_contract": "docs/inputs/issue-ledger/execution-flow.json"
     },
@@ -3648,7 +3648,7 @@
       "title": "[P1][缺陷] typed开局公共分派引入原资格业务默认栈回归",
       "url": "https://github.com/TekesApps/MyCity/issues/150",
       "parent": 120,
-      "stage": "待验证",
+      "stage": "完成",
       "owner": "root 01a166fc-e444-7602-ad22-3a8551dda487; same shared lane137",
       "write_authority": [
         "crates/city-core/src/assembly.rs; original137 tests/evidence"
@@ -3661,12 +3661,12 @@
         "actual minimum reproduction and hot/cold results",
         "original-ticket idempotence, unchanged assertions/budget/M0, full recovery originals retained"
       ],
-      "remaining": "All finite gates passed; source05 fixed; v198 publication + actual issue backfill/close pending",
-      "evidence": "docs/evidence/typed-opening-provider-20261026/STATUS.md",
-      "implementation_tags": "v0.5.198 pending atomic publication; no PR",
+      "remaining": "No finite contract remainder; parent/future providers/hardware stay open",
+      "evidence": "docs/evidence/typed-opening-provider-20261026/STATUS.md and closure.json",
+      "implementation_tags": "824463c1f3325f86853045475d95e2b8df1811b3 / v0.5.198; v199 only closure ledger",
       "pr": "none",
-      "issue_body_sha256": "d79e4fcb84b7250c3c3cac8776ff1d47911b378fc9da12244163baf293a390c5",
-      "execution_state": "active:core-1:validation"
+      "issue_body_sha256": "01aaa67906ad2ff8e79ea786e6f043d0ccd7b04306e3a347ccc29aa4f706bf32",
+      "execution_state": "completed:closed"
     }
   ],
   "capability_edges": [
@@ -3827,12 +3827,12 @@
   ],
   "unpublished_execution_update": {
     "baseline_at": "2026-10-25T02:39:00Z",
-    "shared_core_in_progress": 1,
+    "shared_core_in_progress": 0,
     "independent_preparations_active": 0,
     "limits": [
       1,
       2
     ],
-    "note": "137/150 finite gates passed, frozen pending publication/backfill/close;149 separate source-only report queued"
+    "note": "137/150 actually closed;199 receipt ledger;149 source-only queued"
   }
 }

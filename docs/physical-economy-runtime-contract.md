@@ -259,7 +259,7 @@ before、Reserve后的after、bind_reserved_offer和最终校验统一该只读�
 
 原11文件在v196固定；当前共存修复后的6组共享、8默认门、真实normal角色两次授额/归还及保存重启原票、完整参考世界一致。旧生产与两员工均实际25秒。原4项子合同完成并关闭，父118/领域consumer/跨clock/区间Litres/硬件各保留其明确缺口；[证据与资源边界](evidence/canonical-capacity-20261026/STATUS.md)。该终态替代本节历史not_run，不改变规则或M0门。
 
-## #137 typed Opening V1：原初始化与恢复同一契约（v198有限合同门实际通过，待回填关闭）
+## #137 typed Opening V1：原初始化与恢复同一契约（v198有限合同实际通过，v199同步关闭）
 
 root以v197为基线接续既有#120/#137交付。显式新schema `mycity-typed-opening-v1`，限定本地JSON/SuppliedBytes传输、内嵌实验数据provider V1、base V1和原Boot micro V1 profile；未知provider/schema/profile/单位/时钟/引用版本均拒绝，不默填事实。旧 `mycity-m0-opening-v1` 全部合法profile及原错误语义保留。其它typed领域profile留明确unsupported，不要求31/32整个父域先关闭。
 
@@ -276,3 +276,5 @@ root确切写范围：assembly.rs、assembly/typed_opening.rs、transaction/slot
 ### #137 当前实际终态及 #150 分帧修正
 
 新typed资料通过原同槽首建／恢复，SuppliedBytes和真实本地JSON经未改CLI均有实际证据。原schema wire等40项功能结果保持；source05只把typed Opening/Result临时值放独立noinline帧，修复了旧资格默认栈的真实失败，不提额、不删断言。原6+新2默认门、当前CLI3、真实normal角色30+30／原票冷恢复／完整Engine参考、两profile全部原槽表地址均通过。输入Reader length65536但实际owned131238B，单列caller／metadata；内部工作区152464B与原slot3601880B合3754344B<=4MiB。全Store／角色授额／工具参考开销和未测边界见[实际证据](evidence/typed-opening-provider-20261026/STATUS.md)。原目标和父120未来provider范围保留；149另排队复现。
+
+#137与#150已按原完整有限合同回填并实际关闭，父120仍开放；见v199关闭回执。该结论不覆盖独立149的pending目标/normal额度满新组合，后者仅源码报告待实测。

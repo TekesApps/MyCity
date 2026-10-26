@@ -1,25 +1,16 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-26T03:02:12.011023+00:00",
-  "source_head": "d8110a5136013ee55ce62cf447356f8a7f037327",
-  "candidate": "source05 typed/150 frame fix all finite gates passed;198 publication and actual issue closure pending",
+  "last_snapshot_at": "2026-10-26T03:18:17.005373+00:00",
+  "source_head": "824463c1f3325f86853045475d95e2b8df1811b3",
+  "candidate": "137/150 accepted and closed;199 ledger only;149 next reproduction not dispatched",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
   "limits": {
     "shared_core_lanes": 1,
     "independent_preparations": 2,
     "reason_for_adjustment_required": true
   },
-  "active_shared_work": [
-    {
-      "lane": "core-1",
-      "business_issue": 137,
-      "related_defect": 150,
-      "owner_session": "01a166fc-e444-7602-ad22-3a8551dda487",
-      "evidence_root": "work/typed-opening-provider-20261026",
-      "phase": "finite acceptance gates complete; code frozen publication/issue closure pending"
-    }
-  ],
+  "active_shared_work": [],
   "active_independent_preparations": [],
   "counting_rules": {
     "parents_are_not_active_work": true,
@@ -85,11 +76,13 @@
       132,
       133,
       135,
-      136
+      136,
+      137
     ],
     "historical_backfill_business": [],
     "defects_closed": [
-      148
+      148,
+      150
     ]
   },
   "near_term_contracts": [
@@ -453,7 +446,7 @@
     },
     {
       "issue": 137,
-      "execution_state": "active:core-1:validation",
+      "execution_state": "completed:closed",
       "implementation_owner_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "integration_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "files_or_activation_boundary": [
@@ -475,8 +468,7 @@
         "new typed schema V1: embedded laboratory provider/base+Boot micro profile; explicit units/ref/clock, no second authority"
       ],
       "acceptance_entry_and_gaps": [
-        "All original four finite contract gates actually passed; publication and issue closure receipt pending",
-        "Future provider/profile/real16GB/native/M0 remain outside finite137 scope"
+        "Full finite137 contract actually accepted198/closed; parent120 and future providers/hardware remain open"
       ],
       "real_integration_seam": "core typed decoder to original Opening builder through EngineSlot with actual resources; original Store genesis bytes reused by cold restore",
       "new_write_authority": false,
@@ -484,8 +476,8 @@
         "ready_at": null,
         "readiness_confirmed_at": "2026-10-26T00:47:54.424869+00:00",
         "full_scope_source_delivered_at": null,
-        "accepted_at": null,
-        "issue_closed_at": null,
+        "accepted_at": "2026-10-26T03:11:07Z",
+        "issue_closed_at": "2026-10-26T03:11:09Z",
         "ready_to_acceptance_seconds": null,
         "source_to_acceptance_seconds": null,
         "unknown_reason": "Historical first-ready/full-scope delivery event not established; no inferred timestamp"
@@ -655,6 +647,34 @@
       "defect_closure_delta": 0,
       "first_ready": null,
       "first_full_scope_source_delivery": null
+    },
+    {
+      "observed_at": "2026-10-26T03:11:07Z",
+      "kind": "finite_business_accepted_and_closed",
+      "issue": 137,
+      "closed_at": "2026-10-26T03:11:09Z",
+      "comment": 6407360211,
+      "implementation_commit": "824463c1f3325f86853045475d95e2b8df1811b3",
+      "tag": "v0.5.198",
+      "business_acceptance_delta": 1,
+      "historical_backfill_delta": 0,
+      "defect_closure_delta": 0,
+      "first_ready": null,
+      "first_full_scope_source_delivery": null
+    },
+    {
+      "observed_at": "2026-10-26T03:11:15Z",
+      "kind": "actual_default_stack_regression_fixed_and_closed",
+      "issue": 150,
+      "closed_at": "2026-10-26T03:11:16Z",
+      "comment": 6407361767,
+      "implementation_commit": "824463c1f3325f86853045475d95e2b8df1811b3",
+      "tag": "v0.5.198",
+      "business_acceptance_delta": 0,
+      "historical_backfill_delta": 0,
+      "defect_closure_delta": 1,
+      "first_ready": null,
+      "first_full_scope_source_delivery": null
     }
   ],
   "current_backlog": {
@@ -678,8 +698,6 @@
       28,
       27
     ],
-    "source_delivered_pending_validation": [
-      137
-    ]
+    "source_delivered_pending_validation": []
   }
 }

@@ -1,0 +1,25 @@
+{
+  "command": [
+    "/Users/frankqin/dev/MyCity/work/typed-opening-provider-20261026/source07-typed-role-fixed",
+    "/Users/frankqin/dev/MyCity/work/typed-opening-provider-20261026/role07",
+    "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source07-headless-fixed",
+    "/Volumes/HP P900/dev/MyCity/work/r45/typed137",
+    "9c03cafd56131de10b5658f2e2d44a2ecae0270334ee2c9e7b32e9c4fcfba417",
+    "/Users/frankqin/dev/MyCity/tests/fixtures/opening-typed/boot.json",
+    "/Users/frankqin/dev/MyCity/fixtures/m0-exchange-spatial.json",
+    "/Users/frankqin/dev/MyCity/fixtures/terrain/m0-flat16.png"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 1.113540167,
+  "source": "source05-inputs.json",
+  "main": {
+    "fixed": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source07-headless-fixed",
+    "sha256": "9a70d880c93c332831c4456d88b06e91b5020cebc109786ec04f23d089421c48",
+    "cargo_main": "/Volumes/HP P900/dev/MyCity/target/release/mycity-headless",
+    "source_sha256": "9c03cafd56131de10b5658f2e2d44a2ecae0270334ee2c9e7b32e9c4fcfba417"
+  },
+  "helper_sha256": "575417485fd7f2e9012598040bf70bbd3b06f6833bcf8fcc209f5dd488ebcfbc",
+  "retained_pool": "/Volumes/HP P900/dev/MyCity/work/r45",
+  "finished_at": "2026-10-26T01:47:07.604609+00:00",
+  "scope": "finite actual Boot source clock/port mapping in original shipping Sim normal role; not native/16GB/M0/full-game speed"
+}

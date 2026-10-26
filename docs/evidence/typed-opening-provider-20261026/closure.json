@@ -1,0 +1,45 @@
+{
+  "issues": [
+    {
+      "issue": 137,
+      "accepted_at": "2026-10-26T03:11:07Z",
+      "closed_at": "2026-10-26T03:11:09Z",
+      "comment": 6407360211,
+      "comment_url": "https://github.com/TekesApps/MyCity/issues/137#issuecomment-6407360211",
+      "implementation_commit": "824463c1f3325f86853045475d95e2b8df1811b3",
+      "implementation_tag": "v0.5.198",
+      "evidence_closure_sync": "v0.5.199",
+      "body_sha256": "63333c147bd648a3496c4c9897bb21190665526d32e0dc839387ab702bf359fd",
+      "labels": [
+        "stage:done",
+        "type:capability"
+      ],
+      "pr": null,
+      "ready_at": null,
+      "full_scope_source_delivered_at": null,
+      "duration_policy": "unknown historical first-ready/full-scope source event; no inferred start from tags/creation/mtime/reporting window"
+    },
+    {
+      "issue": 150,
+      "accepted_at": "2026-10-26T03:11:15Z",
+      "closed_at": "2026-10-26T03:11:16Z",
+      "comment": 6407361767,
+      "comment_url": "https://github.com/TekesApps/MyCity/issues/150#issuecomment-6407361767",
+      "implementation_commit": "824463c1f3325f86853045475d95e2b8df1811b3",
+      "implementation_tag": "v0.5.198",
+      "evidence_closure_sync": "v0.5.199",
+      "body_sha256": "01aaa67906ad2ff8e79ea786e6f043d0ccd7b04306e3a347ccc29aa4f706bf32",
+      "labels": [
+        "stage:done",
+        "type:defect"
+      ],
+      "pr": null,
+      "ready_at": null,
+      "full_scope_source_delivered_at": null,
+      "duration_policy": "unknown historical first-ready/full-scope source event; no inferred start from tags/creation/mtime/reporting window"
+    }
+  ],
+  "parent120_state": "open",
+  "publication": "824463c1f3325f86853045475d95e2b8df1811b3",
+  "tag": "v0.5.198"
+}

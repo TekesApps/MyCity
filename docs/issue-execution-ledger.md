@@ -1,6 +1,6 @@
 # MyCity Issue 执行与验收台账
 
-当前实际在制见[执行清单](execution-current.md)：#137/#150全部有限合同门已通过，源码冻结待v198发布及实际Issue关闭；共享1+准备0。已关闭统计仍新业务4/历史0/缺陷1，积压18待集成/1待验证。149是另一个source-only缺口待复现，不把源码推导当实测失败。
+当前实际在制见[执行清单](execution-current.md)：137业务与150默认栈缺陷实际回填关闭，父120开放；共享0+准备0。累计新业务5/历史0/缺陷2，积压18待集成/0待验证；v199仅关闭回执。下一149源码报告先实测，不把预测当失败或把tag当验收。
 
 2026-10-25，台账阶段v0.5.191，游戏实际验收v0.5.190。总体入口为[PRODUCT_BLUEPRINT](PRODUCT_BLUEPRINT.md)，需求见[逐条矩阵](product-coverage-and-requirements.md)。#132有限业务和#148布局缺陷已完整验收、发布、回填并实际关闭；父域/M0/16GB仍开放，见[设施证据](evidence/facility-operation-20261025/STATUS.md)。v191只同步关闭，不重跑或重复计业务；WIP和失败恢复原件保留。
 
@@ -56,7 +56,7 @@
 |[#134](https://github.com/TekesApps/MyCity/issues/134)|阻塞|原交付已冻结；由原实施方按排程补模块，root唯一集成；当前未派新任务|
 |[#135](https://github.com/TekesApps/MyCity/issues/135)|待集成|通用候选到实际目录/全部必要provider未完成；原交付先集成，不新派工|
 |[#136](https://github.com/TekesApps/MyCity/issues/136)|完成|原池时窗内核完整有限合同已验；[证据](evidence/canonical-capacity-20261026/STATUS.md)，其它consumer仍归父/领域任务|
-|[#137](https://github.com/TekesApps/MyCity/issues/137)|待验证|通用factory/provider/schema连接仍缺；不要求所有领域先完成，不宣称全产品开局可用|
+|[#137](https://github.com/TekesApps/MyCity/issues/137)|完成|通用factory/provider/schema连接仍缺；不要求所有领域先完成，不宣称全产品开局可用|
 |[#138](https://github.com/TekesApps/MyCity/issues/138)|待开发|尚无实际收费教育业务实现/验收；owner未派工，先消化已有接线|
 |[#139](https://github.com/TekesApps/MyCity/issues/139)|待开发|基础教育完整实际profile未实现；不等待#52整个生命周期，但缺合法年龄源时阻塞相应验收|
 |[#140](https://github.com/TekesApps/MyCity/issues/140)|待开发|通用转停学未实现；当前阶段退出不等于可迁移课程进度|
@@ -134,3 +134,7 @@ v190的#132/#148已关，v191只同步台账。当前root将#133激活为唯一�
 ## v0.5.198 typed装配与默认栈修复
 
 137接原Opening/EngineSlot/Store同一源，150只分离typed大临时帧，当前默认8门/CLI/normal角色/同槽/完整恢复均通过，见[证据](evidence/typed-opening-provider-20261026/STATUS.md)。Issue关闭需发布后回读，尚不增加计数。下一149原报告为源码推导，先实际复现；不把其未验证的新组合用本阶段覆盖，也不新开重复模型线。
+
+## v199 真实回读终态
+
+137/2026-10-26T03:11:09Z和150/2026-10-26T03:11:16Z均经独立GET Closed/stage:done；父120只同步子清单继续Open。[关闭记录](evidence/typed-opening-provider-20261026/closure.json)。旧v198“待关闭”只为发布时快照，现由顶部替代，不重复统计。149尚未实际复现，下一排程；新验收1/历史0/缺陷1分开计。

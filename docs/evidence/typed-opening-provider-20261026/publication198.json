@@ -1,0 +1,40 @@
+{
+  "commit": "824463c1f3325f86853045475d95e2b8df1811b3",
+  "tag": "v0.5.198",
+  "annotated_tag_object": "7664d4fe2d7e4ef77f23e41eef79780df60e5266",
+  "main": {
+    "ref": "refs/heads/main",
+    "node_id": "REF_kwDOVOKhRq9yZWZzL2hlYWRzL21haW4",
+    "url": "https://api.github.com/repos/TekesApps/MyCity/git/refs/heads/main",
+    "object": {
+      "sha": "824463c1f3325f86853045475d95e2b8df1811b3",
+      "type": "commit",
+      "url": "https://api.github.com/repos/TekesApps/MyCity/git/commits/824463c1f3325f86853045475d95e2b8df1811b3"
+    }
+  },
+  "tag_object": {
+    "node_id": "TA_kwDOVOKhRtoAKDc2NjRkNGZlMmQ3ZTRlZjc3ZjIzZTQxZWVmNzk3ODBkZjYwZTUyNjY",
+    "sha": "7664d4fe2d7e4ef77f23e41eef79780df60e5266",
+    "url": "https://api.github.com/repos/TekesApps/MyCity/git/tags/7664d4fe2d7e4ef77f23e41eef79780df60e5266",
+    "tagger": {
+      "name": "qf0421",
+      "email": "fqin421@gmail.com",
+      "date": "2026-10-26T03:05:56Z"
+    },
+    "object": {
+      "sha": "824463c1f3325f86853045475d95e2b8df1811b3",
+      "type": "commit",
+      "url": "https://api.github.com/repos/TekesApps/MyCity/git/commits/824463c1f3325f86853045475d95e2b8df1811b3"
+    },
+    "tag": "v0.5.198",
+    "message": "Typed opening finite contracts, actual Store/CLI/normal-role evidence and default-stack fix 150\n",
+    "verification": {
+      "verified": false,
+      "reason": "unsigned",
+      "signature": null,
+      "payload": null,
+      "verified_at": null
+    }
+  },
+  "README_STATUS_typed_module_remote_byte_equal": true
+}
