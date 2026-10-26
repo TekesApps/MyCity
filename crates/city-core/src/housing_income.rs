@@ -14,10 +14,10 @@ use std::mem::size_of;
 
 /// Bounded original authority counters, not another money balance.
 #[derive(Clone,Copy,Debug,PartialEq,Eq)]
-pub(crate) enum WageSourceDomain{Facility,ServiceTask,ServiceArchive}
+pub(crate) enum WageSourceDomain{Facility,ServiceTask,ServiceArchive,ServiceRecovery}
 #[derive(Clone,Copy)]
 pub(crate) struct PaidWageSource {pub domain:WageSourceDomain,pub source:u64,pub account:u32,pub paid:u64}
-pub(crate) const MAX_ADDITIONAL_PAID_SOURCES:usize=4+4*4+32;
+pub(crate) const MAX_ADDITIONAL_PAID_SOURCES:usize=4+4*4+32+1;
 
 pub(crate) const PAID_WAGE_WINDOW_DAYS: u64 = 31;
 pub(crate) const PAID_WAGE_RING_DAYS: usize = 32;

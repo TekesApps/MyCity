@@ -1,0 +1,16 @@
+{
+  "at": "2026-10-26T11:18:08.197543+00:00",
+  "root": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026",
+  "files": 6284,
+  "bytes": 1917313073,
+  "budget_bytes": 4294967296,
+  "full_originals_retained": true,
+  "index_sha256": "eba3c83ec07466c23ed2fc3c387f5927b6b23767fa608f516435d1537660879b",
+  "index": "originals-index.jsonl",
+  "exclusions": [
+    "live coordinator",
+    "index itself and its summary"
+  ],
+  "prior_phase_separate_retained": true,
+  "no_originals_deleted": true
+}

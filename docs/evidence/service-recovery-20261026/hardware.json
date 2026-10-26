@@ -1,0 +1,14 @@
+{
+  "at": "2026-10-26T11:04:30.515749+00:00",
+  "hardware": {
+    "hw.model": "Mac16,1",
+    "hw.memsize": "34359738368",
+    "hw.ncpu": "10",
+    "machdep.cpu.brand_string": "Apple M4"
+  },
+  "system": "ProductName:\t\tmacOS\nProductVersion:\t\t26.6.2\nBuildVersion:\t\t25G83\n",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "work": "/Volumes/HP P900/dev/MyCity/work",
+  "df": "Filesystem   1024-blocks       Used Available Capacity  iused      ifree %iused  Mounted on\n/dev/disk6s1  2000193840 1894284372 105612308    95% 15298785 1056123080    1%   /Volumes/HP P900\n",
+  "scope": "finite functional/default-role evidence; not physical16GB/native/speed/fullM0"
+}

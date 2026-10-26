@@ -11133,21 +11133,29 @@ impl crate::service_delivery_authority::Ledger for ServiceLedger<'_>{
         *slot=Some(Lease{token,actor,resource:id,units:1,occupied:true});r.occupied+=1;
         if let Some(old)=old{self.exit_edge(actor,old)?;}Ok(Some(token))
     }
+    fn enter_convoy(&mut self,actor:u32,id:u32,old:[Option<u64>;2])->Result<Option<[u64;2]>,TxError>{
+        if old[0].is_some()&&old[0]==old[1]{return Err(TxError::Lease);}
+        let current=|token:Option<u64>|token.and_then(|token|self.base.leases.iter().flatten().find(|l|l.token==token&&l.actor==actor&&l.resource==id&&l.occupied&&l.units==1).map(|l|l.token));
+        let retained=[current(old[0]),current(old[1])];let needed=retained.iter().filter(|t|t.is_none()).count();
+        let resource=self.base.resources.iter().find(|r|r.id==id).ok_or(TxError::Resource)?;
+        if resource.reserved.checked_add(resource.occupied).and_then(|n|n.checked_add(needed as u32)).ok_or(TxError::Overflow)?>resource.capacity||self.base.leases.iter().filter(|l|l.is_none()).count()<needed{return Ok(None);}
+        let a=self.enter_edge(actor,id,old[0])?.ok_or(TxError::InvalidOperation)?;let b=self.enter_edge(actor,id,old[1])?.ok_or(TxError::InvalidOperation)?;Ok(Some([a,b]))
+    }
     fn exit_edge(&mut self,actor:u32,token:u64)->Result<(),TxError>{
         let slot=self.base.leases.iter_mut().find(|l|l.is_some_and(|l|l.token==token)).ok_or(TxError::Lease)?;let l=slot.ok_or(TxError::Lease)?;
         if l.actor!=actor||!l.occupied||l.units!=1{return Err(TxError::Lease);}
         let r=self.base.resources.iter_mut().find(|r|r.id==l.resource).ok_or(TxError::Resource)?;r.occupied=r.occupied.checked_sub(1).ok_or(TxError::Lease)?;*slot=None;Ok(())
     }
-    fn begin_members(&mut self,delivery:u32,range:crate::member_qualification::MemberRange,at:u64)->Result<u64,TxError>{
+    fn begin_owned_members(&mut self,owner:u64,range:crate::member_qualification::MemberRange,at:u64)->Result<u64,TxError>{
         use crate::member_activity as m;let source=self.member_source(at)?;let id=source.ordinal;
-        let c=self.members.prepare_begin(source,at,crate::service_delivery_authority::service_member_owner(delivery),m::Kind::ServiceWork,[Some(m::Members{start:range.start,end:range.end}),None]).map_err(|_|TxError::Capacity)?;
+        let c=self.members.prepare_begin(source,at,owner,m::Kind::ServiceWork,[Some(m::Members{start:range.start,end:range.end}),None]).map_err(|_|TxError::Capacity)?;
         *self.members=c.into_next(self.members).map_err(|_|TxError::InvalidOperation)?;Ok(id)
     }
-    fn settle_members(&mut self,delivery:u32,activity:u64,at:u64,close:bool)->Result<(),TxError>{
+    fn settle_owned_members(&mut self,owner:u64,activity:u64,at:u64,close:bool)->Result<(),TxError>{
         use crate::member_activity as m;
         let row=self.members.active().iter().find(|r|r.id==activity).ok_or(TxError::InvalidOperation)?;
         if !close&&row.settled_through==at{return Ok(());}
-        let c=self.members.prepare_settle(self.member_source(at)?,at,activity,crate::service_delivery_authority::service_member_owner(delivery),m::Kind::ServiceWork,close).map_err(|_|TxError::InvalidOperation)?;
+        let c=self.members.prepare_settle(self.member_source(at)?,at,activity,owner,m::Kind::ServiceWork,close).map_err(|_|TxError::InvalidOperation)?;
         *self.members=c.into_next(self.members).map_err(|_|TxError::InvalidOperation)?;Ok(())
     }
     fn available(&mut self,account:u32)->Result<u64,TxError>{u64::try_from(crate::economy::Ledger::available(&mut self.base.base,account)?.value()).map_err(|_|TxError::Overflow)}
@@ -11177,7 +11185,7 @@ fn apply_service_delivery(
 }
 fn check_service_delivery_state(world:&World,needs:Option<&crate::service_needs::Runtime>,accounts:&DirtyAccounts,stocks:&DirtyStocks,resources:&ResourceRows,leases:&LeaseRows,economy:Option<&crate::economy::Economy>,facility:Option<&crate::facility_authority::Runtime>)->Result<(),TxError>{
     let Some(d)=needs.and_then(|n|n.delivery.as_deref())else{return Ok(());};
-    d.validate()?;
+    d.validate()?;d.validate_recovery_pool(resources,leases)?;
     for(id,h)in world.account_ids.iter(){
         let a=accounts.iter().find(|(old,_)|old==h).map(|(_,a)|a).or_else(||world.accounts.get(*h).ok()).ok_or(TxError::InvalidHandle)?;
         let delivery=Money::new(i64::try_from(d.required_protection(*id)?).map_err(|_|TxError::Overflow)?).map_err(|_|TxError::Overflow)?;
@@ -11207,7 +11215,7 @@ fn service_delivery_boundary(world:&World,needs:&mut Option<Box<crate::service_n
 
 fn all_paid_sources(f:Option<&crate::facility_authority::Runtime>,n:Option<&crate::service_needs::Runtime>)->[Option<crate::housing_income::PaidWageSource>;crate::housing_income::MAX_ADDITIONAL_PAID_SOURCES]{
     let mut out=[None;crate::housing_income::MAX_ADDITIONAL_PAID_SOURCES];out[..4].copy_from_slice(&crate::facility_authority::paid_sources(f));
-    if let Some(d)=n.and_then(|n|n.delivery.as_deref()){out[4..52].copy_from_slice(&d.paid_sources());}out
+    if let Some(d)=n.and_then(|n|n.delivery.as_deref()){out[4..53].copy_from_slice(&d.paid_sources());}out
 }
 fn record_service_paid(world:&World,before:&[Option<crate::housing_income::PaidWageSource>],after:&[Option<crate::housing_income::PaidWageSource>],at:u64,window:&mut Option<Box<crate::housing_income::PaidWageWindow>>)->Result<(),TxError>{
     // Per-payee cumulative cash counters survive task reclamation. No wallet is combined.

@@ -1,0 +1,920 @@
+{
+  "issue": 134,
+  "baseline": "v0.5.205 bbba15d63eba420c7bc64d1a0f372673e0bcc48c",
+  "release": "v0.5.206",
+  "finite_contract_accepted_at": "2026-10-26T11:17:45.042137+00:00",
+  "remote_close_pending": true,
+  "owner": "root 01a166fc-e444-7602-ad22-3a8551dda487",
+  "verification_window": {
+    "start": "2026-10-26T09:41:56.426692+00:00",
+    "end": "2026-10-26T11:17:36.040116+00:00",
+    "meaning": "this implementation/verification phase, not historical delivery latency"
+  },
+  "core_new": 9,
+  "core_existing": 9,
+  "new_store_parents": 5,
+  "new_store_cold_children": 13,
+  "old_store_parent_stdout": "store16.stdout",
+  "shared_default_groups": 22,
+  "normal_role": {
+    "arena_used_observed_max": 56838840,
+    "engine_owned_bytes": 3682264,
+    "not_native_16gb_speed_or_m0_acceptance": true,
+    "pool": {
+      "available_touched_bytes": 67108864,
+      "capacity_bytes": 67108864,
+      "fill_acknowledgements": 0,
+      "granted_capacity_bytes": 0,
+      "grants": 0,
+      "maximum_prepare_to_fill_or_reap_ns": 458240291,
+      "rejected_requests": 0,
+      "returns": 0,
+      "scans": 12,
+      "workspace_capacity_bytes": 0,
+      "workspace_fills": 2,
+      "workspace_grants": 2,
+      "workspace_returns": 2
+    },
+    "reference_and_creator_outside_shipping_role": true,
+    "store_owned_bytes": 43049145
+  },
+  "actual_results": {
+    "core13": {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/service-recovery-20261026/source13-service_recovery-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "source": "source13-manifest.json",
+      "exit_code": 0,
+      "elapsed_seconds": 3.0200245000000003,
+      "finished_at": "2026-10-26T11:09:55.131991+00:00"
+    },
+    "old14": {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/service-recovery-20261026/source14-service_delivery-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "source": "source14-manifest.json",
+      "exit_code": 0,
+      "elapsed_seconds": 4.143738625,
+      "finished_at": "2026-10-26T11:10:01.570529+00:00"
+    },
+    "history10": {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/service-recovery-20261026/source10-service_recovery_store-fixed",
+        "--test-threads=1",
+        "--nocapture",
+        "finished_tow_keeps_historical_need_and_tickets_when_primary_task_is_reclaimed",
+        "--exact"
+      ],
+      "source": "source10-manifest.json",
+      "exit_code": 0,
+      "elapsed_seconds": 365.27846708299995,
+      "finished_at": "2026-10-26T10:59:10.359882+00:00"
+    },
+    "coupling14": {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/service-recovery-20261026/source10-service_recovery_store-fixed",
+        "--test-threads=1",
+        "--nocapture",
+        "actual_coupling_fee_and_motion_survive_partial_write_or_lost_reply_once",
+        "--exact"
+      ],
+      "source": "source10-manifest.json",
+      "exit_code": 0,
+      "elapsed_seconds": 2.897354375,
+      "finished_at": "2026-10-26T11:10:04.562572+00:00"
+    },
+    "stages14": {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/service-recovery-20261026/source10-service_recovery_store-fixed",
+        "--test-threads=1",
+        "--nocapture",
+        "tow_departure_coupling_motion_reset_and_arrears_cold_recover_once",
+        "--exact"
+      ],
+      "source": "source10-manifest.json",
+      "exit_code": 0,
+      "elapsed_seconds": 8.806227,
+      "finished_at": "2026-10-26T11:10:13.462381+00:00"
+    },
+    "dispatch14": {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/service-recovery-20261026/source10-service_recovery_store-fixed",
+        "--test-threads=1",
+        "--nocapture",
+        "dispatch_partial_write_and_lost_reply_do_not_duplicate_episode_or_funds",
+        "--exact"
+      ],
+      "source": "source10-manifest.json",
+      "exit_code": 0,
+      "elapsed_seconds": 2.6055833330000002,
+      "finished_at": "2026-10-26T11:10:16.166979+00:00"
+    },
+    "compat14": {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/service-recovery-20261026/source10-service_recovery_store-fixed",
+        "--test-threads=1",
+        "--nocapture",
+        "complete_205_remains_readable_and_real_203_is_rejected_without_rewriting_save",
+        "--exact"
+      ],
+      "source": "source10-manifest.json",
+      "exit_code": 0,
+      "elapsed_seconds": 1.094580375,
+      "finished_at": "2026-10-26T11:10:17.352764+00:00"
+    },
+    "store16": {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/service-recovery-20261026/source16-service_delivery_store-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "source": "source16-manifest.json",
+      "exit_code": 0,
+      "elapsed_seconds": 421.987350209,
+      "finished_at": "2026-10-26T11:17:22.782155+00:00"
+    },
+    "role15": {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/service-recovery-20261026/source15-service_recovery_role-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "source": "source15-manifest.json",
+      "exit_code": 0,
+      "elapsed_seconds": 8.747181792000001,
+      "finished_at": "2026-10-26T11:17:36.040116+00:00"
+    }
+  },
+  "shared": [
+    {
+      "gate": 1,
+      "package": "mycity-core",
+      "target": "timeline",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/01-mycity-core-timeline-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "seconds": 41.9131105,
+      "source": "source10-manifest.json",
+      "executable_sha256": "8196fe2497e9ee42bb9442653646c1bfdab52bb2f00d52da79f7a111decbc67c",
+      "env": {
+        "TMPDIR": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/temp",
+        "MYCITY_FACILITY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/facility",
+        "MYCITY_QUALIFICATION_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/qualification",
+        "MYCITY_TYPED_OPENING_STORE_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/typed",
+        "MYCITY_TARGET_EMERGENCY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/target-cancel",
+        "MYCITY_TIME_CAPACITY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/time",
+        "MYCITY_VENUE_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/venue",
+        "MYCITY_SERVICE_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/service",
+        "MYCITY_DIRECTORY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/directory",
+        "MYCITY_DIRECTORY_POOL_ROOT": "/Volumes/HP P900/dev/MyCity/work/sr134/d12"
+      },
+      "default_stack": true,
+      "finished_at": "2026-10-26T11:02:34.289454+00:00"
+    },
+    {
+      "gate": 2,
+      "package": "mycity-core",
+      "target": "service_needs",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/02-mycity-core-service_needs-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "seconds": 0.5017388329999903,
+      "source": "source10-manifest.json",
+      "executable_sha256": "4a2c31a6384db52535cc9c7cf9e9af07c7a63ac99e9ce65f1b08fa99eb2fe32f",
+      "env": {
+        "TMPDIR": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/temp",
+        "MYCITY_FACILITY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/facility",
+        "MYCITY_QUALIFICATION_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/qualification",
+        "MYCITY_TYPED_OPENING_STORE_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/typed",
+        "MYCITY_TARGET_EMERGENCY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/target-cancel",
+        "MYCITY_TIME_CAPACITY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/time",
+        "MYCITY_VENUE_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/venue",
+        "MYCITY_SERVICE_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/service",
+        "MYCITY_DIRECTORY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/directory",
+        "MYCITY_DIRECTORY_POOL_ROOT": "/Volumes/HP P900/dev/MyCity/work/sr134/d12"
+      },
+      "default_stack": true,
+      "finished_at": "2026-10-26T11:02:36.386894+00:00"
+    },
+    {
+      "gate": 3,
+      "package": "mycity-core",
+      "target": "time_capacity",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/03-mycity-core-time_capacity-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "seconds": 1.1849751670000046,
+      "source": "source10-manifest.json",
+      "executable_sha256": "a36451bbe6255637b031d7c73c7174243d29aa06155f6e6221a1ba2238a1a0ec",
+      "env": {
+        "TMPDIR": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/temp",
+        "MYCITY_FACILITY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/facility",
+        "MYCITY_QUALIFICATION_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/qualification",
+        "MYCITY_TYPED_OPENING_STORE_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/typed",
+        "MYCITY_TARGET_EMERGENCY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/target-cancel",
+        "MYCITY_TIME_CAPACITY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/time",
+        "MYCITY_VENUE_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/venue",
+        "MYCITY_SERVICE_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/service",
+        "MYCITY_DIRECTORY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/directory",
+        "MYCITY_DIRECTORY_POOL_ROOT": "/Volumes/HP P900/dev/MyCity/work/sr134/d12"
+      },
+      "default_stack": true,
+      "finished_at": "2026-10-26T11:02:39.595323+00:00"
+    },
+    {
+      "gate": 4,
+      "package": "mycity-core",
+      "target": "facility_operation",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/04-mycity-core-facility_operation-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "seconds": 4.293807916999995,
+      "source": "source10-manifest.json",
+      "executable_sha256": "f73d2c03193fa1ffe12021925ceacdb0eff1edda65a30c98c8c6bc343ef3b5d0",
+      "env": {
+        "TMPDIR": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/temp",
+        "MYCITY_FACILITY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/facility",
+        "MYCITY_QUALIFICATION_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/qualification",
+        "MYCITY_TYPED_OPENING_STORE_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/typed",
+        "MYCITY_TARGET_EMERGENCY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/target-cancel",
+        "MYCITY_TIME_CAPACITY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/time",
+        "MYCITY_VENUE_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/venue",
+        "MYCITY_SERVICE_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/service",
+        "MYCITY_DIRECTORY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/directory",
+        "MYCITY_DIRECTORY_POOL_ROOT": "/Volumes/HP P900/dev/MyCity/work/sr134/d12"
+      },
+      "default_stack": true,
+      "finished_at": "2026-10-26T11:02:44.728054+00:00"
+    },
+    {
+      "gate": 5,
+      "package": "mycity-core",
+      "target": "opening_typed",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/05-mycity-core-opening_typed-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "seconds": 0.8661217920000013,
+      "source": "source10-manifest.json",
+      "executable_sha256": "c6e8f5355234279f7b06e9256842397079c2a58a617b1acd01215b292fb939e5",
+      "env": {
+        "TMPDIR": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/temp",
+        "MYCITY_FACILITY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/facility",
+        "MYCITY_QUALIFICATION_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/qualification",
+        "MYCITY_TYPED_OPENING_STORE_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/typed",
+        "MYCITY_TARGET_EMERGENCY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/target-cancel",
+        "MYCITY_TIME_CAPACITY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/time",
+        "MYCITY_VENUE_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/venue",
+        "MYCITY_SERVICE_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/service",
+        "MYCITY_DIRECTORY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/directory",
+        "MYCITY_DIRECTORY_POOL_ROOT": "/Volumes/HP P900/dev/MyCity/work/sr134/d12"
+      },
+      "default_stack": true,
+      "finished_at": "2026-10-26T11:02:46.279784+00:00"
+    },
+    {
+      "gate": 6,
+      "package": "mycity-core",
+      "target": "mycity_core",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/06-mycity-core-mycity_core-fixed",
+        "--test-threads=1",
+        "--nocapture",
+        "transaction::tests::equity_contribution_is_allowed_before_timeline_creation_but_not_after_time_advances",
+        "--exact"
+      ],
+      "exit_code": 0,
+      "seconds": 1.342707458999996,
+      "source": "source10-manifest.json",
+      "executable_sha256": "76967f8a3c4ac0053d45c44523a124b34b6b4511c4b1a06a18dae714e34f9539",
+      "env": {
+        "TMPDIR": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/temp",
+        "MYCITY_FACILITY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/facility",
+        "MYCITY_QUALIFICATION_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/qualification",
+        "MYCITY_TYPED_OPENING_STORE_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/typed",
+        "MYCITY_TARGET_EMERGENCY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/target-cancel",
+        "MYCITY_TIME_CAPACITY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/time",
+        "MYCITY_VENUE_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/venue",
+        "MYCITY_SERVICE_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/service",
+        "MYCITY_DIRECTORY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/directory",
+        "MYCITY_DIRECTORY_POOL_ROOT": "/Volumes/HP P900/dev/MyCity/work/sr134/d12"
+      },
+      "default_stack": true,
+      "finished_at": "2026-10-26T11:03:17.351804+00:00"
+    },
+    {
+      "gate": 7,
+      "package": "mycity-core",
+      "target": "mycity_core",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/06-mycity-core-mycity_core-fixed",
+        "--test-threads=1",
+        "--nocapture",
+        "service_needs::component_tests"
+      ],
+      "exit_code": 0,
+      "seconds": 0.02461654200000396,
+      "source": "source10-manifest.json",
+      "executable_sha256": "76967f8a3c4ac0053d45c44523a124b34b6b4511c4b1a06a18dae714e34f9539",
+      "env": {
+        "TMPDIR": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/temp",
+        "MYCITY_FACILITY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/facility",
+        "MYCITY_QUALIFICATION_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/qualification",
+        "MYCITY_TYPED_OPENING_STORE_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/typed",
+        "MYCITY_TARGET_EMERGENCY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/target-cancel",
+        "MYCITY_TIME_CAPACITY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/time",
+        "MYCITY_VENUE_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/venue",
+        "MYCITY_SERVICE_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/service",
+        "MYCITY_DIRECTORY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/directory",
+        "MYCITY_DIRECTORY_POOL_ROOT": "/Volumes/HP P900/dev/MyCity/work/sr134/d12"
+      },
+      "default_stack": true,
+      "finished_at": "2026-10-26T11:03:17.395882+00:00"
+    },
+    {
+      "gate": 8,
+      "package": "mycity-core",
+      "target": "mycity_core",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/06-mycity-core-mycity_core-fixed",
+        "--test-threads=1",
+        "--nocapture",
+        "housing_income::tests"
+      ],
+      "exit_code": 0,
+      "seconds": 0.0055764579999930675,
+      "source": "source10-manifest.json",
+      "executable_sha256": "76967f8a3c4ac0053d45c44523a124b34b6b4511c4b1a06a18dae714e34f9539",
+      "env": {
+        "TMPDIR": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/temp",
+        "MYCITY_FACILITY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/facility",
+        "MYCITY_QUALIFICATION_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/qualification",
+        "MYCITY_TYPED_OPENING_STORE_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/typed",
+        "MYCITY_TARGET_EMERGENCY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/target-cancel",
+        "MYCITY_TIME_CAPACITY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/time",
+        "MYCITY_VENUE_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/venue",
+        "MYCITY_SERVICE_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/service",
+        "MYCITY_DIRECTORY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/directory",
+        "MYCITY_DIRECTORY_POOL_ROOT": "/Volumes/HP P900/dev/MyCity/work/sr134/d12"
+      },
+      "default_stack": true,
+      "finished_at": "2026-10-26T11:03:17.422058+00:00"
+    },
+    {
+      "gate": 9,
+      "package": "mycity-core",
+      "target": "mycity_core",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/06-mycity-core-mycity_core-fixed",
+        "--test-threads=1",
+        "--nocapture",
+        "member_activity::tests"
+      ],
+      "exit_code": 0,
+      "seconds": 0.011997375000007082,
+      "source": "source10-manifest.json",
+      "executable_sha256": "76967f8a3c4ac0053d45c44523a124b34b6b4511c4b1a06a18dae714e34f9539",
+      "env": {
+        "TMPDIR": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/temp",
+        "MYCITY_FACILITY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/facility",
+        "MYCITY_QUALIFICATION_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/qualification",
+        "MYCITY_TYPED_OPENING_STORE_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/typed",
+        "MYCITY_TARGET_EMERGENCY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/target-cancel",
+        "MYCITY_TIME_CAPACITY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/time",
+        "MYCITY_VENUE_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/venue",
+        "MYCITY_SERVICE_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/service",
+        "MYCITY_DIRECTORY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/directory",
+        "MYCITY_DIRECTORY_POOL_ROOT": "/Volumes/HP P900/dev/MyCity/work/sr134/d12"
+      },
+      "default_stack": true,
+      "finished_at": "2026-10-26T11:03:17.453968+00:00"
+    },
+    {
+      "gate": 10,
+      "package": "mycity-core",
+      "target": "town_utility_engine",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/10-mycity-core-town_utility_engine-fixed",
+        "--test-threads=1",
+        "--nocapture",
+        "accepted_cross_city_quote_uses_shared_pool_before_local_market_and_survives_checkpoint",
+        "--exact"
+      ],
+      "exit_code": 0,
+      "seconds": 0.904290833999994,
+      "source": "source10-manifest.json",
+      "executable_sha256": "37b6fe59fe6ea30e17563d39cd25d09666a6acd2b205ec02a67df93f978ef3db",
+      "env": {
+        "TMPDIR": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/temp",
+        "MYCITY_FACILITY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/facility",
+        "MYCITY_QUALIFICATION_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/qualification",
+        "MYCITY_TYPED_OPENING_STORE_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/typed",
+        "MYCITY_TARGET_EMERGENCY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/target-cancel",
+        "MYCITY_TIME_CAPACITY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/time",
+        "MYCITY_VENUE_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/venue",
+        "MYCITY_SERVICE_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/service",
+        "MYCITY_DIRECTORY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/directory",
+        "MYCITY_DIRECTORY_POOL_ROOT": "/Volumes/HP P900/dev/MyCity/work/sr134/d12"
+      },
+      "default_stack": true,
+      "finished_at": "2026-10-26T11:03:19.306713+00:00"
+    },
+    {
+      "gate": 11,
+      "package": "mycity-storage",
+      "target": "timeline",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/11-mycity-storage-timeline-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "seconds": 49.89767658299999,
+      "source": "source10-manifest.json",
+      "executable_sha256": "1e9bd2f48d88ccd5df8f746add6c72557188b5cc06f3f68ed4877bfa4b6d6415",
+      "env": {
+        "TMPDIR": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/temp",
+        "MYCITY_FACILITY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/facility",
+        "MYCITY_QUALIFICATION_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/qualification",
+        "MYCITY_TYPED_OPENING_STORE_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/typed",
+        "MYCITY_TARGET_EMERGENCY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/target-cancel",
+        "MYCITY_TIME_CAPACITY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/time",
+        "MYCITY_VENUE_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/venue",
+        "MYCITY_SERVICE_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/service",
+        "MYCITY_DIRECTORY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/directory",
+        "MYCITY_DIRECTORY_POOL_ROOT": "/Volumes/HP P900/dev/MyCity/work/sr134/d12"
+      },
+      "default_stack": true,
+      "finished_at": "2026-10-26T11:04:10.253653+00:00"
+    },
+    {
+      "gate": 12,
+      "package": "mycity-storage",
+      "target": "service_needs",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/12-mycity-storage-service_needs-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "seconds": 117.87250075,
+      "source": "source10-manifest.json",
+      "executable_sha256": "bf0a13abddc3054ea112977d4532f67e18a44192fd7313b8653860c74184b611",
+      "env": {
+        "TMPDIR": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/temp",
+        "MYCITY_FACILITY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/facility",
+        "MYCITY_QUALIFICATION_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/qualification",
+        "MYCITY_TYPED_OPENING_STORE_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/typed",
+        "MYCITY_TARGET_EMERGENCY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/target-cancel",
+        "MYCITY_TIME_CAPACITY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/time",
+        "MYCITY_VENUE_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/venue",
+        "MYCITY_SERVICE_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/service",
+        "MYCITY_DIRECTORY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/directory",
+        "MYCITY_DIRECTORY_POOL_ROOT": "/Volumes/HP P900/dev/MyCity/work/sr134/d12"
+      },
+      "default_stack": true,
+      "finished_at": "2026-10-26T11:06:10.989264+00:00"
+    },
+    {
+      "gate": 13,
+      "package": "mycity-storage",
+      "target": "facility_operation_store",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/13-mycity-storage-facility_operation_store-fixed",
+        "--test-threads=1",
+        "--nocapture",
+        "original_wal_checkpoint_retry_and_stopped_fraction_are_once",
+        "--exact"
+      ],
+      "exit_code": 0,
+      "seconds": 3.0867820420000385,
+      "source": "source10-manifest.json",
+      "executable_sha256": "be13a9c7139507aab6539575ffe8c5eb97d019f47e080c6c58fca227bc2e7f33",
+      "env": {
+        "TMPDIR": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/temp",
+        "MYCITY_FACILITY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/facility",
+        "MYCITY_QUALIFICATION_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/qualification",
+        "MYCITY_TYPED_OPENING_STORE_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/typed",
+        "MYCITY_TARGET_EMERGENCY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/target-cancel",
+        "MYCITY_TIME_CAPACITY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/time",
+        "MYCITY_VENUE_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/venue",
+        "MYCITY_SERVICE_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/service",
+        "MYCITY_DIRECTORY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/directory",
+        "MYCITY_DIRECTORY_POOL_ROOT": "/Volumes/HP P900/dev/MyCity/work/sr134/d12"
+      },
+      "default_stack": true,
+      "finished_at": "2026-10-26T11:06:17.709607+00:00"
+    },
+    {
+      "gate": 14,
+      "package": "mycity-storage",
+      "target": "facility_operation_store",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/13-mycity-storage-facility_operation_store-fixed",
+        "--test-threads=1",
+        "--nocapture",
+        "partial_old_payroll_payment_restores_the_same_shared_income_window",
+        "--exact"
+      ],
+      "exit_code": 0,
+      "seconds": 11.560754625000015,
+      "source": "source10-manifest.json",
+      "executable_sha256": "be13a9c7139507aab6539575ffe8c5eb97d019f47e080c6c58fca227bc2e7f33",
+      "env": {
+        "TMPDIR": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/temp",
+        "MYCITY_FACILITY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/facility",
+        "MYCITY_QUALIFICATION_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/qualification",
+        "MYCITY_TYPED_OPENING_STORE_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/typed",
+        "MYCITY_TARGET_EMERGENCY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/target-cancel",
+        "MYCITY_TIME_CAPACITY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/time",
+        "MYCITY_VENUE_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/venue",
+        "MYCITY_SERVICE_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/service",
+        "MYCITY_DIRECTORY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/directory",
+        "MYCITY_DIRECTORY_POOL_ROOT": "/Volumes/HP P900/dev/MyCity/work/sr134/d12"
+      },
+      "default_stack": true,
+      "finished_at": "2026-10-26T11:06:29.302086+00:00"
+    },
+    {
+      "gate": 15,
+      "package": "mycity-storage",
+      "target": "facility_operation_store",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/13-mycity-storage-facility_operation_store-fixed",
+        "--test-threads=1",
+        "--nocapture",
+        "lost_publication_reply_reopens_original_committed_work_once",
+        "--exact"
+      ],
+      "exit_code": 0,
+      "seconds": 0.6765793340000528,
+      "source": "source10-manifest.json",
+      "executable_sha256": "be13a9c7139507aab6539575ffe8c5eb97d019f47e080c6c58fca227bc2e7f33",
+      "env": {
+        "TMPDIR": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/temp",
+        "MYCITY_FACILITY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/facility",
+        "MYCITY_QUALIFICATION_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/qualification",
+        "MYCITY_TYPED_OPENING_STORE_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/typed",
+        "MYCITY_TARGET_EMERGENCY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/target-cancel",
+        "MYCITY_TIME_CAPACITY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/time",
+        "MYCITY_VENUE_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/venue",
+        "MYCITY_SERVICE_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/service",
+        "MYCITY_DIRECTORY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/directory",
+        "MYCITY_DIRECTORY_POOL_ROOT": "/Volumes/HP P900/dev/MyCity/work/sr134/d12"
+      },
+      "default_stack": true,
+      "finished_at": "2026-10-26T11:06:30.013508+00:00"
+    },
+    {
+      "gate": 16,
+      "package": "mycity-storage",
+      "target": "qualification_authority",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/16-mycity-storage-qualification_authority-fixed",
+        "--test-threads=1",
+        "--nocapture",
+        "original_teaching_exam_grant_replay_revoke_and_old_exam_substitution",
+        "--exact"
+      ],
+      "exit_code": 0,
+      "seconds": 42.724766750000015,
+      "source": "source10-manifest.json",
+      "executable_sha256": "b3d7930bfa16eade3068a499d3ee28a126d7b1adda0c34d47ca0bad2d4dcaceb",
+      "env": {
+        "TMPDIR": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/temp",
+        "MYCITY_FACILITY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/facility",
+        "MYCITY_QUALIFICATION_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/qualification",
+        "MYCITY_TYPED_OPENING_STORE_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/typed",
+        "MYCITY_TARGET_EMERGENCY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/target-cancel",
+        "MYCITY_TIME_CAPACITY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/time",
+        "MYCITY_VENUE_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/venue",
+        "MYCITY_SERVICE_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/service",
+        "MYCITY_DIRECTORY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/directory",
+        "MYCITY_DIRECTORY_POOL_ROOT": "/Volumes/HP P900/dev/MyCity/work/sr134/d12"
+      },
+      "default_stack": true,
+      "finished_at": "2026-10-26T11:07:19.567200+00:00"
+    },
+    {
+      "gate": 17,
+      "package": "mycity-storage",
+      "target": "opening_typed_provider_store",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/17-mycity-storage-opening_typed_provider_store-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "seconds": 7.811763832999986,
+      "source": "source10-manifest.json",
+      "executable_sha256": "62555be565a3d9855030abfc915992f445f8b8439c4032a1f4d6fe5ebc582f89",
+      "env": {
+        "TMPDIR": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/temp",
+        "MYCITY_FACILITY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/facility",
+        "MYCITY_QUALIFICATION_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/qualification",
+        "MYCITY_TYPED_OPENING_STORE_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/typed",
+        "MYCITY_TARGET_EMERGENCY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/target-cancel",
+        "MYCITY_TIME_CAPACITY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/time",
+        "MYCITY_VENUE_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/venue",
+        "MYCITY_SERVICE_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/service",
+        "MYCITY_DIRECTORY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/directory",
+        "MYCITY_DIRECTORY_POOL_ROOT": "/Volumes/HP P900/dev/MyCity/work/sr134/d12"
+      },
+      "default_stack": true,
+      "finished_at": "2026-10-26T11:07:30.097864+00:00"
+    },
+    {
+      "gate": 18,
+      "package": "mycity-storage",
+      "target": "time_capacity_store",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/18-mycity-storage-time_capacity_store-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "seconds": 15.37598033300003,
+      "source": "source10-manifest.json",
+      "executable_sha256": "dec3de41edd03a17b31491eb44d39d11d5ef49b3baed321624d93bbc3e6a5db1",
+      "env": {
+        "TMPDIR": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/temp",
+        "MYCITY_FACILITY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/facility",
+        "MYCITY_QUALIFICATION_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/qualification",
+        "MYCITY_TYPED_OPENING_STORE_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/typed",
+        "MYCITY_TARGET_EMERGENCY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/target-cancel",
+        "MYCITY_TIME_CAPACITY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/time",
+        "MYCITY_VENUE_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/venue",
+        "MYCITY_SERVICE_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/service",
+        "MYCITY_DIRECTORY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/directory",
+        "MYCITY_DIRECTORY_POOL_ROOT": "/Volumes/HP P900/dev/MyCity/work/sr134/d12"
+      },
+      "default_stack": true,
+      "finished_at": "2026-10-26T11:07:46.885576+00:00"
+    },
+    {
+      "gate": 19,
+      "package": "mycity-storage",
+      "target": "venue_capacity",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/19-mycity-storage-venue_capacity-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "seconds": 10.262038040999983,
+      "source": "source10-manifest.json",
+      "executable_sha256": "789bb02003c87cc92fce402b2bd59e81865641442452adfb8f32d7298145ad5e",
+      "env": {
+        "TMPDIR": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/temp",
+        "MYCITY_FACILITY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/facility",
+        "MYCITY_QUALIFICATION_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/qualification",
+        "MYCITY_TYPED_OPENING_STORE_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/typed",
+        "MYCITY_TARGET_EMERGENCY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/target-cancel",
+        "MYCITY_TIME_CAPACITY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/time",
+        "MYCITY_VENUE_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/venue",
+        "MYCITY_SERVICE_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/service",
+        "MYCITY_DIRECTORY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/directory",
+        "MYCITY_DIRECTORY_POOL_ROOT": "/Volumes/HP P900/dev/MyCity/work/sr134/d12"
+      },
+      "default_stack": true,
+      "finished_at": "2026-10-26T11:08:02.831934+00:00"
+    },
+    {
+      "gate": 20,
+      "package": "mycity-storage",
+      "target": "checkpoint",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/20-mycity-storage-checkpoint-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "seconds": 32.12199266700003,
+      "source": "source10-manifest.json",
+      "executable_sha256": "8162c4136a99da093341e6edafa8d4f09c75ecd315151ff90f0b9685227f14fa",
+      "env": {
+        "TMPDIR": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/temp",
+        "MYCITY_FACILITY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/facility",
+        "MYCITY_QUALIFICATION_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/qualification",
+        "MYCITY_TYPED_OPENING_STORE_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/typed",
+        "MYCITY_TARGET_EMERGENCY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/target-cancel",
+        "MYCITY_TIME_CAPACITY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/time",
+        "MYCITY_VENUE_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/venue",
+        "MYCITY_SERVICE_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/service",
+        "MYCITY_DIRECTORY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/directory",
+        "MYCITY_DIRECTORY_POOL_ROOT": "/Volumes/HP P900/dev/MyCity/work/sr134/d12"
+      },
+      "default_stack": true,
+      "finished_at": "2026-10-26T11:08:36.414870+00:00"
+    },
+    {
+      "gate": 21,
+      "package": "mycity-storage",
+      "target": "timeline_cancel_emergency",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/21-mycity-storage-timeline_cancel_emergency-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "seconds": 11.561857916999998,
+      "source": "source10-manifest.json",
+      "executable_sha256": "bdb9af75bb12792da0cad7fcd4f842214e5ce2813131734d0899d4b544f5d696",
+      "env": {
+        "TMPDIR": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/temp",
+        "MYCITY_FACILITY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/facility",
+        "MYCITY_QUALIFICATION_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/qualification",
+        "MYCITY_TYPED_OPENING_STORE_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/typed",
+        "MYCITY_TARGET_EMERGENCY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/target-cancel",
+        "MYCITY_TIME_CAPACITY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/time",
+        "MYCITY_VENUE_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/venue",
+        "MYCITY_SERVICE_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/service",
+        "MYCITY_DIRECTORY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/directory",
+        "MYCITY_DIRECTORY_POOL_ROOT": "/Volumes/HP P900/dev/MyCity/work/sr134/d12"
+      },
+      "default_stack": true,
+      "finished_at": "2026-10-26T11:08:51.106508+00:00"
+    },
+    {
+      "gate": 22,
+      "package": "mycity-headless",
+      "target": "task_registry_directory",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/22-mycity-headless-task_registry_directory-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "seconds": 19.97450416700002,
+      "source": "source10-manifest.json",
+      "executable_sha256": "aa30a285ebe7818413e838510ef34e3c46001255fb6098775cbd079a35632cac",
+      "env": {
+        "TMPDIR": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/temp",
+        "MYCITY_FACILITY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/facility",
+        "MYCITY_QUALIFICATION_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/qualification",
+        "MYCITY_TYPED_OPENING_STORE_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/typed",
+        "MYCITY_TARGET_EMERGENCY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/target-cancel",
+        "MYCITY_TIME_CAPACITY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/time",
+        "MYCITY_VENUE_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/venue",
+        "MYCITY_SERVICE_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/service",
+        "MYCITY_DIRECTORY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/directory",
+        "MYCITY_DIRECTORY_POOL_ROOT": "/Volumes/HP P900/dev/MyCity/work/sr134/d12",
+        "MYCITY_DIRECTORY_HEADLESS_EXE": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026/shared12/headless-fixed"
+      },
+      "default_stack": true,
+      "finished_at": "2026-10-26T11:09:38.845220+00:00"
+    }
+  ],
+  "cold_children": [
+    {
+      "file": "history10/recovery-history-14712-0/history-cold-result.json",
+      "result": {
+        "code": 0,
+        "pid": 16965,
+        "seconds": 8.9313465
+      }
+    },
+    {
+      "file": "coupling14/coupling-lost-reply-25386-1/coupling-retry-result.json",
+      "result": {
+        "code": 0,
+        "pid": 25394,
+        "seconds": 0.398986583
+      }
+    },
+    {
+      "file": "coupling14/coupling-partial-25386-0/coupling-retry-result.json",
+      "result": {
+        "code": 0,
+        "pid": 25393,
+        "seconds": 0.414288541
+      }
+    },
+    {
+      "file": "stages14/tow-cold-25399-0/deadline-result.json",
+      "result": {
+        "code": 0,
+        "pid": 25474,
+        "seconds": 0.720998333
+      }
+    },
+    {
+      "file": "stages14/tow-cold-25399-0/cold-31100-result.json",
+      "result": {
+        "code": 0,
+        "pid": 25440,
+        "seconds": 0.659736458
+      }
+    },
+    {
+      "file": "stages14/tow-cold-25399-0/cold-30320-result.json",
+      "result": {
+        "code": 0,
+        "pid": 25405,
+        "seconds": 0.533588291
+      }
+    },
+    {
+      "file": "stages14/tow-cold-25399-0/cold-30500-result.json",
+      "result": {
+        "code": 0,
+        "pid": 25425,
+        "seconds": 0.611552542
+      }
+    },
+    {
+      "file": "stages14/tow-cold-25399-0/cold-30230-result.json",
+      "result": {
+        "code": 0,
+        "pid": 25400,
+        "seconds": 0.514105291
+      }
+    },
+    {
+      "file": "stages14/tow-cold-25399-0/cold-30400-result.json",
+      "result": {
+        "code": 0,
+        "pid": 25423,
+        "seconds": 0.550166458
+      }
+    },
+    {
+      "file": "stages14/tow-cold-25399-0/late-payment-result.json",
+      "result": {
+        "code": 0,
+        "pid": 25467,
+        "seconds": 0.718600583
+      }
+    },
+    {
+      "file": "dispatch14/lost-reply-25482-1/dispatch-retry-result.json",
+      "result": {
+        "code": 0,
+        "pid": 25514,
+        "seconds": 0.379283291
+      }
+    },
+    {
+      "file": "dispatch14/partial-25482-0/dispatch-retry-result.json",
+      "result": {
+        "code": 0,
+        "pid": 25502,
+        "seconds": 0.388831042
+      }
+    },
+    {
+      "file": "compat14/compatibility-25525-0/complete205-result.json",
+      "result": {
+        "code": 0,
+        "pid": 25526,
+        "seconds": 0.438015292
+      }
+    }
+  ],
+  "source": "source10-manifest.json; production and test bytes equal source13/14/15/16 build inputs",
+  "reuse": "history10 actual long five-mission reclamation reused without repeat; source10 unchanged. Previous205 specialised business inputs/oracles retained; affected18core, originalStore,currentStore and22shared/currentrole rerun. Earlier standalone133/136/137 fullscope results remain their fixed versions, not a new whole-product run.",
+  "compatibility": {
+    "complete205": "read exact state, no synthetic recovery assets, cold once",
+    "actual203": "fresh-rebuilt original203 reader produced candidate, current reader explicitly refuses; save files unchanged; original program/source/world retained",
+    "stable_error": "service_delivery_audit_v203_requires_original_reader"
+  },
+  "failures_retained": [
+    "core03 misprovenanced205 input mistakenly labelled203; invalidated, actual203 rebuilt fresh and tested",
+    "build05 stale203 dependency cache; store05 not_started, no game executed; build-success precondition corrected",
+    "store08 finite-history test guard1024 exhausted; guarded driver enlarged8192, same original game rules; history10 passed"
+  ],
+  "not_run": [
+    "real16GB hardware",
+    "native total RSS joint M0 acceptance",
+    "longterm speed/pressure",
+    "GPU",
+    "UI",
+    "entire traffic74",
+    "specialised police/medical/fire profile"
+  ],
+  "unchanged_m0_contract": true,
+  "protected_wip_count": 24,
+  "backlog_source_packets_pending": 18,
+  "backlog_decrement_from134": 0,
+  "source_to_acceptance_seconds": null,
+  "ready_to_acceptance_seconds": null,
+  "unknown_latency_reason": "no reliable original full-contract ready/source delivery timestamp; do not use close/tag/mtime as origin"
+}

@@ -1,10 +1,10 @@
-# MyCity 当前接线状态：v0.5.205
+# MyCity 当前接线状态：v0.5.206
 
-v0.5.204误标签实际指向v203旧提交，不含本次接线；保持不移动。实际本次发布为v205。
+#134完整有限合同已由root核对实际证据通过：[结果及边界](docs/evidence/service-recovery-20261026/STATUS.md)。实现与恢复输入固定，Issue回填/关闭另看closure回读。全体原车内Driver到期后的实际到车牵引、原两车占用、实际费用和欠薪已接通；完整v205可读，缺事实v203候选明确拒绝且完整原件不变，不补历史。
 
-外部审计已固定的`v0.5.203`不移动，发现须按该版本核实。当前main新增#134有限实际接线及验证，[状态/差项](docs/evidence/service-delivery-runtime-20261026/STATUS.md)与[验证清单](docs/evidence/service-delivery-runtime-20261026/verification-summary.json)区分已通过门、未完成合同和原完整恢复证据。当前不是全产品/完整#134验收版本。
+18核心、5新增Store父/13冷子进程、原履约Store、22共享/默认组、原normal59MiB角色及归还通过；原advisor仅窄核实际历史关联修复。不是整个交通/公服父领域或全产品验收。32GB Apple M4/HP P900环境，真实16GB/native/快进长期/GPU/UI仍未测，原M0不变。
 
-审计仍先只读；root保持共享唯一writer和编译测试串行。全员Driver到期后的实际到车接替继续开放，不能把正确等待当恢复闭合；旧公服审计候选迁移未验，原源/程序/存档保留。v203的24份无关WIP补充包和本机原件不变。无新增关闭或PR，原M0冻结标准不改。
+v203外部审计版本和误标v204均不移动。全部固定程序/源/失败World/WAL/checkpoint、24份无关WIP保留；外部审计按固定版本核实具体问题，不扩为无关安全认证。root唯一writer，无新增派工，无PR。
 
 <details><summary>此前审计入口历史（对应固定旧版本）</summary>
 

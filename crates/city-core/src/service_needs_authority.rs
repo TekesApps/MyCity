@@ -111,7 +111,7 @@ pub(crate) fn record_entry(world:&World,runtime:&mut Option<Box<n::Runtime>>,off
 }
 
 /// Unforgeable completion carrier; original Store supplies bounded original receipts.
-pub const MAX_RESTORE_REFS:usize=n::MAX_HOUSEHOLDS+crate::service_delivery_runtime::MAX_TASKS*12+1;
+pub const MAX_RESTORE_REFS:usize=n::MAX_HOUSEHOLDS+crate::service_delivery_runtime::MAX_TASKS*12+10+1;
 pub struct RestoreCheck { expected:[u8;32], checked:[bool;MAX_RESTORE_REFS] }
 pub(crate) fn begin_restore(world:&World)->Result<RestoreCheck,TxError>{
     let r=world.service_needs.as_deref().ok_or(TxError::InvalidOperation)?;
@@ -124,6 +124,10 @@ pub(crate) fn check_restore(world:&World,check:&mut RestoreCheck,index:usize,rec
         let refs=delivery_refs(r);let expected=refs[index].ok_or(TxError::InvalidOperation)?;
         if record.operation_id!=expected||record.outcome.is_err()||record.actions[1..].iter().any(Option::is_some)
             || (index!=MAX_RESTORE_REFS-1&&!matches!(record.actions[0],Some(Action::Timeline{..}|Action::ServiceDelivery{..}|Action::HousingLease{..}))){return Err(TxError::InvalidOperation);}
+        if index==n::MAX_HOUSEHOLDS+crate::service_delivery_runtime::MAX_TASKS*12+9{
+            let d=r.delivery.as_deref().ok_or(TxError::InvalidOperation)?;let need=d.recovery_history_need().ok_or(TxError::InvalidOperation)?;
+            if !matches!(record.actions[0],Some(Action::ServiceDelivery{command:crate::service_delivery_authority::Command::Accept{household,crew}})if household==need.household_id&&d.opening().domain.crews.iter().any(|c|c.id==crew&&c.kind==need.kind)){return Err(TxError::InvalidOperation);}
+        }
         if index==MAX_RESTORE_REFS-1{let a=r.delivery.as_deref().and_then(|d|d.income_anchor()).ok_or(TxError::InvalidOperation)?;
             if record.income_context!=Some(a)||record.outcome.as_ref().is_ok_and(|receipt|receipt.revision!=a.revision){return Err(TxError::InvalidOperation);}}
         if let Some(d)=r.delivery.as_deref(){for task in d.tasks(){if task.origins.accepted==expected{
@@ -193,5 +197,5 @@ pub(crate) fn delivery_refs(runtime:&n::Runtime)->[Option<u64>;MAX_RESTORE_REFS]
     if let Some(d)=runtime.delivery.as_deref(){for(i,t)in d.tasks().iter().enumerate(){let o=t.origins;
         let values=[o.need,o.accepted,o.departed,o.arrived,o.return_started,o.returned,o.reset,o.closed,o.cancelled,o.last_work,t.deadline.map_or(0,|v|v.operation_id),d.trips().iter().find(|v|v.delivery==t.delivery_id).map_or(0,|v|v.last_operation)];
         for(j,id)in values.into_iter().enumerate(){refs[n::MAX_HOUSEHOLDS+i*12+j]=(id>0).then_some(id);}
-    }refs[MAX_RESTORE_REFS-1]=d.income_anchor().map(|a|a.operation_id); }refs
+    }for(i,op)in d.recovery_receipts().into_iter().enumerate(){refs[n::MAX_HOUSEHOLDS+crate::service_delivery_runtime::MAX_TASKS*12+i]=op;}refs[MAX_RESTORE_REFS-1]=d.income_anchor().map(|a|a.operation_id); }refs
 }

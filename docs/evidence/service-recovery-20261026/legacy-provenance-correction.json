@@ -1,0 +1,6 @@
+{
+  "build01": "invalid as203 evidence: Cargo reused fresh=true core/storage artifacts; generated checkpoint had205-only driver/archive fields",
+  "core03_failure": "fixture provenance error, not acceptance of actual203 candidate",
+  "originals_retained": true,
+  "correction": "touch extracted input mtimes only, source bytes unchanged; require fresh=false core/storage before claiming old-version producer"
+}

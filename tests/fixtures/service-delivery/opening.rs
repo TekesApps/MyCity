@@ -36,3 +36,18 @@ pub fn input()->Value{
 }
 pub fn resources()->Vec<Resource>{[1001,1002,1003,2101,2102].into_iter().map(|id|Resource::new(id,1).unwrap()).collect()}
 pub fn engine()->mycity_core::transaction::Engine{mycity_core::transaction::Engine::new(assembly::assemble(&serde_json::to_vec(&input()).unwrap()).unwrap(),resources()).unwrap()}
+/// Explicit lab tow episode. The new road capacities and standby assets belong
+/// only to this new fixture; no existing M0 load or budget is changed.
+pub fn recovery_input()->Value{
+ let mut v=input();let o=&mut v["service_needs"]["profile"]["LocalDevelopmentWithDeliveryV2"];o["version"]=json!(2);o["profile"]=json!("LocalDevelopmentEdgeDrivenPoliceRecoveryV2");
+ let path=|ids:&[u32]|{let mut p=vec![Value::Null;16];for(i,id)in ids.iter().enumerate(){p[i]=json!(id);}p};
+ o["recovery"]=json!({"station_entrance":101,"employer":3,"wage":{"member":2,"account":2,"cents_per_hour":600,"valid_from":0,"valid_until":200000},"resources":[1004,1005,1006],"energy_stock":993,"energy_mwh_per_second":50,"tow_energy_multiplier":2,"coupling_seconds":60,"fee_cents":500,"plans":[
+ {"id":1,"target":{"Edge":{"edge":1}},"approach":path(&[]),"return_after":path(&[4])},
+ {"id":2,"target":{"Edge":{"edge":2}},"approach":path(&[1]),"return_after":path(&[3,4])},
+ {"id":3,"target":{"Edge":{"edge":3}},"approach":path(&[1,2]),"return_after":path(&[4])},
+ {"id":4,"target":{"Edge":{"edge":4}},"approach":path(&[1]),"return_after":path(&[])},
+ {"id":5,"target":{"Node":{"node":3,"pickup_resource":2203}},"approach":path(&[1,2]),"return_after":path(&[3,4])}]});
+ let facts=&mut v["qualification"]["facts"];let mut source=facts["baseline_sources"][0].clone();let mut id=vec![0u8;16];id[15]=3;source["id"]=json!(id);facts["baseline_sources"][1]=source;facts["baseline_sources"][0]["valid_until"]=json!(30000);let mut baseline=facts["baselines"][0].clone();baseline["source_id"]=json!(id);baseline["members"]=json!({"start":2,"end":10});baseline["base_mask"]=json!(1);facts["baselines"][1]=baseline;facts["baselines"][0]["members"]=json!({"start":0,"end":2});
+ v["stocks"].as_array_mut().unwrap().push(json!({"id":993,"owner":3,"commodity":"electricity","quantity":100000,"basis":1000,"source":9012}));v["sources"].as_array_mut().unwrap().push(json!({"id":9012,"kind":"inventory_capital","amount":1000}));v
+}
+pub fn recovery_resources()->Vec<Resource>{let mut r=resources();for item in &mut r{if [2101,2102].contains(&item.id){item.capacity=2;}}for id in[1004,1005,1006,2203]{r.push(Resource::new(id,if id==2203{2}else{1}).unwrap());}r}

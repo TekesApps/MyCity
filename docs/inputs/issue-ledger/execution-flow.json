@@ -1,9 +1,9 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-26T08:09:08.331697+00:00",
-  "source_head": "6e4b20feb1df9c00d0a28e58ab9c123d44cdb2c7",
-  "candidate": "v205 partial134 actual income/movement/restore/default/normal evidence; full134 open actual relief dependency74",
+  "last_snapshot_at": "2026-10-26T11:17:45.042137+00:00",
+  "source_head": "v0.5.205 baseline plus source10=13/14/15/16 exact build inputs; v206 publication receipt after push",
+  "candidate": "v0.5.206 finite134 full-contract validated; remote closure pending",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
   "limits": {
     "shared_core_lanes": 1,
@@ -14,28 +14,21 @@
     {
       "issue": 134,
       "owner": "01a166fc-e444-7602-ad22-3a8551dda487",
-      "status": "partial integration validated; full contract still in progress",
+      "status": "finite contract accepted; publication and remote close in progress",
       "files": [
-        "crates/city-core/src/lib.rs",
-        "crates/city-core/src/service_needs.rs",
-        "crates/city-core/src/service_needs_authority.rs",
-        "crates/city-core/src/transaction.rs",
-        "crates/city-core/src/timeline_driver.rs",
-        "crates/city-core/src/member_authority.rs",
-        "crates/city-core/src/assembly.rs",
-        "crates/city-core/src/transaction/slots.rs",
-        "crates/city-core/src/restore_into.rs",
-        "crates/city-core/tests/service_delivery.rs",
-        "crates/city-storage/tests/service_delivery_store.rs",
-        "crates/city-storage/src/checkpoint/receipt_decode.rs",
-        "crates/city-storage/src/checkpoint_v2/receipts.rs",
-        "crates/city-core/src/education_authority.rs",
-        "tests/fixtures/service-delivery/opening.rs",
+        "crates/city-core/src/service_delivery_authority.rs",
+        "crates/city-core/src/service_delivery_recovery.rs",
         "crates/city-core/src/housing_income.rs",
-        "crates/city-core/src/facility_authority.rs",
-        "crates/city-storage/src/wal.rs",
-        "crates/city-storage/src/metadata.rs",
-        "crates/city-core/tests/continuous_supply.rs"
+        "crates/city-core/src/transaction.rs",
+        "crates/city-core/src/service_needs_authority.rs",
+        "crates/city-core/tests/service_recovery.rs",
+        "crates/city-storage/tests/service_recovery_store.rs",
+        "crates/city-headless/tests/service_recovery_role.rs",
+        "tests/fixtures/service-delivery/opening.rs",
+        "docs/physical-economy-runtime-contract.md",
+        "docs/execution-current.md",
+        "docs/inputs/issue-ledger/execution-flow.json",
+        "docs/inputs/issue-ledger/registry.json"
       ],
       "required_capabilities": [
         "original admitted drive graph and explicit vehicle-slot resources",
@@ -43,7 +36,7 @@
         "original completed Timeline and same-slot Store"
       ],
       "acceptance": "planned service_delivery_store real need→depart/arrive→work/inputs/pay→return/reset, refusal/once/cold/shared/default/resource",
-      "remaining": "actual station-to-vehicle qualified relief when all in-vehicle Driver sources expire; old audit-candidate save migration not verified"
+      "remaining": "publish fixed results, backfill/close134 and read back; no remaining finite business validation gap"
     }
   ],
   "active_independent_preparations": [],
@@ -110,6 +103,7 @@
     "new_accepted_business": [
       132,
       133,
+      134,
       135,
       136,
       137
@@ -284,16 +278,23 @@
     },
     {
       "issue": 134,
-      "execution_state": "in_progress:partial-verified-with-specific-dependency74",
+      "execution_state": "accepted:publication-and-remote-close-pending",
       "implementation_owner_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "integration_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "files_or_activation_boundary": [
-        "crates/city-core/src/service_delivery_runtime.rs (original owner module; frozen/read-only until reactivation)",
-        "crates/city-core/src/service_delivery_authority.rs (planned root adapter)",
-        "crates/city-core/src/member_authority.rs",
+        "crates/city-core/src/service_delivery_authority.rs",
+        "crates/city-core/src/service_delivery_recovery.rs",
+        "crates/city-core/src/housing_income.rs",
         "crates/city-core/src/transaction.rs",
-        "crates/city-core/src/timeline_driver.rs",
-        "crates/city-storage/tests/service_delivery_store.rs (planned)"
+        "crates/city-core/src/service_needs_authority.rs",
+        "crates/city-core/tests/service_recovery.rs",
+        "crates/city-storage/tests/service_recovery_store.rs",
+        "crates/city-headless/tests/service_recovery_role.rs",
+        "tests/fixtures/service-delivery/opening.rs",
+        "docs/physical-economy-runtime-contract.md",
+        "docs/execution-current.md",
+        "docs/inputs/issue-ledger/execution-flow.json",
+        "docs/inputs/issue-ledger/registry.json"
       ],
       "required_specific_capabilities": [
         "Actual resources/accepted use and Water source from133 as needed by profile",
@@ -301,8 +302,8 @@
         "Original resource/lease/funds/need identities"
       ],
       "acceptance_entry_and_gaps": [
-        "9core/5Store6cold/normalrole/shared-default finite gates passed",
-        "actual station-to-vehicle qualified relief under74 missing; old audit-candidate migration not verified; full134 open"
+        "current actual core18, oldStore, recovery5parents13cold, shared22 and normal role passed",
+        "metadata publication/remote close pending; entire traffic/profile/hardware separate"
       ],
       "real_integration_seam": "Root need linkage, original members/ResourceLease, actual delivery and Store; no second workforce/bed/clock",
       "new_write_authority": "initial precise plan in work/service-delivery-runtime-20261026/ownership-and-acceptance.json; additional core paths fixed before edits",
@@ -310,7 +311,7 @@
         "ready_at": null,
         "readiness_confirmed_at": null,
         "full_scope_source_delivered_at": null,
-        "accepted_at": null,
+        "accepted_at": "2026-10-26T11:17:45.042137+00:00",
         "issue_closed_at": null,
         "ready_to_acceptance_seconds": null,
         "source_to_acceptance_seconds": null,
@@ -324,9 +325,15 @@
         "waiting_age_seconds_at_baseline": 109194.054095
       },
       "canonical_source_identity": {
-        "crates/city-core/src/member_authority.rs": "9a11430079ffd44e1caf91d28eb17080764021706a23c7acf28241d4359ee726",
-        "crates/city-core/src/transaction.rs": "7255d0f28d3511b07d0866155fcec40d8846712528f6b401c8c6d27562564dc3",
-        "crates/city-core/src/timeline_driver.rs": "962dd3b593c7f56591732571b24e698ccc6063f2ca6020bc295d3c9adad6cfa3"
+        "crates/city-core/src/housing_income.rs": "bc505f9d18a9d0f2ac0904311260c02b9360dcb93897c3de8a0ac3fb09575966",
+        "crates/city-core/src/service_delivery_authority.rs": "177f108eecd6ae17e415f26b02d1af069e3f29962972f0200fe3a40733622e5a",
+        "crates/city-core/src/service_delivery_recovery.rs": "00e248fc4719e862d5b92e182b9a02986077430d1810121c3e721f4cd1b76884",
+        "crates/city-core/src/service_needs_authority.rs": "665f293bfbf17d069d53bdf5e5e179f050a4262cf79fc565370321313d1f2471",
+        "crates/city-core/src/transaction.rs": "ea6649f95186cddf47f7d1884e695072277b307e06fb23f5b978195d1f3012a1",
+        "crates/city-core/tests/service_recovery.rs": "fbd7d1b183ef4bbd81f1881a3441aec2fbe66fe2c719905b0a793e7d2555bfa8",
+        "crates/city-headless/tests/service_recovery_role.rs": "f969b2cb9e5308792c9dba1b7441633fa34bb3990ae56ede000bbf8175efa434",
+        "crates/city-storage/tests/service_recovery_store.rs": "78ac5d47fd123d379d33bfb60eb48ea487555392f47c04bb2f310cc6ca56b58d",
+        "tests/fixtures/service-delivery/opening.rs": "f4e93ae38ac74e26f7505bd7d27f1cd469226e359f96d0712e6b7f65490e0178"
       },
       "required_source_identity": {
         "module_version": 2,
@@ -751,6 +758,15 @@
       "defect_closure_delta": 1,
       "first_ready": null,
       "first_full_scope_source_delivery": null
+    },
+    {
+      "at": "2026-10-26T11:17:45.042137+00:00",
+      "event": "finite134-complete-contract-accepted",
+      "business_acceptance_delta": 1,
+      "historical_backfill_delta": 0,
+      "defect_closure_delta": 0,
+      "evidence": "docs/evidence/service-recovery-20261026/STATUS.md",
+      "remote_close_pending": true
     }
   ],
   "current_backlog": {
@@ -792,32 +808,24 @@
     }
   ],
   "phase_result": {
-    "phase": "134 partial actual integration, full contract open",
-    "published_version": "v0.5.205",
-    "baseline": "v0.5.203 1de0d7f5618c12a6e108e47c8000c740ad9a7b7a",
+    "phase": "134 finite full contract accepted; remote close pending",
+    "published_version": "v0.5.206",
     "verification_window": {
-      "start": "2026-10-26T07:03:29.382411+00:00",
-      "end": "2026-10-26T08:07:07.737923+00:00",
-      "meaning": "this bounded verification stage, not development latency"
+      "start": "2026-10-26T09:41:56.426692+00:00",
+      "end": "2026-10-26T11:17:36.040116+00:00",
+      "meaning": "this implementation/verification phase, not historical delivery latency"
     },
-    "business_accepted": 0,
+    "business_accepted": 1,
     "historical_closed": 0,
     "defects_closed": 0,
     "backlog_pending_integration": 18,
     "backlog_pending_validation": 0,
     "root_in_progress": 1,
     "independent_preparation": 0,
-    "core_cases": 9,
-    "store_parent_cases": 5,
-    "store_cold_children": 6,
-    "normal_role_cases": 1,
-    "shared_default_gates": 20,
-    "additional_original_unit_groups": 2,
-    "current_prod_evidence_reuse": "source-evidence-reuse.json; only cfg(test) inclusion after direct/Store/normal current method bodies",
-    "full_issue_134_accepted": false,
+    "full_issue_134_accepted": true,
+    "evidence": "docs/evidence/service-recovery-20261026/STATUS.md",
     "remaining": [
-      "actual qualified relief from station to vehicle when original in-vehicle Driver sources all expired (specific existing74 capability)",
-      "old incomplete v203 service candidate save migration not verified; retain original executable and source"
+      "remote publication and issue closure readback"
     ],
     "no_m0_budget_change": true,
     "real16gb_native_speed_longterm_gpu_ui": "not_run"
