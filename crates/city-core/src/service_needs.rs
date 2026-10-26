@@ -14,8 +14,8 @@ pub const RESTORE_MAX_DEPTH: usize = 12;
 pub const DAY: u64 = 86_400;
 pub const EIGHT_AM: u64 = 28_800;
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub enum Profile { LocalDevelopmentNaturalNeedsV1 }
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub enum Profile { LocalDevelopmentNaturalNeedsV1, LocalDevelopmentWithDeliveryV2(Box<crate::service_delivery_authority::Opening>) }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[repr(u8)]
 pub enum Kind { Medical = 0, Police = 1, Fire = 2 }
@@ -47,7 +47,11 @@ pub struct Opening {
 }
 impl Opening {
     pub fn validate(&self) -> Result<(), Error> {
-        if self.version != VERSION || self.city_id == 0 || self.households.is_empty() { return Err(Error::Registration); }
+        if !matches!((&self.profile,self.version),(Profile::LocalDevelopmentNaturalNeedsV1,1)|(Profile::LocalDevelopmentWithDeliveryV2(_),2)) || self.city_id == 0 || self.households.is_empty() { return Err(Error::Registration); }
+        if let Profile::LocalDevelopmentWithDeliveryV2(input)=&self.profile{
+            input.validate().map_err(|_|Error::Registration)?;
+            if input.domain.scope!=self.scope||input.domain.city_id!=self.city_id{return Err(Error::Registration);}
+        }
         for (i, h) in self.households.iter().enumerate() {
             if h.household_id == 0 || h.source_id == 0 || h.generation != 1
                 || (i > 0 && self.households[i - 1].household_id >= h.household_id)
@@ -154,11 +158,13 @@ pub struct Runtime {
     covered_through: u64,
     run: Option<DueRun>,
     households: Rows<HouseholdState, MAX_HOUSEHOLDS>,
+    #[serde(default,skip_serializing_if="Option::is_none")]
+    pub(crate) delivery:Option<Box<crate::service_delivery_authority::Runtime>>,
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Error { Registration, Invalid, Pending, SkippedDue, Stale, Overflow, Budget, UnsupportedResponsibility, Unauthenticated }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub enum Event { Generated, ExpiredUnadmittedZeroDelivery, Reminder }
+pub enum Event { Generated, ExpiredUnadmittedZeroDelivery, Reminder, DeliveryDeadlineObserved }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Effect {
@@ -192,7 +198,8 @@ impl Runtime {
             let mut state = HouseholdState::inactive(); state.household_id = h.household_id;
             households.try_push(state).map_err(|_| Error::Budget)?;
         }
-        let out = Self { ready: true, opening, enabled_at: at, covered_through: at, run: None, households };
+        let delivery=match &opening.profile{Profile::LocalDevelopmentNaturalNeedsV1=>None,Profile::LocalDevelopmentWithDeliveryV2(input)=>Some(Box::new(crate::service_delivery_authority::Runtime::new((**input).clone()).map_err(|_|Error::Registration)?))};
+        let out = Self { ready: true, opening, enabled_at: at, covered_through: at, run: None, households,delivery };
         out.validate()?; Ok(out)
     }
     pub fn opening(&self) -> &Opening { &self.opening }
@@ -209,12 +216,31 @@ impl Runtime {
     pub fn registration_fingerprint(&self) -> Result<[u8; 32], Error> { self.opening.registration_fingerprint() }
     pub fn fingerprint(&self) -> Result<[u8; 32], Error> { digest(self, b"MyCity/service-needs/runtime/v1\0") }
     pub const fn owned_bytes() -> usize { size_of::<Self>() + MAX_HOUSEHOLDS * (size_of::<Household>() + size_of::<HouseholdState>()) }
+    pub(crate) fn delivery_extra_bytes(&self)->usize{
+        self.delivery.as_deref().map_or(0,crate::service_delivery_authority::Runtime::owned_bytes)
+            +match &self.opening.profile{Profile::LocalDevelopmentNaturalNeedsV1=>0,Profile::LocalDevelopmentWithDeliveryV2(input)=>input.owned_bytes()}
+    }
+    pub(crate) fn owned_capacity_bytes(&self)->usize{Self::owned_bytes()+self.delivery_extra_bytes()}
+    pub(crate) fn candidate_bytes_for(&self)->usize{Self::candidate_bytes()+self.delivery_extra_bytes()}
+    pub(crate) fn restore_workspace_bytes_for(&self)->usize{Self::restore_workspace_bytes()+self.delivery_extra_bytes()}
     pub const fn candidate_bytes() -> usize {
         size_of::<Candidate>() + Self::owned_bytes() + MAX_EFFECTS * size_of::<Effect>()
     }
     /// Conservative raw model peak. Root decoder/native stacks/Store buffers still add to this.
     pub const fn restore_workspace_bytes() -> usize { Self::owned_bytes() + MAX_SERIALIZED_BYTES }
-    pub fn next_due(&self) -> Result<Option<u64>, Error> {
+    pub fn next_due(&self)->Result<Option<u64>,Error>{
+        let natural=self.natural_next_due()?;
+        let movement=self.delivery.as_deref().map(|d|d.next_due(self.covered_through).map_err(|_|Error::Invalid)).transpose()?.flatten();
+        Ok(match(natural,movement){(Some(a),Some(b))=>Some(a.min(b)),(a,None)|(None,a)=>a})
+    }
+    pub(crate) fn link_delivery(&mut self,key:crate::service_delivery_runtime::NeedKey,id:u32)->Result<(),Error>{
+        if self.delivery.is_some()||id==0{return Err(Error::Invalid);} // root temporarily holds the SAME staged delivery, never a second state.
+        let h=self.households.iter_mut().find(|h|h.household_id==key.household_id).ok_or(Error::Registration)?;
+        let c=&mut h.current[key.kind.index()];if !c.is_waiting()||c.delivery_ref!=0||c.occurrence_day!=key.occurrence_day{return Err(Error::Invalid);}
+        c.delivery_ref=id;Ok(())
+    }
+    pub fn delivery_view(&self)->Option<&crate::service_delivery_authority::Runtime>{self.delivery.as_deref()}
+    fn natural_next_due(&self) -> Result<Option<u64>, Error> {
         if let Some(run) = self.run { return Ok(Some(run.at)); }
         let mut next = None;
         for row in self.households.iter() {
@@ -259,11 +285,11 @@ impl Runtime {
         if operation_id == 0 || at < self.covered_through { return Err(Error::Stale); }
         if let Some(run) = self.run {
             if at != run.at { return Err(Error::Pending); }
-        } else if self.next_due()?.is_some_and(|due| at > due) { return Err(Error::SkippedDue); }
+        } else if self.natural_next_due()?.is_some_and(|due| at > due) { return Err(Error::SkippedDue); }
         let mut next = Box::new(self.clone());
         // No event at this boundary: one coverage mutation, without deadline/occurrence pages.
         // Validation, fingerprint and fixed backing copy still have bounded table costs.
-        if self.run.is_none() && self.next_due()?.is_none_or(|due| at < due) {
+        if self.run.is_none() && self.natural_next_due()?.is_none_or(|due| at < due) {
             next.covered_through = at;
             next.validate()?;
             return Ok(Candidate { expected: self.fingerprint()?, next,
@@ -285,13 +311,13 @@ impl Runtime {
                     Subphase::Deadlines if current.is_waiting() && occurrence_at(current.deadline_day)? == at => {
                         // This version has no admission/work consumer; nonzero delivery is rejected
                         // at validate, never silently reclaimed or declared zero actual work.
-                        if current.delivery_ref != 0 { return Err(Error::UnsupportedResponsibility); }
+                        if current.delivery_ref != 0 && !matches!(self.opening.profile,Profile::LocalDevelopmentWithDeliveryV2(_)) { return Err(Error::UnsupportedResponsibility); }
                         row.current[k].flags = 2;
                         row.deadline_operations[k] = operation_id;
                         row.latest_deadlines[k] = Some(DeadlineResult { occurrence_day: current.occurrence_day,
                             deadline_day: current.deadline_day, operation_id });
                         row.summaries[k].expired = row.summaries[k].expired.checked_add(1).ok_or(Error::Overflow)?;
-                        Some(Event::ExpiredUnadmittedZeroDelivery)
+                        Some(if current.delivery_ref==0{Event::ExpiredUnadmittedZeroDelivery}else{Event::DeliveryDeadlineObserved})
                     }
                     Subphase::Occurrences if row.next_days[k].is_some_and(|day| occurrence_at(day).ok() == Some(at)) => {
                         let day = row.next_days[k].ok_or(Error::Invalid)?;
@@ -332,6 +358,8 @@ impl Runtime {
     }
     pub fn validate(&self) -> Result<(), Error> {
         self.opening.validate()?;
+        if matches!(self.opening.profile,Profile::LocalDevelopmentWithDeliveryV2(_))!=self.delivery.is_some(){return Err(Error::Registration);}
+        if let Some(d)=self.delivery.as_deref(){d.validate().map_err(|_|Error::Invalid)?;}
         if self.households.len() != self.opening.households.len() || self.covered_through < self.enabled_at {
             return Err(Error::Invalid);
         }
@@ -374,7 +402,7 @@ impl Runtime {
                     }
                     None => {}
                 }
-                if current.delivery_ref != 0 { return Err(Error::UnsupportedResponsibility); }
+                if current.delivery_ref != 0 && !matches!(self.opening.profile,Profile::LocalDevelopmentWithDeliveryV2(_)) { return Err(Error::UnsupportedResponsibility); }
                 if current.flags > 2 { return Err(Error::UnsupportedResponsibility); }
                 if current.is_empty() {
                     if current != Current::default() || summary != Summary::default() || next_day != first

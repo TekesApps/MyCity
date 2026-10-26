@@ -1,0 +1,61 @@
+{
+  "schema": "mycity-issue134-independent-preparation-v1",
+  "date": "2026-10-26",
+  "baseline": {"tag": "v0.5.202", "commit": "6e4b20feb1df9c00d0a28e58ab9c123d44cdb2c7"},
+  "status": "conditional-arithmetic-oracle-only; not an admitted Opening or runtime registration",
+  "usable_for_admission": false,
+  "execution": "not_run",
+  "scope_gate": {"proposed_profile": "LocalDevelopmentEdgeDrivenPoliceV1", "profile_registered": false, "region": null, "clock": "original Timeline local Development", "world": null, "branch": null, "city_id": null, "opening_housing_city_match": "unknown", "population_origin": null, "member_version": null},
+  "need": {"origin": "original LS42 police natural need", "household_id": null, "household_source": null, "generation": 1, "kind": "Police", "occurrence_day": null, "generated_operation_id": null, "current_state": "unknown", "delivery_ref": "unknown", "oracle_relative_occurrence_day": 0, "oracle_day0_requires_actual_frozen_phase_and_prior_legal_entry": true},
+  "crew": {"member_range": null, "registered_crew_id": null, "operator": null, "driver_member": null, "required_count": 2, "required_police_for_both": true, "required_driver_for_actual_driver": true, "qa_root": null, "employment_contracts": null, "member_activity_id": null, "resource_ids": {"crew": null, "vehicle": null, "tools": null}, "lease_tokens": null},
+  "graph": {
+    "approved_source": null, "source_version": null, "registered_scope": null, "admission_and_rights": "unknown", "actual_movement_producer": "missing at inspected baseline",
+    "nodes": [{"symbol": "station", "registered_id": null}, {"symbol": "junction", "registered_id": null}, {"symbol": "correct_household_door", "registered_id": null, "access_group_permission": "unknown"}],
+    "edges": [
+      {"symbol": "out_A", "registered_edge_id": null, "from": "station", "to": "junction", "oracle_seconds": 120, "oracle_energy_mwh": 6000, "vehicle_slot_resource_id": null, "proposed_conflict_group": "lane_A", "resource_measure": "Count", "oracle_count_capacity": 1},
+      {"symbol": "out_B", "registered_edge_id": null, "from": "junction", "to": "correct_household_door", "oracle_seconds": 180, "oracle_energy_mwh": 9000, "vehicle_slot_resource_id": null, "proposed_conflict_group": "lane_B", "resource_measure": "Count", "oracle_count_capacity": 1},
+      {"symbol": "back_B", "registered_edge_id": null, "from": "correct_household_door", "to": "junction", "oracle_seconds": 180, "oracle_energy_mwh": 9000, "vehicle_slot_resource_id": null, "proposed_conflict_group": "lane_B", "resource_measure": "Count", "oracle_count_capacity": 1},
+      {"symbol": "back_A", "registered_edge_id": null, "from": "junction", "to": "station", "oracle_seconds": 120, "oracle_energy_mwh": 6000, "vehicle_slot_resource_id": null, "proposed_conflict_group": "lane_A", "resource_measure": "Count", "oracle_count_capacity": 1}
+    ],
+    "mapping_rule": "root must explicitly register approved drive edges to original Resource Count/conflict identity; opposite directed edges share only when real mapping says so; capacity_people supplies no vehicle count",
+    "route_actuality": "original Timeline advances admitted current edge/offset and original energy/lease once; ETA, group PathReceipt, client Arrived and elapsed clock alone cannot generate actual arrival"
+  },
+  "police_frozen_recipe": {"common_crew_work_seconds": 3600, "onsite_energy_mwh": 100000, "onsite_water_ml": 10000, "service_fee_cents": 2000, "preparation_seconds": 300, "reset_seconds": 600, "fee_departure_cents": 400, "fee_full_work_cents": 1200, "fee_return_and_reset_cents": 400},
+  "conditional_oracle": {
+    "parameters_are_proposals_not_registered_facts": true,
+    "time_origin": "08:00 of an actual original police occurrence day; numbers below use relative day0 without asserting actual day0 phase",
+    "segments": [
+      {"name": "preparation", "from": 28800, "until": 29100, "common_work_credit": 0, "drive_energy_mwh": 0},
+      {"name": "out_A", "from": 29100, "until": 29220, "common_work_credit": 0, "drive_energy_mwh": 6000},
+      {"name": "out_B", "from": 29220, "until": 29400, "common_work_credit": 0, "drive_energy_mwh": 9000},
+      {"name": "onsite", "from": 29400, "until": 33000, "common_work_credit": 3600, "onsite_energy_mwh": 100000, "water_ml": 10000},
+      {"name": "back_B", "from": 33000, "until": 33180, "common_work_credit": 0, "drive_energy_mwh": 9000},
+      {"name": "back_A", "from": 33180, "until": 33300, "common_work_credit": 0, "drive_energy_mwh": 6000},
+      {"name": "reset", "from": 33300, "until": 33900, "common_work_credit": 0, "drive_energy_mwh": 0}
+    ],
+    "arrival_at": 29400, "arrival_delay_seconds_from_need": 600, "return_at_station": 33300, "reset_complete_at": 33900, "deadline_at": 115200,
+    "duty_seconds_per_member": 5100, "paid_member_seconds": 10200,
+    "service_fee_total_cents": 2000, "drive_energy_total_mwh": 30000, "onsite_energy_total_mwh": 100000, "electric_total_mwh": 130000, "water_total_ml": 10000,
+    "wages": {"actual_contract_and_rate": "unknown", "optional_test_rate_requires_root_authorization_cents_per_member_hour": 1200, "conditional_total_cents": 3400, "conditional_cents_each_of_two_members": 1700, "conditional_stage_cents": [200, 200, 2400, 200, 400], "service_fee_does_not_create_or_satisfy_wage_contract": true},
+    "onsite_one_second_prefix": {"energy_integer_mwh": 27, "energy_remainder_over_3600": 2800, "water_integer_ml": 2, "water_remainder_over_3600": 2800, "work_fee_integer_cents": 0, "work_fee_remainder_over_3600": 1200},
+    "historical_600_second_prefix": {"from": 29400, "until": 30000, "credited_common_seconds": 600, "energy_integer_mwh": 16666, "energy_remainder_over_3600": 2400, "water_integer_ml": 1666, "water_remainder_over_3600": 2400, "work_fee_cents": 200},
+    "proposed_opening_inventory_arithmetic_only": {"electric_initial_mwh": 200000, "electric_after_nominal_duty_mwh": 70000, "water_initial_ml": 20000, "water_after_nominal_duty_ml": 10000, "capital_source_basis_owner_actual_ids": "unknown", "legal_input_until_frozen": false}
+  },
+  "original_inventory_inputs": {
+    "electric": {"supported_original_commodity": "Electricity", "typed_quantity_unit": "MilliWh", "source_kind": "InventoryCapital", "actual_stock_id": null, "actual_owner": null, "actual_capital_source": null, "actual_basis_cents": null, "actual_available_mwh": null, "status": "original finite opening path exists; no live fact asserted"},
+    "water": {"actual_stock_id": null, "actual_lot": null, "actual_owner": null, "composition_source": null, "purpose_ref": null, "purpose_permission_and_coverage": "unknown", "actual_available_ml": null, "status": "quantity and treatment chemical judgment do not grant police-use permission"},
+    "continuous_supply_future_output": {"status": "unknown/unavailable to this consumer", "reason": "current producer does not authenticate an external police load/outlet for this profile; future production is not spendable inventory"}
+  },
+  "funding": {"service_payer_account": null, "service_payee_account": null, "service_protected_cents_required": 2000, "wage_employer_account": null, "wage_payee_accounts": null, "wage_protection_cents": "unknown until contract frozen", "utility_and_drive_basis_costs_cents": "unknown", "safe_return_and_delay_funding": "unknown", "all_unknown_prevents_admission": true, "future_service_revenue_is_not_initial_protected_wage_cash": true},
+  "required_checks": ["same-vehicle conflict", "same-members cross-domain conflict", "same-edge Resource Count conflict", "edge boundary half-open handoff", "close-to-new versus unsafe-in-transit distinction", "mid-edge closure retains position/lease/obligations", "energy insufficient before admission", "unexpected mid-edge energy loss", "cancel preserves actual position", "historical work settles after actual return/reset", "WorkComplete certified-zero prefix before deadline", "receipt replay and changed payload", "checkpoint/WAL/cold per edge and unsettled prefix", "noRegion and fixed Development scope", "missing water purpose or payroll source remains unknown"],
+  "gap_owners": [
+    {"issue": 134, "gap": "original World/Action/Timeline/Store delivery adapter, accepted need pin, actual per-edge movement and workload input consumption, actual police payroll integration", "status": "pending root integration"},
+    {"issue": 74, "gap": "fleet/vehicle registration, drive energy and safe-return source; existing Interaction candidate not local actual evidence", "status": "pending finite root profile mapping"},
+    {"issue": 73, "gap": "journey candidate/graph plan is not completed physical movement", "status": "not used as actual arrival proof"},
+    {"issue": 118, "gap": "explicit original drive-edge Count mapping and cross-duty conflicts", "status": "Resource/Lease primitive available; mapping for this profile unknown"},
+    {"issue": 55, "gap": "exact actual member ranges and Police/Driver qualification registrations for this crew", "status": "qualification query exists; crew facts unknown"},
+    {"issue": 133, "gap": "reuse actual original water product/quality source only within its existing permission boundary", "status": "do not reopen or infer police-purpose permission"}
+  ],
+  "issue149": "already accepted and closed; not re-audited",
+  "limits": {"allowed_output_files": 2, "preparation_budget_bytes": 16777216, "new_runtime_budget_authorized": false, "canonical_changes": false, "test_execution": false, "scripts": false, "new_tree": false, "issue_write": false}
+}

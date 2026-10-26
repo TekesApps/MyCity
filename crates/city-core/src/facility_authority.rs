@@ -74,7 +74,7 @@ pub(crate) struct PaidSlot {contract_id:u64,paid:u64}
 pub(crate) type PaidSnapshot=[Option<PaidSlot>;4];
 pub(crate) fn paid_snapshot(r:&Runtime)->PaidSnapshot{std::array::from_fn(|i|r.state.records()[i].map(|a|PaidSlot{contract_id:a.contract_id,paid:a.paid}))}
 pub(crate) fn paid_sources(r:Option<&Runtime>)->[Option<crate::housing_income::PaidWageSource>;4]{
-    r.map_or([None;4],|r|std::array::from_fn(|i|r.state.opening().contracts[i].zip(r.state.records()[i]).map(|(c,a)|crate::housing_income::PaidWageSource{account:c.employee_account,paid:a.paid})))
+    r.map_or([None;4],|r|std::array::from_fn(|i|r.state.opening().contracts[i].zip(r.state.records()[i]).map(|(c,a)|crate::housing_income::PaidWageSource{domain:crate::housing_income::WageSourceDomain::Facility,source:c.id,account:c.employee_account,paid:a.paid})))
 }
 /// Capture only the actual successful cash payment delta at this original tick.
 /// All changes remain inside the same Prepared; a window error rolls back cash/work.

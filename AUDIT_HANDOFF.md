@@ -1,3 +1,16 @@
+# MyCity 当前审计入口：v0.5.203
+
+请固定附注 tag `v0.5.203` 并记录完整 commit；main 后续可能推进。此次是当前源码检查点，**不是已通过验收的稳定版本**。最近已验收基线是 v0.5.201，v202同步实际关闭。新代码结果不能从旧基线继承。
+
+- [本次状态、验证边界及差项](docs/evidence/audit-main-203-20261026/STATUS.md)。优先审 #134 实际本城到返、原资源/成员/投入/资金共存及未完成收入桥；保持完整业务合同，不扩成全产品或无关安全认证。
+- [当前源码逐文件身份](docs/evidence/audit-main-203-20261026/source-manifest.json)；source06正常链通过后有新修改，最新源码未编译测试。
+- [24份无关WIP完整ZIP](docs/evidence/audit-main-203-20261026/unintegrated-wip.zip)、[清单](docs/evidence/audit-main-203-20261026/unintegrated-wip-manifest.json)、[tracked差异](docs/evidence/audit-main-203-20261026/unintegrated-wip.patch)。它们未接入main原路径，原工作区原件保留，不能当成功能完成。
+- [原#57独立预期](docs/evidence/audit-main-203-20261026/independent-expectations.md)与[输入](docs/evidence/audit-main-203-20261026/independent-inputs.json)为准备材料，不是实际接线证据。
+
+其他 Agent 先只读审计，回报具体文件、正常游戏复现场景、影响及建议；共享核心由root唯一writer维护，构建测试由root使用原HP P900唯一target/work串行排程。原M0门不变。仅在本机SSD上的完整程序、失败World/WAL/checkpoint等原件不在Git中，异机无法核查时标未独立核对；保留全部原件，不以hash代替恢复数据。无PR，本轮关闭0项。
+
+<details><summary>此前审计入口历史（以下“当前”仅指对应旧版本）</summary>
+
 # MyCity 当前审计入口：v0.5.202
 
 #149已实际验收关闭，见[回执](docs/evidence/timeline-target-emergency-20261026/closure.json)；v202仅同步回执与台账，游戏源码与已验证v201相同。新审计可固定v201（源码与实际验证）或v202（另含实际Issue关闭），请记录完整commit。既有v200审计tag保持不变。
@@ -26,3 +39,5 @@
 可执行 `python3 docs/evidence/audit-main-20261026/verify_snapshot.py` 只读核对源码与WIP包身份；它不是编译或游戏测试。旧[AUDIT v196快照](docs/evidence/audit-baseline-20261026/snapshot.json)保留历史，不覆盖本入口。
 
 完整源／失败程序／World／WAL／checkpoint与恢复证据保留在本机HP P900 `work/`，本轮不删除或覆写。异机审计可复核仓库内源码与概要；无法访问的本地原件必须明确未核。无PR、无新增Issue关闭，最新统计和差项以本次STATUS与Issue实际状态为准。
+
+</details>

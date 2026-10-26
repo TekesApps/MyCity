@@ -506,6 +506,11 @@ impl Frame<'_, '_> {
         if let Some(facility)=self.facility_work.as_deref(){
             if let Some(due)=crate::facility_authority::next_boundary(self.world,Some(facility),t,self.continuous_supply.as_deref())?{take(due)?;}
         }
+        if self.service_needs.as_deref().is_some_and(|n|n.delivery.is_some()){
+            let ledger=ledger!(self);
+            if let Some(due)=service_delivery_boundary(self.world,self.service_needs,self.facility_member,ledger,now,self.operation_id)?{take(due)?;}
+            if let Some(due)=crate::qualification_authority::next_source_change(self.world,now)?{take(due)?;}
+        }
         if let Some(service)=self.service_needs.as_deref() {
             if let Some(due)=service.next_due().map_err(|_|TxError::InvalidOperation)? {take(due)?;}
         }
@@ -823,6 +828,10 @@ impl Frame<'_, '_> {
                         }
                     }
                     if !crate::service_needs_authority::due_page(self.service_needs,at,self.operation_id,self.service_working_base,crate::transaction::ENGINE_BYTE_BUDGET)? {return Ok(());}
+                    if self.service_needs.as_deref().is_some_and(|n|n.delivery.is_some()){
+                        let ledger=ledger!(self);
+                        apply_service_delivery(self.world,self.service_needs,self.facility_member,ledger,at,self.operation_id,Caller::System,None)?;
+                    }
                     t.progress.last_complete = at;
                     t.progress.phase = None;
                     t.progress.cursor = 0;

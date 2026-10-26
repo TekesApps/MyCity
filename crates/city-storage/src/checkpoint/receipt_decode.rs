@@ -92,6 +92,7 @@ fn action_raw(
     #[derive(Deserialize)]
     #[serde(rename_all = "snake_case")]
     enum Kind {
+        ServiceDelivery,
         FacilityWork,
         ContinuousSupply,
         Qualification,
@@ -133,6 +134,7 @@ fn action_raw(
     validate_content(raw, scratch)?;
     let kind: Kind = tag(raw, scratch)?;
     match kind {
+        Kind::ServiceDelivery => {let fields=Fields::parse(raw,&["kind","command"],false,scratch)?;Ok(Output::ServiceDelivery{command:reader::decode(fields.raw(1)?,scratch)?})}
         Kind::FacilityWork => {
             let fields=Fields::parse(raw,&["kind","command"],false,scratch)?;
             Ok(Output::FacilityWork{command:reader::decode(fields.raw(1)?,scratch)?})

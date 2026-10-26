@@ -19,7 +19,7 @@ pub struct DueView {
 }
 pub(crate) fn due_view(runtime:&n::Runtime)->Result<DueView,TxError> {
     if !runtime.is_ready() { return Err(TxError::InvalidOperation); }
-    Ok(DueView { version:n::VERSION, city_id:runtime.opening().city_id,
+    Ok(DueView { version:runtime.opening().version, city_id:runtime.opening().city_id,
         fingerprint:runtime.fingerprint().map_err(bad)?,
         registration:runtime.registration_fingerprint().map_err(bad)?,
         covered_through:runtime.covered_through(), pending:runtime.pending(),
@@ -31,12 +31,14 @@ pub struct View {
     pub version: u32, pub city_id: u32, pub fingerprint: [u8;32],
     pub covered_through: u64, pub pending: Option<n::DueRun>,
     pub households: Vec<n::HouseholdState>,
+    #[serde(skip_serializing_if="Option::is_none")]
+    pub delivery:Option<crate::service_delivery_authority::View>,
 }
 pub(crate) fn view(runtime:&n::Runtime)->View {
-    View{version:n::VERSION,city_id:runtime.opening().city_id,
+    View{version:runtime.opening().version,city_id:runtime.opening().city_id,
         fingerprint:runtime.fingerprint().expect("validated bounded needs"),
         covered_through:runtime.covered_through(),pending:runtime.pending(),
-        households:runtime.households().to_vec()}
+        households:runtime.households().to_vec(),delivery:runtime.delivery.as_deref().map(crate::service_delivery_authority::Runtime::view)}
 }
 fn bad(_:impl std::fmt::Debug)->TxError{TxError::InvalidOperation}
 pub(crate) fn allows_local_city(input:&n::Opening,scope:crate::arena::Scope,seed:u64,housing:&crate::housing::OpeningHousing)->bool{
@@ -49,6 +51,7 @@ pub(crate) fn allows_local_city(input:&n::Opening,scope:crate::arena::Scope,seed
 fn binding(world:&World,runtime:&n::Runtime)->Result<(),TxError>{
     runtime.validate().map_err(bad)?;
     let input=runtime.opening();
+    if let n::Profile::LocalDevelopmentWithDeliveryV2(delivery)=&input.profile{crate::service_delivery_authority::validate_opening(world,delivery)?;}
     let housing=world.housing.as_deref().ok_or(TxError::InvalidOperation)?;
     if world.region.is_some() || !allows_local_city(input,world.scope,world.seed,&housing.opening) {return Err(TxError::InvalidOperation);}
     Ok(())
@@ -88,7 +91,8 @@ pub(crate) fn check_peak(existing_plus_staged:usize,limit:usize)->Result<(),TxEr
 }
 pub(crate) fn due_page(runtime:&mut Option<Box<n::Runtime>>,at:u64,operation:u64,working_base:usize,limit:usize)->Result<bool,TxError>{
     let Some(current)=runtime.as_deref() else{return Ok(true);};
-    check_peak(working_base,limit)?;
+    let extra=current.delivery_extra_bytes();
+    check_peak(working_base.checked_add(extra).ok_or(TxError::WorkingLimit)?,limit)?;
     let candidate=current.prepare_due(at,n::MAX_PAGE_HOUSEHOLDS,operation).map_err(bad)?;
     if !candidate.matches(current).map_err(bad)?{return Err(TxError::InvalidOperation);}
     let complete=candidate.page.complete;
@@ -107,13 +111,24 @@ pub(crate) fn record_entry(world:&World,runtime:&mut Option<Box<n::Runtime>>,off
 }
 
 /// Unforgeable completion carrier; original Store supplies bounded original receipts.
-pub struct RestoreCheck { expected:[u8;32], checked:[bool;n::MAX_HOUSEHOLDS] }
+pub const MAX_RESTORE_REFS:usize=n::MAX_HOUSEHOLDS+crate::service_delivery_runtime::MAX_TASKS*12;
+pub struct RestoreCheck { expected:[u8;32], checked:[bool;MAX_RESTORE_REFS] }
 pub(crate) fn begin_restore(world:&World)->Result<RestoreCheck,TxError>{
     let r=world.service_needs.as_deref().ok_or(TxError::InvalidOperation)?;
-    Ok(RestoreCheck{expected:r.fingerprint().map_err(bad)?,checked:[false;n::MAX_HOUSEHOLDS]})
+    Ok(RestoreCheck{expected:r.fingerprint().map_err(bad)?,checked:[false;MAX_RESTORE_REFS]})
 }
 pub(crate) fn check_restore(world:&World,check:&mut RestoreCheck,index:usize,record:&JournalRecord)->Result<(),TxError>{
     let r=world.service_needs.as_deref().ok_or(TxError::InvalidOperation)?;
+    if index>=n::MAX_HOUSEHOLDS{
+        if index>=MAX_RESTORE_REFS||check.checked[index]||r.fingerprint().map_err(bad)?!=check.expected{return Err(TxError::InvalidOperation);}
+        let refs=delivery_refs(r);let expected=refs[index].ok_or(TxError::InvalidOperation)?;
+        if record.operation_id!=expected||record.outcome.is_err()||record.actions[1..].iter().any(Option::is_some)
+            || !matches!(record.actions[0],Some(Action::Timeline{..}|Action::ServiceDelivery{..}|Action::HousingLease{..})){return Err(TxError::InvalidOperation);}
+        if let Some(d)=r.delivery.as_deref(){for task in d.tasks(){if task.origins.accepted==expected{
+            if !matches!(record.actions[0],Some(Action::ServiceDelivery{command:crate::service_delivery_authority::Command::Accept{household,crew}}) if household==task.need.household_id&&crew==task.crew_id){return Err(TxError::InvalidOperation);}
+        }}}
+        check.checked[index]=true;return Ok(());
+    }
     if r.fingerprint().map_err(bad)?!=check.expected || index>=r.households().len() || check.checked[index] {
         return Err(TxError::InvalidOperation);
     }
@@ -133,7 +148,9 @@ pub(crate) fn check_restore(world:&World,check:&mut RestoreCheck,index:usize,rec
 pub(crate) fn finish_restore(world:&mut World,check:RestoreCheck)->Result<(),TxError>{
     let r=world.service_needs_mut().ok_or(TxError::InvalidOperation)?;
     if r.fingerprint().map_err(bad)?!=check.expected
-        || r.households().iter().enumerate().any(|(i,h)|h.entry.is_some()&&!check.checked[i]) {return Err(TxError::InvalidOperation);}
+        || r.households().iter().enumerate().any(|(i,h)|h.entry.is_some()&&!check.checked[i])
+        || delivery_refs(r).iter().enumerate().any(|(i,id)|i>=n::MAX_HOUSEHOLDS&&id.is_some()&&!check.checked[i]) {return Err(TxError::InvalidOperation);}
+    if let Some(d)=r.delivery.as_deref_mut(){d.mark_authenticated()?;}
     r.mark_authenticated().map_err(bad)?;Ok(())
 }
 impl crate::restore_into::Restore for Option<Box<n::Runtime>> {
@@ -166,4 +183,13 @@ mod tests {
         assert_eq!(due_page(&mut runtime,1,1,limit-candidate,limit),Ok(true));
         assert_eq!(runtime.as_deref().unwrap().covered_through(),1);
     }
+}
+
+pub(crate) fn delivery_refs(runtime:&n::Runtime)->[Option<u64>;MAX_RESTORE_REFS]{
+    let mut refs=[None;MAX_RESTORE_REFS];
+    for(i,h)in runtime.households().iter().enumerate(){refs[i]=h.entry.map(|e|e.operation_id);}
+    if let Some(d)=runtime.delivery.as_deref(){for(i,t)in d.tasks().iter().enumerate(){let o=t.origins;
+        let values=[o.need,o.accepted,o.departed,o.arrived,o.return_started,o.returned,o.reset,o.closed,o.cancelled,o.last_work,t.deadline.map_or(0,|v|v.operation_id),d.trips().iter().find(|v|v.delivery==t.delivery_id).map_or(0,|v|v.last_operation)];
+        for(j,id)in values.into_iter().enumerate(){refs[n::MAX_HOUSEHOLDS+i*12+j]=(id>0).then_some(id);}
+    }}refs
 }

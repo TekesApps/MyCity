@@ -3161,8 +3161,8 @@
       "title": "[业务子任务] 实际公服履约：请求派遣、人员/原容量费用到返程及残责",
       "url": "https://github.com/TekesApps/MyCity/issues/134",
       "parent": 57,
-      "stage": "阻塞",
-      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "stage": "开发中",
+      "owner": "01a166fc-e444-7602-ad22-3a8551dda487",
       "write_authority": [
         "crates/city-core/src/service_delivery_runtime.rs",
         "专属公服履约测试/fixture/handoff",
@@ -3179,12 +3179,12 @@
         "取消/超时/闭城/在途返程不漏义务，原票重试和冷恢复",
         "完整有限合法服务链+拒绝反例，不用selector测试冒充实际交付"
       ],
-      "remaining": "原交付已冻结；由原实施方按排程补模块，root唯一集成；当前未派新任务",
+      "remaining": "income/receipt/restore bridge, bounded history/arrears, refusal/boundary/coexistence/shared/default/resource verification",
       "evidence": "docs/handoffs/issue-57-service-delivery-runtime.md",
-      "implementation_tags": "父#57自然需求/目录前置已发布；本履约桥未验",
+      "implementation_tags": "v0.5.203 current incomplete source checkpoint; not full acceptance",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
       "issue_body_sha256": "6c8457780e1c9c5e8bdc719392de1b9be144bb6920110b9bb35af528f61d06fd",
-      "execution_state": "queued:not-dispatched",
+      "execution_state": "in_progress:actual-integration-unverified",
       "execution_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "execution_contract": "docs/inputs/issue-ledger/execution-flow.json"
     },
@@ -3827,12 +3827,12 @@
   ],
   "unpublished_execution_update": {
     "baseline_at": "2026-10-25T02:39:00Z",
-    "shared_core_in_progress": 0,
+    "shared_core_in_progress": 1,
     "independent_preparations_active": 0,
     "limits": [
       1,
       2
     ],
-    "note": "149 actually accepted and closed; no active implementation; next134 not dispatched until exact ownership/capability seam activation"
+    "note": "v203 source checkpoint;134 root integration1, preparation0; no new acceptance"
   }
 }

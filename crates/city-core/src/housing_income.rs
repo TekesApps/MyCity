@@ -13,8 +13,11 @@ use serde::{Deserialize, Serialize};
 use std::mem::size_of;
 
 /// Bounded original authority counters, not another money balance.
+#[derive(Clone,Copy,Debug,PartialEq,Eq)]
+pub(crate) enum WageSourceDomain{Facility,ServiceTask,ServiceArchive}
 #[derive(Clone,Copy)]
-pub(crate) struct PaidWageSource {pub account:u32,pub paid:u64}
+pub(crate) struct PaidWageSource {pub domain:WageSourceDomain,pub source:u64,pub account:u32,pub paid:u64}
+pub(crate) const MAX_ADDITIONAL_PAID_SOURCES:usize=4+4*4+32;
 
 pub(crate) const PAID_WAGE_WINDOW_DAYS: u64 = 31;
 pub(crate) const PAID_WAGE_RING_DAYS: usize = 32;
@@ -220,7 +223,9 @@ impl PaidWageWindow {
     ) -> Result<(), PaidWageError> {
         self.validate_with_sources(opening,timeline,&[None;4])
     }
-    pub(crate) fn validate_with_sources(&self,opening:&OpeningHousing,timeline:&Timeline,sources:&[Option<PaidWageSource>;4])->Result<(),PaidWageError>{
+    pub(crate) fn validate_with_sources(&self,opening:&OpeningHousing,timeline:&Timeline,sources:&[Option<PaidWageSource>])->Result<(),PaidWageError>{
+        if sources.len()>MAX_ADDITIONAL_PAID_SOURCES{return Err(PaidWageError::Invalid);}
+        for(i,s)in sources.iter().enumerate(){if let Some(s)=s{if sources[..i].iter().flatten().any(|p|p.domain==s.domain&&p.source==s.source){return Err(PaidWageError::Invalid);}}}
         if self.coverage_start_day_plus_one == 0 {
             if self.days.iter().any(|day| !day.is_empty()) {
                 return Err(PaidWageError::Invalid);
@@ -449,4 +454,16 @@ mod tests {
         assert_eq!(former_contract_payment.qualifying_contracts, 0);
         assert_eq!(former_contract_payment.paid_wages, Money::new(50).unwrap());
     }
+}
+
+/// Original-transaction provenance for the ONE complete derived window. It is not a
+/// wage balance or a second payment record. Absent on legacy input; activated by V2.
+#[derive(Clone,Copy,Debug,PartialEq,Eq,Serialize,Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct IncomeContext{pub version:u32,pub operation_id:u64,pub revision:u64,pub at:u64,pub window_sha256:[u8;32]}
+pub(crate) fn window_context(scope:crate::arena::Scope,origin:[u8;32],window:&PaidWageWindow,operation_id:u64,revision:u64,at:u64)->Result<IncomeContext,PaidWageError>{
+    use sha2::{Digest,Sha256};use std::io::{self,Write};
+    struct Hash(Sha256);impl Write for Hash{fn write(&mut self,b:&[u8])->io::Result<usize>{self.0.update(b);Ok(b.len())}fn flush(&mut self)->io::Result<()>{Ok(())}}
+    let mut hash=Hash(Sha256::new());serde_json::to_writer(&mut hash,&("original-shared-household-income-window-v1",scope,origin,window)).map_err(|_|PaidWageError::Invalid)?;
+    Ok(IncomeContext{version:1,operation_id,revision,at,window_sha256:hash.0.finalize().into()})
 }

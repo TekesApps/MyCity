@@ -1,0 +1,23 @@
+[
+  "crates/city-core/src/assembly.rs",
+  "crates/city-core/src/education_authority.rs",
+  "crates/city-core/src/facility_authority.rs",
+  "crates/city-core/src/housing_income.rs",
+  "crates/city-core/src/lib.rs",
+  "crates/city-core/src/member_authority.rs",
+  "crates/city-core/src/service_delivery_runtime.rs",
+  "crates/city-core/src/service_needs.rs",
+  "crates/city-core/src/service_needs_authority.rs",
+  "crates/city-core/src/timeline_driver.rs",
+  "crates/city-core/src/transaction.rs",
+  "crates/city-storage/src/checkpoint/receipt_decode.rs",
+  "docs/execution-current.md",
+  "docs/inputs/issue-ledger/execution-flow.json",
+  "docs/inputs/issue-ledger/registry.json",
+  "docs/physical-economy-runtime-contract.md",
+  "crates/city-core/src/service_delivery_authority.rs",
+  "crates/city-core/tests/service_delivery.rs",
+  "tests/fixtures/service-delivery/opening.rs",
+  "README.md",
+  "AUDIT_HANDOFF.md"
+]

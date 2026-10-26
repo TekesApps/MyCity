@@ -190,6 +190,7 @@ pub(crate) struct Candidate {pub expected:[u8;32],pub source:Source,pub next:Box
 pub(crate) enum Outcome {Ready(Candidate),Replay(Receipt),Wait(Gate)}
 impl Candidate {
     pub fn matches(&self,current:&Runtime)->Result<bool,Error>{Ok(current.ready&&self.next.ready&&self.expected==current.fingerprint()?)}
+    pub(crate) fn into_parts(self,current:&Runtime)->Result<(Box<Runtime>,Receipt),Error>{if !self.matches(current)?{return Err(Error::Stale);}Ok((self.next,self.receipt))}
 }
 fn remaining(t:&Task)->Result<u64,Error>{
     let physical=match t.phase {Phase::Accepted=>6,Phase::Dispatched=>5,Phase::OnSite|Phase::WorkComplete=>4,

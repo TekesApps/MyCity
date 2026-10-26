@@ -1199,7 +1199,7 @@ impl World {
         let member_owned = self.member_activity.as_ref().map_or(0, |_| crate::member_activity::Ledger::owned_bytes());
         total_world_owned.checked_sub(venue_owned + education_owned + member_owned
             + self.qualification.as_ref().map_or(0, |_| crate::qualification_authority::Runtime::owned_bytes())
-            + self.service_needs.as_ref().map_or(0, |_| crate::service_needs::Runtime::owned_bytes())
+            + self.service_needs.as_deref().map_or(0,crate::service_needs::Runtime::owned_capacity_bytes)
             + self.continuous_supply.as_deref().map_or(0, crate::continuous_supply::Runtime::owned_bytes)
             + self.facility_work.as_ref().map_or(0, |_| crate::facility_authority::Runtime::owned_bytes()))
             .and_then(|base| base.checked_add(validation_scratch))
@@ -1207,7 +1207,7 @@ impl World {
             && self.continuous_supply.as_deref().is_none_or(|r|r.owned_bytes()<=crate::continuous_supply::MAX_OWNED_BYTES)
             && self.facility_work.as_ref().is_none_or(|_|crate::facility_authority::Runtime::owned_bytes()<=crate::facility_authority::MAX_OWNED_BYTES)
             && venue_owned <= crate::venue_runtime::Runtime::max_owned_bytes()
-            && self.service_needs.as_ref().is_none_or(|_|crate::service_needs::Runtime::owned_bytes()<=crate::service_needs_authority::MAX_OWNED_BYTES)
+            && self.service_needs.as_deref().is_none_or(|n|n.owned_capacity_bytes()<=crate::service_needs_authority::MAX_OWNED_BYTES+n.delivery_extra_bytes())
             && total_world_owned.checked_add(validation_scratch)
                 .is_some_and(|total| total <= crate::transaction::ENGINE_BYTE_BUDGET)
     }
@@ -1221,7 +1221,7 @@ impl World {
             + self.education.as_ref().map_or(0, |_| crate::education_runtime::Runtime::owned_bytes())
             + self.member_activity.as_ref().map_or(0, |_| crate::member_activity::Ledger::owned_bytes())
             + self.qualification.as_ref().map_or(0, |_| crate::qualification_authority::Runtime::owned_bytes())
-            + self.service_needs.as_ref().map_or(0, |_| crate::service_needs::Runtime::owned_bytes())
+            + self.service_needs.as_deref().map_or(0,crate::service_needs::Runtime::owned_capacity_bytes)
             + self.continuous_supply.as_deref().map_or(0, crate::continuous_supply::Runtime::owned_bytes)
             + self.facility_work.as_ref().map_or(0, |_| crate::facility_authority::Runtime::owned_bytes())
             + self.operating_owned_bytes()
@@ -1747,7 +1747,8 @@ fn assemble_opening_into(mut input: Opening, world: &mut World) -> Result<(), St
         world.qualification=Some(crate::qualification_authority::initialize(opening,world)?);
     }
     if let Some(opening)=input.service_needs {
-        let extra=crate::service_needs::Runtime::owned_bytes()+size_of::<crate::service_needs::Opening>()+world.pending_operating_header_bytes();
+        let delivery_extra=match &opening.profile{crate::service_needs::Profile::LocalDevelopmentNaturalNeedsV1=>0,crate::service_needs::Profile::LocalDevelopmentWithDeliveryV2(input)=>input.owned_bytes()*2+crate::service_delivery_runtime::Runtime::owned_bytes()+size_of::<crate::service_delivery_authority::Runtime>()};
+        let extra=crate::service_needs::Runtime::owned_bytes()+size_of::<crate::service_needs::Opening>()+world.pending_operating_header_bytes()+delivery_extra;
         if crate::service_needs::Runtime::owned_bytes()>crate::service_needs_authority::MAX_OWNED_BYTES
             || world.owned_capacity_bytes().checked_add(extra).and_then(|n|n.checked_add(crate::housing::MAX_VALIDATION_SCRATCH_BYTES)).is_none_or(|n|n>crate::transaction::ENGINE_BYTE_BUDGET) {
             return Err("service_needs_world_budget_before_allocation".into());

@@ -1,16 +1,51 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-26T04:25:51.146007+00:00",
-  "source_head": "0f5bae69b1cd58ed51087f5af23969816f0db75c",
-  "candidate": "149 accepted/closed;202 ledger only;next134 actual capability integration pending ownership activation",
+  "last_snapshot_at": "2026-10-26T06:53:47.417620+00:00",
+  "source_head": "6e4b20feb1df9c00d0a28e58ab9c123d44cdb2c7",
+  "candidate": "v203 incomplete134 source checkpoint; source06 single normal flow passed before latest unfinished income bridge; current source not compiled/tested",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
   "limits": {
     "shared_core_lanes": 1,
     "independent_preparations": 2,
     "reason_for_adjustment_required": true
   },
-  "active_shared_work": [],
+  "active_shared_work": [
+    {
+      "issue": 134,
+      "owner": "01a166fc-e444-7602-ad22-3a8551dda487",
+      "status": "actual integration in progress; source checkpoint, not accepted",
+      "files": [
+        "crates/city-core/src/lib.rs",
+        "crates/city-core/src/service_needs.rs",
+        "crates/city-core/src/service_needs_authority.rs",
+        "crates/city-core/src/transaction.rs",
+        "crates/city-core/src/timeline_driver.rs",
+        "crates/city-core/src/member_authority.rs",
+        "crates/city-core/src/assembly.rs",
+        "crates/city-core/src/transaction/slots.rs",
+        "crates/city-core/src/restore_into.rs",
+        "crates/city-core/tests/service_delivery.rs",
+        "crates/city-storage/tests/service_delivery_store.rs",
+        "crates/city-storage/src/checkpoint/receipt_decode.rs",
+        "crates/city-storage/src/checkpoint_v2/receipts.rs",
+        "crates/city-core/src/education_authority.rs",
+        "tests/fixtures/service-delivery/opening.rs",
+        "crates/city-core/src/housing_income.rs",
+        "crates/city-core/src/facility_authority.rs",
+        "crates/city-storage/src/wal.rs",
+        "crates/city-storage/src/metadata.rs",
+        "crates/city-core/tests/continuous_supply.rs"
+      ],
+      "required_capabilities": [
+        "original admitted drive graph and explicit vehicle-slot resources",
+        "actual original stock/member/qualification/funds facts",
+        "original completed Timeline and same-slot Store"
+      ],
+      "acceptance": "planned service_delivery_store real need→depart/arrive→work/inputs/pay→return/reset, refusal/once/cold/shared/default/resource",
+      "remaining": "income/receipt/restore bridge, bounded history/arrears, refusal/boundary/coexistence/shared/default/resource verification"
+    }
+  ],
   "active_independent_preparations": [],
   "counting_rules": {
     "parents_are_not_active_work": true,
@@ -249,8 +284,8 @@
     },
     {
       "issue": 134,
-      "execution_state": "blocked:not-dispatched",
-      "implementation_owner_session": null,
+      "execution_state": "in_progress:actual-integration-unverified",
+      "implementation_owner_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "integration_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "files_or_activation_boundary": [
         "crates/city-core/src/service_delivery_runtime.rs (original owner module; frozen/read-only until reactivation)",
@@ -266,12 +301,11 @@
         "Original resource/lease/funds/need identities"
       ],
       "acceptance_entry_and_gaps": [
-        "Real dispatch/work/consumption/return and persistent residual responsibility missing",
-        "Freeze first real profile inputs/oracle with original57 owner before activating",
-        "OriginalPool concurrency, failures, replay, checkpoint/cold recovery"
+        "source06 single normal flow passed; current source newer and not verified",
+        "income/receipt/restore bridge, bounded history/arrears, refusal/boundary/coexistence/shared/default/resource verification"
       ],
       "real_integration_seam": "Root need linkage, original members/ResourceLease, actual delivery and Store; no second workforce/bed/clock",
-      "new_write_authority": false,
+      "new_write_authority": "initial precise plan in work/service-delivery-runtime-20261026/ownership-and-acceptance.json; additional core paths fixed before edits",
       "timing": {
         "ready_at": null,
         "readiness_confirmed_at": null,
@@ -741,5 +775,20 @@
       27
     ],
     "source_delivered_pending_validation": []
-  }
+  },
+  "completed_preparations": [
+    {
+      "issue": 134,
+      "source_issue": 57,
+      "owner": "01a16a4c-ba5a-7dd1-8c04-51461a76b405",
+      "status": "completed/frozen independent oracle only",
+      "files": [
+        "work/service-delivery-runtime-20261026/issue57-preparation/independent-expectations.md",
+        "work/service-delivery-runtime-20261026/issue57-preparation/independent-inputs.json"
+      ],
+      "deliverable": "source-derived lawful input/independent oracle/boundary and recovery expectations;unknown explicit",
+      "canonical_code_write": false,
+      "compile_test_authority": false
+    }
+  ]
 }

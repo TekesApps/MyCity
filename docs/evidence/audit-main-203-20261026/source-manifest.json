@@ -1,0 +1,112 @@
+{
+  "baseline": "6e4b20feb1df9c00d0a28e58ab9c123d44cdb2c7",
+  "tag": "v0.5.203",
+  "meaning": "current incomplete source; no verification inherited",
+  "files": [
+    {
+      "path": "crates/city-core/src/assembly.rs",
+      "bytes": 93089,
+      "sha256": "3173677b00411149bf3c949f87aa402af724fa2bb16233c3492852e621d1b3e7"
+    },
+    {
+      "path": "crates/city-core/src/education_authority.rs",
+      "bytes": 26922,
+      "sha256": "9bb6bbe89d1d1a0f792bb6d0e258181382c7c7b0e4937e8ee1d092a5b380fdc5"
+    },
+    {
+      "path": "crates/city-core/src/facility_authority.rs",
+      "bytes": 42980,
+      "sha256": "352e293ad40743c5f1fc171bb468b74cb553eb2a7cdfea1515cdcf5d94827b69"
+    },
+    {
+      "path": "crates/city-core/src/housing_income.rs",
+      "bytes": 18763,
+      "sha256": "23f8681c131f4eb350abca615fbb6aaff1c8a5abb905402bcac0eb4760ba8646"
+    },
+    {
+      "path": "crates/city-core/src/lib.rs",
+      "bytes": 6758,
+      "sha256": "2ad0a71081b42ab6cb185da9a991a5e1fc49d52b2adff57f4fcde296a8009490"
+    },
+    {
+      "path": "crates/city-core/src/member_authority.rs",
+      "bytes": 4541,
+      "sha256": "2378fd6a0048cc49592e04098680442542f4afa4a20d55d42db4742713d5be46"
+    },
+    {
+      "path": "crates/city-core/src/service_delivery_runtime.rs",
+      "bytes": 35744,
+      "sha256": "59707e121a8ab4d76ba75a306a9706f8ba3af6ab1c1fe822ea8ad580344d80b9"
+    },
+    {
+      "path": "crates/city-core/src/service_needs.rs",
+      "bytes": 28547,
+      "sha256": "82071992ea98958fbe74a6d52a8e27448ae94281db786eee5b694f652be26650"
+    },
+    {
+      "path": "crates/city-core/src/service_needs_authority.rs",
+      "bytes": 12117,
+      "sha256": "bb547c3d31d2cf19a3f4130be6a5c9c68075c9c9e45625599305dac5ce81226f"
+    },
+    {
+      "path": "crates/city-core/src/timeline_driver.rs",
+      "bytes": 55316,
+      "sha256": "bef3e96fcfffa2486b8915ec3bc74813f815a8170c00cc9af354603cf57d87b6"
+    },
+    {
+      "path": "crates/city-core/src/transaction.rs",
+      "bytes": 487168,
+      "sha256": "bed641976272041d409fcaa8725f63f9689c3d305696a9b11d493a4d65860ac0"
+    },
+    {
+      "path": "crates/city-storage/src/checkpoint/receipt_decode.rs",
+      "bytes": 43999,
+      "sha256": "09881ea64d29821545f575b35d8fc4b40e439fd7d1d4945d8cbd6fbe5a2171ff"
+    },
+    {
+      "path": "docs/execution-current.md",
+      "bytes": 23756,
+      "sha256": "17928d551ab9bee937f8eb50a49e8341b4baa72466734fa47eb32fa93fa866d6"
+    },
+    {
+      "path": "docs/inputs/issue-ledger/execution-flow.json",
+      "bytes": 36107,
+      "sha256": "58ee383dc5f573829d0832d7405c946959487e8ac24d0c9e08fdcd944d256123"
+    },
+    {
+      "path": "docs/inputs/issue-ledger/registry.json",
+      "bytes": 231977,
+      "sha256": "b6c5016e042ae460d7b10bb20b0408a2d8fa7774f07bc7cb914512236e32dce7"
+    },
+    {
+      "path": "docs/physical-economy-runtime-contract.md",
+      "bytes": 44048,
+      "sha256": "137afc4e36ae87fcf7369666cc4e9aa50cbe82aa33b43f4b5d67c1b7c110ffb0"
+    },
+    {
+      "path": "crates/city-core/src/service_delivery_authority.rs",
+      "bytes": 37428,
+      "sha256": "897ac8e448bbf6ef2f171fa8620bfe1d90f9e1a99f4311f976939d07e25b7576"
+    },
+    {
+      "path": "crates/city-core/tests/service_delivery.rs",
+      "bytes": 3676,
+      "sha256": "7e8faa33f2939390ace08c57663d95aee4f61de1d45a555f1d490e8f5f56ff06"
+    },
+    {
+      "path": "tests/fixtures/service-delivery/opening.rs",
+      "bytes": 5650,
+      "sha256": "d024f438152259783c32594f3798bd8c95cc9432f416963c1e3d71c8b1494c06"
+    },
+    {
+      "path": "README.md",
+      "bytes": 53039,
+      "sha256": "f267f86563b4c86b4c8bea194fd7eeb900df9b64803c343cc6cee3091514d2af"
+    },
+    {
+      "path": "AUDIT_HANDOFF.md",
+      "bytes": 5754,
+      "sha256": "d0b8744cf635978b1a67b18ebc8c957ec96d8bdf9e2bcd130291261f4f0b13e8"
+    }
+  ]
+}

@@ -1,5 +1,11 @@
 # 实物与经济运行一致性契约
 
+## #134 实施前接口边界（基线v202，尚未实现）
+
+下一门沿既有service_delivery_runtime接真实本城行程producer与服务consumer，原Timeline处理合法图的分段进度、原能量/车/成员/Lease后，才由原writer产生到门/返程事实；路径候选、ETA、群体交通PathReceipt和客户端Arrived均非实际位置。drive边须显式映射原Resource Count车辆槽，不能由capacity_people除常数推导车容量。首个版本明确无Region固定本城Development，不能与原74 Interaction或混合development_elapsed互换；74其余范围仍待对应原时钟桥。关闭新增派遣不得关闭已接任务安全返程/历史结算的必要推进；途中失败保留已提交位置/投入/原占用，原票和恢复不得重新启动已完成段。
+
+这只是当前实施前合同，不是已实现；具体输入/独立预期沿原57在专属work目录补齐，root统一集成。原134所有真实投入/付款/成员/责任与正常拒绝/中断/冷热/资源门保持，不把首条有限链或准备文件当整个134/74验收。
+
 ## v0.5.201 #149有限责任收尾的实际验证
 
 已完成边界取消未执行target只减少未来推进承诺，不取消任何已发生业务或占用；后续须沿原Exit实际释放。原driver／Store／continuation不改；无目标或phase进行中不获得应急资格。当前专属热冷／拒绝／中断／原票、9组共享、9道默认栈及原normal角色门已实际通过，[完整证据](evidence/timeline-target-emergency-20261026/STATUS.md)。下方v200条目保留审计时点，实际关闭另见回执。
