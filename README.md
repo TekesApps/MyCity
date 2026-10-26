@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.207`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.208`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.208 wires [common actual Air/Sim execution reports](docs/evidence/task-execution-report-20261026/STATUS.md) on the existing RunDue/Store path: 28 current-source checks pass, original role grant/return unchanged. Full #102/103/104 remain open; no new business acceptance/closure. Prior #134 remains accepted on v206/207.
 
 v0.5.206 完成[#134有限实际公服履约及牵引恢复](docs/evidence/service-recovery-20261026/STATUS.md)：全体原车内驾驶资格到期后真实到车/牵引返站，完整v205存档兼容、缺事实v203候选明确拒绝且保留原件。18核心、5新增Store父/13冷子进程、原履约Store、22共享默认组及原normal角色通过；[#134已实际关闭](docs/evidence/service-recovery-20261026/closure.json)，v207仅同步回执。父57/74及真实16GB/M0长期验收继续开放。
 

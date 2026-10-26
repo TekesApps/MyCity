@@ -81,6 +81,10 @@ fn real_sim_pauses_answers_queries_changes_quota_and_commits_exact_reference() {
     run.finish_sliced(first);let actual=run.call(Command::Status);
     assert_eq!(actual["background"]["time"],30);assert_eq!(candidate(&actual),candidate(&expected));
     assert_eq!(actual["runtime"]["worker_task_observation"]["data"]["stage"],"complete");
+    let common=&actual["runtime"]["task_execution_observation"];assert_eq!(common["schema"],"mycity-task-execution-observation-v1");assert_eq!(common["air"]["execution"],"air_worker");
+    assert_eq!(common["air"]["observation"]["data"],actual["runtime"]["worker_task_observation"]["data"]);
+    assert_eq!(common["air"]["observation"]["work_counts"],actual["runtime"]["worker_task_observation"]["work_counts"]);
+    assert_eq!(common["air"]["observation"]["page_metrics"],actual["runtime"]["worker_task_observation"]["page_execution_metrics"]);assert!(common["sim"].is_null());
     let counts=&actual["runtime"]["worker_task_observation"]["work_counts"];
     assert_eq!(counts["cells"],16384);assert_eq!(counts["integrated_cells"],16384);assert_eq!(counts["segments"],1);
     assert_eq!(run.events.iter().filter(|e|e["kind"]=="worker_started").count(),1);

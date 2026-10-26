@@ -1,0 +1,64 @@
+[
+  {
+    "label": "units04",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "-j1",
+      "-p",
+      "mycity-headless",
+      "--lib",
+      "--no-run",
+      "--message-format=json"
+    ],
+    "exit_code": 0,
+    "seconds": 4.470009624999999,
+    "source": "source04-manifest.json",
+    "executable": "/Users/frankqin/dev/MyCity/work/task-execution-report-20261026/units04-fixed",
+    "sha256": "ba53d6b2817ffffe38eeca97d591cc5d570454190be15d843355796d9bc23139"
+  },
+  {
+    "label": "directory04",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "-j1",
+      "-p",
+      "mycity-headless",
+      "--test",
+      "task_registry_directory",
+      "--no-run",
+      "--message-format=json"
+    ],
+    "exit_code": 0,
+    "seconds": 0.9558676669999997,
+    "source": "source04-manifest.json",
+    "executable": "/Users/frankqin/dev/MyCity/work/task-execution-report-20261026/directory04-fixed",
+    "sha256": "330efa226609879ff3bd72743fdac2aa2aaef66914f11b76c8b744402f6e35c0"
+  },
+  {
+    "label": "air04",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "-j1",
+      "-p",
+      "mycity-headless",
+      "--test",
+      "air_turn_control",
+      "--no-run",
+      "--message-format=json"
+    ],
+    "exit_code": 0,
+    "seconds": 2.260410707999995,
+    "source": "source04-manifest.json",
+    "executable": "/Users/frankqin/dev/MyCity/work/task-execution-report-20261026/air04-fixed",
+    "sha256": "e7ca12ce794d52a75d64a6a6f79682f02f71053679d450821075f98f810703e8"
+  }
+]

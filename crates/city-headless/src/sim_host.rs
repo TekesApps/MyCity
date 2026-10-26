@@ -17,6 +17,8 @@ use std::{
     path::Path,
     time::{Duration, Instant},
 };
+#[path = "sim_task_observation.rs"]
+mod task_observation;
 const PROTOCOL: &str = "mycity-sim-v1";
 // required_registry_v2 service continuation; old worlds may already contain C
 // operations. Detect them explicitly instead of treating a historical ticket as
@@ -314,6 +316,7 @@ fn status(
     diag: &Option<crate::cpu_log::CpuLog>,
     timings: &SimTimings,
     open_memory: &SimOpenMemoryDiagnostic,
+    task_observations: &task_observation::Recorder,
 ) -> Result<Value, String> {
     // Same-phase current occupancy, before allocating the status report.
     let allocator_clock_begin = crate::heap_meter::clock_reading();
@@ -342,6 +345,7 @@ fn status(
     };
     let mut runtime = runtime;
     runtime["worker_task_observation"] = worker.task_observation();
+    runtime["task_execution_observation"] = task_observations.report(worker);
     runtime["sim_host_timing"] = timings.report();
     Ok(
         json!({"revision":view.revision,"sequence":store.committed_sequence(),"business_sha256":business_sha,"runtime":runtime,"timeline":e.timeline().map(|t|t.progress),
@@ -356,6 +360,8 @@ fn status(
 fn timeline_run_due(
     store:&mut Store,active_worker:bool,diag:&mut Option<crate::cpu_log::CpuLog>,
     id:u64,writer:&mut impl Write,selected:&crate::task_registry_directory::SelectedTimeline,
+    task_observations:&mut task_observation::Recorder,
+    entry:&crate::task_registry_directory::Entry,
 ) -> Result<Value,String> {
     crate::task_registry_directory::validate_timeline(store,selected,active_worker).map_err(err)?;
     let e=store.engine().map_err(err)?;
@@ -371,7 +377,7 @@ fn timeline_run_due(
         "before_sequence":sequence,"before_serial":before.serial,"zero_width":before.at==before.last_complete,
         "plan":if selected.is_admission(){"original_next_boundary_admission"}else{"original_funded_continuation"},
         "recovery":"original_receipt_and_recovered_outcome_and_serial; no automatic RunDue retry"}))?;
-    let outcome=crate::cpu_log::execute(store,Caller::System,envelope,diag)
+    let outcome=task_observations.execute(store,Caller::System,envelope,diag,entry)
         .map_err(|e|format!("timeline_due_recovery_required:operation={operation}:{e}"))?;
     outcome.model.as_ref().map_err(|e|format!("timeline_due_model_rejected:operation={operation}:{e:?}"))?;
     if !outcome.has_persistent_receipt{return Err(format!("timeline_due_receipt_unconfirmed:operation={operation}"));}
@@ -388,6 +394,8 @@ fn service_run_due(
     id: u64,
     writer: &mut impl Write,
     selected: &crate::required_dispatch::SelectedServiceContinuation,
+    task_observations:&mut task_observation::Recorder,
+    entry:&crate::task_registry_directory::Entry,
 ) -> Result<Value, String> {
     use crate::required_dispatch::{self as due, SelectionMode};
     if active_worker { return Err("sim_dispatch_busy".into()); }
@@ -426,7 +434,7 @@ fn service_run_due(
         "task_key":task_key, "selection_mode":mode,
         "recovery":"original_receipt_and_recovered_outcome_and_serial; no automatic RunDue retry"
     }))?;
-    let outcome = crate::cpu_log::execute(store,Caller::System,envelope,diag)
+    let outcome = task_observations.execute(store,Caller::System,envelope,diag,entry)
         .map_err(|e|format!("service_due_recovery_required:operation={operation}:{e}"))?;
     outcome.model.as_ref().map_err(|e|format!("service_due_model_rejected:operation={operation}:{e:?}"))?;
     if !outcome.has_persistent_receipt { return Err(format!("service_due_receipt_unconfirmed:operation={operation}")); }
@@ -448,6 +456,8 @@ fn supply_run_due(
     id: u64,
     writer: &mut impl Write,
     selected: &crate::required_dispatch::SelectedSupplyContinuation,
+    task_observations:&mut task_observation::Recorder,
+    entry:&crate::task_registry_directory::Entry,
 ) -> Result<Value, String> {
     use crate::required_dispatch::{self as due, SupplySelectionMode};
     if active_worker { return Err("sim_dispatch_busy".into()); }
@@ -489,7 +499,7 @@ fn supply_run_due(
         "zero_reason":format!("{:?}",selected.zero_reason()),
         "recovery":"original_receipt_and_recovered_outcome_and_serial; no automatic RunDue retry"
     }))?;
-    let outcome = crate::cpu_log::execute(store,Caller::System,envelope,diag)
+    let outcome = task_observations.execute(store,Caller::System,envelope,diag,entry)
         .map_err(|e|format!("supply_due_recovery_required:operation={operation}:{e}"))?;
     outcome.model.as_ref().map_err(|e|format!("supply_due_model_rejected:operation={operation}:{e:?}"))?;
     if !outcome.has_persistent_receipt { return Err(format!("supply_due_receipt_unconfirmed:operation={operation}")); }
@@ -982,6 +992,7 @@ fn run_owned(
         crate::normal_pool::broker::activate_role(crate::normal_pool::workspace::Kind::SimCodec)?;
     let mut codec = Codec::new(epoch)?;
     let timings = SimTimings::new();
+    let mut task_observations = task_observation::Recorder::default();
     let workspace = mycity_storage::StoreWorkspace::new().map_err(err)?;
     let rules = profile.rules();
     let (mut store, pre_open_memory) = if create {
@@ -1056,6 +1067,7 @@ fn run_owned(
     if let Some(log) = diag.as_mut() {
         let owned_bytes = std::mem::size_of::<Codec>()
             .checked_add(std::mem::size_of::<SimTimings>())
+            .and_then(|bytes|bytes.checked_add(task_observation::METADATA_PLAN_BYTES))
             .ok_or("sim_diagnostics_bytes")?;
         log.set_external_diagnostics_owned_bytes(owned_bytes)?;
     }
@@ -1068,7 +1080,7 @@ fn run_owned(
         &mut writer,
         0,
         "ready",
-        status(&store, worker, &codec, &diag, &timings, &open_memory)?,
+        status(&store, worker, &codec, &diag, &timings, &open_memory, &task_observations)?,
     )?;
     while let Some(bytes) = wire::frame(&mut reader)? {
         let request: Request = serde_json::from_slice(&bytes).map_err(err)?;
@@ -1077,7 +1089,7 @@ fn run_owned(
         }
         let stop = matches!(request.command, Command::Stop);
         let outcome = match request.command {
-            Command::Status => status(&store, worker, &codec, &diag, &timings, &open_memory),
+            Command::Status => status(&store, worker, &codec, &diag, &timings, &open_memory, &task_observations),
             Command::Progress => progress(&store),
             Command::ReceiptProof { operation } => store.receipt(operation).map_err(err).and_then(|record| {
                 let bytes = serde_json::to_vec(&record).map_err(err)?;
@@ -1121,11 +1133,11 @@ fn run_owned(
                                             v["dispatch"]=json!("required_registry_v1");v["dispatch_state"]=json!("completed");v["selection_mode"]=json!(mode);v["selected_job"]=json!(job);v
                                         })
                                     },
-                                    Route::Selected(Selected::Service(selected))=>service_run_due(&mut store,worker.has_active_execution(),&mut diag,request.id,&mut writer,&selected),
-                                    Route::Selected(Selected::Supply(selected))=>supply_run_due(&mut store,worker.has_active_execution(),&mut diag,request.id,&mut writer,&selected),
-                                    Route::Selected(Selected::Timeline(selected))=>timeline_run_due(&mut store,worker.has_active_execution(),&mut diag,request.id,&mut writer,&selected),
+                                    Route::Selected(Selected::Service(selected))=>service_run_due(&mut store,worker.has_active_execution(),&mut diag,request.id,&mut writer,&selected,&mut task_observations,&directory.entries()[1]),
+                                    Route::Selected(Selected::Supply(selected))=>supply_run_due(&mut store,worker.has_active_execution(),&mut diag,request.id,&mut writer,&selected,&mut task_observations,&directory.entries()[2]),
+                                    Route::Selected(Selected::Timeline(selected))=>timeline_run_due(&mut store,worker.has_active_execution(),&mut diag,request.id,&mut writer,&selected,&mut task_observations,&directory.entries()[3]),
                                 };
-                                result.map(|mut v|{v["task_directory"]=report;v})
+                                result.map(|mut v|{v["task_directory"]=report;v["execution_observation"]=task_observations.report(worker);v})
                             }
                         }
                     }

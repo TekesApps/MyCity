@@ -1,0 +1,40 @@
+{
+  "issue": 102,
+  "baseline": "v0.5.207",
+  "baseline_commit": "1962e927492cfc2d9a4061883822b88c7f770d88",
+  "owner": "root 01a166fc-e444-7602-ad22-3a8551dda487",
+  "files": [
+    "crates/city-headless/src/sim_host.rs",
+    "crates/city-headless/src/compute_worker.rs",
+    "crates/city-headless/src/sim_task_observation.rs",
+    "crates/city-headless/tests/task_execution_observation.rs",
+    "docs/SOFTWARE_ARCHITECTURE.md",
+    "docs/execution-current.md",
+    "docs/core-task-dispatch-current.md",
+    "docs/issue-execution-ledger.md",
+    "docs/inputs/issue-ledger/execution-flow.json",
+    "docs/inputs/issue-ledger/registry.json",
+    "crates/city-headless/tests/task_registry_directory.rs",
+    "crates/city-headless/tests/air_turn_control.rs"
+  ],
+  "shared_in_progress": 1,
+  "independent_preparations": 0,
+  "activated_at": "2026-10-26T11:35:41.124495+00:00",
+  "budget_bytes": 805306368,
+  "scope": "common typed report for existing Air and actual Sim RunDue providers; no new scheduling/grants/persistence/completion authority",
+  "acceptance": [
+    "actual RunDue Timeline/Service/Supply and existing Air compatibility",
+    "one actual Advance operation once; zero windows remain exact and no fake TaskKey",
+    "old operation replay/rejection/uncertain outcome and cold reopen",
+    "Unknown measurement retains business behavior",
+    "default stack, bounded report and original role grant/return"
+  ],
+  "not_run": "all new source/runtime tests until fixed source compiled serially",
+  "retention": "full initial/final source/fixed executables/failures/worlds/receipts retained; no cleanup during validation; old evidence untouched",
+  "budget_revision": {
+    "at": "2026-10-26T11:59:20.525605+00:00",
+    "from_bytes": 536870912,
+    "to_bytes": 805306368,
+    "reason": "retain default-debug fixed programs for failed and final sources plus actual normal-role/air regression worlds; current216MiB before remaining builds; no runtime/M0 budget change"
+  }
+}

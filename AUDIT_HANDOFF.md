@@ -1,3 +1,9 @@
+# Current MyCity audit entry: v0.5.208
+
+Actual common Air/Sim execution observations are integrated and finitely verified: [scope/results](docs/evidence/task-execution-report-20261026/STATUS.md).28 current-source checks passed, including real original operations/cold recovery, unchanged Air counters/control, same-page Service/Supply and original normal-role grant return. Full102 remains OPEN; generic capability/refinement/grant and honest cost coverage is still incomplete. No global budget, representative-city, real16GB/native/M0/GPU/UI acceptance claimed. Root sole writer; finite stage frozen0+0, no new dispatch or PR.
+
+Fixed build read-set source04, complete initial/failed/final source/programs/worlds and24 protected WIP retained. Air v164-167 already implemented counts/control/sampling/autoContinue; do not re-plan these from stale163 text. Original M0 standards unchanged. See current execution ledger for the next unactivated shared lane. The following v207/earlier material is historical, including actual134 closure.
+
 # MyCity 当前接线状态：v0.5.207（实现与实际验证v206）
 
 #134完整有限合同已由root核对实际证据通过：[结果及边界](docs/evidence/service-recovery-20261026/STATUS.md)。实现与恢复输入固定，[#134实际关闭回读](docs/evidence/service-recovery-20261026/closure.json)；v207仅同步台账，不重复计业务或测试。全体原车内Driver到期后的实际到车牵引、原两车占用、实际费用和欠薪已接通；完整v205可读，缺事实v203候选明确拒绝且完整原件不变，不补历史。

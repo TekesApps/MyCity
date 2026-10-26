@@ -144,6 +144,9 @@ fn run_joint(pooled:bool){
         c.submit(id,Command::RunDue).unwrap();let selected=event(&mut c,&p);assert!(matches!(selected.kind.as_str(),"service_continuation_selected"|"supply_continuation_selected"|"timeline_continuation_selected"));
         let e:Envelope=serde_json::from_value(selected.payload["envelope"].clone()).unwrap();assert_eq!(e.actions,vec![Action::Timeline{command:T::Advance{target:3600,limit:1}}]);assert!(reference.execute(Caller::System,e).unwrap().model.is_ok());
         let result=event(&mut c,&p);assert!(result.payload["Ok"].is_object(),"{result:?}");assert_eq!(result.payload["Ok"]["after_serial"],serial+1);serial+=1;seq+=1;
+        let observation=&result.payload["Ok"]["execution_observation"];assert_eq!(observation["schema"],"mycity-task-execution-observation-v1");
+        let report=&observation["sim"]["observation"];let provider=match selected.kind.as_str(){"service_continuation_selected"=>"service","supply_continuation_selected"=>"supply",_=>"timeline"};
+        assert_eq!(report["context"]["source"]["provider"],provider);assert_eq!(report["commit"],"committed");assert_eq!(report["committed_advance_operations"],1);assert_eq!(report["after"]["serial"],serial);
         complete=result.payload["Ok"]["timeline"]["target"].is_null();if complete{break;}
     }
     assert!(complete);

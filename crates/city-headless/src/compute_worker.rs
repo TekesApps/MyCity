@@ -16,6 +16,16 @@ use std::{
 
 pub const PROTOCOL: &str = "mycity-air-worker-v4";
 pub const CONTROL_BYTES: usize = 64 * 1024;
+/// Borrow the existing validated observation; no new worker report authority.
+#[derive(serde::Serialize)]
+pub(crate) struct AirTaskObservation<'a> {
+    pub data: Option<&'a mycity_core::worker_protocol_observation::CpuObservation>,
+    pub observation_error: Option<&'static str>,
+    pub work_counts: Option<crate::air_turns::WorkCounters>,
+    pub page_metrics: Option<&'a crate::air_page_metrics::Summary>,
+    pub page_metrics_error: Option<&'static str>,
+    pub owner_retired_now: bool,
+}
 /// IPC readers only decode fixed, non-recursive protocol records (at most one
 /// `CONTROL_BYTES` frame); do not reserve the platform's default thread stack
 /// for each long-lived reader. This is a requested stack reservation, not a
@@ -923,6 +933,16 @@ impl Worker {
     }
     /// Latest attempt observation only. It is not a live-owner, Store, or retirement receipt.
     /// Missing/failed projection never changes required work or the canonical wire checks.
+    pub(crate) fn common_task_observation(&self) -> AirTaskObservation<'_> {
+        AirTaskObservation {
+            data: self.observation.as_ref().and_then(|attempt| attempt.latest()),
+            observation_error: self.observation_error,
+            work_counts: self.turns.as_ref().map(|turns| turns.total()),
+            page_metrics: self.page_metrics.as_ref(),
+            page_metrics_error: self.page_metrics_error,
+            owner_retired_now: self.is_empty(),
+        }
+    }
     pub fn task_observation(&self) -> serde_json::Value {
         let data = self.observation.as_ref().and_then(|attempt| attempt.latest());
         serde_json::json!({"schema":"mycity-cpu-task-observation-v4",

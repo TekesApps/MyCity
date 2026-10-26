@@ -2344,10 +2344,21 @@
       "title": "[非UI/worker-protocol] Sim内/worker共用任务票、报告/授予和实际退休",
       "url": "https://github.com/TekesApps/MyCity/issues/102",
       "parent": 17,
-      "stage": "待集成",
-      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "stage": "开发中",
+      "owner": "root 01a166fc-e444-7602-ad22-3a8551dda487",
       "write_authority": [
-        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+        "crates/city-headless/src/sim_host.rs",
+        "crates/city-headless/src/compute_worker.rs",
+        "crates/city-headless/src/sim_task_observation.rs",
+        "crates/city-headless/tests/task_execution_observation.rs",
+        "docs/SOFTWARE_ARCHITECTURE.md",
+        "docs/execution-current.md",
+        "docs/core-task-dispatch-current.md",
+        "docs/issue-execution-ledger.md",
+        "docs/inputs/issue-ledger/execution-flow.json",
+        "docs/inputs/issue-ledger/registry.json",
+        "crates/city-headless/tests/task_registry_directory.rs",
+        "crates/city-headless/tests/air_turn_control.rs"
       ],
       "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
       "required_capabilities": [
@@ -2356,11 +2367,12 @@
       "acceptance": [
         "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
       ],
-      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
-      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
-      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
-      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
-      "issue_body_sha256": "daf0968f8259a74441e5c8b3e4507d09ec80f512660815681fc273a609e8ea7a"
+      "remaining": "Air counters/control/sampling already completed; common typed Air/Sim report finite28 passed; capability/refinement/grant and honest cost-source interfaces remain",
+      "evidence": "docs/evidence/task-execution-report-20261026/STATUS.md",
+      "implementation_tags": "v0.5.208 finite report increment; earlier v160-167 evidence retained, full102 open",
+      "pr": "No PR; root direct integration",
+      "issue_body_sha256": "f532d5972aa8e06b80a601677bcd3252810e81d734199c46f6877ec9a6e6de4d",
+      "execution_state": "finite-report-stage-frozen:full102-open"
     },
     {
       "issue": 103,

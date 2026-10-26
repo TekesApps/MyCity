@@ -1,0 +1,41 @@
+{
+  "at": "2026-10-26T12:18:45.434245+00:00",
+  "roots": {
+    "phase": "/Volumes/HP P900/dev/MyCity/work/task-execution-report-20261026",
+    "short": "/Volumes/HP P900/dev/MyCity/work/tr102"
+  },
+  "files": 644,
+  "logical_bytes": 483551874,
+  "budget_bytes": 805306368,
+  "index_sha256": "497394abc64697499dd5cfe2e4326b4673d505187a248eadf366b8221e72bcf8",
+  "special_paths_not_read_as_regular_files": [
+    {
+      "root": "short",
+      "file": "a04/broker-pause-55397-29/pool/pool.sock",
+      "mode": 49645
+    },
+    {
+      "root": "short",
+      "file": "a04/pa2-55397-0/p/pool.sock",
+      "mode": 49645
+    },
+    {
+      "root": "short",
+      "file": "a04/pc-55397-9/p/pool.sock",
+      "mode": 49645
+    },
+    {
+      "root": "short",
+      "file": "a04/pf-55397-13/p/pool.sock",
+      "mode": 49645
+    },
+    {
+      "root": "short",
+      "file": "d04/p55311-1793016222701786000/pool.sock",
+      "mode": 49645
+    }
+  ],
+  "no_originals_deleted": true,
+  "no_private_worktree_created": true,
+  "retention": "all failures/current programs/source/worlds remain restore dependencies; shared target caches remain in use, no cache eviction"
+}

@@ -1,0 +1,9 @@
+{
+  "MYCITY_TASK_REPORT_ROOT": "/Volumes/HP P900/dev/MyCity/work/task-execution-report-20261026/actual04",
+  "MYCITY_DIRECTORY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/task-execution-report-20261026/directory04",
+  "MYCITY_DIRECTORY_POOL_ROOT": "/Volumes/HP P900/dev/MyCity/work/tr102/d04",
+  "MYCITY_AIR_TURN_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/tr102/a04",
+  "MYCITY_TASK_REPORT_EXE": "/Users/frankqin/dev/MyCity/work/task-execution-report-20261026/source04-headless-fixed",
+  "MYCITY_DIRECTORY_HEADLESS_EXE": "/Users/frankqin/dev/MyCity/work/task-execution-report-20261026/source04-headless-fixed",
+  "MYCITY_PROTOCOL_WORKER_EXE": "/Users/frankqin/dev/MyCity/work/task-execution-report-20261026/source04-headless-fixed"
+}

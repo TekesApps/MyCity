@@ -1,0 +1,11 @@
+{
+  "hardware": {
+    "hw.model": "Mac16,1",
+    "hw.memsize": "34359738368",
+    "machdep.cpu.brand_string": "Apple M4"
+  },
+  "system": "ProductName:\t\tmacOS\nProductVersion:\t\t26.6.2\nBuildVersion:\t\t25G83\n",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "work": "/Volumes/HP P900/dev/MyCity/work",
+  "scope": "functional/default-role observations, not native/16GB/M0 acceptance"
+}

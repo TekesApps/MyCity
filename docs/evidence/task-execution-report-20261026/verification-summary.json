@@ -1,0 +1,126 @@
+{
+  "issue": 102,
+  "release": "v0.5.208",
+  "baseline": "v0.5.207 1962e927492cfc2d9a4061883822b88c7f770d88",
+  "source": "source04-manifest.json",
+  "phase_start": "2026-10-26T11:35:41.124495+00:00",
+  "phase_end": "2026-10-26T12:04:38.948444+00:00",
+  "window_meaning": "current finite implementation/verification interval, not full102 delivery latency",
+  "counts": {
+    "actual04": 3,
+    "units04": 3,
+    "directory04": 9,
+    "air04": 13
+  },
+  "total_passed": 28,
+  "default_stack": true,
+  "results": [
+    {
+      "label": "actual04",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/task-execution-report-20261026/source04-task-report-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "seconds": 9.648825625,
+      "source": "source04-manifest.json",
+      "at": "2026-10-26T12:03:23.293230+00:00",
+      "default_stack": true
+    },
+    {
+      "label": "units04",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/task-execution-report-20261026/units04-fixed",
+        "sim_host::task_observation::tests",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "seconds": 0.5130465409999996,
+      "source": "source04-manifest.json",
+      "at": "2026-10-26T12:03:28.296455+00:00",
+      "default_stack": true
+    },
+    {
+      "label": "directory04",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/task-execution-report-20261026/directory04-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "seconds": 18.647140540999995,
+      "source": "source04-manifest.json",
+      "at": "2026-10-26T12:03:48.001319+00:00",
+      "default_stack": true
+    },
+    {
+      "label": "air04",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/task-execution-report-20261026/air04-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "seconds": 48.676031832999996,
+      "source": "source04-manifest.json",
+      "at": "2026-10-26T12:04:38.948444+00:00",
+      "default_stack": true
+    }
+  ],
+  "normal_role_observations": [
+    {
+      "arena_used_bytes": 56718936,
+      "grant_bytes": 61865984,
+      "allocation_failures": 0
+    },
+    {
+      "arena_used_bytes": 56759560,
+      "grant_bytes": 61865984,
+      "allocation_failures": 0
+    }
+  ],
+  "pool_returns": [
+    {
+      "capacity_bytes": 67108864,
+      "available_touched_bytes": 67108864,
+      "granted_capacity_bytes": 0,
+      "workspace_capacity_bytes": 0,
+      "workspace_grants": 1,
+      "workspace_returns": 1,
+      "workspace_fills": 1,
+      "grants": 0,
+      "returns": 0,
+      "fill_acknowledgements": 0,
+      "scans": 6,
+      "rejected_requests": 0,
+      "maximum_prepare_to_fill_or_reap_ns": 395112833
+    }
+  ],
+  "prior_air_v164_167_not_reimplemented": true,
+  "new_business_accepted": 0,
+  "historical_closed": 0,
+  "defects_closed": 0,
+  "full102_accepted": false,
+  "source_packet_backlog": 18,
+  "protected_wip_count": 24,
+  "remaining": [
+    "common capabilities/refinement/grant interfaces and explicit unsupported/unknown fields",
+    "actual residency/scratch/switch-cost sources and their honest generic report interface",
+    "103 compatibility closure and104 global fairness/multidimensional budget/speed backpressure remain separate",
+    "actual missing-clock and IO-unconfirmed observational branch injection without changing original business result"
+  ],
+  "not_run": [
+    "real16GB hardware",
+    "native total process memory acceptance",
+    "M0 frozen full acceptance",
+    "longterm fast-forward/pressure",
+    "GPU/UI",
+    "shipping Sim clock-unavailable injection: component counterexample only",
+    "new Sim observer unconfirmed IO branch under partial WAL/lost publication reply: classifier only; original Store/Air recovery regressions do not prove this new branch"
+  ],
+  "initial_failure": "source02 actual2pass1fail: new test sent reserved C through public Execute; kept original gate and used original Store ticket replay instead",
+  "no_runtime_contract_or_m0_budget_relaxation": true,
+  "pr": null
+}

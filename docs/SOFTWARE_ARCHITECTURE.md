@@ -180,3 +180,11 @@ v0.5.49执行更新：[耐久控制器](evidence/m0-t13a-endurance-controller/ST
 
 
 v0.5.50执行更新：[联合托管](evidence/m0-t13a-joint-endurance/STATUS.md)接入Rust supervisor真实Child和布局owner管道；合法停止与EOF分开，布局时轴覆盖业务退出后才允许收尾。CpuLog先持久发布有界身份首行，故障footer缺测保持缺测。原完整联合实测触发pressure保护，不能将接入代码写成完整联合运行通过或精确内存预算已闭合。
+
+### #102 共用实际执行报告接线（v208有限接线已验证，完整102开放）
+
+空气工作计数、等价页暂停/继续、页采样及单任务自动Continue已在v164–167实现并实测，不重复开发。当前root沿既有四provider目录补Sim内原Advance与Air worker的显式类型分支报告；不构造AirTicket，不增加调度器、进程或任务租约。Service/Supply/Timeline选中来源不同，同一原operation只记录一份执行。保留完整SourceBinding、可选原TaskKey、原Scope/sequence/Progress/operation与Advance目标/limit；同刻零窗不补造TaskKey或已处理区间。
+
+采样只围住原cpu_log::execute，包括原持久化/诊断IO；同Sim全线程CPU与宿主elapsed分别报告，不称领域独占CPU或queue age。单位为实际提交Advance operation，不能和空气sources/cells/integration/pages相加或当成目标完成；原票重放计0次新提交，提交不确定保留未知。原结果拒绝/不确定与原票确认分别保留。计量失败或报告超界只令观察不可用，不能改业务结果、原责任或退额；物理分配失败仍沿原进程故障和恢复义务处理。
+
+报告只保留每个执行位置最近一次，Sim退出后不从旧票补CPU；继承原Sim角色，不给内部任务重复授权或归还。scratch peak仍未知。新元数据规划64KiB、输出12KiB上界包含在原角色与诊断预算中，规划不是实测峰或新增授权；须经真实原角色联合验证。当前source04的28项限定检查通过，详见evidence/task-execution-report-20261026/STATUS.md；通用能力/细化/授予与成本接口尚缺，#102/#103/#104保持开放。
