@@ -1,0 +1,12 @@
+
+running 7 tests
+test bad_schema_and_resources_cannot_publish_and_same_source_can_retry_in_new_directory ... ok
+test boot_original_capital_survives_checkpoint_and_fresh_process_reopen ... ok
+test cold_open_probe ... ignored, fresh-process helper; invoked explicitly by the six parent Store tests
+test create_io_cutpoints_require_reopen_after_current_and_keep_every_attempt ... ok
+test e0_same_prepared_slot_publishes_original_bytes_and_does_not_reissue_spent_capital ... ok
+test legacy_raw_byte_store_create_keeps_original_genesis_and_recovery_contract ... ok
+test town_original_capital_survives_checkpoint_and_fresh_process_reopen ... ok
+
+test result: ok. 6 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.62s
+

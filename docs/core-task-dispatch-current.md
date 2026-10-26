@@ -1,6 +1,6 @@
 # MyCity 当前实际派工与交接
 
-**当前v0.5.197：**#136完整有限合同实际验收/关闭，父118开放；当前共享0+准备0，下一137尚未激活。不新增源码批次；[当前执行](execution-current.md)、[136证据](evidence/canonical-capacity-20261026/STATUS.md)。v196审计基线不变。
+**当前v0.5.198：**#137及关联#150有限合同门均已实际通过，源码冻结待发布/回填关闭；共享1+准备0，未提前计关闭。下一#149先实际复现，#134具体依赖已查清，无新源码派工。[当前执行](execution-current.md)、[137证据](evidence/typed-opening-provider-20261026/STATUS.md)。
 
 **2026-10-25 当前执行入口：**[Issue执行与验收台账](issue-execution-ledger.md)及GitHub #2/#23。
 当前root是唯一共享writer、串行验证和发布/关闭负责人；旧主会话已停止，下面旧派工不再授权。

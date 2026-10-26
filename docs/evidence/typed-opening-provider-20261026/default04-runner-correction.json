@@ -1,0 +1,12 @@
+{
+  "cause": "qualification_authority integration test belongs to mycity-storage, not mycity-core",
+  "not_game_failure": true,
+  "default_gates_ran": 0,
+  "reuse_successful_fixed_programs": [
+    "mycity_core",
+    "town_utility_engine"
+  ],
+  "new_compile": "only remaining5 unique targets",
+  "root_environment": "use original default15 source-derived ROOT/WORK keys per gate; no guessed variables",
+  "source_changed": false
+}

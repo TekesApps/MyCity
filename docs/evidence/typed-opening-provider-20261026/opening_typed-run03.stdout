@@ -1,0 +1,14 @@
+
+running 8 tests
+test absent_unknown_unit_profile_provider_clock_and_overflow_reject_without_defaults ... ok
+test actual_original_boot_clock_and_typed_ports_drive_completion ... ok
+test each_reference_scope_domain_target_and_catalog_version_is_required ... ok
+test independent_capital_stock_oracle_and_original_transfer_once ... ok
+test maximum_account_stock_and_resource_tables_accept_n_and_refuse_n_plus_one ... ok
+test original_sum_overflow_and_real_reader_capacity_are_not_silent_conversions ... input_bytes=65536; actual_source_owned_capacity=131238; counted_outside_borrowed_decode
+ok
+test raw_size_and_duplicate_json_fields_are_rejected_and_old_v1_remains_legal ... ok
+test typed_requires_complete_engine_context_and_successful_loader_is_not_reinitialized ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+

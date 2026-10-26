@@ -1,0 +1,6 @@
+
+running 1 test
+test transaction::tests::equity_contribution_is_allowed_before_timeline_creation_but_not_after_time_advances ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 300 filtered out; finished in 0.06s
+

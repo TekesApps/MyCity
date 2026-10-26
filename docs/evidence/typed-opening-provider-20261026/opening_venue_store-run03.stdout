@@ -1,0 +1,8 @@
+
+running 2 tests
+test fresh_store_restore_probe_child ... ignored, fresh process probe invoked by the parent test after the prior Store lock is dropped
+test managed_people_v1_opening_same_slot_wal_checkpoint_and_no_overwrite ... retained venue Store evidence: /Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/run03-venue-store/issue120-venue-25100-1792977382902034000-0
+ok
+
+test result: ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.35s
+

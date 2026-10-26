@@ -1,0 +1,11 @@
+
+running 6 tests
+test cold_process_original_typed_genesis ... ignored, invoked only by real parent fresh-process scenarios
+test publication_interruption_preserves_same_slot_and_lost_response_is_resolved_by_open ... ok
+test selected_reader_original_bytes_survive_external_source_change_without_reinitialization ... ok
+test semantic_or_resource_errors_leave_no_published_current_and_input_is_retained ... ok
+test supplied_bytes_original_ticket_wal_checkpoint_and_fresh_process_never_reissue_capital ... ok
+test typed_boot_actual_start_split_clock_and_completion_survive_original_cold_store ... ok
+
+test result: ok. 5 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 6.35s
+

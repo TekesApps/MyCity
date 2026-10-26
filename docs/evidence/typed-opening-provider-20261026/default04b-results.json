@@ -1,0 +1,53 @@
+[
+  {
+    "gate": 1,
+    "target": "mycity_core",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source04-mycity_core-fixed",
+      "--test-threads=1",
+      "--nocapture",
+      "transaction::tests::equity_contribution_is_allowed_before_timeline_creation_but_not_after_time_advances",
+      "--exact"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.8509735829999983,
+    "source": "source03-inputs.json",
+    "test_sha256": "1ac2117c45e84935a65b43bb16399ae3c5e92029dc05656d436d186e19c52c97",
+    "RUST_MIN_STACK_override": false,
+    "finished_at": "2026-10-26T01:20:37.822539+00:00"
+  },
+  {
+    "gate": 2,
+    "target": "town_utility_engine",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source04-town_utility_engine-fixed",
+      "--test-threads=1",
+      "--nocapture",
+      "accepted_cross_city_quote_uses_shared_pool_before_local_market_and_survives_checkpoint",
+      "--exact"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.7654640000000015,
+    "source": "source03-inputs.json",
+    "test_sha256": "23039eeb58aaaa9647276951679803c2acec6e4981912a781dd57cd725a86e88",
+    "RUST_MIN_STACK_override": false,
+    "finished_at": "2026-10-26T01:20:38.606562+00:00"
+  },
+  {
+    "gate": 3,
+    "target": "qualification_authority",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source04b-qualification_authority-fixed",
+      "--test-threads=1",
+      "--nocapture",
+      "original_teaching_exam_grant_replay_revoke_and_old_exam_substitution",
+      "--exact"
+    ],
+    "exit_code": -6,
+    "elapsed_seconds": 1.129444915999997,
+    "source": "source03-inputs.json",
+    "test_sha256": "41949903a54f83c49ce368c844d7e8324ebcb63678abc38455fa840b015fc808",
+    "RUST_MIN_STACK_override": false,
+    "finished_at": "2026-10-26T01:20:39.754746+00:00"
+  }
+]

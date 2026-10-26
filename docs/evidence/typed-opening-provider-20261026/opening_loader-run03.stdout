@@ -1,0 +1,25 @@
+
+running 20 tests
+test accepts_exact_byte_limit_and_rejects_one_more_byte ... ok
+test bounds_untrusted_stream_and_preserves_real_read_errors ... ok
+test diagnostic_00_type_sizes ... ignored, isolated fatal-stack diagnostic; run exact with nocapture
+test diagnostic_01_direct_simple ... ignored, isolated fatal-stack diagnostic; run exact with nocapture
+test diagnostic_02_direct_padded ... ignored, isolated fatal-stack diagnostic; run exact with nocapture
+test diagnostic_03_direct_snapshot_padded ... ignored, isolated fatal-stack diagnostic; run exact with nocapture
+test diagnostic_04_loader_bytes_padded ... ignored, isolated fatal-stack diagnostic; run exact with nocapture
+test diagnostic_05_loader_reader_padded ... ignored, isolated fatal-stack diagnostic; run exact with nocapture
+test diagnostic_06_retained_slot_padded ... ignored, isolated existing retained-slot diagnostic; not Store acceptance
+test diagnostic_retained_fixture_00_e0 ... ignored, fresh-process retained fixture localization; not replacement acceptance
+test diagnostic_retained_fixture_01_region ... ignored, fresh-process retained fixture localization; not replacement acceptance
+test diagnostic_retained_fixture_02_economy ... ignored, fresh-process retained fixture localization; not replacement acceptance
+test diagnostic_retained_fixture_03_boot ... ignored, fresh-process retained fixture localization; not replacement acceptance
+test diagnostic_retained_fixture_04_exchange ... ignored, fresh-process retained fixture localization; not replacement acceptance
+test diagnostic_retained_fixture_05_background_joint ... ignored, fresh-process retained fixture localization; not replacement acceptance
+test diagnostic_retained_fixture_06_town_utility ... ignored, fresh-process retained fixture localization; not replacement acceptance
+test existing_openings_have_identical_worlds_and_exact_source_bytes ... ok
+test rejects_bad_schema_unknown_fields_units_and_entitlements_with_original_errors ... ok
+test rejects_count_overflow_bad_syntax_and_bad_utf8 ... ok
+test source_identity_survives_handoff_without_json_normalization ... ok
+
+test result: ok. 6 passed; 0 failed; 14 ignored; 0 measured; 0 filtered out; finished in 0.04s
+

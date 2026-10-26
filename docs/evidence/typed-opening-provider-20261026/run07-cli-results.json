@@ -1,0 +1,38 @@
+[
+  {
+    "target": "opening_typed_cli",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source07-opening_typed_cli-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 1.570558375,
+    "test_sha256": "b8a9b74957c1485e474b109c87f856d2e9fc70918fd0ff1e06ea6862499c951e",
+    "main": {
+      "fixed": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source07-headless-fixed",
+      "sha256": "9a70d880c93c332831c4456d88b06e91b5020cebc109786ec04f23d089421c48",
+      "cargo_main": "/Volumes/HP P900/dev/MyCity/target/release/mycity-headless",
+      "source_sha256": "9c03cafd56131de10b5658f2e2d44a2ecae0270334ee2c9e7b32e9c4fcfba417"
+    },
+    "source": "source05-inputs.json"
+  },
+  {
+    "target": "opening_cli",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source07-opening_cli-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.7853372919999999,
+    "test_sha256": "0cf55c04f70fb118a8437df037b6e19929d8dc9d679eb8a330ca35fd45ff5a45",
+    "main": {
+      "fixed": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source07-headless-fixed",
+      "sha256": "9a70d880c93c332831c4456d88b06e91b5020cebc109786ec04f23d089421c48",
+      "cargo_main": "/Volumes/HP P900/dev/MyCity/target/release/mycity-headless",
+      "source_sha256": "9c03cafd56131de10b5658f2e2d44a2ecae0270334ee2c9e7b32e9c4fcfba417"
+    },
+    "source": "source05-inputs.json"
+  }
+]

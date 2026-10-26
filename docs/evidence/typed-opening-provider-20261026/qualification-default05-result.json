@@ -1,0 +1,17 @@
+{
+  "command": [
+    "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source05-qualification-fixed",
+    "--test-threads=1",
+    "--nocapture",
+    "original_teaching_exam_grant_replay_revoke_and_old_exam_substitution",
+    "--exact"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 40.502016917,
+  "finished_at": "2026-10-26T01:29:26.454334+00:00",
+  "executable_sha256": "f975130e39f477d04a130885af48a8788fec0e5af52d234f38a8ace5dcaeb999",
+  "source": "source05-inputs.json",
+  "RUST_MIN_STACK_override": false,
+  "retained_root": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/default05-focused",
+  "prior_failure": "default04b-3-qualification_authority.stderr"
+}

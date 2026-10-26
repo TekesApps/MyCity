@@ -1,0 +1,516 @@
+{
+  "schema": "mycity-typed-opening-v1",
+  "provider": {
+    "kind": "embedded_laboratory",
+    "version": 1
+  },
+  "bootstrap": {
+    "schema": "mycity-m0-bootstrap-v1",
+    "world": 1,
+    "branch": 1,
+    "seed": 7,
+    "laboratory_only": true
+  },
+  "sources": [
+    {
+      "id": 1,
+      "version": 1,
+      "kind": "cash_capital",
+      "amount": {
+        "value": 1000000,
+        "unit": "cent"
+      }
+    },
+    {
+      "id": 2,
+      "version": 1,
+      "kind": "cash_capital",
+      "amount": {
+        "value": 200000,
+        "unit": "cent"
+      }
+    },
+    {
+      "id": 3,
+      "version": 1,
+      "kind": "cash_capital",
+      "amount": {
+        "value": 600000,
+        "unit": "cent"
+      }
+    },
+    {
+      "id": 4,
+      "version": 1,
+      "kind": "cash_capital",
+      "amount": {
+        "value": 1200000,
+        "unit": "cent"
+      }
+    },
+    {
+      "id": 5,
+      "version": 1,
+      "kind": "inventory_capital",
+      "amount": {
+        "value": 2000,
+        "unit": "cent"
+      }
+    },
+    {
+      "id": 6,
+      "version": 1,
+      "kind": "inventory_capital",
+      "amount": {
+        "value": 100,
+        "unit": "cent"
+      }
+    },
+    {
+      "id": 7,
+      "version": 1,
+      "kind": "inventory_capital",
+      "amount": {
+        "value": 0,
+        "unit": "cent"
+      }
+    },
+    {
+      "id": 8,
+      "version": 1,
+      "kind": "inventory_capital",
+      "amount": {
+        "value": 0,
+        "unit": "cent"
+      }
+    },
+    {
+      "id": 9,
+      "version": 1,
+      "kind": "inventory_capital",
+      "amount": {
+        "value": 0,
+        "unit": "cent"
+      }
+    },
+    {
+      "id": 10,
+      "version": 1,
+      "kind": "inventory_capital",
+      "amount": {
+        "value": 0,
+        "unit": "cent"
+      }
+    }
+  ],
+  "accounts": [
+    {
+      "id": 1,
+      "version": 1,
+      "role": "treasury",
+      "cash": {
+        "value": 1000000,
+        "unit": "cent"
+      },
+      "source": {
+        "scope": {
+          "world": 1,
+          "branch": 1
+        },
+        "domain": "cash_capital",
+        "id": 1,
+        "version": 1
+      }
+    },
+    {
+      "id": 2,
+      "version": 1,
+      "role": "household",
+      "cash": {
+        "value": 200000,
+        "unit": "cent"
+      },
+      "source": {
+        "scope": {
+          "world": 1,
+          "branch": 1
+        },
+        "domain": "cash_capital",
+        "id": 2,
+        "version": 1
+      }
+    },
+    {
+      "id": 3,
+      "version": 1,
+      "role": "company",
+      "cash": {
+        "value": 600000,
+        "unit": "cent"
+      },
+      "source": {
+        "scope": {
+          "world": 1,
+          "branch": 1
+        },
+        "domain": "cash_capital",
+        "id": 3,
+        "version": 1
+      }
+    },
+    {
+      "id": 4,
+      "version": 1,
+      "role": "supplier",
+      "cash": {
+        "value": 1200000,
+        "unit": "cent"
+      },
+      "source": {
+        "scope": {
+          "world": 1,
+          "branch": 1
+        },
+        "domain": "cash_capital",
+        "id": 4,
+        "version": 1
+      }
+    }
+  ],
+  "stocks": [
+    {
+      "id": 1,
+      "version": 1,
+      "owner": {
+        "scope": {
+          "world": 1,
+          "branch": 1
+        },
+        "domain": "account",
+        "id": 3,
+        "version": 1
+      },
+      "commodity": "fuel",
+      "quantity": {
+        "value": 5000,
+        "unit": "milli_q"
+      },
+      "basis": {
+        "value": 2000,
+        "unit": "cent"
+      },
+      "source": {
+        "scope": {
+          "world": 1,
+          "branch": 1
+        },
+        "domain": "inventory_capital",
+        "id": 5,
+        "version": 1
+      }
+    },
+    {
+      "id": 2,
+      "version": 1,
+      "owner": {
+        "scope": {
+          "world": 1,
+          "branch": 1
+        },
+        "domain": "account",
+        "id": 3,
+        "version": 1
+      },
+      "commodity": "electricity",
+      "quantity": {
+        "value": 100000,
+        "unit": "milli_wh"
+      },
+      "basis": {
+        "value": 100,
+        "unit": "cent"
+      },
+      "source": {
+        "scope": {
+          "world": 1,
+          "branch": 1
+        },
+        "domain": "inventory_capital",
+        "id": 6,
+        "version": 1
+      }
+    },
+    {
+      "id": 3,
+      "version": 1,
+      "owner": {
+        "scope": {
+          "world": 1,
+          "branch": 1
+        },
+        "domain": "account",
+        "id": 3,
+        "version": 1
+      },
+      "commodity": "water",
+      "quantity": {
+        "value": 0,
+        "unit": "millilitre"
+      },
+      "basis": {
+        "value": 0,
+        "unit": "cent"
+      },
+      "source": {
+        "scope": {
+          "world": 1,
+          "branch": 1
+        },
+        "domain": "inventory_capital",
+        "id": 7,
+        "version": 1
+      }
+    },
+    {
+      "id": 4,
+      "version": 1,
+      "owner": {
+        "scope": {
+          "world": 1,
+          "branch": 1
+        },
+        "domain": "account",
+        "id": 3,
+        "version": 1
+      },
+      "commodity": "raw_water",
+      "quantity": {
+        "value": 6000000,
+        "unit": "millilitre"
+      },
+      "basis": {
+        "value": 0,
+        "unit": "cent"
+      },
+      "source": {
+        "scope": {
+          "world": 1,
+          "branch": 1
+        },
+        "domain": "inventory_capital",
+        "id": 8,
+        "version": 1
+      }
+    },
+    {
+      "id": 5,
+      "version": 1,
+      "owner": {
+        "scope": {
+          "world": 1,
+          "branch": 1
+        },
+        "domain": "account",
+        "id": 3,
+        "version": 1
+      },
+      "commodity": "waste_water",
+      "quantity": {
+        "value": 0,
+        "unit": "millilitre"
+      },
+      "basis": {
+        "value": 0,
+        "unit": "cent"
+      },
+      "source": {
+        "scope": {
+          "world": 1,
+          "branch": 1
+        },
+        "domain": "inventory_capital",
+        "id": 9,
+        "version": 1
+      }
+    },
+    {
+      "id": 6,
+      "version": 1,
+      "owner": {
+        "scope": {
+          "world": 1,
+          "branch": 1
+        },
+        "domain": "account",
+        "id": 3,
+        "version": 1
+      },
+      "commodity": "heat",
+      "quantity": {
+        "value": 0,
+        "unit": "milli_wh"
+      },
+      "basis": {
+        "value": 0,
+        "unit": "cent"
+      },
+      "source": {
+        "scope": {
+          "world": 1,
+          "branch": 1
+        },
+        "domain": "inventory_capital",
+        "id": 10,
+        "version": 1
+      }
+    }
+  ],
+  "resources": [
+    {
+      "id": 101,
+      "version": 1,
+      "capacity": 2,
+      "unit": "count"
+    },
+    {
+      "id": 102,
+      "version": 1,
+      "capacity": 2,
+      "unit": "count"
+    }
+  ],
+  "clock": {
+    "kind": "boot_discrete",
+    "scope": {
+      "world": 1,
+      "branch": 1
+    },
+    "version": 1,
+    "unit": "second",
+    "initial": 0
+  },
+  "profile": {
+    "kind": "boot_micro",
+    "version": 1,
+    "operator": {
+      "scope": {
+        "world": 1,
+        "branch": 1
+      },
+      "domain": "account",
+      "id": 3,
+      "version": 1
+    },
+    "contractor": {
+      "scope": {
+        "world": 1,
+        "branch": 1
+      },
+      "domain": "account",
+      "id": 4,
+      "version": 1
+    },
+    "stocks": [
+      {
+        "scope": {
+          "world": 1,
+          "branch": 1
+        },
+        "domain": "stock",
+        "id": 1,
+        "version": 1
+      },
+      {
+        "scope": {
+          "world": 1,
+          "branch": 1
+        },
+        "domain": "stock",
+        "id": 2,
+        "version": 1
+      },
+      {
+        "scope": {
+          "world": 1,
+          "branch": 1
+        },
+        "domain": "stock",
+        "id": 3,
+        "version": 1
+      },
+      {
+        "scope": {
+          "world": 1,
+          "branch": 1
+        },
+        "domain": "stock",
+        "id": 4,
+        "version": 1
+      },
+      {
+        "scope": {
+          "world": 1,
+          "branch": 1
+        },
+        "domain": "stock",
+        "id": 5,
+        "version": 1
+      },
+      {
+        "scope": {
+          "world": 1,
+          "branch": 1
+        },
+        "domain": "stock",
+        "id": 6,
+        "version": 1
+      }
+    ],
+    "resources": [
+      {
+        "scope": {
+          "world": 1,
+          "branch": 1
+        },
+        "domain": "resource",
+        "id": 101,
+        "version": 1
+      },
+      {
+        "scope": {
+          "world": 1,
+          "branch": 1
+        },
+        "domain": "resource",
+        "id": 102,
+        "version": 1
+      }
+    ],
+    "limits": [
+      {
+        "value": 5000,
+        "unit": "milli_q"
+      },
+      {
+        "value": 2000000,
+        "unit": "milli_wh"
+      },
+      {
+        "value": 6000000,
+        "unit": "millilitre"
+      },
+      {
+        "value": 6000000,
+        "unit": "millilitre"
+      },
+      {
+        "value": 6000000,
+        "unit": "millilitre"
+      },
+      {
+        "value": 10000000,
+        "unit": "milli_wh"
+      }
+    ]
+  }
+}

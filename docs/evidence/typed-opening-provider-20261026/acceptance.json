@@ -1,0 +1,121 @@
+{
+  "issue": 137,
+  "related_defect": 150,
+  "base_commit": "d8110a5136013ee55ce62cf447356f8a7f037327",
+  "evidence_release": "v0.5.198",
+  "source": "source05-inputs.json",
+  "source_files": 467,
+  "source03_reuse": {
+    "source03": "source03-inputs.json",
+    "current": "source05-inputs.json",
+    "only_changed_file": [
+      "crates/city-core/src/assembly.rs"
+    ],
+    "typed_budget_decode_builder_body_byte_identical": true,
+    "legacy_assemble_into_byte_identical": true,
+    "all_other_source_fixtures_and_tests_byte_identical": true,
+    "reuse_scope": "source03 assembly10/loader6/opening same-slot6/venue1/continuous1 functional evidence, with current source05 original default6 and typed default8+Store5/cold6 covering actual shared dispatch frame",
+    "not_reused_as_current": "source03 default-stack failure; it is retained and replaced only by actual successful source05 default gates",
+    "new_current_required": [
+      "source05 actual local-file CLI",
+      "source05 shipping normal role restore/operation/resource"
+    ]
+  },
+  "source03_release_groups": 9,
+  "source03_release_main_tests": 40,
+  "current_default_gates": 8,
+  "current_cli_tests": 3,
+  "actual_role_result": {
+    "actual_reader_owned_capacity": 131241,
+    "actual_water_quantity": 600000,
+    "creator_and_full_reference_stores_are_test_tool_outside_shipping_role": true,
+    "creator_store_owned_capacity": 42886764,
+    "engine_owned_bytes": 3601880,
+    "no_whole_game_native_16GB_M0_or_speed_claim": true,
+    "original_boot_time": 60,
+    "original_input_bytes": 65536,
+    "original_ticket_cold_replay_once": true,
+    "same_complete_direct_reference": true,
+    "store_owned_bytes": 42886828
+  },
+  "allocator_observations": [
+    {
+      "kind": "ready",
+      "grant_bytes": 61865984,
+      "allocation_failures": 0,
+      "arena_used_bytes": 56597072,
+      "arena_usable_bytes": 61865544,
+      "lifetime_peak_requested_bytes": 56622302,
+      "store_owned_bytes": 52137586
+    },
+    {
+      "kind": "result",
+      "grant_bytes": 61865984,
+      "allocation_failures": 0,
+      "arena_used_bytes": 56597216,
+      "arena_usable_bytes": 61865544,
+      "lifetime_peak_requested_bytes": 56684870,
+      "store_owned_bytes": 52137650
+    },
+    {
+      "kind": "ready",
+      "grant_bytes": 61865984,
+      "allocation_failures": 0,
+      "arena_used_bytes": 56597136,
+      "arena_usable_bytes": 61865544,
+      "lifetime_peak_requested_bytes": 56622366,
+      "store_owned_bytes": 52137650
+    },
+    {
+      "kind": "result",
+      "grant_bytes": 61865984,
+      "allocation_failures": 0,
+      "arena_used_bytes": 56597224,
+      "arena_usable_bytes": 61865544,
+      "lifetime_peak_requested_bytes": 56684940,
+      "store_owned_bytes": 52137650
+    }
+  ],
+  "pool_return": {
+    "capacity_bytes": 67108864,
+    "available_touched_bytes": 67108864,
+    "granted_capacity_bytes": 0,
+    "workspace_capacity_bytes": 0,
+    "workspace_grants": 2,
+    "workspace_returns": 2,
+    "workspace_fills": 2,
+    "grants": 0,
+    "returns": 0,
+    "fill_acknowledgements": 0,
+    "scans": 8,
+    "rejected_requests": 0,
+    "maximum_prepare_to_fill_or_reap_ns": 21783750
+  },
+  "slot_proof": "typed-slot-proof-result.json",
+  "same_slot_profiles": 2,
+  "typed_workspace_bytes": 152464,
+  "initial_slot_owned_bytes": 3601880,
+  "model_sum_bytes": 3754344,
+  "engine_budget_bytes": 4194304,
+  "padded_reader_input_bytes": 65536,
+  "padded_reader_actual_source_owned_bytes": 131238,
+  "raw_source_capacity_counted_outside_borrowed_parser": true,
+  "hardware": [
+    "Mac16,1",
+    "34359738368"
+  ],
+  "storage": "existing HP P900 USB/APFS target/work; no new target/tree/timer",
+  "retention_bytes": 301582208,
+  "retention_budget_bytes": 536870912,
+  "programs_verified": 31,
+  "protected_WIP": 24,
+  "pr": null,
+  "unproven": [
+    "real16GB",
+    "native/whole-process peak",
+    "whole-game sustainable speed/long run/M0",
+    "GPU/UI",
+    "all future providers/profiles",
+    "issue149 actual dynamic outcome (separate queued source report)"
+  ]
+}

@@ -40,7 +40,8 @@ impl EngineSlot {
             if resources.len() > MAX_RESOURCES {
                 return Err("initial_resource_limit".into());
             }
-            crate::assembly::assemble_into(opening, &mut self.engine.world)?;
+            let owned_bytes = self.engine.owned_capacity_bytes();
+            crate::assembly::assemble_with_resources_into(opening, &mut self.engine.world, resources, owned_bytes)?;
             for r in resources {
                 self.engine.resources.push(*r);
             }

@@ -1,0 +1,122 @@
+{
+  "schema": "mycity-typed-opening-v1",
+  "provider": {
+    "kind": "embedded_laboratory",
+    "version": 1
+  },
+  "bootstrap": {
+    "schema": "mycity-m0-bootstrap-v1",
+    "world": 9,
+    "branch": 3,
+    "seed": 44,
+    "laboratory_only": true
+  },
+  "sources": [
+    {
+      "id": 10,
+      "version": 1,
+      "kind": "cash_capital",
+      "amount": {
+        "value": 5000,
+        "unit": "cent"
+      }
+    },
+    {
+      "id": 11,
+      "version": 1,
+      "kind": "cash_capital",
+      "amount": {
+        "value": 1000,
+        "unit": "cent"
+      }
+    },
+    {
+      "id": 12,
+      "version": 1,
+      "kind": "inventory_capital",
+      "amount": {
+        "value": 700,
+        "unit": "cent"
+      }
+    }
+  ],
+  "accounts": [
+    {
+      "id": 1,
+      "version": 1,
+      "role": "treasury",
+      "cash": {
+        "value": 5000,
+        "unit": "cent"
+      },
+      "source": {
+        "scope": {
+          "world": 9,
+          "branch": 3
+        },
+        "domain": "cash_capital",
+        "id": 10,
+        "version": 1
+      }
+    },
+    {
+      "id": 2,
+      "version": 1,
+      "role": "company",
+      "cash": {
+        "value": 1000,
+        "unit": "cent"
+      },
+      "source": {
+        "scope": {
+          "world": 9,
+          "branch": 3
+        },
+        "domain": "cash_capital",
+        "id": 11,
+        "version": 1
+      }
+    }
+  ],
+  "stocks": [
+    {
+      "id": 1,
+      "version": 1,
+      "owner": {
+        "scope": {
+          "world": 9,
+          "branch": 3
+        },
+        "domain": "account",
+        "id": 2,
+        "version": 1
+      },
+      "commodity": "raw",
+      "quantity": {
+        "value": 3000,
+        "unit": "milli_q"
+      },
+      "basis": {
+        "value": 700,
+        "unit": "cent"
+      },
+      "source": {
+        "scope": {
+          "world": 9,
+          "branch": 3
+        },
+        "domain": "inventory_capital",
+        "id": 12,
+        "version": 1
+      }
+    }
+  ],
+  "resources": [],
+  "clock": {
+    "kind": "none"
+  },
+  "profile": {
+    "kind": "base",
+    "version": 1
+  }
+}

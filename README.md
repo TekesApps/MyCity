@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.197`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.198`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.198 接通[#137有限typed开局](docs/evidence/typed-opening-provider-20261026/STATUS.md)：同scope/domain/version引用、明确单位/Boot离散钟、原resources整表与同槽发布/冷恢复；旧v1兼容。修复#150公共分派默认栈回归，原6+新2默认门、当前CLI和真实normal角色均通过。父120/真实16GB/M0仍开放；Issue实际关闭与统计另按回读同步，不把本tag当验收。无PR，24WIP及失败完整原件保留。
 
 v0.5.197 发布[#136原池时窗内核完整有限验收](docs/evidence/canonical-capacity-20261026/STATUS.md)与实际关闭台账：实现仍为v196，当前受影响6组、默认栈8门、真实normal角色联合业务/保存重启/原票全部通过。父118及真实16GB/M0/其它consumer继续开放；新验收业务累计4，历史补关0，缺陷1，积压19待集成/0待验证。原v196审计快照保持不变，无PR。
 

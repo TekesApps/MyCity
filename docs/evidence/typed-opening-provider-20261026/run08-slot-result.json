@@ -1,0 +1,12 @@
+{
+  "command": [
+    "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source08-slot-proof-fixed",
+    "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/typed-slot-proof-result.json",
+    "/Users/frankqin/dev/MyCity/tests/fixtures/opening-typed/base.json",
+    "/Users/frankqin/dev/MyCity/tests/fixtures/opening-typed/boot.json"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 0.7116635,
+  "executable_sha256": "8e0ca9804e613b26d5b13b3feb9465302f633a65fb7fef9ba9645d00e45dd5c0",
+  "finished_at": "2026-10-26T02:42:32.111144+00:00"
+}

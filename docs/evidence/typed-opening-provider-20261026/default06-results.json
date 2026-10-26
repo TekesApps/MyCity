@@ -1,0 +1,135 @@
+[
+  {
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source05-qualification-fixed",
+      "--test-threads=1",
+      "--nocapture",
+      "original_teaching_exam_grant_replay_revoke_and_old_exam_substitution",
+      "--exact"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 40.502016917,
+    "finished_at": "2026-10-26T01:29:26.454334+00:00",
+    "executable_sha256": "f975130e39f477d04a130885af48a8788fec0e5af52d234f38a8ace5dcaeb999",
+    "source": "source05-inputs.json",
+    "RUST_MIN_STACK_override": false,
+    "retained_root": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/default05-focused",
+    "prior_failure": "default04b-3-qualification_authority.stderr",
+    "target": "qualification_authority",
+    "original_gate": 3,
+    "reused_current_result": true
+  },
+  {
+    "gate": 1,
+    "target": "mycity_core",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source06-mycity_core-fixed",
+      "--test-threads=1",
+      "--nocapture",
+      "transaction::tests::equity_contribution_is_allowed_before_timeline_creation_but_not_after_time_advances",
+      "--exact"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.7850385840000005,
+    "source": "source05-inputs.json",
+    "test_sha256": "f0fe38f82ad31c7a394ea140f3db8f1cc162229df21d4230effbb73b85fcd083",
+    "RUST_MIN_STACK_override": false,
+    "finished_at": "2026-10-26T01:32:42.736020+00:00"
+  },
+  {
+    "gate": 2,
+    "target": "town_utility_engine",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source06-town_utility_engine-fixed",
+      "--test-threads=1",
+      "--nocapture",
+      "accepted_cross_city_quote_uses_shared_pool_before_local_market_and_survives_checkpoint",
+      "--exact"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.7462179999999989,
+    "source": "source05-inputs.json",
+    "test_sha256": "066cdfdb963545dad752e91d23e6acbd6898a9e373c31cc03443e03d1812739d",
+    "RUST_MIN_STACK_override": false,
+    "finished_at": "2026-10-26T01:32:43.505581+00:00"
+  },
+  {
+    "gate": 3,
+    "target": "facility_operation",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source06-facility_operation-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 3.8753195829999996,
+    "source": "source05-inputs.json",
+    "test_sha256": "fcfcaa3f91cdcda604713ace5dd6ce084ed108049798c5fab75c04f3c57233dd",
+    "RUST_MIN_STACK_override": false,
+    "finished_at": "2026-10-26T01:32:47.405320+00:00"
+  },
+  {
+    "gate": 4,
+    "target": "facility_operation_store",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source06-facility_operation_store-fixed",
+      "--test-threads=1",
+      "--nocapture",
+      "original_wal_checkpoint_retry_and_stopped_fraction_are_once",
+      "--exact"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 2.9648964579999983,
+    "source": "source05-inputs.json",
+    "test_sha256": "69885fc6a45b19fae0db917df5d61de9ce668940a9b3fd8de059d82ecf89906d",
+    "RUST_MIN_STACK_override": false,
+    "finished_at": "2026-10-26T01:32:50.393864+00:00"
+  },
+  {
+    "gate": 5,
+    "target": "facility_operation_store",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source06-facility_operation_store-fixed",
+      "--test-threads=1",
+      "--nocapture",
+      "partial_old_payroll_payment_restores_the_same_shared_income_window",
+      "--exact"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 10.326909749999999,
+    "source": "source05-inputs.json",
+    "test_sha256": "69885fc6a45b19fae0db917df5d61de9ce668940a9b3fd8de059d82ecf89906d",
+    "RUST_MIN_STACK_override": false,
+    "finished_at": "2026-10-26T01:33:00.747193+00:00"
+  },
+  {
+    "gate": 6,
+    "target": "opening_typed",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source06-opening_typed-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.897810917000001,
+    "source": "source05-inputs.json",
+    "test_sha256": "030944e6f138f9adb64512dbc5e338ddd660fff4440b5bec7d6cd3c37d0755f2",
+    "RUST_MIN_STACK_override": false,
+    "finished_at": "2026-10-26T01:33:01.668068+00:00"
+  },
+  {
+    "gate": 7,
+    "target": "opening_typed_provider_store",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source06-opening_typed_provider_store-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 7.221496250000001,
+    "source": "source05-inputs.json",
+    "test_sha256": "5d4b40390cc32f129705ff8ca3c62be7a7f3dbbd720063e8550cecf9c2bc8cc1",
+    "RUST_MIN_STACK_override": false,
+    "finished_at": "2026-10-26T01:33:08.913128+00:00"
+  }
+]

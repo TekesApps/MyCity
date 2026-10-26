@@ -1,0 +1,201 @@
+[
+  {
+    "file": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source02-opening_typed-fixed.zip",
+    "member": "source02-opening_typed-fixed",
+    "sha256": "c3be8a1520e26405965a5a1a45978316a9c53c180bad903f7e5b04128834b0ec",
+    "archive_sha256": "6aaba814e0dcb7598e6e466f8065459bc6b28fb52cad2658a3a06d87cb7bbce9",
+    "restore": "extract full exact member and chmod755"
+  },
+  {
+    "file": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source02-opening_typed_provider_store-fixed.zip",
+    "member": "source02-opening_typed_provider_store-fixed",
+    "sha256": "04f009a6f05adda05b793541d08ff970bb7addb10ffddd05115f748a81f4eada",
+    "archive_sha256": "6d23aa7e2ed3eb6ed36c608c98e8522ad64b48c7ddca5ef6ff5d48051c49ee45",
+    "restore": "extract full exact member and chmod755"
+  },
+  {
+    "file": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source03-mycity_core-fixed.zip",
+    "member": "source03-mycity_core-fixed",
+    "sha256": "cd28f47e2659477df69e78c2c419f68854d7ea608094dc75ce9420fd9f27e330",
+    "archive_sha256": "3e320b35b61820f25c77c4bb1e3f3b6b93ad248197c5277e0a786418e73240e6",
+    "restore": "extract full exact member and chmod755"
+  },
+  {
+    "file": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source03-opening_cli-fixed.zip",
+    "member": "source03-opening_cli-fixed",
+    "sha256": "728c44cdc23907db9339213af564d12376719c0103dde34a57a1a25f04753109",
+    "archive_sha256": "423ad40aacda992c802cdcb577f3035a585a323696c00799693ae6f1a740ff6c",
+    "restore": "extract full exact member and chmod755"
+  },
+  {
+    "file": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source03-opening_continuous_supply_store-fixed.zip",
+    "member": "source03-opening_continuous_supply_store-fixed",
+    "sha256": "91d9a3ba64f9ea46f9b9d319778cf786c0a25c696c45d5609c50ed37fa47ea94",
+    "archive_sha256": "ead4c7b6c0545351af3a9b77edf65fa7224859470f83e9cad1880b4ad2b4db56",
+    "restore": "extract full exact member and chmod755"
+  },
+  {
+    "file": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source03-opening_input_store-fixed.zip",
+    "member": "source03-opening_input_store-fixed",
+    "sha256": "f935d060be2c8c7cf604079a348c0b37ad38836549f8b684552416be4515a18c",
+    "archive_sha256": "cc8c91d167ce37f650e87a035abda98d45e889770e856835417a47549ee51a7f",
+    "restore": "extract full exact member and chmod755"
+  },
+  {
+    "file": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source03-opening_loader-fixed.zip",
+    "member": "source03-opening_loader-fixed",
+    "sha256": "6a910c9626e04106cec08f3298391ebf45774eb18a607036e0656b68831cc231",
+    "archive_sha256": "0f536154b53ce47a337d4bdc08d54d403eecbe25fea3f296cb658e58a1a0b962",
+    "restore": "extract full exact member and chmod755"
+  },
+  {
+    "file": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source03-opening_typed-fixed.zip",
+    "member": "source03-opening_typed-fixed",
+    "sha256": "4914d9b0df1bdea4c5d65e8540186f230c68a61625e4301cf2c61111f13fd3ad",
+    "archive_sha256": "ba43452c541980cc6ca23170cfbdd8c301c264a4691a2a06f00d01c39f10110d",
+    "restore": "extract full exact member and chmod755"
+  },
+  {
+    "file": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source03-opening_typed_cli-fixed.zip",
+    "member": "source03-opening_typed_cli-fixed",
+    "sha256": "b98a45233b884cec32081f2579dfc70e92cd7994879ed4c1d547930455029cf2",
+    "archive_sha256": "6560b3277ef0a7da686ef68e7627f75bd7cf6a55f14ab857739e6ab52ed0142b",
+    "restore": "extract full exact member and chmod755"
+  },
+  {
+    "file": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source03-opening_typed_provider_store-fixed.zip",
+    "member": "source03-opening_typed_provider_store-fixed",
+    "sha256": "98e7805e79671dfc87c57cbc93c8ef3cec691c61d6c29ddbb917599800b7828b",
+    "archive_sha256": "c14250c5bc3bff5e3bceb8cab746b95a90a61a16000900179c68f0998d1eb47b",
+    "restore": "extract full exact member and chmod755"
+  },
+  {
+    "file": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source03-opening_venue_store-fixed.zip",
+    "member": "source03-opening_venue_store-fixed",
+    "sha256": "2734abe799c5f60a5907e0d8714d94428a5cddeac2105e6e850f96653172c2e5",
+    "archive_sha256": "ed98d80128d99e3b1b96a4c51a9fa3a6d409655eaaef3f8df589fa91c30cb3b3",
+    "restore": "extract full exact member and chmod755"
+  },
+  {
+    "file": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source04-mycity_core-fixed.zip",
+    "member": "source04-mycity_core-fixed",
+    "sha256": "1ac2117c45e84935a65b43bb16399ae3c5e92029dc05656d436d186e19c52c97",
+    "archive_sha256": "7333be00a867c46992e881f9e58f1dd10e577a2b3d503264c29a10ed0974f3d1",
+    "restore": "extract full exact member and chmod755"
+  },
+  {
+    "file": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source04-town_utility_engine-fixed.zip",
+    "member": "source04-town_utility_engine-fixed",
+    "sha256": "23039eeb58aaaa9647276951679803c2acec6e4981912a781dd57cd725a86e88",
+    "archive_sha256": "a29bfa400fc20a6c184ca062dcddf5d8851af5bd985c458bdf63dbf34512a32b",
+    "restore": "extract full exact member and chmod755"
+  },
+  {
+    "file": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source04b-facility_operation-fixed.zip",
+    "member": "source04b-facility_operation-fixed",
+    "sha256": "784e34c724d6a4b7406619dafc6b48de108fa350391c8b2acf228fff9c252f07",
+    "archive_sha256": "ac1081f116cfe4a8494b1fa8499f584c39b9284f2a2feae15afc6292834345d5",
+    "restore": "extract full exact member and chmod755"
+  },
+  {
+    "file": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source04b-facility_operation_store-fixed.zip",
+    "member": "source04b-facility_operation_store-fixed",
+    "sha256": "149bac9422dcf56d24fe25fcbff7e059ad3143c013740e5d86439762fb08504e",
+    "archive_sha256": "b51b46d9aef8327be6a1b3e62fcdf09607054345b54886010fcb4d571be99d64",
+    "restore": "extract full exact member and chmod755"
+  },
+  {
+    "file": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source04b-opening_typed-fixed.zip",
+    "member": "source04b-opening_typed-fixed",
+    "sha256": "e3d4cc8abb789e2330f8d0499f22b0bffdfcc8d1e9de6bf4105bcb27f15d55d4",
+    "archive_sha256": "8838c045aa76f57ace38f718643ff5aef191770daadfe57bb9332dbbfb6f7823",
+    "restore": "extract full exact member and chmod755"
+  },
+  {
+    "file": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source04b-opening_typed_provider_store-fixed.zip",
+    "member": "source04b-opening_typed_provider_store-fixed",
+    "sha256": "38d917ed529d88fee429b448878f547846668b92dfbfc2e5f15203a352510b7e",
+    "archive_sha256": "d215d9a0220e6809227376a435286810de334d3f2f67780f1d22b33082b1e311",
+    "restore": "extract full exact member and chmod755"
+  },
+  {
+    "file": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source04b-qualification_authority-fixed.zip",
+    "member": "source04b-qualification_authority-fixed",
+    "sha256": "41949903a54f83c49ce368c844d7e8324ebcb63678abc38455fa840b015fc808",
+    "archive_sha256": "3c7dbf3f125b23a76671d6bf097c1cc381a1f7206609e4b0ce0d006f60c884f9",
+    "restore": "extract full exact member and chmod755"
+  },
+  {
+    "file": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source05-qualification-fixed.zip",
+    "member": "source05-qualification-fixed",
+    "sha256": "f975130e39f477d04a130885af48a8788fec0e5af52d234f38a8ace5dcaeb999",
+    "archive_sha256": "c4b55d6287f57e7a51620c5c093ff168d985eb41e83958dd28b945b126b22353",
+    "restore": "extract full exact member and chmod755"
+  },
+  {
+    "file": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source06-facility_operation-fixed.zip",
+    "member": "source06-facility_operation-fixed",
+    "sha256": "fcfcaa3f91cdcda604713ace5dd6ce084ed108049798c5fab75c04f3c57233dd",
+    "archive_sha256": "b0e6fd59fcf0a160e0dc5febccb3d948436cb8820eecc9d396380e7018d7d403",
+    "restore": "extract full exact member and chmod755"
+  },
+  {
+    "file": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source06-facility_operation_store-fixed.zip",
+    "member": "source06-facility_operation_store-fixed",
+    "sha256": "69885fc6a45b19fae0db917df5d61de9ce668940a9b3fd8de059d82ecf89906d",
+    "archive_sha256": "0f870e7bbffc2d2ca5bee4a2cd7678b0b4339973e0e67ad8b34747b5e92c4cad",
+    "restore": "extract full exact member and chmod755"
+  },
+  {
+    "file": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source06-mycity_core-fixed.zip",
+    "member": "source06-mycity_core-fixed",
+    "sha256": "f0fe38f82ad31c7a394ea140f3db8f1cc162229df21d4230effbb73b85fcd083",
+    "archive_sha256": "a6a8aeeb1598fc41d6930610b85b82af7e143e809874ca3df624c84b79b9a1c9",
+    "restore": "extract full exact member and chmod755"
+  },
+  {
+    "file": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source06-opening_typed-fixed.zip",
+    "member": "source06-opening_typed-fixed",
+    "sha256": "030944e6f138f9adb64512dbc5e338ddd660fff4440b5bec7d6cd3c37d0755f2",
+    "archive_sha256": "a2086dbbe7cdd9077f0b20f0d9c5701e32a8be5a0d70d63c6f8e548d529bf914",
+    "restore": "extract full exact member and chmod755"
+  },
+  {
+    "file": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source06-opening_typed_provider_store-fixed.zip",
+    "member": "source06-opening_typed_provider_store-fixed",
+    "sha256": "5d4b40390cc32f129705ff8ca3c62be7a7f3dbbd720063e8550cecf9c2bc8cc1",
+    "archive_sha256": "159ed8adbcb7b2950d1eec758f5c3241854cc19a461602c4ad005e051de870d0",
+    "restore": "extract full exact member and chmod755"
+  },
+  {
+    "file": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source06-town_utility_engine-fixed.zip",
+    "member": "source06-town_utility_engine-fixed",
+    "sha256": "066cdfdb963545dad752e91d23e6acbd6898a9e373c31cc03443e03d1812739d",
+    "archive_sha256": "e47c10f87ef7d236507240d4749dfb7ba38d115151cc938423621b5b739bfc3a",
+    "restore": "extract full exact member and chmod755"
+  },
+  {
+    "file": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source03-headless-fixed",
+    "sha256": "8d5ad20d715c1227408cf5c96b94591bd8041c1cb3494e417dbb5e715c0d2f80"
+  },
+  {
+    "file": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source07-headless-fixed",
+    "sha256": "9a70d880c93c332831c4456d88b06e91b5020cebc109786ec04f23d089421c48"
+  },
+  {
+    "file": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source07-opening_cli-fixed",
+    "sha256": "0cf55c04f70fb118a8437df037b6e19929d8dc9d679eb8a330ca35fd45ff5a45"
+  },
+  {
+    "file": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source07-opening_typed_cli-fixed",
+    "sha256": "b8a9b74957c1485e474b109c87f856d2e9fc70918fd0ff1e06ea6862499c951e"
+  },
+  {
+    "file": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source07-typed-role-fixed",
+    "sha256": "575417485fd7f2e9012598040bf70bbd3b06f6833bcf8fcc209f5dd488ebcfbc"
+  },
+  {
+    "file": "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source08-slot-proof-fixed",
+    "sha256": "8e0ca9804e613b26d5b13b3feb9465302f633a65fb7fef9ba9645d00e45dd5c0"
+  }
+]

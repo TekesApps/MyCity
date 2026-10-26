@@ -27,6 +27,14 @@ impl OpeningSource {
     pub fn bytes(&self) -> &[u8] {
         &self.bytes
     }
+
+    /// Actual owned transport backing, including spare Reader capacity. A borrowed
+    /// source slice is not charged a second time to the Engine decoder workspace.
+    /// Excludes allocator metadata, native stack and external provider provenance.
+    pub fn owned_capacity_bytes(&self) -> usize {
+        std::mem::size_of::<Self>() + self.bytes.capacity() + self.sha256.capacity()
+            + self.label.as_ref().map_or(0, String::capacity)
+    }
     pub fn sha256(&self) -> &str {
         &self.sha256
     }

@@ -1,0 +1,138 @@
+[
+  {
+    "target": "mycity_core",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source03-mycity_core-fixed",
+      "assembly::",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.791634417,
+    "finished_at": "2026-10-26T01:16:18.506908+00:00",
+    "test_sha256": "cd28f47e2659477df69e78c2c419f68854d7ea608094dc75ce9420fd9f27e330",
+    "main_sha256": "8d5ad20d715c1227408cf5c96b94591bd8041c1cb3494e417dbb5e715c0d2f80",
+    "source": "source03-inputs.json",
+    "default_stack_override": false
+  },
+  {
+    "target": "opening_typed",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source03-opening_typed-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.8145383750000001,
+    "finished_at": "2026-10-26T01:16:19.343693+00:00",
+    "test_sha256": "4914d9b0df1bdea4c5d65e8540186f230c68a61625e4301cf2c61111f13fd3ad",
+    "main_sha256": "8d5ad20d715c1227408cf5c96b94591bd8041c1cb3494e417dbb5e715c0d2f80",
+    "source": "source03-inputs.json",
+    "default_stack_override": false
+  },
+  {
+    "target": "opening_loader",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source03-opening_loader-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.562203625,
+    "finished_at": "2026-10-26T01:16:19.928672+00:00",
+    "test_sha256": "6a910c9626e04106cec08f3298391ebf45774eb18a607036e0656b68831cc231",
+    "main_sha256": "8d5ad20d715c1227408cf5c96b94591bd8041c1cb3494e417dbb5e715c0d2f80",
+    "source": "source03-inputs.json",
+    "default_stack_override": false
+  },
+  {
+    "target": "opening_typed_provider_store",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source03-opening_typed_provider_store-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 1.121524333,
+    "finished_at": "2026-10-26T01:16:21.070419+00:00",
+    "test_sha256": "98e7805e79671dfc87c57cbc93c8ef3cec691c61d6c29ddbb917599800b7828b",
+    "main_sha256": "8d5ad20d715c1227408cf5c96b94591bd8041c1cb3494e417dbb5e715c0d2f80",
+    "source": "source03-inputs.json",
+    "default_stack_override": false
+  },
+  {
+    "target": "opening_input_store",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source03-opening_input_store-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 1.2499819579999998,
+    "finished_at": "2026-10-26T01:16:22.341016+00:00",
+    "test_sha256": "f935d060be2c8c7cf604079a348c0b37ad38836549f8b684552416be4515a18c",
+    "main_sha256": "8d5ad20d715c1227408cf5c96b94591bd8041c1cb3494e417dbb5e715c0d2f80",
+    "source": "source03-inputs.json",
+    "default_stack_override": false
+  },
+  {
+    "target": "opening_venue_store",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source03-opening_venue_store-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.9314171249999994,
+    "finished_at": "2026-10-26T01:16:23.293957+00:00",
+    "test_sha256": "2734abe799c5f60a5907e0d8714d94428a5cddeac2105e6e850f96653172c2e5",
+    "main_sha256": "8d5ad20d715c1227408cf5c96b94591bd8041c1cb3494e417dbb5e715c0d2f80",
+    "source": "source03-inputs.json",
+    "default_stack_override": false
+  },
+  {
+    "target": "opening_continuous_supply_store",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source03-opening_continuous_supply_store-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.8453112500000008,
+    "finished_at": "2026-10-26T01:16:24.161242+00:00",
+    "test_sha256": "91d9a3ba64f9ea46f9b9d319778cf786c0a25c696c45d5609c50ed37fa47ea94",
+    "main_sha256": "8d5ad20d715c1227408cf5c96b94591bd8041c1cb3494e417dbb5e715c0d2f80",
+    "source": "source03-inputs.json",
+    "default_stack_override": false
+  },
+  {
+    "target": "opening_typed_cli",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source03-opening_typed_cli-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 1.4234490419999997,
+    "finished_at": "2026-10-26T01:16:25.607688+00:00",
+    "test_sha256": "b98a45233b884cec32081f2579dfc70e92cd7994879ed4c1d547930455029cf2",
+    "main_sha256": "8d5ad20d715c1227408cf5c96b94591bd8041c1cb3494e417dbb5e715c0d2f80",
+    "source": "source03-inputs.json",
+    "default_stack_override": false
+  },
+  {
+    "target": "opening_cli",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/source03-opening_cli-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.8276374579999999,
+    "finished_at": "2026-10-26T01:16:26.457983+00:00",
+    "test_sha256": "728c44cdc23907db9339213af564d12376719c0103dde34a57a1a25f04753109",
+    "main_sha256": "8d5ad20d715c1227408cf5c96b94591bd8041c1cb3494e417dbb5e715c0d2f80",
+    "source": "source03-inputs.json",
+    "default_stack_override": false
+  }
+]

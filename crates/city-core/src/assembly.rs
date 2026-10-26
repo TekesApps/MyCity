@@ -9,6 +9,8 @@ use crate::{
 use serde::{de::Visitor, Deserialize, Deserializer, Serialize};
 use std::mem::size_of;
 
+mod typed_opening;
+
 pub const ASSEMBLY_SCHEMA: &str = "mycity-m0-opening-v1";
 pub const MAX_ACCOUNTS: usize = 64;
 pub const MAX_STOCKS: usize = 128;
@@ -1385,6 +1387,9 @@ pub(crate) fn assemble_into(bytes: &[u8], world: &mut World) -> Result<(), Strin
         return Err("input_too_large".into());
     }
     crate::bounded_decode::guard(bytes)?;
+    if typed_opening::selected(bytes) {
+        return Err("typed_opening_requires_engine_context".into());
+    }
     let input: Opening = serde_json::from_slice(bytes).map_err(|e| {
         if e.to_string().contains("model_rows_extra_record") {
             "opening_count_limit".to_owned()
@@ -1393,6 +1398,33 @@ pub(crate) fn assemble_into(bytes: &[u8], world: &mut World) -> Result<(), Strin
         }
     })?;
     assemble_opening_into(input, world)
+}
+
+/// The original slot has the complete resource input and budget ownership.
+pub(crate) fn assemble_with_resources_into(
+    bytes: &[u8], world: &mut World, resources: &[crate::transaction::Resource],
+    engine_owned_bytes: usize,
+) -> Result<(), String> {
+    if bytes.len() as u64 > INPUT_LIMIT { return Err("input_too_large".into()); }
+    crate::bounded_decode::guard(bytes)?;
+    if !typed_opening::selected(bytes) { return assemble_into(bytes, world); }
+    assemble_typed_with_resources_into(bytes, world, resources, engine_owned_bytes)
+}
+
+// Keep large typed Opening/Result temporaries out of the common legacy path.
+// The original default-stack qualification flow must not pay for a decoder it
+// does not use. This is a frame boundary, not a larger stack grant.
+#[inline(never)]
+fn assemble_typed_with_resources_into(
+    bytes: &[u8], world: &mut World, resources: &[crate::transaction::Resource],
+    engine_owned_bytes: usize,
+) -> Result<(), String> {
+    if engine_owned_bytes.checked_add(typed_opening::WORKSPACE_BYTES)
+        .is_none_or(|n|n>crate::transaction::ENGINE_BYTE_BUDGET) {
+        return Err("typed_opening_workspace_budget".into());
+    }
+    let opening=typed_opening::decode(bytes, resources)?;
+    assemble_opening_into(opening,world)
 }
 
 // Decode must finish before reserving the larger validation/assembly frame.

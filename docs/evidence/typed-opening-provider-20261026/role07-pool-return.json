@@ -1,0 +1,15 @@
+{
+  "capacity_bytes": 67108864,
+  "available_touched_bytes": 67108864,
+  "granted_capacity_bytes": 0,
+  "workspace_capacity_bytes": 0,
+  "workspace_grants": 2,
+  "workspace_returns": 2,
+  "workspace_fills": 2,
+  "grants": 0,
+  "returns": 0,
+  "fill_acknowledgements": 0,
+  "scans": 8,
+  "rejected_requests": 0,
+  "maximum_prepare_to_fill_or_reap_ns": 21783750
+}

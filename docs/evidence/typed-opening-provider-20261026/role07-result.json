@@ -1,0 +1,13 @@
+{
+  "actual_reader_owned_capacity": 131241,
+  "actual_water_quantity": 600000,
+  "creator_and_full_reference_stores_are_test_tool_outside_shipping_role": true,
+  "creator_store_owned_capacity": 42886764,
+  "engine_owned_bytes": 3601880,
+  "no_whole_game_native_16GB_M0_or_speed_claim": true,
+  "original_boot_time": 60,
+  "original_input_bytes": 65536,
+  "original_ticket_cold_replay_once": true,
+  "same_complete_direct_reference": true,
+  "store_owned_bytes": 42886828
+}

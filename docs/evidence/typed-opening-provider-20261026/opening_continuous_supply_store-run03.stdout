@@ -1,0 +1,8 @@
+
+running 2 tests
+test opening_continuous_supply_cold_probe ... ignored, fresh process Store::open probe launched by the parent test
+test opening_input_continuous_supply_wal_checkpoint_and_nonzero_stop ... retained OpeningInput continuous-supply evidence: /Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/run03-continuous-store/opening-continuous-supply-25116-1792977383864942000
+ok
+
+test result: ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.25s
+

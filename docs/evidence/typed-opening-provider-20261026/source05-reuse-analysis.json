@@ -1,0 +1,16 @@
+{
+  "source03": "source03-inputs.json",
+  "current": "source05-inputs.json",
+  "only_changed_file": [
+    "crates/city-core/src/assembly.rs"
+  ],
+  "typed_budget_decode_builder_body_byte_identical": true,
+  "legacy_assemble_into_byte_identical": true,
+  "all_other_source_fixtures_and_tests_byte_identical": true,
+  "reuse_scope": "source03 assembly10/loader6/opening same-slot6/venue1/continuous1 functional evidence, with current source05 original default6 and typed default8+Store5/cold6 covering actual shared dispatch frame",
+  "not_reused_as_current": "source03 default-stack failure; it is retained and replaced only by actual successful source05 default gates",
+  "new_current_required": [
+    "source05 actual local-file CLI",
+    "source05 shipping normal role restore/operation/resource"
+  ]
+}

@@ -1,0 +1,16 @@
+
+running 10 tests
+test assembly::decode_compat_tests::non_initial_town_and_world_legacy_wire_match ... ok
+test assembly::decode_compat_tests::opening_legacy_derive_wire_acceptance_and_errors_match ... ok
+test assembly::decode_compat_tests::optional_operating_carrier_preserves_flat_wire_copy_and_null_restore ... ok
+test assembly::tests::duplicate_sources_missing_owners_and_cost_mismatches_reject ... ok
+test assembly::tests::input_order_does_not_change_world_identity_or_hash ... ok
+test assembly::tests::oversized_counts_and_unspent_initial_sources_do_not_publish_a_world ... ok
+test assembly::tests::restore_of_preconstruction_object_clears_reused_optional_slot ... ok
+test assembly::tests::sources_and_independent_initial_worlds_are_exact ... ok
+test assembly::tests::town_configuration_is_omitted_when_absent_and_legacy_restore_clears_reused_slot ... ok
+test assembly::typed_opening::tests::fixed_typed_conversion_backing_is_explicitly_inside_original_engine_budget ... typed_workspace_bytes=152464; original_slot_owned=3601880; input_capacity_owned_by_loader_or_metadata=true
+ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 294 filtered out; finished in 0.07s
+

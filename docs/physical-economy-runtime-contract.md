@@ -258,3 +258,21 @@ before、Reserve后的after、bind_reserved_offer和最终校验统一该只读�
 ### #136 当前实现和验收终态（2026-10-26）
 
 原11文件在v196固定；当前共存修复后的6组共享、8默认门、真实normal角色两次授额/归还及保存重启原票、完整参考世界一致。旧生产与两员工均实际25秒。原4项子合同完成并关闭，父118/领域consumer/跨clock/区间Litres/硬件各保留其明确缺口；[证据与资源边界](evidence/canonical-capacity-20261026/STATUS.md)。该终态替代本节历史not_run，不改变规则或M0门。
+
+## #137 typed Opening V1：原初始化与恢复同一契约（v198有限合同门实际通过，待回填关闭）
+
+root以v197为基线接续既有#120/#137交付。显式新schema `mycity-typed-opening-v1`，限定本地JSON/SuppliedBytes传输、内嵌实验数据provider V1、base V1和原Boot micro V1 profile；未知provider/schema/profile/单位/时钟/引用版本均拒绝，不默填事实。旧 `mycity-m0-opening-v1` 全部合法profile及原错误语义保留。其它typed领域profile留明确unsupported，不要求31/32整个父域先关闭。
+
+新版账户资本源、库存owner/资本源、Boot operator/contractor/六stock/二resource端口使用显式同scope/domain/目录版本引用，解析结果直接给原Opening builder；不保留另一份数字ID权威或生成v1 JSON。来源/账户/库存/资源目录均显式版本1；不把World revision充作来源版本，不开放runtime arena generation伪造。Money仅分；Quantity按commodity原固定milli-Q/milli-Wh/ml尺度，资源是原整数并发槽。第一版不换算。Boot各端口沿原profile种类和单位核对，不凭ID授用途许可。
+
+资源声明必须与EngineSlot调用方的完整原Resource表同ID/容量，且原reserved/occupied为0；二表不合并、不补缺。它是输入契约，不是第二池。新格式须有带resources的canonical初始化上下文；裸assemble返回需要Engine上下文，不能绕开完整资源门。Base无时间consumer必须声明none；Boot绑定原离散操作秒钟V1、scope、零初值和原Advance consumer，Development/Interaction/墙钟均拒绝。验收用真实Start/分段Advance/完成和冷恢复证明，不能只收一个clock标签。
+
+core一次有界typed解码/校验/移动转换，继续原builder及原EngineSlot；metadata不进World。源<=64KiB，行数沿原64账户/128库存/192资本/16资源；短enum/固定Rows限制解码。按实际类型核全部typed backing、移动时同时存活的原Opening/Boot及builder workspace，在原Engine4MiB内预检，不把编码4KiB建议当内存峰或未经满表验证的输入限制。decode与大builder分帧，原128KiB不加常驻指针。若实际背板/默认栈不满足则修复，不提额。
+
+原OpeningInput/封闭GenesisOpening保存同一原始字节，Store首建和cold恢复都经原EngineSlot同契约；不改外部文件后重读来重发资本。验收包括独立6000分/3000库存700成本及137分交易预期、错/缺/重复/ref scope/domain/version/单位/overflow、资源全集与裸入口拒绝、N/N+1及64KiB边界、同槽失败不发布、原票/WAL/checkpoint/fresh进程/CurrentRenamed丢回报、旧合法与相关既有profile恢复、真实资源与default栈。新增结果当前not_run，不以设计/来源文件/非零ID/advisor当认证或验收。
+
+root确切写范围：assembly.rs、assembly/typed_opening.rs、transaction/slots.rs、opening_loader.rs、assembly_decode_compat_tests.rs、storage/opening_input.rs及lib.rs（仅实际需要的原同槽接缝）、opening_input_store.rs、专属opening_typed.rs/opening_typed_provider_store.rs及tests/fixtures/opening-typed。原provider/CLI/Cargo/lock/其它领域/WIP只读，只有真实扩展才另明确范围。当前独立只读准备仅#134具体依赖，不给共享写权；原advisor只复核具体阻断。原HP P900唯一target/work串行，证据盘事前512MiB，WIP/失败/源码/固定程序和恢复原件保留；M0原门不变。
+
+### #137 当前实际终态及 #150 分帧修正
+
+新typed资料通过原同槽首建／恢复，SuppliedBytes和真实本地JSON经未改CLI均有实际证据。原schema wire等40项功能结果保持；source05只把typed Opening/Result临时值放独立noinline帧，修复了旧资格默认栈的真实失败，不提额、不删断言。原6+新2默认门、当前CLI3、真实normal角色30+30／原票冷恢复／完整Engine参考、两profile全部原槽表地址均通过。输入Reader length65536但实际owned131238B，单列caller／metadata；内部工作区152464B与原slot3601880B合3754344B<=4MiB。全Store／角色授额／工具参考开销和未测边界见[实际证据](evidence/typed-opening-provider-20261026/STATUS.md)。原目标和父120未来provider范围保留；149另排队复现。

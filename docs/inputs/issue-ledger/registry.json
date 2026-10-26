@@ -1,7 +1,7 @@
 {
   "schema": "mycity-issue-ledger-v1",
   "date": "2026-10-26",
-  "release": "v0.5.197",
+  "release": "v0.5.198",
   "scope": "完整既定产品；v190有限业务132与缺陷148真实验收关闭，v191仅同步台账，UI单独延期",
   "coordination": "当前root唯一共享writer/串行验证；旧主会话停用",
   "states": [
@@ -17,7 +17,9 @@
     122,
     123,
     124,
-    148
+    148,
+    149,
+    150
   ],
   "hardware_issue": 114,
   "issues": [
@@ -3267,12 +3269,20 @@
       "title": "[业务子任务] 通用开局schema与typed引用：原配置候选到实际provider装配",
       "url": "https://github.com/TekesApps/MyCity/issues/137",
       "parent": 120,
-      "stage": "待集成",
-      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "stage": "待验证",
+      "owner": "01a166fc-e444-7602-ad22-3a8551dda487 root唯一共享writer/集成/串行验收",
       "write_authority": [
         "crates/city-core/src/opening_loader.rs",
-        "原#120专属tests/fixture/handoff",
-        "原World/Store/decoder/配置schema根仅root"
+        "crates/city-core/src/assembly.rs",
+        "crates/city-core/src/assembly_decode_compat_tests.rs",
+        "crates/city-core/src/transaction/slots.rs",
+        "crates/city-storage/src/opening_input.rs",
+        "crates/city-storage/src/lib.rs",
+        "crates/city-storage/tests/opening_input_store.rs",
+        "crates/city-core/src/assembly/typed_opening.rs",
+        "crates/city-core/tests/opening_typed.rs",
+        "crates/city-storage/tests/opening_typed_provider_store.rs",
+        "tests/fixtures/opening-typed/"
       ],
       "scope": "消化原opening_loader候选，在指定已支持provider范围接版本化schema、typed引用/单位/来源和有界装配；原同槽提交协议已验。unsupported明确拒绝，不伪造认证和默认容量。",
       "required_capabilities": [
@@ -3285,12 +3295,12 @@
         "旧合法输入兼容、失败不发布、新进程/重试无二次初始化",
         "新增provider每个有实际装配与恢复证据"
       ],
-      "remaining": "通用factory/provider/schema连接仍缺；不要求所有领域先完成，不宣称全产品开局可用",
-      "evidence": "原第五批#120交付及opening-input-store相关STATUS",
-      "implementation_tags": "仅指定合法profile同槽路径已验",
+      "remaining": "All finite gates passed; source05 fixed; v198 publication + actual issue backfill/close pending",
+      "evidence": "docs/evidence/typed-opening-provider-20261026/STATUS.md",
+      "implementation_tags": "v0.5.198 pending atomic publication; no PR",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
       "issue_body_sha256": "d124d5ecae3930e3e4876093ff70abcdd623c906e06bc017a4f2bd93b90ee504",
-      "execution_state": "queued:not-dispatched",
+      "execution_state": "active:core-1:validation",
       "execution_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "execution_contract": "docs/inputs/issue-ledger/execution-flow.json"
     },
@@ -3609,6 +3619,54 @@
       "execution_state": "completed:closed",
       "execution_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "execution_contract": "docs/inputs/issue-ledger/execution-flow.json"
+    },
+    {
+      "issue": 149,
+      "title": "[P1][缺陷] 普通存储额度耗尽时，待完成的 Timeline 目标阻断实际占用退出",
+      "url": "https://github.com/TekesApps/MyCity/issues/149",
+      "parent": 118,
+      "stage": "待开发",
+      "owner": "queued; no write authority; source-only report not yet dynamically reproduced",
+      "write_authority": [],
+      "scope": "pending Timeline target cancellation and actual responsibility under normal disk exhaustion",
+      "required_capabilities": [
+        "original completed-boundary clock, same-slot Store, frozen default stack gates"
+      ],
+      "acceptance": [
+        "actual minimum reproduction and hot/cold results",
+        "original-ticket idempotence, unchanged assertions/budget/M0, full recovery originals retained"
+      ],
+      "remaining": "source audit only; actual reproduction and original cancellation/exit progress pending",
+      "evidence": "work/typed-opening-provider-20261026",
+      "implementation_tags": "unpublished increment; no PR",
+      "pr": "none",
+      "issue_body_sha256": "6828431322fcb71eb3b2384efec8adbe28c6ff157cd25ad0d21ea7bc71b6457e",
+      "execution_state": "queued:not-dispatched"
+    },
+    {
+      "issue": 150,
+      "title": "[P1][缺陷] typed开局公共分派引入原资格业务默认栈回归",
+      "url": "https://github.com/TekesApps/MyCity/issues/150",
+      "parent": 120,
+      "stage": "待验证",
+      "owner": "root 01a166fc-e444-7602-ad22-3a8551dda487; same shared lane137",
+      "write_authority": [
+        "crates/city-core/src/assembly.rs; original137 tests/evidence"
+      ],
+      "scope": "legacy qualification default stack regression introduced by typed dispatch",
+      "required_capabilities": [
+        "original completed-boundary clock, same-slot Store, frozen default stack gates"
+      ],
+      "acceptance": [
+        "actual minimum reproduction and hot/cold results",
+        "original-ticket idempotence, unchanged assertions/budget/M0, full recovery originals retained"
+      ],
+      "remaining": "All finite gates passed; source05 fixed; v198 publication + actual issue backfill/close pending",
+      "evidence": "docs/evidence/typed-opening-provider-20261026/STATUS.md",
+      "implementation_tags": "v0.5.198 pending atomic publication; no PR",
+      "pr": "none",
+      "issue_body_sha256": "d79e4fcb84b7250c3c3cac8776ff1d47911b378fc9da12244163baf293a390c5",
+      "execution_state": "active:core-1:validation"
     }
   ],
   "capability_edges": [
@@ -3758,16 +3816,23 @@
         26
       ],
       "meaning": "Original finite housing fixture/128KiB/96B Wait contract, not current whole parent completion"
+    },
+    {
+      "consumer": 137,
+      "requires": [
+        150
+      ],
+      "reason": "current default regression blocks complete137 acceptance"
     }
   ],
   "unpublished_execution_update": {
     "baseline_at": "2026-10-25T02:39:00Z",
-    "shared_core_in_progress": 0,
+    "shared_core_in_progress": 1,
     "independent_preparations_active": 0,
     "limits": [
       1,
       2
     ],
-    "note": "136 actual full finite contract closed;197 evidence ledger;137 next not activated"
+    "note": "137/150 finite gates passed, frozen pending publication/backfill/close;149 separate source-only report queued"
   }
 }

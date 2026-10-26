@@ -1,0 +1,7 @@
+use mycity_core::{opening_loader::OpeningInput,transaction::{EngineSlot,Resource}};
+use std::{fs,path::Path};
+fn main(){let args:Vec<_>=std::env::args().collect();let mut reports=Vec::new();
+ for (name,path,resources) in [("base",&args[2],vec![]),("boot",&args[3],vec![Resource::new(101,2).unwrap(),Resource::new(102,2).unwrap()])] {
+  let raw=fs::read(path).unwrap();let input=OpeningInput::read_named_json(raw.as_slice(),"same-original-typed-slot").unwrap();let mut slot=EngineSlot::new().unwrap();let before=slot.identity().unwrap();input.initialize_into(&mut slot,&resources).unwrap();let after=slot.identity().unwrap();assert_eq!(before.world,after.world);assert_eq!(before.world_tables,after.world_tables);assert_eq!(before.engine_tables,after.engine_tables);assert_eq!(before.timeline_tables,after.timeline_tables);assert_eq!(before.background_tables,after.background_tables);assert_eq!(before.preparation_backing,after.preparation_backing);let hash=slot.engine().unwrap().state_hash();assert!(input.initialize_into(&mut slot,&resources).is_err());assert_eq!(slot.engine().unwrap().state_hash(),hash);reports.push(serde_json::json!({"profile":name,"before":before,"after":after,"source_owned_bytes":input.source().owned_capacity_bytes(),"double_initialization_rejected":true,"state_unchanged":true}));
+ }
+ fs::write(Path::new(&args[1]),serde_json::to_vec_pretty(&reports).unwrap()).unwrap();println!("two typed profiles retain original slot/table/preparation addresses");}

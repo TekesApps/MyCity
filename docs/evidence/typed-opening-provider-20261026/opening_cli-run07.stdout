@@ -1,0 +1,7 @@
+
+running 2 tests
+test missing_spatial_and_bad_sources_never_bypass_canonical_input_gates ... ok
+test selected_real_files_publish_once_and_spent_capital_survives_fresh_reader ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s
+

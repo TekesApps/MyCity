@@ -1,16 +1,25 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-26T00:44:36.610116+00:00",
-  "source_head": "1ab0578fe26253368bfae0fa308b0672f8c1b8f5",
-  "candidate": "136 finite full contract accepted/closed;197 evidence only;137 next not activated",
+  "last_snapshot_at": "2026-10-26T03:02:12.011023+00:00",
+  "source_head": "d8110a5136013ee55ce62cf447356f8a7f037327",
+  "candidate": "source05 typed/150 frame fix all finite gates passed;198 publication and actual issue closure pending",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
   "limits": {
     "shared_core_lanes": 1,
     "independent_preparations": 2,
     "reason_for_adjustment_required": true
   },
-  "active_shared_work": [],
+  "active_shared_work": [
+    {
+      "lane": "core-1",
+      "business_issue": 137,
+      "related_defect": 150,
+      "owner_session": "01a166fc-e444-7602-ad22-3a8551dda487",
+      "evidence_root": "work/typed-opening-provider-20261026",
+      "phase": "finite acceptance gates complete; code frozen publication/issue closure pending"
+    }
+  ],
   "active_independent_preparations": [],
   "counting_rules": {
     "parents_are_not_active_work": true,
@@ -444,30 +453,36 @@
     },
     {
       "issue": 137,
-      "execution_state": "queued:not-dispatched",
-      "implementation_owner_session": null,
+      "execution_state": "active:core-1:validation",
+      "implementation_owner_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "integration_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "files_or_activation_boundary": [
         "crates/city-core/src/opening_loader.rs",
-        "crates/city-headless/src/opening_source_provider.rs",
+        "crates/city-core/src/assembly.rs",
+        "crates/city-core/src/assembly_decode_compat_tests.rs",
+        "crates/city-core/src/transaction/slots.rs",
+        "crates/city-storage/src/opening_input.rs",
         "crates/city-storage/src/lib.rs",
         "crates/city-storage/tests/opening_input_store.rs",
-        "crates/city-storage/tests/opening_typed_provider_store.rs (planned)"
+        "crates/city-core/src/assembly/typed_opening.rs",
+        "crates/city-core/tests/opening_typed.rs",
+        "crates/city-storage/tests/opening_typed_provider_store.rs",
+        "tests/fixtures/opening-typed/",
+        "crates/city-headless/tests/opening_typed_cli.rs"
       ],
       "required_specific_capabilities": [
-        "Original120 candidate and current explicit-file provider; fixed-profile same-slot131 already available",
-        "Typed provider/schema/unit/clock/source-reference contracts at declared versions"
+        "v197 baseline; original same-slot131 and immutable OpeningInput",
+        "new typed schema V1: embedded laboratory provider/base+Boot micro profile; explicit units/ref/clock, no second authority"
       ],
       "acceptance_entry_and_gaps": [
-        "General factory/provider/schema bridge absent; actual byte/file provenance not rights certification",
-        "Explicit bad unit/ref/version/duplicate capital and same-slot failure/recovery",
-        "Confirm exact adapter file ownership and legal profile inputs before activation"
+        "All original four finite contract gates actually passed; publication and issue closure receipt pending",
+        "Future provider/profile/real16GB/native/M0 remain outside finite137 scope"
       ],
-      "real_integration_seam": "Existing OpeningInput, assembly and Store unpublished slot; no second loader authority",
+      "real_integration_seam": "core typed decoder to original Opening builder through EngineSlot with actual resources; original Store genesis bytes reused by cold restore",
       "new_write_authority": false,
       "timing": {
         "ready_at": null,
-        "readiness_confirmed_at": null,
+        "readiness_confirmed_at": "2026-10-26T00:47:54.424869+00:00",
         "full_scope_source_delivered_at": null,
         "accepted_at": null,
         "issue_closed_at": null,
@@ -644,7 +659,6 @@
   ],
   "current_backlog": {
     "source_delivered_pending_integration": [
-      137,
       117,
       104,
       103,
@@ -664,6 +678,8 @@
       28,
       27
     ],
-    "source_delivered_pending_validation": []
+    "source_delivered_pending_validation": [
+      137
+    ]
   }
 }

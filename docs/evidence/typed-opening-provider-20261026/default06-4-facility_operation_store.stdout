@@ -1,0 +1,7 @@
+
+running 1 test
+test original_wal_checkpoint_retry_and_stopped_fraction_are_once ... RETAINED_FACILITY_WORLD=/Volumes/HP P900/dev/MyCity/work/typed-opening-provider-20261026/default06/4-facility_operation_store/facility-33805-1792978368224843000
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 5 filtered out; finished in 2.12s
+
