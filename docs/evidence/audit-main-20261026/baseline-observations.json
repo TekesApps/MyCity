@@ -1,0 +1,99 @@
+{
+  "initial_quota": {
+    "background_reserved_bytes": 0,
+    "continuation_reserved_bytes": 0,
+    "hard_blocked": false,
+    "normal_blocked": true,
+    "normal_limit": 5255,
+    "reason": "normal_storage_reserved_for_existing_responsibilities",
+    "total_bytes": 2107661,
+    "used_bytes": 10507,
+    "worker_cache_actual_bytes": 0,
+    "worker_cache_charged_bytes": 0
+  },
+  "outcomes": [
+    {
+      "emergency": false,
+      "name": "exit",
+      "request": {
+        "actions": [
+          {
+            "command": {
+              "kind": "exit",
+              "occurred_at": 3600,
+              "token": 1
+            },
+            "kind": "time_capacity"
+          }
+        ],
+        "branch": 1,
+        "expected_revision": 5,
+        "operation_id": 6,
+        "world": 1
+      },
+      "result": "Err(Capacity { used_bytes: 10507, limit_bytes: 5255, required_bytes: 8911, emergency: false })",
+      "state_unchanged": true,
+      "success": false
+    },
+    {
+      "emergency": false,
+      "name": "cancel",
+      "request": {
+        "actions": [
+          {
+            "command": {
+              "kind": "cancel_advance"
+            },
+            "kind": "timeline"
+          }
+        ],
+        "branch": 1,
+        "expected_revision": 5,
+        "operation_id": 7,
+        "world": 1
+      },
+      "result": "Err(Capacity { used_bytes: 10507, limit_bytes: 5255, required_bytes: 40960, emergency: false })",
+      "state_unchanged": true,
+      "success": false
+    },
+    {
+      "emergency": false,
+      "name": "continue",
+      "request": {
+        "actions": [
+          {
+            "command": {
+              "kind": "advance",
+              "limit": 32,
+              "target": 7200
+            },
+            "kind": "timeline"
+          }
+        ],
+        "branch": 1,
+        "expected_revision": 5,
+        "operation_id": 8,
+        "world": 1
+      },
+      "result": "Err(Capacity { used_bytes: 10507, limit_bytes: 5255, required_bytes: 135360, emergency: false })",
+      "state_unchanged": true,
+      "success": false
+    }
+  ],
+  "state": {
+    "claims": [],
+    "payroll": [],
+    "progress": {
+      "at": 3600,
+      "cursor": 0,
+      "lane": 0,
+      "last_complete": 3600,
+      "page_paid": 0,
+      "page_sources": 0,
+      "phase": null,
+      "serial": 1,
+      "target": 7200
+    }
+  },
+  "world": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/baseline01/world"
+}

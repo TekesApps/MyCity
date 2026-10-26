@@ -1,0 +1,11 @@
+{
+  "command": [
+    "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/baseline-repro-fixed",
+    "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/baseline01"
+  ],
+  "exit_code": 101,
+  "elapsed_seconds": 0.86129425,
+  "finished_at": "2026-10-26T03:30:53.875105+00:00",
+  "executable_sha256": "94786fe66ef927be00f8a2ad0692bf3c653dca9ec070493ac53b532754095e9b",
+  "expected": "cancel accepted at completed boundary with emergency headroom; failure captures original deficit"
+}

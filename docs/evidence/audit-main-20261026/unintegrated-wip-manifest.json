@@ -1,0 +1,102 @@
+{
+  "files": {
+    "docs/evidence/m0-model-lifecycle-observer-candidate/ENTRY-CLOCK-STATUS.md": {
+      "sha256": "cd7ecbdef5b65a16e92d5dcca0146915541947b257619d5eb28641e27ed84704",
+      "bytes": 4890
+    },
+    "docs/evidence/m0-model-lifecycle-observer-candidate/README.vm-region.md": {
+      "sha256": "c4364b119ffe37d034eca4d973a8c3c51332683dc8d1efde99eb1e8f305110d6",
+      "bytes": 11919
+    },
+    "docs/evidence/m0-model-lifecycle-observer-candidate/clock_handshake.py": {
+      "sha256": "9c092e487ea1348901d70e6417f67096596f6f36c1f6405ea3eeb62a9d2f88ac",
+      "bytes": 12878
+    },
+    "docs/evidence/m0-model-lifecycle-observer-candidate/observe_vm_regions.py": {
+      "sha256": "b26955b0676c09a569fd872f4b32ee458239468f04daa098638250e2e83435c0",
+      "bytes": 34168
+    },
+    "docs/evidence/m0-model-lifecycle-observer-candidate/test_clock_handshake.py": {
+      "sha256": "7b80a07756d68434885fa650b73e7539adad91b4e27bae184f20c3835bfc940a",
+      "bytes": 7270
+    },
+    "docs/evidence/m0-model-lifecycle-observer-candidate/test_observe_vm_regions_synthetic.py": {
+      "sha256": "5ec7f5e931e9528fb969a07f6ac1d00fe9290f432ac811f4f9264d143426fdd4",
+      "bytes": 17032
+    },
+    "docs/evidence/m0-t13a-rare-control-01/README.md": {
+      "sha256": "0ebb4a78e79c5125ebedb301d00db511e05e93e19bffa84c4d773e1f2d4ce278",
+      "bytes": 8800
+    },
+    "docs/evidence/m0-t13a-rare-control-01/admission.py": {
+      "sha256": "084b8b64fa30e0f4996ac336186b8aa2c32bf1a68da82acdef0985f4f4f0ebfc",
+      "bytes": 13754
+    },
+    "docs/evidence/m0-t13a-rare-control-01/batch_audit.py": {
+      "sha256": "c6a9311e3811adb61a5cbca7a59d9b30356ca2c13dae29b2b14209be93670352",
+      "bytes": 6684
+    },
+    "docs/evidence/m0-t13a-rare-control-01/duration_audit.py": {
+      "sha256": "de357639f5b77bba4db77eda0e73a8be62c8e29952a0a3c895246021d44e74a9",
+      "bytes": 12483
+    },
+    "docs/evidence/m0-t13a-rare-control-01/observer_contract.py": {
+      "sha256": "8b433d757cd67a792f25779cad7060939c48f73e3c68814e4da9dcaa2d63eefc",
+      "bytes": 3881
+    },
+    "docs/evidence/m0-t13a-rare-control-01/report_contract.py": {
+      "sha256": "aaf2f6fc82a00e383fef2b10399a07006294ed57b85be7512cbce9c15dcb60cd",
+      "bytes": 5912
+    },
+    "docs/evidence/m0-t13a-rare-control-01/run.py": {
+      "sha256": "37aafca0419d4c736cdf36ad38eee0722b6e8bb9795473ac012a17d35976d292",
+      "bytes": 37190
+    },
+    "docs/evidence/m0-t13a-rare-control-01/source.schema.json": {
+      "sha256": "580b2d7ac17b2b77aa80f07a76db21d3896e8c97abdf86655a31e1d0acaaf137",
+      "bytes": 7693
+    },
+    "docs/evidence/m0-t13a-rare-control-01/test_admission.py": {
+      "sha256": "b9a796481dba12496d7c3926acdc0ed1a5823a19bdf5918ac2aa4b8cc7c6012c",
+      "bytes": 4859
+    },
+    "docs/evidence/m0-t13a-rare-control-01/test_batch_audit.py": {
+      "sha256": "bef8059ff6f3fabaf399d60fcae9ab7af23e0ec7536d6bc0ad59bc39a8684bd1",
+      "bytes": 8230
+    },
+    "docs/evidence/m0-t13a-rare-control-01/test_duration_audit.py": {
+      "sha256": "859bfe23dd5af9653319ca3134557721c879417d810c04b7e315d139580c4249",
+      "bytes": 7845
+    },
+    "docs/evidence/m0-t13a-rare-control-01/test_launch_contract.py": {
+      "sha256": "da0ca1d846020d5ed645ec014ec68e253c35c426bd5be266546fdb465d5ac569",
+      "bytes": 11882
+    },
+    "docs/evidence/m0-t13a-rare-control-01/test_observer_contract.py": {
+      "sha256": "989d1f8ae5978be68b88d213694687d105bda2bc36efb2619a8d0de01af3a56e",
+      "bytes": 7480
+    },
+    "docs/evidence/m0-t13a-rare-control-01/test_report_contract.py": {
+      "sha256": "1e2fd48340c04153f08056e7325fb22604c33bce5c102df73ca8a135b819a9d3",
+      "bytes": 10562
+    },
+    "docs/evidence/m0-t13a-rare-control-01/test_runner.py": {
+      "sha256": "b5de8e67c47baba1a2e9602300363d0a805a2091421e5fdb3ef1d67220b6fa56",
+      "bytes": 2553
+    },
+    "docs/evidence/m0-model-lifecycle-observer-candidate/README.md": {
+      "sha256": "b685d8f0285160be81dcafa7ccfb9efed794ef147f3c57867b842a3c47fde6ab",
+      "bytes": 11000
+    },
+    "docs/evidence/m0-model-lifecycle-observer-candidate/observe_model_lifecycle.py": {
+      "sha256": "a1ae1490398a4bcc70737cc31235f3d7506a1a89430d31c2cf325834bd8c91cf",
+      "bytes": 37841
+    },
+    "docs/m0-implementation-status.md": {
+      "sha256": "fb8c107e9ba2b6a762057c81e3273265d8388aac37965b12b3ccbf8e6646d8b7",
+      "bytes": 105353
+    }
+  },
+  "archive_sha256": "742b57c51afde32aded7ae9b133ecbdea943c9673a6f53476ab59ff92063034c",
+  "scope": "complete original WIP supplement, not installed at original paths on main"
+}

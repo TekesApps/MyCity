@@ -1,0 +1,63 @@
+{
+  "issue": 149,
+  "baseline": "5fe412b531af4abcd60675cc03e25ec5cfcf3ebf",
+  "activated_at": "2026-10-26T03:29:38.332362+00:00",
+  "root_owner": "01a166fc-e444-7602-ad22-3a8551dda487",
+  "phase": "baseline actual failure captured; repair and tests authored, not compiled or executed; frozen audit200 candidate",
+  "owned_game_files": [
+    "crates/city-core/src/transaction.rs",
+    "crates/city-storage/tests/timeline_cancel_emergency.rs"
+  ],
+  "conditionally_readonly": [
+    "crates/city-core/src/timeline_driver.rs",
+    "crates/city-storage/src/lib.rs",
+    "crates/city-storage/src/continuation.rs"
+  ],
+  "owned_docs": [
+    "docs/physical-economy-runtime-contract.md",
+    "docs/execution-current.md",
+    "docs/core-task-dispatch-current.md",
+    "docs/issue-execution-ledger.md",
+    "docs/inputs/issue-ledger/execution-flow.json",
+    "docs/inputs/issue-ledger/registry.json",
+    "README.md",
+    "docs/evidence/timeline-target-emergency-20261026/"
+  ],
+  "initial_files": [
+    {
+      "file": "crates/city-core/src/transaction.rs",
+      "bytes": 470712,
+      "sha256": "eb57d22cbb3613d95e607fbbedfeb298ebee26bdd3375feaabb1eb53daa77480"
+    },
+    {
+      "file": "crates/city-core/src/timeline_driver.rs",
+      "bytes": 54617,
+      "sha256": "3e85ee139cab58d10383844762ffd64137ed8ea33ba2bc8f83bb698ff7877175"
+    },
+    {
+      "file": "crates/city-storage/src/lib.rs",
+      "bytes": 189566,
+      "sha256": "dfa9798ec5a781939bba7f5d11dd06d4650c81fa84634677cf43a755df7c3475"
+    },
+    {
+      "file": "crates/city-storage/src/continuation.rs",
+      "bytes": 6766,
+      "sha256": "5c583b06df08c000514a4a534e29d23912619f7333c515e6b14b9ddb8aeaa45b"
+    }
+  ],
+  "retention_budget_bytes": 268435456,
+  "target": "existing /Volumes/HP P900/dev/MyCity/target",
+  "work": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026",
+  "retain": "full source/program/failed world/WAL/checkpoint/requests until complete superseding acceptance explicitly releases dependencies",
+  "shared_WIP": 1,
+  "independent_preparations": 0,
+  "active_command": null,
+  "not_run": [
+    "all candidate compilation",
+    "all candidate game tests",
+    "shared/default-stack/recovery/resource acceptance"
+  ],
+  "frozen_M0_and_limits_unchanged": true,
+  "audit_tag": "v0.5.200",
+  "baseline_reproduction": "baseline01 exit101; cancel/exit/continue Capacity refusal; full originals retained"
+}

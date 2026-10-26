@@ -1855,11 +1855,55 @@ impl Engine {
             .as_ref()
             .is_ok_and(|p| self.emergency_progress(caller, env, p))
     }
+    // Cancel only an unexecuted advance request at an already completed boundary.
+    // Preparation already enforced caller/CAS and the sole-action contract. Keep
+    // this frame separate: the optional business views are not ordinary-path work.
+    #[inline(never)]
+    fn cancels_completed_target_without_business_progress(&self, p: &Prepared) -> bool {
+        let Some((old, new)) = self.timeline.as_ref().zip(p.timeline.as_ref()) else {
+            return false;
+        };
+        let a = old.progress;
+        let b = new.progress;
+        let same_resources = self.resources.iter().map(|r| (r.id,r.capacity,r.reserved,r.occupied))
+            .eq(p.resources.iter().map(|r| (r.id,r.capacity,r.reserved,r.occupied)));
+        let same_leases = self.leases.iter().map(|l|l.map(|l|(l.token,l.actor,l.resource,l.units,l.occupied)))
+            .eq(p.leases.iter().map(|l|l.map(|l|(l.token,l.actor,l.resource,l.units,l.occupied))));
+        let same_service = p.service_needs.as_deref().is_none_or(|next|
+            self.world.service_needs.as_deref().is_some_and(|prior|
+                matches!((prior.fingerprint(),next.fingerprint()),(Ok(a),Ok(b)) if a==b)));
+        let same_work = p.facility_work.as_deref().is_none_or(|next|
+            self.world.facility_work.as_deref().is_some_and(|prior|
+                crate::facility_authority::view(prior)==crate::facility_authority::view(next)));
+        let same_members = p.facility_member.as_deref().is_none_or(|next|
+            self.world.member_activity.as_deref().is_some_and(|prior| prior.fingerprint()==next.fingerprint()));
+        a.target.is_some_and(|target| target > a.last_complete)
+            && a.phase.is_none() && a.at == a.last_complete
+            && b.target.is_none() && b.phase.is_none()
+            && b.at == a.at && b.last_complete == a.last_complete
+            && b.serial == a.serial && b.lane == a.lane && b.cursor == a.cursor
+            // Existing CancelAdvance clears only these page-report counters;
+            // actual payments, sources, obligations and work remain below.
+            && b.page_paid == Money::ZERO && b.page_sources == 0
+            && old.claims == new.claims && old.payroll == new.payroll
+            && old.claim_sources == new.claim_sources
+            && self.background.as_ref() == p.background.as_ref()
+            && p.accounts.is_empty() && p.stocks.is_empty()
+            && same_resources && same_leases && self.next_token == p.next_token
+            && p.time_capacity.is_none() && p.venue.is_none()
+            && p.education.is_none() && p.qualification.is_none()
+            && p.continuous_supply.as_deref().is_none_or(|next| self.world.continuous_supply.as_deref()==Some(next))
+            && same_service && same_work && same_members
+    }
+
     fn emergency_progress(&self, _caller: Caller, env: &Envelope, p: &Prepared) -> bool {
         if env.actions.len() != 1 {
             return false;
         }
         match env.actions[0] {
+            Action::Timeline { command: crate::timeline::Command::CancelAdvance } => {
+                self.cancels_completed_target_without_business_progress(p)
+            }
             Action::FacilityWork{..} if env.actions[0].is_responsibility_control()=>{
                 self.world.facility_work.as_deref().zip(p.facility_work.as_deref()).is_some_and(|(old,new)|{
                     let a=crate::facility_authority::view(old);let b=crate::facility_authority::view(new);
@@ -7133,6 +7177,7 @@ impl Action {
             self,
             Self::Timeline {
                 command: crate::timeline::Command::Advance { .. }
+                    | crate::timeline::Command::CancelAdvance
                     | crate::timeline::Command::SettleClaim { .. }
                     | crate::timeline::Command::SettlePayroll { .. }
                     | crate::timeline::Command::Terminate { .. }

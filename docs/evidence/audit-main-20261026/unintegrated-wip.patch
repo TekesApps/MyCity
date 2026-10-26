@@ -1,0 +1,186 @@
+diff --git a/docs/evidence/m0-model-lifecycle-observer-candidate/README.md b/docs/evidence/m0-model-lifecycle-observer-candidate/README.md
+index c229686..612c367 100644
+--- a/docs/evidence/m0-model-lifecycle-observer-candidate/README.md
++++ b/docs/evidence/m0-model-lifecycle-observer-candidate/README.md
+@@ -93,3 +93,29 @@ are complete but native captures only35 filled samples: diagnostic_capture_incom
+ native_four_phase_samples=false. Full evidence and limitations are in
+ [actual157 record](../m0-model-lifecycle-native-157/STATUS.md). Earlier source-only statements
+ above describe the initial candidate; they do not override this actual finite result.
++
++
++## Takeover entry/clock-only validation (2026-10-24)
++
++The explicit `import importlib.util` and `--clock-handshake-only` path are now
++present in both observer entries. This mode returns after argument/file-pin and
++socketpair checks, before native support import, target/event observation or Model
++launch. Region-only mode still starts its own tracemalloc; that is observer cost.
++
++The original advisor found and the coordinator reproduced v1 accepting substituted
++final receipt timestamps. Protocol v2 binds the first five receipt timestamps to
++the actual exchange, checks the whole seven-timestamp order through parent receive,
++and requires the child to validate final ACK timing/digest. Both observer helper
++pins change together. Old v1 receipts and 495 failure originals remain historical,
++not retroactively accepted as v2.
++
++The bounded verification plan uses real isolated Python child entries with missing
++support/event paths, plus controlled malformed peers. No Rust executable is run;
++a retained fixed executable/source pair is only a metadata pin for parser checks.
++PID/start sentinel arguments in this early-exit mode are not OS target identity
++evidence. Positive acceptance requires both processes exit successfully and agree
++on receipt/digest, not merely the parent's return value. These checks cannot pass
++Model sampling, native four-phase bracketing, original M0, memory or true16GB gates.
++Actual command/result records belong in the dedicated limited diagnostic evidence.
++
++Actual results and remaining gates: [ENTRY-CLOCK-STATUS.md](ENTRY-CLOCK-STATUS.md). The fixed v2 archive remains the authority for executed script bytes.
+diff --git a/docs/evidence/m0-model-lifecycle-observer-candidate/observe_model_lifecycle.py b/docs/evidence/m0-model-lifecycle-observer-candidate/observe_model_lifecycle.py
+index 055a8f5..9a7bb69 100644
+--- a/docs/evidence/m0-model-lifecycle-observer-candidate/observe_model_lifecycle.py
++++ b/docs/evidence/m0-model-lifecycle-observer-candidate/observe_model_lifecycle.py
+@@ -10,6 +10,7 @@ import argparse
+ import ctypes
+ import hashlib
+ import importlib
++import importlib.util
+ import json
+ import os
+ from pathlib import Path
+@@ -25,6 +26,7 @@ SUPPORT_SHA256 = {
+     "process_activity.py": "1abbc0771180936fa660b34db4f6428f199fd467e0f866548e8a12bdb4c58aa9",
+     "frame_codec.py": "005be0c42f1703e0aae4d6e7597d83e65654ffb805f22456873ae042e4a9b97f",
+ }
++CLOCK_HANDSHAKE_SHA256 = "9c092e487ea1348901d70e6417f67096596f6f36c1f6405ea3eeb62a9d2f88ac"
+ MAX_EVENT_BYTES = 64 * 2048
+ MAX_EVENT_ROW_BYTES = 2048
+ MAX_OUTPUT_BYTES = 256 * 1024
+@@ -52,6 +54,38 @@ def sha256(path: Path) -> str:
+     return digest.hexdigest()
+ 
+ 
++def load_clock_handshake():
++    path = Path(__file__).with_name("clock_handshake.py")
++    if sha256(path) != CLOCK_HANDSHAKE_SHA256:
++        raise RuntimeError("clock handshake helper SHA-256 mismatch")
++    spec = importlib.util.spec_from_file_location("mycity_clock_handshake", path)
++    if spec is None or spec.loader is None:
++        raise RuntimeError("clock handshake helper import unavailable")
++    module = importlib.util.module_from_spec(spec)
++    spec.loader.exec_module(module)
++    return module
++
++
++def monotonic_clock_record() -> dict:
++    info = time.get_clock_info("monotonic")
++    if not info.monotonic:
++        raise RuntimeError("time.monotonic is not monotonic on this host")
++    return {
++        "function": "time.clock_gettime_ns",
++        "clock_name": "CLOCK_MONOTONIC",
++        "clock_id": int(time.CLOCK_MONOTONIC),
++        "unit": "ns",
++        "implementation": info.implementation,
++        "resolution_ns": int(round(info.resolution * 1_000_000_000)),
++        "monotonic": bool(info.monotonic),
++        "adjustable": bool(info.adjustable),
++    }
++
++
++def shared_absolute_clock_ns() -> int:
++    return time.clock_gettime_ns(time.CLOCK_MONOTONIC)
++
++
+ def json_file(path: Path, cap: int) -> dict:
+     info = path.lstat()
+     if not path.is_file() or path.is_symlink() or info.st_size > cap:
+@@ -344,7 +378,13 @@ def main() -> int:
+     parser.add_argument("--support-dir", type=Path, default=SUPPORT_DIR)
+     parser.add_argument("--poll-ms", type=int, default=50)
+     parser.add_argument("--filled-sample-seconds", type=float, default=1.0)
++    parser.add_argument("--clock-handshake-fd", type=int, default=None,
++                        help="optional inherited local socketpair fd; root runner uses this to verify shared CLOCK_MONOTONIC")
++    parser.add_argument("--clock-handshake-only", action="store_true",
++                        help="complete the inherited clock handshake, print its receipt, then exit before observing targets")
+     args = parser.parse_args()
++    if args.clock_handshake_only and args.clock_handshake_fd is None:
++        parser.error("--clock-handshake-only requires --clock-handshake-fd")
+     if args.poll_ms < 25 or args.poll_ms > 250 or not (0.5 <= args.filled_sample_seconds <= 5.0):
+         parser.error("poll/sample interval outside fixed observer bounds")
+     run_root = args.run_root
+@@ -361,6 +401,20 @@ def main() -> int:
+     if len(args.source_sha256) != 64 or any(c not in "0123456789abcdef" for c in args.source_sha256):
+         parser.error("source SHA-256 must be lowercase hex")
+ 
++    clock_handshake_helper_sha256 = sha256(Path(__file__).with_name("clock_handshake.py"))
++    if clock_handshake_helper_sha256 != CLOCK_HANDSHAKE_SHA256:
++        parser.error("clock handshake helper SHA-256 mismatch")
++    clock_handshake_receipt = None
++    if args.clock_handshake_fd is not None:
++        handshake = load_clock_handshake()
++        clock_handshake_receipt = handshake.child_handshake(args.clock_handshake_fd, "phase_observer")
++    if args.clock_handshake_only:
++        sys.stdout.write(json.dumps({"type": "clock_handshake_only", "status": "accepted",
++                                     "clock_handshake_helper_sha256": clock_handshake_helper_sha256,
++                                     "clock_handshake": clock_handshake_receipt},
++                                    sort_keys=True, separators=(",", ":")) + "\n")
++        return 0
++
+     tracemalloc.start(1)
+     writer = Writer(args.output)
+     start_ns = time.monotonic_ns()
+@@ -388,6 +442,9 @@ def main() -> int:
+             raise RuntimeError("observer support changed after import")
+         emit({"type": "observer_start", "status": "running",
+               "observer_sha256": sha256(Path(__file__).resolve()),
++              "monotonic_clock": monotonic_clock_record(),
++              "clock_handshake_helper_sha256": clock_handshake_helper_sha256,
++              "clock_handshake": clock_handshake_receipt,
+               "executable_sha256": actual_exe_sha, "expected_source_sha256": args.source_sha256,
+               "support_sha256": SUPPORT_SHA256, "supervisor_pid": args.supervisor_pid,
+               "poll_ms": args.poll_ms, "filled_sample_seconds": args.filled_sample_seconds,
+@@ -437,6 +494,7 @@ def main() -> int:
+                 attempted_fingerprints.add(before)
+                 attempted_sample_count += 1
+                 captured_ns = time.monotonic_ns()
++                absolute_capture_begin_ns = shared_absolute_clock_ns()
+                 try:
+                     rows = native.process_table()
+                     phase = latest["phase"]
+@@ -522,6 +580,8 @@ def main() -> int:
+                               helper_sample.get("state") == "captured") or
+                              (phase in ("retiring", "returned") and helper_sample is not None and
+                               helper_sample.get("state") == "confirmed_absent")))
++                        legacy_capture_end_ns = time.monotonic_ns()
++                        absolute_capture_end_ns = shared_absolute_clock_ns()
+                         emit({"type": "phase_sample",
+                               "status": "captured" if native_capture_complete else "identity_incomplete",
+                               "native_capture_complete": native_capture_complete,
+@@ -529,7 +589,15 @@ def main() -> int:
+                               "phase": phase, "event": event_view(latest),
+                               "event_fingerprint": list(before),
+                               "capture_begin_monotonic_ns": captured_ns,
+-                              "capture_end_monotonic_ns": time.monotonic_ns(),
++                              "capture_end_monotonic_ns": legacy_capture_end_ns,
++                              "absolute_monotonic_ns": {
++                                  "function": "time.clock_gettime_ns",
++                                  "clock_name": "CLOCK_MONOTONIC",
++                                  "clock_id": int(time.CLOCK_MONOTONIC),
++                                  "unit": "ns",
++                                  "begin": absolute_capture_begin_ns,
++                                  "end": absolute_capture_end_ns,
++                              },
+                               "pool_application_identity": {
+                                   "pid": ready["pid"],
+                                   "application_instance_unix_ns": ready["boot"],
+diff --git a/docs/m0-implementation-status.md b/docs/m0-implementation-status.md
+index 0339bf3..768887a 100644
+--- a/docs/m0-implementation-status.md
++++ b/docs/m0-implementation-status.md
+@@ -1,5 +1,9 @@
+ # M0 Rust模型：当前范围、运行方法与验收状态
+ 
++## 接管后限定诊断：observer入口与跨进程时钟（2026-10-24，未发布）
++
++[实际结果与边界](evidence/m0-model-lifecycle-observer-candidate/ENTRY-CLOCK-STATUS.md)：修复两个Python入口显式import及handshake-only路径，并复现后修复v1最终receipt时间替换缺口；v2完整时序绑定经4项协议测试、原14项边界测试、两个真实隔离Python入口和3个入口拒绝反例验证。原advisor核读证据，无限定诊断阻断。本轮未构建/启动Rust或Model、未查询目标native、未做长压；不宣布495真实采样恢复或M0任何门通过。原冻结负载/normal/common8MiB/三轮四速/8h/真实16GB标准保持不变，原失败与恢复证据保留。
++
+ ## v0.5.136：观察器真实启动失败与严格来源绑定修复
+ 
+ [原始失败及修复收据](evidence/m0-t13a-observer-source-136/STATUS.md)：j3n-01原120秒准入通过，观察器因source.json键名不匹配立即零采样退出，未形成短测。原root不重跑；新j3p-control在创建目录/模型前核对统一fixed_source_sha256，17项支持文件重新冻结，18项纯测试和真实Rust故障退出反例通过。反例未证明正向时钟握手、采样或吞吐；新smoke/formal仍各需原门实测，真实16GB not_run。该阶段未修改Rust模型与原验收负载。

@@ -1,0 +1,45 @@
+{
+  "command": [
+    "rustc",
+    "--edition=2021",
+    "work/timeline-target-emergency-20261026/repro.rs",
+    "-L",
+    "dependency=/Volumes/HP P900/dev/MyCity/target/release/deps",
+    "-o",
+    "work/timeline-target-emergency-20261026/baseline-repro-fixed",
+    "--extern",
+    "mycity_core=/Users/frankqin/dev/MyCity/target/release/deps/libmycity_core-b4e3578b104bfee7.rlib",
+    "--extern",
+    "mycity_storage=/Users/frankqin/dev/MyCity/target/release/deps/libmycity_storage-1d5b1753ddba82f8.rlib",
+    "--extern",
+    "mycity_headless=/Users/frankqin/dev/MyCity/target/release/deps/libmycity_headless-20a38494b8e4448f.rlib",
+    "--extern",
+    "serde_json=/Users/frankqin/dev/MyCity/target/release/deps/libserde_json-739cab3222a3d08f.rlib"
+  ],
+  "exit_code": 0,
+  "source_sha256": "081bcb5c1c2fffd38f80bc0c0e39b80c10724cbfd88a5e7b0e4cf2123a197dcd",
+  "libs": [
+    {
+      "name": "mycity_core",
+      "file": "/Users/frankqin/dev/MyCity/target/release/deps/libmycity_core-b4e3578b104bfee7.rlib",
+      "sha256": "7879581eccc202a877c082e5aa95ee613eb7cb8d19923cea71474ca9a18b5873"
+    },
+    {
+      "name": "mycity_storage",
+      "file": "/Users/frankqin/dev/MyCity/target/release/deps/libmycity_storage-1d5b1753ddba82f8.rlib",
+      "sha256": "1624ffd96adce0ba441e6b940e945121479b1721033887840e33d359a41b7905"
+    },
+    {
+      "name": "mycity_headless",
+      "file": "/Users/frankqin/dev/MyCity/target/release/deps/libmycity_headless-20a38494b8e4448f.rlib",
+      "sha256": "8afb944949f93f1b6e3a5adbeed0a5b5f72436f6c2592962d7fb1ec6a64cc817"
+    },
+    {
+      "name": "serde_json",
+      "file": "/Users/frankqin/dev/MyCity/target/release/deps/libserde_json-739cab3222a3d08f.rlib",
+      "sha256": "2dddbb780db152a49fd25676cdafaa63d8df138016de76f09aaea866fb495079"
+    }
+  ],
+  "base_code_commit": "824463c1f3325f86853045475d95e2b8df1811b3",
+  "executable_sha256": "94786fe66ef927be00f8a2ad0692bf3c653dca9ec070493ac53b532754095e9b"
+}

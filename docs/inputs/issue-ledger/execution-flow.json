@@ -1,16 +1,28 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-26T03:18:17.005373+00:00",
-  "source_head": "824463c1f3325f86853045475d95e2b8df1811b3",
-  "candidate": "137/150 accepted and closed;199 ledger only;149 next reproduction not dispatched",
+  "last_snapshot_at": "2026-10-26T03:57:38.484908+00:00",
+  "source_head": "v0.5.200 (audit candidate; parent 5fe412b531af4abcd60675cc03e25ec5cfcf3ebf)",
+  "candidate": "149 actual baseline failure reproduced; repair and tests frozen for audit; candidate compilation and all acceptance not_run",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
   "limits": {
     "shared_core_lanes": 1,
     "independent_preparations": 2,
     "reason_for_adjustment_required": true
   },
-  "active_shared_work": [],
+  "active_shared_work": [
+    {
+      "issue": 149,
+      "owner": "01a166fc-e444-7602-ad22-3a8551dda487",
+      "files": [
+        "crates/city-core/src/transaction.rs",
+        "crates/city-storage/tests/timeline_cancel_emergency.rs"
+      ],
+      "status": "developing; frozen audit candidate, not accepted",
+      "acceptance": "hot/cold cancellation and actual exit; refusal/continuation/once; affected shared/default/resource",
+      "remaining": "candidate compile, direct tests, shared/default/recovery/resource; Issue stays Open"
+    }
+  ],
   "active_independent_preparations": [],
   "counting_rules": {
     "parents_are_not_active_work": true,

@@ -1,0 +1,6 @@
+
+thread 'main' panicked at work/timeline-target-emergency-20261026/repro.rs:16:67:
+assertion `left == right` failed: ordinary cancel of existing target at completed boundary must remain possible with emergency headroom
+  left: Bool(false)
+ right: true
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
