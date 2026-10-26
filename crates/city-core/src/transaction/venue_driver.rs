@@ -19,10 +19,47 @@ fn snapshot<'a>(world: &World, runtime: &'a Runtime, timeline: Option<&crate::ti
         policies: &runtime.policies, use_states: states, resources, leases, non_venue_resource_ids: ids }
 }
 
+
+// Read-only legacy-mode projection, never a pool used for allocation or persistence.
+// Slot indices and length stay unchanged, so original bind checks retain their shape.
+struct LegacyPoolView {
+    resources: [Resource; MAX_RESOURCES],
+    resource_len: usize,
+    leases: [Option<Lease>; MAX_LEASES],
+    lease_len: usize,
+    non_venue: [u32; MAX_RESOURCES],
+    non_venue_len: usize,
+}
+pub(super) const READ_SCRATCH_BYTES: usize = 8 * 1024;
+const _: () = assert!(2 * std::mem::size_of::<LegacyPoolView>() + 2 * MAX_RESOURCES * std::mem::size_of::<u32>() <= READ_SCRATCH_BYTES);
+impl LegacyPoolView {
+    fn new(world: &World, runtime: &Runtime, resources: &[Resource], leases: &[Option<Lease>], timed: Option<&crate::time_capacity::Runtime>) -> Result<Self, TxError> {
+        if resources.len() > MAX_RESOURCES || leases.len() > MAX_LEASES { return Err(TxError::WorkingLimit); }
+        // Keep the complete original identity/domain gate before any quantity filtering.
+        let (ids, count) = non_venue_ids(runtime, resources);
+        v::validate_opening(v::OpeningView { scope: world.scope, registry: v::VenueRegistry { venues: &runtime.opening.venues }, offers: &runtime.opening.offers, resources, non_venue_resource_ids: &ids[..count] }).map_err(|_| TxError::Resource)?;
+        time_capacity_driver::validate(world, timed, resources, leases)?;
+        let mut view = Self { resources: [Resource { id: 0, capacity: 0, reserved: 0, occupied: 0 }; MAX_RESOURCES], resource_len: 0, leases: [None; MAX_LEASES], lease_len: leases.len(), non_venue: [0; MAX_RESOURCES], non_venue_len: 0 };
+        for resource in resources {
+            if timed.is_some_and(|s| s.manages(resource.id)) { continue; }
+            view.resources[view.resource_len] = *resource; view.resource_len += 1;
+            if !runtime.is_managed(resource.id) { view.non_venue[view.non_venue_len] = resource.id; view.non_venue_len += 1; }
+        }
+        for (i, lease) in leases.iter().enumerate() {
+            if lease.is_some_and(|l| timed.is_some_and(|s| s.manages(l.resource))) { continue; }
+            view.leases[i] = *lease;
+        }
+        Ok(view)
+    }
+    fn snapshot<'a>(&'a self, world: &World, runtime: &'a Runtime, timeline: Option<&crate::timeline::Timeline>, states: &'a [v::UseState]) -> v::Snapshot<'a> {
+        snapshot(world, runtime, timeline, states, &self.resources[..self.resource_len], &self.leases[..self.lease_len], &self.non_venue[..self.non_venue_len])
+    }
+}
+
 /// Static domain exclusion plus dynamic bidirectional token checks cover every internal
 /// effect path as well as the public commands. Original non-managed cleanup remains valid.
 pub(super) fn validate(world: &World, resources: &[Resource], leases: &[Option<Lease>],
-    timeline: Option<&crate::timeline::Timeline>, candidate: Option<&UseCandidate>) -> Result<(), TxError> {
+    timeline: Option<&crate::timeline::Timeline>, candidate: Option<&UseCandidate>, timed: Option<&crate::time_capacity::Runtime>) -> Result<(), TxError> {
     let Some(runtime) = world.venue.as_deref() else { return Ok(()); };
     validate_domain_bindings(world, world.boot.as_ref(), world.exchange.as_ref(), world.construction.as_ref())?;
     if resources.len() > MAX_RESOURCES || leases.len() > MAX_LEASES { return Err(TxError::WorkingLimit); }
@@ -53,8 +90,8 @@ pub(super) fn validate(world: &World, resources: &[Resource], leases: &[Option<L
             state.accepted_operator == exit.company_account && matches!(state.status, v::UseStatus::Reserved | v::UseStatus::Actual))) {
         return Err(TxError::InvalidOperation);
     }
-    let (ids, count) = non_venue_ids(runtime, resources);
-    v::validate_recovery(snapshot(world, runtime, timeline, states, resources, leases, &ids[..count]))
+    let view = LegacyPoolView::new(world, runtime, resources, leases, timed)?;
+    v::validate_recovery(view.snapshot(world, runtime, timeline, states))
         .map_err(map_error)?;
     Ok(())
 }
@@ -113,8 +150,9 @@ pub(super) fn prepare(engine: &Engine, caller: Caller, env: &Envelope, use_id: u
     }
     let actor = match caller { Caller::System => v::RootActor::System, Caller::Account(id) => v::RootActor::Account(id) };
     let request = v::Request { use_id, operation_id: env.operation_id, kind, occurred_at };
-    let (ids, count) = non_venue_ids(runtime, &engine.resources);
-    let before = snapshot(world, runtime, Some(timeline), &runtime.states, &engine.resources, &engine.leases, &ids[..count]);
+    if engine.owned_capacity_bytes().checked_add(UseCandidate::payload_bytes() + READ_SCRATCH_BYTES).is_none_or(|n| n > ENGINE_BYTE_BUDGET) { return Err(TxError::WorkingLimit); }
+    let before_view = LegacyPoolView::new(world, runtime, &engine.resources, &engine.leases, engine.time_capacity.as_deref())?;
+    let before = before_view.snapshot(world, runtime, Some(timeline), &runtime.states);
     if matches!(command, Command::CancelReserved) {
         let state = runtime.states.iter().find(|state| state.use_id == use_id).ok_or(TxError::Lease)?;
         if !matches!(caller, Caller::System) && caller.key() != state.actor { return Err(TxError::Unauthorized); }
@@ -127,7 +165,7 @@ pub(super) fn prepare(engine: &Engine, caller: Caller, env: &Envelope, use_id: u
     let event = v::VerifiedRootEvent::after_root_event_validation(request, before, actor, permission, venue, offer,
         event_source, tick, token);
     let planned = v::plan(before, request, &event).map_err(map_error)?;
-    if engine.owned_capacity_bytes().checked_add(UseCandidate::payload_bytes()).is_none_or(|n| n > ENGINE_BYTE_BUDGET) {
+    if engine.owned_capacity_bytes().checked_add(UseCandidate::payload_bytes() + READ_SCRATCH_BYTES).is_none_or(|n| n > ENGINE_BYTE_BUDGET) {
         return Err(TxError::WorkingLimit);
     }
     let mut out = UseCandidate::from_runtime(runtime);
@@ -143,7 +181,8 @@ pub(super) fn prepare(engine: &Engine, caller: Caller, env: &Envelope, use_id: u
             if token == 0 { return Err(TxError::Overflow); }
             *slot = Some(Lease { token, actor, resource: resource_id, units, occupied: false });
             resource.reserved = reserved;
-            let after = snapshot(world, runtime, Some(timeline), &runtime.states, resources, leases, &ids[..count]);
+            let after_view = LegacyPoolView::new(world, runtime, resources, leases, engine.time_capacity.as_deref())?;
+            let after = after_view.snapshot(world, runtime, Some(timeline), &runtime.states);
             let bound = v::bind_reserved_offer(before, after, request, &event).map_err(map_error)?;
             let v::UseStateDelta::Insert(state) = bound.metadata else { return Err(TxError::InvalidOperation); };
             out.states.try_push(state).map_err(|_| TxError::WorkingLimit)?;
@@ -185,6 +224,6 @@ pub(super) fn prepare(engine: &Engine, caller: Caller, env: &Envelope, use_id: u
             _ => return Err(TxError::InvalidOperation),
         }
     }
-    validate(world, resources, leases, Some(timeline), Some(&out))?;
+    validate(world, resources, leases, Some(timeline), Some(&out), engine.time_capacity.as_deref())?;
     Ok((out, created_token))
 }

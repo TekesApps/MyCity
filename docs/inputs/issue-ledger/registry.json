@@ -1,7 +1,7 @@
 {
   "schema": "mycity-issue-ledger-v1",
   "date": "2026-10-25",
-  "release": "v0.5.195",
+  "release": "v0.5.196",
   "scope": "完整既定产品；v190有限业务132与缺陷148真实验收关闭，v191仅同步台账，UI单独延期",
   "coordination": "当前root唯一共享writer/串行验证；旧主会话停用",
   "states": [
@@ -364,7 +364,7 @@
       "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
       "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
-      "issue_body_sha256": "d4cf8b5158524db34fc2b7c80f6c8d0f6ad642214ccbd6e9538e62f999e0e2f6"
+      "issue_body_sha256": "c933f90ca6d3095da4e13fc6f0d26f76aaa959e73f0f29903353f2b033c91c08"
     },
     {
       "issue": 17,
@@ -1116,8 +1116,8 @@
       "title": "[非UI/query-monitor] 只读分页查询、统一事项进度和因果观察",
       "url": "https://github.com/TekesApps/MyCity/issues/49",
       "parent": 16,
-      "stage": "开发中",
-      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "stage": "待开发",
+      "owner": "root协调；剩余完整合同未派工，不是当前在制，无新增写权",
       "write_authority": [
         "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
       ],
@@ -1129,19 +1129,19 @@
       "acceptance": [
         "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
       ],
-      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "remaining": "保留既有局部底座和原完整合同；剩余实现/接线/验收未派工，135有限目录已验可作为具体依赖，不要求整个父域关闭",
       "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
       "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
-      "issue_body_sha256": "73b5c81c09a7e508daa9acd8ac3a5a474842a9d391e71f6514921264e91d1420"
+      "issue_body_sha256": "c354bf2569c1c3e2574d88cb68c06321a3d39fa0381c0e52506e011709532d0f"
     },
     {
       "issue": 50,
       "title": "[非UI/time-control] 暂停/四档/到节点推进的后端控制语义",
       "url": "https://github.com/TekesApps/MyCity/issues/50",
       "parent": 16,
-      "stage": "开发中",
-      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "stage": "待开发",
+      "owner": "root协调；剩余完整合同未派工，不是当前在制，无新增写权",
       "write_authority": [
         "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
       ],
@@ -1154,11 +1154,11 @@
       "acceptance": [
         "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
       ],
-      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "remaining": "保留既有局部底座和原完整合同；剩余实现/接线/验收未派工，135有限目录已验可作为具体依赖，不要求整个父域关闭",
       "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
       "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
-      "issue_body_sha256": "9fb9536bbcb81106166439e39df686bd1bc99e4fa4d9d34c2730a78cd3509c1b"
+      "issue_body_sha256": "476dbd0c70d2015af1f154da2276c5317f5db7f43fdb4d27861e79254f0d1909"
     },
     {
       "issue": 51,
@@ -3227,11 +3227,20 @@
       "title": "[业务子任务] canonical时窗容量内核：原Resource/Lease身份、冲突与恢复桥",
       "url": "https://github.com/TekesApps/MyCity/issues/136",
       "parent": 118,
-      "stage": "待集成",
+      "stage": "待验证",
       "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
       "write_authority": [
-        "原physical_capacity专属模块及测试/fixture（原handoff manifest）",
-        "共享Resource/Lease/World/Store仅root"
+        "crates/city-core/src/time_capacity.rs",
+        "crates/city-core/src/transaction/time_capacity_driver.rs",
+        "crates/city-core/src/transaction.rs",
+        "crates/city-core/src/transaction/slots.rs",
+        "crates/city-core/src/lib.rs",
+        "crates/city-core/tests/time_capacity.rs",
+        "crates/city-storage/src/checkpoint/receipt_decode.rs",
+        "crates/city-storage/tests/time_capacity_store.rs",
+        "crates/city-core/src/continuous_supply.rs",
+        "crates/city-core/src/continuous_supply/v2.rs",
+        "crates/city-core/src/transaction/venue_driver.rs"
       ],
       "scope": "消化既有physical_capacity候选，将canonical身份/单位/版本和时窗预留/实际占用/释放接原权威池；场所已验证能力可复用，其它交通/床位/机组consumer由各领域子issue负责。",
       "required_capabilities": [
@@ -3244,12 +3253,12 @@
         "原writer原子提交和失效/重试/保存恢复",
         "多consumer真实冲突反例与联合布局预算"
       ],
-      "remaining": "限定consumer已验不等于全模式；开工前先固定实际专属路径与原owner，当前无新写授权",
+      "remaining": "当前混合/满表/等待退出/保存恢复及旧venue/设施专项通过；同源shared/default/normal-role最终验证和完整关闭待完成，v196只是审计检查点",
       "evidence": "原第四批#118完整handoff/patch/恢复原件",
-      "implementation_tags": "原场所能力已发布；本通用内核未完整接线",
+      "implementation_tags": "v0.5.196待验审计检查点；无PR，不算业务验收或关闭",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
-      "issue_body_sha256": "0d1260a66fa51163645c5c448ef5dff60649f8160322199ac6b43f55bc90d741",
-      "execution_state": "queued:not-dispatched",
+      "issue_body_sha256": "cb090d0cc7f201046955e419a2bc72847edc851b7fb23f30abff89ba897f172c",
+      "execution_state": "active:core-1",
       "execution_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "execution_contract": "docs/inputs/issue-ledger/execution-flow.json"
     },

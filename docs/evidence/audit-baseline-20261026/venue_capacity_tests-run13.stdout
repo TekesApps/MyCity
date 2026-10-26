@@ -1,0 +1,16 @@
+
+running 10 tests
+test fixture_maps_the_independent_literal_contract_into_the_real_api ... ok
+test only_authorized_exact_reservation_candidate_binds_a_new_original_lease ... ok
+test opening_rejects_alias_resource_domain_population_and_partition_conflicts ... ok
+test opening_rejects_zero_people_bad_enrollment_bad_window_and_unidentified_source ... ok
+test recovery_preserves_overcommitted_actual_but_rejects_bad_bijections_and_counter_values ... ok
+test recovery_rejects_actual_and_released_entry_times_outside_the_accepted_window ... ok
+test reserved_use_enters_once_and_safe_exit_releases_actual_after_due_or_revocation ... ok
+test shared_group_cannot_enter_twice_and_conservative_capacity_gate_is_not_physical_shortage ... ok
+test source_and_layout_bounds_are_explicit_and_max_json_rows_fit_the_formula ... VenueDefinition=96 VenuePolicy=32 UseOffer=344 GroupPartition=40 UseState=248 Request=40 VerifiedRootEvent=656 Candidate=280 opening_rows=23552 policy_rows=512 runtime_rows=15872 metadata_rows=39424 original_pool_rows=1792
+ok
+test transitions_require_clock_system_event_and_reservation_authority ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

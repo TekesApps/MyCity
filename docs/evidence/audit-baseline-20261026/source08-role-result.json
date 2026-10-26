@@ -1,0 +1,17 @@
+{
+  "command": [
+    "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/source08-timed-role-fixed",
+    "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/role08",
+    "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/source07-headless-fixed",
+    "/Volumes/HP P900/dev/MyCity/work/r41/timed-role08",
+    "dc31a09da52daa48c36a7395e65cfdb5c0c12f457e98cf29ba19274baa0e240f",
+    "/Users/frankqin/dev/MyCity/fixtures/m0-exchange-opening.json",
+    "/Users/frankqin/dev/MyCity/fixtures/m0-exchange-spatial.json",
+    "/Users/frankqin/dev/MyCity/fixtures/terrain/m0-flat16.png"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 1.107920708,
+  "helper_sha256": "b685a3750bbfe054eea3c1738c7c5b97fd3e47ba5e854005297cd3bfae2f7704",
+  "main_sha256": "3bb0c3be24ddc4a872e69e8ad751b3667e663dd7f0e95ad3e06a53762cb53d9a",
+  "scope": "actual timed profile via original shipping normal Sim role, original direct reference + save/restart/retry; not whole-game/native/M0/16GB/speed"
+}

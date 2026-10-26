@@ -178,6 +178,7 @@ impl Runtime {
     pub(crate) fn cursor(&self)->u64{self.genset.cursor}
     pub(crate) fn changed_by(&self,operation:u64)->bool{self.last_operation==operation}
     pub(crate) fn opening(&self)->&Opening{&self.opening}
+    pub(crate) fn owns_resource(&self,id:u32)->bool{self.opening.resources.contains(&id)||self.treatment_opening().is_some_and(|o|v2::roles(o).contains(&id))}
     pub(crate) fn treatment_device(&self)->Option<u64>{
         match &self.opening.profile{Profile::ContinuousGensetTwinPumpTreatmentV2(o)=>Some(u64::from(o.purifier_resource)),_=>None}
     }

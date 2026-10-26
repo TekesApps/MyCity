@@ -1,6 +1,6 @@
 # MyCity Issue 执行与验收台账
 
-当前实际在制与速度见[执行清单](execution-current.md)和[机器台账](inputs/issue-ledger/execution-flow.json)：收尾0共享+0准备，上限1+2；132/133/135及缺陷148已实际验收并关闭，父域仍开放。本窗口业务3、历史补关0、缺陷1，20待集成/0待验证；不以总关闭比例或tag计产品进度。
+当前实际在制见[执行清单](execution-current.md)：#136单一root验证、独立准备0项；父任务持续推进不算活跃开发。#49/#50剩余未派工，已校正stage:todo。v196为待验审计检查点，关闭0项；累计新业务3/历史补关0/缺陷1，积压19待集成/1待验证。
 
 2026-10-25，台账阶段v0.5.191，游戏实际验收v0.5.190。总体入口为[PRODUCT_BLUEPRINT](PRODUCT_BLUEPRINT.md)，需求见[逐条矩阵](product-coverage-and-requirements.md)。#132有限业务和#148布局缺陷已完整验收、发布、回填并实际关闭；父域/M0/16GB仍开放，见[设施证据](evidence/facility-operation-20261025/STATUS.md)。v191只同步关闭，不重跑或重复计业务；WIP和失败恢复原件保留。
 

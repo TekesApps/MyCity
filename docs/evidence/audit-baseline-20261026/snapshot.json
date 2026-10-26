@@ -1,0 +1,36 @@
+{
+  "frozen_at": "2026-10-26T00:16:05.474344+00:00",
+  "purpose": "audit source checkpoint, not full136 acceptance",
+  "base_commit": "31fb1730e5d68857fa461763c4d763df5d55f215",
+  "planned_tag": "v0.5.196",
+  "issue136": "open; directly affected tests passed; current shared/default/normal-role final checks pending",
+  "current_source13_and_source14_inputs_identical": true,
+  "active_source_files": 460,
+  "additional_tracked_root_fixture_files": 20,
+  "root_fixtures": "unchanged from v195; full hashes now included; earlier409-file convenience manifests were not standalone complete source trees",
+  "protected_wip_files": 24,
+  "preserved_wip_raw_bytes": 392159,
+  "scope": "all current136 owned game files plus design/execution docs; unrelated WIP only as clearly separated complete review supplement",
+  "full_runtime_originals": "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026 and r39/r40/r41; original source/failed programs/world/WAL/checkpoint retained",
+  "historical_executables": "terminal uncompressed working copies have verified full ZIP archives and restore records, not digest-only deletion",
+  "no_new_issue_closed": true,
+  "pr": null,
+  "statistics_window": {
+    "start": "2026-10-25T02:39:00Z",
+    "cutoff": "2026-10-26T00:18:15.406660+00:00",
+    "new_accepted_business": [
+      132,
+      133,
+      135
+    ],
+    "historical_backfill_business": [],
+    "defects_closed": [
+      148
+    ],
+    "newly_closed_by_this_audit_checkpoint": [],
+    "pending_integration": 19,
+    "pending_validation": 1,
+    "duration": "no reliable first-ready/full-source timestamps; do not equate closing/report window with development cycle"
+  },
+  "whitespace_check_scope": "all authored/staged code and prose; raw copied stdout and unintegrated-wip.patch excluded because original evidence blank/context whitespace is preserved byte-for-byte"
+}

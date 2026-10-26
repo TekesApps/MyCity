@@ -264,7 +264,7 @@ pub(crate) fn stop_pumps(r:&mut Runtime,l:&mut impl Ledger,f:&crate::facility_au
     *r.treatment_batch_mut().unwrap().segments.iter_mut().find(|s|s.is_none()).ok_or(TxError::WorkingLimit)?=Some(next);Ok(())
 }
 
-fn roles(o:&Opening)->[u32;5]{[o.purifier_resource,o.receiver_resources[0],o.receiver_resources[1],o.receiver_resources[2],o.product_storage.resource]}
+pub(super) fn roles(o:&Opening)->[u32;5]{[o.purifier_resource,o.receiver_resources[0],o.receiver_resources[1],o.receiver_resources[2],o.product_storage.resource]}
 fn extra_ids(o:&Opening)->[u32;5]{let mut ids=roles(o);ids.sort();ids}
 fn required_holds(r:&Runtime)->Result<[bool;5],TxError>{
     let running=r.genset.status==g::Status::Running;

@@ -97,6 +97,7 @@ fn action_raw(
         Qualification,
         Education,
         Venue,
+        TimeCapacity,
         Background,
         Timeline,
         Inbox,
@@ -147,6 +148,10 @@ fn action_raw(
         Kind::Education => {
             let fields=Fields::parse(raw,&["kind","command"],false,scratch)?;
             Ok(Output::Education {command:reader::decode(fields.raw(1)?,scratch)?})
+        }
+        Kind::TimeCapacity => {
+            let fields = Fields::parse(raw, &["kind", "command"], false, scratch)?;
+            Ok(Output::TimeCapacity { command: reader::decode(fields.raw(1)?, scratch)? })
         }
         Kind::Venue => {
             let fields = Fields::parse(raw, &["kind", "use_id", "command"], false, scratch)?;

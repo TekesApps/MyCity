@@ -1,0 +1,23 @@
+{
+  "command": [
+    "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/source11b-coexist-fixed",
+    "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/coexist11b",
+    "/Users/frankqin/dev/MyCity/tests/fixtures/water-treatment-runtime/joint-v2-opening.json"
+  ],
+  "build_command": [
+    "rustc",
+    "--edition=2021",
+    "work/canonical-capacity-20261026/coexist11b.rs",
+    "-L",
+    "dependency=/Volumes/HP P900/dev/MyCity/target/release/deps",
+    "-o",
+    "work/canonical-capacity-20261026/source11b-coexist-fixed",
+    "--extern",
+    "serde_json=/Users/frankqin/dev/MyCity/target/release/deps/libserde_json-739cab3222a3d08f.rlib",
+    "--extern",
+    "mycity_core=/Users/frankqin/dev/MyCity/target/release/deps/libmycity_core-b869799dfe52c64c.rlib"
+  ],
+  "exit_code": 101,
+  "helper_sha256": "e085f25244127036d249f2ccae3eeed10992a9b8e91e02a75b5e7f8cd5e96081",
+  "scope": "fresh globally distinct aliases70011/70012; same legitimate V2 opening and independent original resource701"
+}

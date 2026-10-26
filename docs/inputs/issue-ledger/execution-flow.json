@@ -1,16 +1,24 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-25T22:55:44.399437+00:00",
+  "last_snapshot_at": "2026-10-26T00:18:15.406660+00:00",
   "source_head": "30a2dc4d95569a1baca8d939a3c0250216e190f5",
-  "candidate": "135 finite business accepted published v194/backfilled closed; closure docs v195 only; next136 queued not activated",
+  "candidate": "v196 audit source checkpoint;136 directly affected checks passed, current shared/default/role gates pending",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
   "limits": {
     "shared_core_lanes": 1,
     "independent_preparations": 2,
     "reason_for_adjustment_required": true
   },
-  "active_shared_work": [],
+  "active_shared_work": [
+    {
+      "lane": "core-1",
+      "business_issue": 136,
+      "owner_session": "01a166fc-e444-7602-ad22-3a8551dda487",
+      "evidence_root": "work/canonical-capacity-20261026",
+      "phase": "136 validation; candidate code frozen for audit; no new command running"
+    }
+  ],
   "active_independent_preparations": [],
   "counting_rules": {
     "parents_are_not_active_work": true,
@@ -367,31 +375,33 @@
     },
     {
       "issue": 136,
-      "execution_state": "queued:not-dispatched",
+      "execution_state": "validation:core-1",
       "implementation_owner_session": null,
       "integration_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "files_or_activation_boundary": [
-        "crates/city-core/src/physical_capacity.rs (frozen candidate; reactivation required)",
-        "crates/city-core/tests/physical_capacity.rs (frozen candidate; reactivation required)",
-        "docs/handoffs/issue-118-physical-capacity.md (frozen candidate; reactivation required)",
-        "tests/fixtures/issue-118/pump-power-flow.json (frozen candidate; reactivation required)",
-        "tests/fixtures/issue-118/shared-entrance-rail.json (frozen candidate; reactivation required)",
-        "crates/city-core/src/transaction.rs (root sole writer)",
-        "crates/city-core/src/venue_runtime.rs (root sole writer)",
-        "crates/city-storage/tests/physical_capacity_store.rs (planned)"
+        "crates/city-core/src/time_capacity.rs",
+        "crates/city-core/src/transaction/time_capacity_driver.rs",
+        "crates/city-core/src/transaction.rs",
+        "crates/city-core/src/transaction/slots.rs",
+        "crates/city-core/src/lib.rs",
+        "crates/city-core/tests/time_capacity.rs",
+        "crates/city-storage/src/checkpoint/receipt_decode.rs",
+        "crates/city-storage/tests/time_capacity_store.rs",
+        "crates/city-core/src/continuous_supply.rs",
+        "crates/city-core/src/continuous_supply/v2.rs",
+        "crates/city-core/src/transaction/venue_driver.rs"
       ],
       "required_specific_capabilities": [
         "OriginalResource/Lease identity and original canonical conflict/time-window key",
         "Managed-venue finite capability125/v168/171 is available; other modes not implied"
       ],
       "acceptance_entry_and_gaps": [
-        "Reconfirm original manifest/API/file lease before activation",
-        "Generic mode/time-window candidate to one real reserve/occupy/release authority missing",
-        "Conflicting owners/overlaps/expiry/closure and original retry/cold restore",
-        "Original candidate IntervalLitres remains unsupported/unknown; interval total cannot be substituted by peak rate or claimed conserved; restore/refusal and any required implementation remain explicit."
+        "source11b lawful mixed-world mode conflict; source12 fix compiling",
+        "prior11/shared+normal role+default8 are historical before this production change",
+        "current mixed/legacy/full-slot/restore, affected shared/default/role budget and final release/backfill pending"
       ],
       "real_integration_seam": "OriginalResource/Lease writer; no duplicate capacity pool",
-      "new_write_authority": false,
+      "new_write_authority": true,
       "timing": {
         "ready_at": null,
         "readiness_confirmed_at": null,
@@ -629,7 +639,6 @@
   "current_backlog": {
     "source_delivered_pending_integration": [
       137,
-      136,
       117,
       104,
       103,
@@ -649,6 +658,8 @@
       28,
       27
     ],
-    "source_delivered_pending_validation": []
+    "source_delivered_pending_validation": [
+      136
+    ]
   }
 }

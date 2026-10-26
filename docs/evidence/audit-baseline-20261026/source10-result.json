@@ -1,0 +1,11 @@
+{
+  "command": [
+    "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/source10-time_capacity_store-fixed",
+    "--test-threads=1",
+    "--nocapture"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 1.790060916,
+  "sha256": "a57cfa4cfdc92437089e371443206b947c0b9fff294825e1a9c0b2bfdeac06c6",
+  "scope": "uninterrupted original world reference versus normal interrupted write/lost reply, exact whole Engine and state hash after retry"
+}

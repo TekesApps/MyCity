@@ -230,3 +230,27 @@ v0.5.184 已完成有限原账接线与串行验证，见 [实际证据](evidenc
 - Store 须校验原 genesis 注册、最多16个原启动成功票及最后原提交票；原始 checkpoint
   反序列化保留 ready=false，不能直接作为 provider。16个 run 满后拒绝新承诺，已有
   停机与历史处理责任仍保留；未来压缩须有独立原票/摘要迁移合同，不能静默删 run。
+
+
+## #136 原Resource/Lease时窗模式V1（设计已定，尚未实现/验收）
+
+既有未登记资源继续原累计reserved+occupied门。显式新版登记将一个canonical/group及全部别名、单位/比例、scope、原SimulationTick和版本绑定到一个原Resource；不允许同一物理瓶颈拆名增容。现有venue/交通/工程等已绑定资源不得无迁移协议改模式；原已验venue保持旧规则。最初接线支持原整数槽可精确表示的Count、ItemsPerSecond、Kilowatts；IntervalLitres不是瞬时容量，仍unsupported，不能平均为峰值。此范围与既有候选区分一致，后续区间守恒属原父范围。
+
+每个承诺仍仅一个原Lease，数量、actor、资源和occupied以原表为准；新增有界token索引只保存时间窗、consumer标识和登记版本，不复制claims余额或原票。canonical登记/版本及这份补充元数据经原Engine、Prepared、Store/WAL/checkpoint同槽提交/恢复；原Envelope/receipt负责原操作幂等。恢复须所有受管Lease与token元数据双向一一对应；缺失不能退回旧累计语义，已有旧存档无登记仍按旧模型。
+
+新版reserved由所有未撤销Reserved原Lease窗口最大同时重叠量精确投影，occupied为原Actual总量，不能将两者重复计同一个token。新增承诺先核峰、实际占用和有效容量；不重叠未来预约可复用同一容量。准入成功只是保留时窗，不承诺驱逐前一未退出主体。到窗还须原完成时钟、当前实际空间和原操作者合法才可进入；原占用可能越窗，后续预约等待并保留原责任。
+
+关键例：容量1，A[0,10)、B[10,20)两份预约均可接受；A进入后occupied=1、B未来reserved峰=1。两者和>容量只表示未来冲突，不表示实际占用2，不可据此拒绝保存/恢复、删除B或禁止A退出。只对该显式模式放开旧总和不变量，分别严格推导计数与当前实际门；冲突期间拒新承诺。A实际退出后重新求投影，B可在自己合法时窗内继续；若B已过窗，保留未履行预约等待显式取消/原业务处置，不偷偷续窗或假履约。关闭/减容保留Actual和未撤销预约，禁止不相容新增，允许原责任退出；effective容量低于既有实际时记录缺口，不删除事实。
+
+原writer在同Prepared更新原Lease、Resource投影与补充元数据。原通用Reserve/Occupy/Release不得绕过受管资源门；任何领域尝试新增不相容绑定或直接改受管Lease，必须在原提交前拒绝。取消仅处理Reserved；退出处理Actual且不以预测结束/关闭/过期代替原退出操作。计量满额先拒绝新增，必要结束路径须可原位释放并使用原Store责任控制保留，不另造安全认证系统或额外调度器。
+
+实施root唯一共享writer；确切文件/事前512MiB证据预算见work/canonical-capacity-20261026/coordinator-state.json，原118仅独立预期准备，不写游戏代码。验收包括不同consumer/别名同池、重叠拒绝与不重叠可接受、Actual越窗使后一等待/真实退出继续、关闭/减容/满额、旧模式、原票、正常保存/冷恢复及原共享资源预算。模型、窗口扫描/克隆、原Lease、存档恢复/角色重叠分别计费；128KiB/Engine4MiB/normal64MiB/共同8MiB/M0/默认栈不变。当前以上新增均not_run，不以设计或advisor结论关闭#136/#118。
+
+
+### #136与既有venue共存：完整身份门与模式数量视图
+
+实际source11b在原合法V2/venue开局加独立Resource701及全局不同别名70011/70012，第二份相邻预约被旧venue全池sum校验拒绝。此前单独模式、11组回归/normal角色/原默认6+新增2通过均不能覆盖此装配冲突；失败输入、每步原Engine、程序和日志保留。
+
+只在root venue_driver增加有界只读适配，不改原venue_capacity纯规则或其完整性判据。先以完整原Resource和完整non-venue IDs走原validate_opening，保留跨域身份/别名/资源分区门；另核完整原Lease token唯一及引用存在。再仅为旧模式的数量规则排除显式timed登记资源及其Lease，同步过滤投影non-venue IDs，其他未登记旧资源全保留旧总和校验。原slot索引和64行长度不变；虚拟None不授予真实空槽，实际分配仍在完整原Lease表找空位，满表照旧拒新。
+
+before、Reserve后的after、bind_reserved_offer和最终校验统一该只读视图，最终使用暂存timed candidate。原真实Resource/Lease从不被投影覆盖或伪改计数；timed部分仍由原driver校验峰和真实占用。新canonical/别名也不能与旧venue实体/别名或其他原Resource身份冲突。两份before/after固定数组同时计入8KiB临时预算（有编译期ABI上界检查），初始化/准备/恢复与原候选重叠均在原4MiB内拒绝超额；该数不是native栈峰或物理内存证明。当前修复和混合城市/满原表反例正验证，先前专项不当本修复通过。

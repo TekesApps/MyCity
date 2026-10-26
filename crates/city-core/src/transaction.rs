@@ -14,6 +14,7 @@ pub use bundle::{EngineWorkspace, EngineWorkspaceIdentity};
 mod timeline_driver;
 mod workspace;
 mod venue_driver;
+mod time_capacity_driver;
 pub use slots::{EngineSlot, SlotIdentity};
 
 pub const MAX_ACTIONS: usize = 16;
@@ -93,6 +94,7 @@ pub enum Action {
     /// Selector into the genesis-bound venue contract. Explicit System activity commands
     /// are raw game-host presence facts, not transport/education fulfillment proofs.
     Venue { use_id: u64, command: crate::venue_runtime::Command },
+    TimeCapacity { command: crate::time_capacity::Command },
     Education { command: crate::education_authority::Command },
     Qualification { command: crate::qualification_authority::Command },
     Background {
@@ -460,6 +462,8 @@ pub struct Engine {
     spatial_permissions: Option<crate::spatial_transport_permissions::SpatialPermissionState>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     spatial_geometry: Option<crate::spatial_geometry_permissions::SpatialGeometryState>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    time_capacity: Option<Box<crate::time_capacity::Runtime>>,
     #[serde(skip)]
     preparation_workspace: Option<workspace::PreparationWorkspace>,
 }
@@ -473,6 +477,7 @@ struct Prepared {
     qualification: Option<crate::qualification_authority::Candidate>,
     education: Option<crate::education_authority::Candidate>,
     venue: Option<crate::venue_runtime::UseCandidate>,
+    time_capacity: Option<Box<crate::time_capacity::Runtime>>,
     timeline: workspace::TimelineLease,
     background: workspace::BackgroundLease,
     exchange: Option<crate::exchange::Exchange>,
@@ -606,9 +611,11 @@ impl Engine {
             background: crate::model_rows::Resident::empty(),
             spatial_permissions: None,
             spatial_geometry: None,
+            time_capacity: None,
             preparation_workspace: Some(workspace::reserve()?),
         };
-        venue_driver::validate(&engine.world, &engine.resources, &engine.leases, engine.timeline.as_ref(), None)?;
+        if engine.world.venue.is_some() && engine.owned_capacity_bytes().checked_add(venue_driver::READ_SCRATCH_BYTES).is_none_or(|n| n > ENGINE_BYTE_BUDGET) { return Err(TxError::WorkingLimit); }
+        venue_driver::validate(&engine.world, &engine.resources, &engine.leases, engine.timeline.as_ref(), None, engine.time_capacity.as_deref())?;
         crate::education_authority::validate(&engine.world, engine.timeline.as_ref())?;
         crate::service_needs_authority::validate(&engine.world,engine.world.service_needs.as_deref(),engine.timeline.as_ref(),engine.world.region.as_ref())?;
         crate::continuous_supply::validate(&engine.world,engine.world.continuous_supply.as_deref(),engine.timeline.as_ref(),&engine.resources,&engine.leases)?;
@@ -683,6 +690,8 @@ impl Engine {
                 &'a Option<crate::spatial_transport_permissions::SpatialPermissionState>,
             #[serde(skip_serializing_if = "Option::is_none")]
             spatial_geometry: &'a Option<crate::spatial_geometry_permissions::SpatialGeometryState>,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            time_capacity: &'a Option<Box<crate::time_capacity::Runtime>>,
         }
         struct Bounded<W> {
             inner: W,
@@ -716,6 +725,7 @@ impl Engine {
                 background: &self.background,
                 spatial_permissions: &self.spatial_permissions,
                 spatial_geometry: &self.spatial_geometry,
+            time_capacity: &self.time_capacity,
             },
         )
         .map_err(|e| e.to_string())
@@ -735,6 +745,8 @@ impl Engine {
                 &'a Option<crate::spatial_transport_permissions::SpatialPermissionState>,
             #[serde(skip_serializing_if = "Option::is_none")]
             spatial_geometry: &'a Option<crate::spatial_geometry_permissions::SpatialGeometryState>,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            time_capacity: &'a Option<Box<crate::time_capacity::Runtime>>,
         }
         View {
             schema: "mycity-business-comparison-v2",
@@ -745,6 +757,7 @@ impl Engine {
             timeline: &self.timeline,
             spatial_permissions: &self.spatial_permissions,
             spatial_geometry: &self.spatial_geometry,
+            time_capacity: &self.time_capacity,
         }
     }
     /// All business bytes, with only hot receipts/revision/background excluded.
@@ -926,6 +939,7 @@ impl Engine {
             if r.id == 0 || candidate.resources[..i].iter().any(|p| p.id == r.id) {
                 return Err("checkpoint_resource_identity".into());
             }
+            if candidate.time_capacity.as_deref().is_some_and(|s| s.manages(r.id)) { continue; }
             let mut reserved = 0u32;
             let mut occupied = 0u32;
             for l in candidate
@@ -1028,6 +1042,8 @@ impl Engine {
         Ok(())
     }
     fn validate_checkpoint_runtime(&self) -> Result<(), TxError> {
+        if self.world.venue.is_some() && self.owned_capacity_bytes().checked_add(venue_driver::READ_SCRATCH_BYTES).is_none_or(|n| n > ENGINE_BYTE_BUDGET) { return Err(TxError::WorkingLimit); }
+        time_capacity_driver::validate(&self.world, self.time_capacity.as_deref(), &self.resources, &self.leases)?;
         if self.world.service_needs.is_some() && self.owned_capacity_bytes().checked_add(crate::service_needs::Runtime::restore_workspace_bytes()).is_none_or(|n|n>ENGINE_BYTE_BUDGET){return Err(TxError::WorkingLimit);}
         if self.world.qualification.is_some() && self.owned_capacity_bytes().checked_add(crate::qualification_authority::restore_bytes())
             .is_none_or(|n|n>ENGINE_BYTE_BUDGET){return Err(TxError::WorkingLimit);}
@@ -1039,7 +1055,7 @@ impl Engine {
         check_facility_protection(&self.world,self.world.facility_work.as_deref(),self.world.economy.as_ref(),&[])?;
         crate::facility_authority::validate_income_window(self.world.facility_work.as_deref(),self.world.housing.as_deref().and_then(|h|h.paid_wages.as_deref()),self.timeline.as_ref())?;
         if let Some(q)=self.world.qualification.as_deref(){q.validate(&self.world)?;}
-        venue_driver::validate(&self.world, &self.resources, &self.leases, self.timeline.as_ref(), None)?;
+        venue_driver::validate(&self.world, &self.resources, &self.leases, self.timeline.as_ref(), None, self.time_capacity.as_deref())?;
         if let Some(t) = self.timeline.as_ref() {
             timeline_driver::validate(self, t)?;
         }
@@ -1133,6 +1149,10 @@ impl Engine {
     }
     pub fn world(&self) -> &World {
         &self.world
+    }
+    pub fn time_capacity_projection(&self, alias: u64) -> Option<crate::time_capacity::Projection> {
+        let state = self.time_capacity.as_deref()?;
+        state.project(state.resolve(alias)?, &self.leases).ok()
     }
     pub fn resources(&self) -> &[Resource] {
         &self.resources
@@ -1539,6 +1559,7 @@ impl Engine {
                 .spatial_geometry
                 .as_ref()
                 .map_or(0, |state| state.owned_rows_bytes())
+            + self.time_capacity.as_deref().map_or(0, crate::time_capacity::Runtime::owned_bytes)
             + spatial_workspace
     }
     fn state_view(&self) -> impl Serialize + '_ {
@@ -1555,6 +1576,8 @@ impl Engine {
                 &'a Option<crate::spatial_transport_permissions::SpatialPermissionState>,
             #[serde(skip_serializing_if = "Option::is_none")]
             spatial_geometry: &'a Option<crate::spatial_geometry_permissions::SpatialGeometryState>,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            time_capacity: &'a Option<Box<crate::time_capacity::Runtime>>,
         }
         View {
             world: self.world.borrowed_view(),
@@ -1565,6 +1588,7 @@ impl Engine {
             background: &self.background,
             spatial_permissions: &self.spatial_permissions,
             spatial_geometry: &self.spatial_geometry,
+            time_capacity: &self.time_capacity,
         }
     }
     pub fn write_state_comparison(
@@ -1852,6 +1876,11 @@ impl Engine {
                 self.world.education.as_deref().zip(p.education.as_ref()).is_some_and(|(old,new)|
                     new.runtime.consumed_sequence()>old.consumed_sequence() || new.runtime.recent_count()<old.recent_count())
             }
+            Action::TimeCapacity{command:crate::time_capacity::Command::Cancel{token}|crate::time_capacity::Command::Exit{token,..}}=>{
+                self.time_capacity.as_deref().zip(p.time_capacity.as_deref()).is_some_and(|(old,new)|
+                    old.windows.iter().any(|w|w.token==token) && !new.windows.iter().any(|w|w.token==token)
+                    && self.leases.iter().flatten().any(|l|l.token==token) && !p.leases.iter().flatten().any(|l|l.token==token))
+            }
             Action::Venue{command:crate::venue_runtime::Command::SafeExit{..}|crate::venue_runtime::Command::CancelReserved,..}=>{
                 self.world.venue.as_deref().zip(p.venue.as_ref()).is_some_and(|(old,new)|
                     old.states.iter().filter(|s|matches!(s.status,crate::venue_capacity::UseStatus::Actual|crate::venue_capacity::UseStatus::Reserved)).count()
@@ -1980,7 +2009,9 @@ impl Engine {
         // A service candidate can overlap the original housing copy and wage window
         // created later by the same sole Timeline/HousingLease action. Reserve that
         // conservative maximum BEFORE cloning, then recheck the actual final union.
-        let service_working_base=self.owned_capacity_bytes()
+        let venue_scratch = if self.world.venue.is_some() { venue_driver::READ_SCRATCH_BYTES } else { 0 };
+        if self.owned_capacity_bytes().checked_add(venue_scratch).is_none_or(|n| n > ENGINE_BYTE_BUDGET) { return Err(TxError::WorkingLimit); }
+        let service_working_base=self.owned_capacity_bytes().saturating_add(venue_scratch)
             .saturating_add(crate::service_needs::Runtime::owned_bytes())
             .saturating_add(self.world.housing.as_deref().map_or(0,|r|
                 r.state.owned_capacity_bytes()+size_of::<crate::housing_income::PaidWageWindow>()));
@@ -2007,6 +2038,7 @@ impl Engine {
         let mut continuous_supply=self.world.continuous_supply.clone();
         let mut service_needs = self.world.service_needs.clone();
         let mut venue = None;
+        let mut time_capacity = None;
         let mut education = None;
         let mut qualification = None;
         let mut timeline = workspace::TimelineLease::acquire(&storage.timeline, &self.timeline)?;
@@ -4013,6 +4045,11 @@ impl Engine {
                     }
                     education=Some(crate::education_authority::prepare(&self.world,self.timeline.as_ref(),caller,env,command,education_receipt)?);
                 }
+                Action::TimeCapacity { command } => {
+                    let (candidate, token) = time_capacity_driver::prepare(self, caller, env, command, &mut resources, &mut leases, &mut next_token)?;
+                    time_capacity = Some(candidate);
+                    created_tokens[action_index] = token;
+                }
                 Action::Venue { use_id, command } => {
                     let (candidate, token) = venue_driver::prepare(self, caller, env, use_id, command,
                         &mut resources, &mut leases, &mut next_token)?;
@@ -4036,6 +4073,7 @@ impl Engine {
                     created_tokens[action_index] = token;
                 }
                 Action::ReserveCapacity { resource, units } => {
+                    if self.time_capacity.as_deref().is_some_and(|s| s.manages(resource)) { return Err(TxError::Unauthorized); }
                     if self.world.venue.as_deref().is_some_and(|v| v.is_managed(resource)) {
                         return Err(TxError::Unauthorized);
                     }
@@ -4093,6 +4131,7 @@ impl Engine {
                         .find(|l| l.as_ref().is_some_and(|l| l.token == token.number))
                         .ok_or(TxError::Lease)?;
                     let l = slot.as_mut().ok_or(TxError::Lease)?;
+                    if self.time_capacity.as_deref().is_some_and(|s| s.manages(l.resource)) { return Err(TxError::Unauthorized); }
                     if self.world.venue.as_deref().is_some_and(|v| v.is_managed(l.resource)) {
                         return Err(TxError::Unauthorized);
                     }
@@ -4253,6 +4292,8 @@ impl Engine {
         let projected = projected.saturating_add(service_needs.as_ref().map_or(0, |_|
             crate::service_needs::Runtime::owned_bytes()+crate::service_needs::Runtime::candidate_bytes()));
         let projected = projected.saturating_add(venue.as_ref().map_or(0, |_| crate::venue_runtime::UseCandidate::payload_bytes()));
+        let projected = projected.saturating_add(time_capacity.as_deref().map_or(0, crate::time_capacity::Runtime::owned_bytes));
+        let projected = projected.saturating_add(venue_scratch);
         let projected = projected.saturating_add(education.as_ref().map_or(0, |_| crate::education_authority::candidate_bytes()))
             .saturating_add(qualification.as_ref().map_or(0, |_| crate::qualification_authority::candidate_bytes()));
         let projected = projected.saturating_add(housing_moves.as_deref().map_or(
@@ -4339,8 +4380,12 @@ impl Engine {
                 return Err(TxError::InvalidOperation);
             }
         }
+        if let Some(state) = time_capacity.as_deref().or(self.time_capacity.as_deref()) {
+            time_capacity_driver::validate_bindings(&self.world, state, boot.as_ref(), exchange.as_ref(), construction.as_ref())?;
+            time_capacity_driver::validate(&self.world, Some(state), &resources, &leases)?;
+        }
         venue_driver::validate_domain_bindings(&self.world, boot.as_ref(), exchange.as_ref(), construction.as_ref())?;
-        venue_driver::validate(&self.world, &resources, &leases, timeline.as_ref(), venue.as_ref())?;
+        venue_driver::validate(&self.world, &resources, &leases, timeline.as_ref(), venue.as_ref(), time_capacity.as_deref().or(self.time_capacity.as_deref()))?;
         if let (Some(e),Some(m),Some(old))=(education.as_ref(),facility_member.as_ref(),self.world.member_activity.as_ref()){
             if m.fingerprint()==old.fingerprint(){facility_member=None;}
             else if e.ledger.fingerprint()!=old.fingerprint()&&e.ledger.fingerprint()!=m.fingerprint(){return Err(TxError::InvalidOperation);}
@@ -4365,6 +4410,7 @@ impl Engine {
             qualification,
             education,
             venue,
+            time_capacity,
             timeline,
             background,
             exchange,
@@ -4431,6 +4477,7 @@ impl Engine {
             self.world.member_activity=Some(candidate.ledger);
         }
         if let Some(member)=prepared.facility_member{self.world.member_activity=Some(member);}
+        if let Some(candidate) = prepared.time_capacity { self.time_capacity = Some(candidate); }
         if let Some(candidate) = prepared.venue {
             let runtime = self.world.venue.as_mut().expect("prepared venue source");
             runtime.states = candidate.states;
@@ -7034,6 +7081,7 @@ impl crate::exchange::Ledger for BootLedger<'_> {
 
 impl Action {
     pub fn is_new_commitment(&self) -> bool {
+        if matches!(self,Self::TimeCapacity{command:crate::time_capacity::Command::Register{..}|crate::time_capacity::Command::Reserve{..}|crate::time_capacity::Command::Enter{..}}) {return true;}
         if matches!(self,Self::ContinuousSupply{command:crate::continuous_supply::Command::Start{..}}|Self::FacilityWork{command:crate::facility_authority::Command::Begin{..}}){return true;}
         if let Self::Education {command:crate::education_authority::Command::Event {command,..}}=self {
             return matches!(command.action,crate::education_runtime::Action::ActivateNoInstruction
@@ -7065,6 +7113,7 @@ impl Action {
     }
     /// Only management of existing obligations can draw on storage's emergency reserve.
     pub fn is_responsibility_control(&self) -> bool {
+        if matches!(self,Self::TimeCapacity{command:crate::time_capacity::Command::Cancel{..}|crate::time_capacity::Command::Exit{..}|crate::time_capacity::Command::SetPolicy{..}}) {return true;}
         if matches!(self,Self::FacilityWork{command:crate::facility_authority::Command::Stop{..}|crate::facility_authority::Command::Pay{..}}){return true;}
         if matches!(self,Self::ContinuousSupply{command:crate::continuous_supply::Command::Stop|crate::continuous_supply::Command::Fault{..}}){return true;}
         if matches!(self,Self::Qualification{command:crate::qualification_authority::Command::Complete{..}|crate::qualification_authority::Command::Revoke{..}}){return true;}

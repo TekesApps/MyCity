@@ -1,0 +1,19 @@
+
+running 13 tests
+test actual_p5_wages_original_cash_cost_and_split_remainders ... ok
+test actual_raw_boundary_closes_operator_preserving_fraction ... ok
+test actually_paid_facility_wages_reach_the_original_complete_housing_window ... RETAINED_INCOME_WINDOW=/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run13/facility_operation/income-window-58628
+ok
+test admission_requires_real_presence_actor_qualification_and_funding ... ok
+test authority_v2_rejects_old_genesis_and_deleted_checkpoint_versions ... ok
+test explicit_stop_keeps_actual_work_and_cold_checkpoint_is_untrusted ... ok
+test legacy_housing_header_stays_legal_before_the_original_wait_boundary ... ok
+test old_payroll_and_facility_share_the_original_income_buckets_without_overlap ... ok
+test operation_identity_does_not_imply_commit_order ... ok
+test payroll_and_facility_admission_are_mutually_exclusive_in_both_orders ... ok
+test safe_exit_and_emergency_stop_reduce_real_responsibility ... ok
+test shift_and_qualification_boundaries_stop_before_unqualified_production ... ok
+test unknown_or_absent_qualification_and_unfunded_window_refuse_atomically ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+
