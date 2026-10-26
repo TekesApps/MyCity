@@ -1,0 +1,45 @@
+{
+  "source": "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/timed-mixed-role16.rs",
+  "source_sha256": "90ce9355267845e14a9e6161aa5929f040b789fc38e1353c42645d0869ea9679",
+  "libs": [
+    {
+      "path": "/Users/frankqin/dev/MyCity/target/release/deps/libserde_json-739cab3222a3d08f.rlib",
+      "sha256": "2dddbb780db152a49fd25676cdafaa63d8df138016de76f09aaea866fb495079"
+    },
+    {
+      "path": "/Users/frankqin/dev/MyCity/target/release/deps/libmycity_headless-20a38494b8e4448f.rlib",
+      "sha256": "5c15f25223880893f34cadc3a1e3e29ed7685e61e5fca0f4ad79bc544516c1ad"
+    },
+    {
+      "path": "/Users/frankqin/dev/MyCity/target/release/deps/libmycity_storage-1d5b1753ddba82f8.rlib",
+      "sha256": "ca661c66e52ab811ceda3be17613798a1261f008e5dd36945f5871260e6d6b71"
+    },
+    {
+      "path": "/Users/frankqin/dev/MyCity/target/release/deps/libmycity_core-b4e3578b104bfee7.rlib",
+      "sha256": "bb3752919fbd517af5f3f53f24f4f7096acb717d04ad2274c4294f1e3903b2ee"
+    }
+  ],
+  "main": {
+    "source": "264f520be05c6becfcc60f718c0f46f162fa9c14783ef813535266f29a57e3c2",
+    "fixed_main": "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/source14-headless-fixed",
+    "main_sha256": "e60f2b22eb57c72d84c02679d7085e11656ae43438b3d3415d6f5b1070f55493",
+    "actual_main": "/Users/frankqin/dev/MyCity/target/release/mycity-headless"
+  },
+  "command": [
+    "rustc",
+    "--edition=2021",
+    "work/canonical-capacity-20261026/timed-mixed-role16.rs",
+    "-L",
+    "dependency=/Volumes/HP P900/dev/MyCity/target/release/deps",
+    "-o",
+    "work/canonical-capacity-20261026/source16-timed-role-fixed",
+    "--extern",
+    "serde_json=/Users/frankqin/dev/MyCity/target/release/deps/libserde_json-739cab3222a3d08f.rlib",
+    "--extern",
+    "mycity_headless=/Users/frankqin/dev/MyCity/target/release/deps/libmycity_headless-20a38494b8e4448f.rlib",
+    "--extern",
+    "mycity_storage=/Users/frankqin/dev/MyCity/target/release/deps/libmycity_storage-1d5b1753ddba82f8.rlib",
+    "--extern",
+    "mycity_core=/Users/frankqin/dev/MyCity/target/release/deps/libmycity_core-b4e3578b104bfee7.rlib"
+  ]
+}

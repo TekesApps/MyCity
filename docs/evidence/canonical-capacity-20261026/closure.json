@@ -1,0 +1,20 @@
+{
+  "issue": 136,
+  "accepted_at": "2026-10-26T00:43:33Z",
+  "comment": 6405698892,
+  "comment_url": "https://github.com/TekesApps/MyCity/issues/136#issuecomment-6405698892",
+  "closed_at": "2026-10-26T00:43:36Z",
+  "implementation_commit": "1ab0578fe26253368bfae0fa308b0672f8c1b8f5",
+  "implementation_tag": "v0.5.196",
+  "evidence_release": "v0.5.197",
+  "body_sha256": "083c8791dd2f82e2b90f82fd6d7775271bf95c31fd60c2ec7c1d516b486952f4",
+  "labels": [
+    "stage:done",
+    "type:capability"
+  ],
+  "parent118": "open",
+  "pr": null,
+  "first_ready_at": null,
+  "full_scope_source_delivered_at": null,
+  "duration_unknown_reason": "Reliable historical full-scope starting events not established; no inference from tags, issue creation, mtime or reporting window"
+}

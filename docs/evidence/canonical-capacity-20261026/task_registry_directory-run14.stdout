@@ -1,0 +1,23 @@
+
+running 9 tests
+test actual_sim_directory_continues_original_timeline_and_cold_retry_without_optional_models ... RETAINED_DIRECTORY_WORLD=/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run14/task_registry_directory/directory-sim-92885-1792974533033271000
+ok
+test air_real_field_versions_advance_while_task_schema_stays_stable_and_old_point_is_not_cache ... RETAINED_DIRECTORY_WORLD=/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run14/task_registry_directory/air-versions-92885-1792974534100423000
+ok
+test original_accepted_timeline_without_optional_models_is_not_no_work_and_stale_dirty_is_read_only ... RETAINED_DIRECTORY_WORLD=/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run14/task_registry_directory/directory-owner-92885-1792974534451385000
+ok
+test original_admission_refusal_proxy_keeps_accepted_target_and_directory_uses_original_safe_quote ... RETAINED_DIRECTORY_WORLD=/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run14/task_registry_directory/admission-budget-proxy-92885-1792974534530057000
+ok
+test original_same_time_economy_zero_window_is_a_control_not_a_fabricated_positive_window ... RETAINED_DIRECTORY_WORLD=/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run14/task_registry_directory/zero-window-92885-1792974534697308000
+ok
+test original_timeline_c_collision_and_lost_terminal_preserve_the_same_responsibility ... RETAINED_DIRECTORY_WORLD=/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run14/task_registry_directory/timeline-c-recovery-92885-1792974534773842000
+ok
+test same_key_joint_p5_in_original_normal_role_observes_allocation_and_returns_exact_grant ... RETAINED_DIRECTORY_WORLD=/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run14/task_registry_directory/same-key-joint-92885-1792974534890733000
+ok
+test same_store_same_clock_same_key_providers_remain_separate_but_original_p5_page_commits_once ... RETAINED_DIRECTORY_WORLD=/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run14/task_registry_directory/same-key-joint-92885-1792974535183111000
+ok
+test supply_schema_content_and_unrelated_sequence_are_distinct_and_cold_rebuild_is_exact ... RETAINED_DIRECTORY_WORLD=/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run14/task_registry_directory/source-binding-92885-1792974535324514000
+ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.35s
+

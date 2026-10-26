@@ -1,0 +1,54 @@
+[
+  {
+    "target": "time_capacity_store",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/source13-time_capacity_store-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 2.4183415,
+    "sha256": "28d650fbe29d629604c5abc6daf463ee8b4de5aade12c3fd07073c2f58d1f14c",
+    "complete_root": "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run13/time_capacity_store",
+    "production": "source12 unchanged; source13 only cold helper alias parameter corrected"
+  },
+  {
+    "target": "venue_capacity_tests",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/source13-venue_capacity_tests-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.4532325840000002,
+    "sha256": "1f9b6bbb3496e66badb08381eaa80bb15a284247d546d4feb0528c3f47b24bfd",
+    "complete_root": "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run13/venue_capacity_tests",
+    "production": "source12 unchanged; source13 only cold helper alias parameter corrected"
+  },
+  {
+    "target": "venue_capacity",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/source13-venue_capacity-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 1.0719265419999995,
+    "sha256": "d497c6f74f497e1117b30908c106e91c30d1a2bf2bdfd9f554c0961728204a8b",
+    "complete_root": "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run13/venue_capacity",
+    "production": "source12 unchanged; source13 only cold helper alias parameter corrected"
+  },
+  {
+    "target": "facility_operation",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/source13-facility_operation-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.6095856659999992,
+    "sha256": "883e096b3cb7b5838bb5968a17fce3295ca936287505d6eec609e2a790163665",
+    "complete_root": "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run13/facility_operation",
+    "production": "source12 unchanged; source13 only cold helper alias parameter corrected"
+  }
+]

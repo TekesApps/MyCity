@@ -1,0 +1,11 @@
+{
+  "checkpoint_restart_original_ticket_once": true,
+  "engine_owned_bytes": 3702320,
+  "expired_actual_retained_until_exit": true,
+  "normal_actual_entry_exit": true,
+  "not_whole_game_native_16GB_M0_or_speed": true,
+  "same_original_direct_reference": true,
+  "store_owned_bytes": 42987265,
+  "test_tool_reference_store_outside_shipping_role": true,
+  "two_original_consumers": true
+}

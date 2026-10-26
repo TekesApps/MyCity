@@ -1,0 +1,121 @@
+{
+  "issue": 136,
+  "implementation_commit": "1ab0578fe26253368bfae0fa308b0672f8c1b8f5",
+  "implementation_tag": "v0.5.196",
+  "verified_at": "2026-10-26T00:40:59.537688+00:00",
+  "source_files_verified": 460,
+  "wip_files_preserved": 24,
+  "reuse_plan": {
+    "current_compiled_inputs": "source14-build-inputs.json",
+    "source13_inputs_identical": true,
+    "source12_difference_only": [
+      "crates/city-storage/tests/time_capacity_store.rs"
+    ],
+    "reuse_current_core5": "run12-results.json time_capacity exit0; core production/core test/fixtures unchanged",
+    "reuse_current_direct4": "run13-results.json all exit0; source13/14 complete409-file convenience lists identical; audit460-file source manifest includes unchanged root fixtures",
+    "run_remaining_six": [
+      "continuous_supply",
+      "facility_operation_store",
+      "checkpoint",
+      "task_registry_directory",
+      "continuous_supply_due",
+      "water_treatment_due"
+    ],
+    "not_reusing": "source07/08/09 pre-coexistence default/role results as current proof"
+  },
+  "current_affected_groups": 6,
+  "default_stack_gates": 8,
+  "role": {
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/source16-timed-role-fixed",
+      "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/role16",
+      "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/source14-headless-fixed",
+      "/Volumes/HP P900/dev/MyCity/work/r44/timed-role16",
+      "264f520be05c6becfcc60f718c0f46f162fa9c14783ef813535266f29a57e3c2",
+      "/Users/frankqin/dev/MyCity/tests/fixtures/water-treatment-runtime/joint-v2-opening.json",
+      "/Users/frankqin/dev/MyCity/fixtures/m0-exchange-spatial.json",
+      "/Users/frankqin/dev/MyCity/fixtures/terrain/m0-flat16.png"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 1.7125351670000002,
+    "helper_sha256": "4e575babaebc8853de27ebd1a9c7eb8cdac6425ef2dd84bc7d05baf6caee9c83",
+    "main_sha256": "e60f2b22eb57c72d84c02679d7085e11656ae43438b3d3415d6f5b1070f55493",
+    "scope": "actual timed profile via original shipping normal Sim role, original direct reference + save/restart/retry; not whole-game/native/M0/16GB/speed"
+  },
+  "allocator_observations": [
+    {
+      "kind": "ready",
+      "store_owned_bytes": 52238023,
+      "grant_bytes": 61865984,
+      "allocation_failures": 0,
+      "arena_used_bytes": 56697520,
+      "arena_usable_bytes": 61865544,
+      "lifetime_peak_requested_bytes": 56714216
+    },
+    {
+      "kind": "ready",
+      "store_owned_bytes": 52238087,
+      "grant_bytes": 61865984,
+      "allocation_failures": 0,
+      "arena_used_bytes": 56697584,
+      "arena_usable_bytes": 61865544,
+      "lifetime_peak_requested_bytes": 56774642
+    }
+  ],
+  "pool_return": {
+    "capacity_bytes": 67108864,
+    "available_touched_bytes": 67108864,
+    "granted_capacity_bytes": 0,
+    "workspace_capacity_bytes": 0,
+    "workspace_grants": 2,
+    "workspace_returns": 2,
+    "workspace_fills": 2,
+    "grants": 0,
+    "returns": 0,
+    "fill_acknowledgements": 0,
+    "scans": 8,
+    "rejected_requests": 0,
+    "maximum_prepare_to_fill_or_reap_ns": 43721083
+  },
+  "actual_production": {
+    "cursor_seconds": 25,
+    "raw_used_ml": 500000,
+    "produced_ml": [
+      250000,
+      250000
+    ],
+    "work_seconds": [
+      25,
+      25
+    ]
+  },
+  "role_result": {
+    "checkpoint_restart_original_ticket_once": true,
+    "engine_owned_bytes": 3702320,
+    "expired_actual_retained_until_exit": true,
+    "normal_actual_entry_exit": true,
+    "not_whole_game_native_16GB_M0_or_speed": true,
+    "same_original_direct_reference": true,
+    "store_owned_bytes": 42987265,
+    "test_tool_reference_store_outside_shipping_role": true,
+    "two_original_consumers": true
+  },
+  "retention_bytes": 442240008,
+  "retention_budget_bytes": 536870912,
+  "hardware": [
+    "Mac16,1",
+    "34359738368"
+  ],
+  "storage": "HP P900 USB/APFS existing target/work",
+  "not_proven": [
+    "real16GB",
+    "native whole-process peak",
+    "whole-game sustained speed",
+    "long-run",
+    "M0 full acceptance",
+    "GPU",
+    "UI",
+    "all domain consumers"
+  ],
+  "pr": null
+}

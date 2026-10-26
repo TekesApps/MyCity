@@ -1,0 +1,16 @@
+
+running 4 tests
+test accepted_supply_target_survives_all_genset_statuses_and_next_boundary_admits_originally ... RETAINED_CONTINUOUS_SUPPLY_CASE=/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run14/continuous_supply_due/issue101-continuous-supply-v184-running-92962-1792974535997559000
+RETAINED_CONTINUOUS_SUPPLY_CASE=/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run14/continuous_supply_due/issue101-continuous-supply-v184-stopped-92962-1792974536149618000
+RETAINED_CONTINUOUS_SUPPLY_CASE=/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run14/continuous_supply_due/issue101-continuous-supply-v184-faulted-92962-1792974536262374000
+ok
+test equal_sequence_scope_and_timeline_still_reject_a_different_authenticated_supply_binding ... RETAINED_CONTINUOUS_SUPPLY_CASE=/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run14/continuous_supply_due/issue101-continuous-supply-v184-full-binding-stopped-92962-1792974536361202000
+RETAINED_CONTINUOUS_SUPPLY_CASE=/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run14/continuous_supply_due/issue101-continuous-supply-v184-full-binding-faulted-92962-1792974536361263000
+ok
+test sim_rundue_admits_the_next_boundary_once_and_recovers_the_original_c_receipt_without_reply ... RETAINED_CONTINUOUS_SUPPLY_CASE=/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run14/continuous_supply_due/issue101-continuous-supply-v184-sim-lost-terminal-92962-1792974536429160000
+ok
+test sim_rundue_c_namespace_collision_preserves_the_original_target_for_manual_advance ... RETAINED_CONTINUOUS_SUPPLY_CASE=/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run14/continuous_supply_due/issue101-continuous-supply-v184-sim-collision-92962-1792974537103178000
+ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.23s
+

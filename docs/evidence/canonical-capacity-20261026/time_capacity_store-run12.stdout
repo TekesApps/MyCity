@@ -1,0 +1,31 @@
+
+running 9 tests
+test closure_and_effective_reduction_retain_obligations_and_legacy_path_stays_separate ... RETAINED_TIMED_POOL=/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run12/time_capacity_store/closure-legacy-54788-1792972536181210000
+ok
+test cold_process_reads_original_timed_pool ... ok
+test full_normal_disk_budget_still_allows_only_actual_cancel_or_exit_progress ... RETAINED_TIMED_POOL=/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run12/time_capacity_store/disk-cancel-54788-1792972536491593000
+RETAINED_TIMED_POOL=/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run12/time_capacity_store/disk-exit-54788-1792972536564381000
+ok
+test interrupted_reservation_and_lost_entry_reply_recover_original_lease_and_window_once ... RETAINED_TIMED_POOL=/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run12/time_capacity_store/before-write-54788-1792972536629556000
+RETAINED_TIMED_POOL=/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run12/time_capacity_store/wal-half-54788-1792972536712938000
+RETAINED_TIMED_POOL=/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run12/time_capacity_store/reply-lost-54788-1792972536793685000
+ok
+test legacy_venue_still_uses_original_full_lease_table_after_timed_view_filtering ... RETAINED_TIMED_POOL=/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run12/time_capacity_store/mixed-global-slot-limit-54788-1792972536877982000
+FAILED
+test missing_clock_wrong_actor_late_entry_and_stale_policy_preserve_original_reservation ... RETAINED_TIMED_POOL=/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run12/time_capacity_store/boundary-controls-54788-1792972537264713000
+ok
+test original_lease_limit_refuses_new_bookings_and_cancel_releases_only_one_token ... RETAINED_TIMED_POOL=/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run12/time_capacity_store/lease-limit-54788-1792972537330509000
+ok
+test original_venue_and_v2_registration_coexist_with_adjacent_timed_obligations_and_cold_restore ... RETAINED_TIMED_POOL=/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run12/time_capacity_store/mixed-venue-v2-54788-1792972537717068000
+FAILED
+test two_original_consumers_share_aliases_and_adjacent_windows_wait_for_actual_exit_after_cold_restore ... RETAINED_TIMED_POOL=/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run12/time_capacity_store/adjacent-consumers-54788-1792972537789806000
+ok
+
+failures:
+
+failures:
+    legacy_venue_still_uses_original_full_lease_table_after_timed_view_filtering
+    original_venue_and_v2_registration_coexist_with_adjacent_timed_obligations_and_cold_restore
+
+test result: FAILED. 7 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.74s
+

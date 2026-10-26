@@ -1,24 +1,16 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-26T00:18:15.406660+00:00",
-  "source_head": "30a2dc4d95569a1baca8d939a3c0250216e190f5",
-  "candidate": "v196 audit source checkpoint;136 directly affected checks passed, current shared/default/role gates pending",
+  "last_snapshot_at": "2026-10-26T00:44:36.610116+00:00",
+  "source_head": "1ab0578fe26253368bfae0fa308b0672f8c1b8f5",
+  "candidate": "136 finite full contract accepted/closed;197 evidence only;137 next not activated",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
   "limits": {
     "shared_core_lanes": 1,
     "independent_preparations": 2,
     "reason_for_adjustment_required": true
   },
-  "active_shared_work": [
-    {
-      "lane": "core-1",
-      "business_issue": 136,
-      "owner_session": "01a166fc-e444-7602-ad22-3a8551dda487",
-      "evidence_root": "work/canonical-capacity-20261026",
-      "phase": "136 validation; candidate code frozen for audit; no new command running"
-    }
-  ],
+  "active_shared_work": [],
   "active_independent_preparations": [],
   "counting_rules": {
     "parents_are_not_active_work": true,
@@ -83,7 +75,8 @@
     "new_accepted_business": [
       132,
       133,
-      135
+      135,
+      136
     ],
     "historical_backfill_business": [],
     "defects_closed": [
@@ -375,7 +368,7 @@
     },
     {
       "issue": 136,
-      "execution_state": "validation:core-1",
+      "execution_state": "completed:closed",
       "implementation_owner_session": null,
       "integration_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "files_or_activation_boundary": [
@@ -396,18 +389,16 @@
         "Managed-venue finite capability125/v168/171 is available; other modes not implied"
       ],
       "acceptance_entry_and_gaps": [
-        "source11b lawful mixed-world mode conflict; source12 fix compiling",
-        "prior11/shared+normal role+default8 are historical before this production change",
-        "current mixed/legacy/full-slot/restore, affected shared/default/role budget and final release/backfill pending"
+        "Finite original four-item contract passed current source14 affected6/source15 default8/source16 shipping normal role, original ticket/cold restore and budget; parent/domain/hardware remain open"
       ],
       "real_integration_seam": "OriginalResource/Lease writer; no duplicate capacity pool",
-      "new_write_authority": true,
+      "new_write_authority": false,
       "timing": {
         "ready_at": null,
         "readiness_confirmed_at": null,
         "full_scope_source_delivered_at": null,
-        "accepted_at": null,
-        "issue_closed_at": null,
+        "accepted_at": "2026-10-26T00:43:33Z",
+        "issue_closed_at": "2026-10-26T00:43:36Z",
         "ready_to_acceptance_seconds": null,
         "source_to_acceptance_seconds": null,
         "unknown_reason": "Historical first-ready/full-scope delivery event not established; no inferred timestamp"
@@ -448,7 +439,7 @@
             "sha256": "8ead1352fe710a145855e01b6be9cb521424334f550a89583f3133d14eb9ef7b"
           }
         ],
-        "status": "generic candidate not yet applied to canonical"
+        "status": "original pure candidate remains frozen; canonical original Resource/Lease bridge actually accepted at196 code"
       }
     },
     {
@@ -634,6 +625,21 @@
         0,
         0
       ]
+    },
+    {
+      "observed_at": "2026-10-26T00:43:33Z",
+      "kind": "finite_business_accepted_and_closed",
+      "issue": 136,
+      "closed_at": "2026-10-26T00:43:36Z",
+      "comment": 6405698892,
+      "implementation_commit": "1ab0578fe26253368bfae0fa308b0672f8c1b8f5",
+      "implementation_tag": "v0.5.196",
+      "evidence_release": "v0.5.197",
+      "business_acceptance_delta": 1,
+      "historical_backfill_delta": 0,
+      "defect_closure_delta": 0,
+      "first_ready": null,
+      "first_full_scope_source_delivery": null
     }
   ],
   "current_backlog": {
@@ -658,8 +664,6 @@
       28,
       27
     ],
-    "source_delivered_pending_validation": [
-      136
-    ]
+    "source_delivered_pending_validation": []
   }
 }

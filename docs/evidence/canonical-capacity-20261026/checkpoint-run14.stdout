@@ -1,0 +1,13 @@
+
+running 6 tests
+test actual_process_exit_at_every_checkpoint_publication_boundary ... checkpoint_actual_process_exits=6
+ok
+test capacity_rejection_before_checkpoint_io_does_not_poison ... ok
+test checkpoint_unwind_requires_reopen_even_after_current_or_retirement ... ok
+test committed_archive_corruption_stops_recovery_and_does_not_fall_back ... ok
+test more_than_two_hot_windows_exact_success_and_failure_retry_after_restart ... checkpoint_boundary: commits=2100 original_hot_limit=1024 sequence=2100 status={"sequence":2100,"generation":2106,"hot_receipts":0,"wal_bytes":0,"archive_bytes":2040951,"archive_limit":134217728}
+ok
+test retry_at_exact_rotation_threshold_does_not_become_a_new_operation ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 17.31s
+

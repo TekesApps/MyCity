@@ -1,0 +1,26 @@
+[
+  {
+    "target": "time_capacity",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/source12-time_capacity-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 1.939177792,
+    "sha256": "80ba08f71b8a6ea19686a9cb64a2efc9433fe2671d7b361d6493b94b0caabbc5",
+    "complete_root": "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run12/time_capacity"
+  },
+  {
+    "target": "time_capacity_store",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/source12-time_capacity_store-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 101,
+    "elapsed_seconds": 2.3154033750000003,
+    "sha256": "06a2b9dcbf0d12a9908a02137f62445c5d63c6c3cdab1b6955e9bff7713b3645",
+    "complete_root": "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run12/time_capacity_store"
+  }
+]

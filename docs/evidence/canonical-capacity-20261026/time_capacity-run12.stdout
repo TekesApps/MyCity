@@ -1,0 +1,10 @@
+
+running 5 tests
+test existing_exchange_resource_cannot_change_to_timed_mode_even_without_leases ... ok
+test full_width_canonical_id_roundtrips_through_original_tagged_action_codec ... ok
+test idle_v2_purifier_receivers_and_storage_cannot_be_reclassified_as_timed_resources ... ok
+test item_rate_profile_and_old_save_without_profile_keep_distinct_semantics ... ok
+test power_peak_uses_original_integer_units_and_disjoint_time_can_reuse_one_pool ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+

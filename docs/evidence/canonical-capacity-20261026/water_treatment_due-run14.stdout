@@ -1,0 +1,9 @@
+
+running 2 tests
+test actual_v2_normal_role_retains_production_move_save_and_returns_original_pool ... RETAINED_ACTUAL_WATER_RUNDUE=/Volumes/HP P900/dev/MyCity/work/r43/water-rundue-92986-1792974537882730000
+ok
+test actual_v2_rundue_preserves_original_reservation_p5_material_and_retry_after_sim_restart ... RETAINED_ACTUAL_WATER_RUNDUE=/Volumes/HP P900/dev/MyCity/work/r43/water-rundue-92986-1792974538582937000
+ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.01s
+

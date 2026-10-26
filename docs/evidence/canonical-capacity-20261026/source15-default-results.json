@@ -1,0 +1,156 @@
+[
+  {
+    "target": "mycity_core",
+    "gate": 1,
+    "original_gate": true,
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/source15-mycity_core-fixed",
+      "--test-threads=1",
+      "--nocapture",
+      "transaction::tests::equity_contribution_is_allowed_before_timeline_creation_but_not_after_time_advances",
+      "--exact"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.7682675419999967,
+    "sha256": "42e094e4d74dd560e9f16c091e2131dc88e1a3c0f5e9c488242a4419645878aa",
+    "stack_override": false,
+    "root": "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/default15/1-mycity_core",
+    "raw_retired_after_terminal_archive_verification": true,
+    "full_executable_archive": "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/source15-mycity_core-fixed.zip",
+    "archive_sha256": "9dc18adb86e0b91a2fdb414bcdda43edc794b5fad1ff35cc6ff92989dc520f26"
+  },
+  {
+    "target": "town_utility_engine",
+    "gate": 2,
+    "original_gate": true,
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/source15-town_utility_engine-fixed",
+      "--test-threads=1",
+      "--nocapture",
+      "accepted_cross_city_quote_uses_shared_pool_before_local_market_and_survives_checkpoint",
+      "--exact"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.760527291999999,
+    "sha256": "57d2a6ef5d009437448590dd124b2c3fd888e29dbb86247c259dc01ad6a985c8",
+    "stack_override": false,
+    "root": "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/default15/2-town_utility_engine",
+    "raw_retired_after_terminal_archive_verification": true,
+    "full_executable_archive": "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/source15-town_utility_engine-fixed.zip",
+    "archive_sha256": "f9b7059d19b468595f848d3f9a3d29783054351e4d7a49866404318108966488"
+  },
+  {
+    "target": "qualification_authority",
+    "gate": 3,
+    "original_gate": true,
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/source15-qualification_authority-fixed",
+      "--test-threads=1",
+      "--nocapture",
+      "original_teaching_exam_grant_replay_revoke_and_old_exam_substitution",
+      "--exact"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 37.985081916000006,
+    "sha256": "3b7f56759f7632ce2a1ece4c224202ebd183b8b63d9deedc5ba47d7aba15d87a",
+    "stack_override": false,
+    "root": "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/default15/3-qualification_authority",
+    "raw_retired_after_terminal_archive_verification": true,
+    "full_executable_archive": "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/source15-qualification_authority-fixed.zip",
+    "archive_sha256": "15a2e40f96cdaf99aad363ce025f13bbb387585d6022698a84477f61d3406aa8"
+  },
+  {
+    "target": "facility_operation",
+    "gate": 4,
+    "original_gate": true,
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/source15-facility_operation-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 3.766101207999995,
+    "sha256": "d0f22f9858aa22e1b075aa61d92c3708a30b4ca7b3fa7867e1255a3a6677e972",
+    "stack_override": false,
+    "root": "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/default15/4-facility_operation",
+    "raw_retired_after_terminal_archive_verification": true,
+    "full_executable_archive": "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/source15-facility_operation-fixed.zip",
+    "archive_sha256": "56313ac91febadc372093f6371a4878a1ca442badc791aca23dc1d383678a599"
+  },
+  {
+    "target": "facility_operation_store",
+    "gate": 5,
+    "original_gate": true,
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/source15-facility_operation_store-fixed",
+      "--test-threads=1",
+      "--nocapture",
+      "original_wal_checkpoint_retry_and_stopped_fraction_are_once",
+      "--exact"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 2.759254999999996,
+    "sha256": "3a58cec1c9a1bb4dc05e5704a597749777f5ffc3744575f11f0ea4c43ab750b0",
+    "stack_override": false,
+    "root": "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/default15/5-facility_operation_store",
+    "raw_retired_after_terminal_archive_verification": true,
+    "full_executable_archive": "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/source15-facility_operation_store-fixed.zip",
+    "archive_sha256": "3b543ae23ff741f667f0ccf2f5a79515164a1d029aa7be24d5e2a9e22a2b5a78"
+  },
+  {
+    "target": "facility_operation_store",
+    "gate": 6,
+    "original_gate": true,
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/source15-facility_operation_store-fixed",
+      "--test-threads=1",
+      "--nocapture",
+      "partial_old_payroll_payment_restores_the_same_shared_income_window",
+      "--exact"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 11.429403791999988,
+    "sha256": "3a58cec1c9a1bb4dc05e5704a597749777f5ffc3744575f11f0ea4c43ab750b0",
+    "stack_override": false,
+    "root": "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/default15/6-facility_operation_store",
+    "raw_retired_after_terminal_archive_verification": true,
+    "full_executable_archive": "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/source15-facility_operation_store-fixed.zip",
+    "archive_sha256": "3b543ae23ff741f667f0ccf2f5a79515164a1d029aa7be24d5e2a9e22a2b5a78"
+  },
+  {
+    "target": "time_capacity",
+    "gate": 7,
+    "original_gate": false,
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/source15-time_capacity-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 1.2267590830000046,
+    "sha256": "3ac4f7fc4abf119b9959ee3f08575cb4ae80ffa4850031679a8dca5fb758c750",
+    "stack_override": false,
+    "root": "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/default15/7-time_capacity",
+    "raw_retired_after_terminal_archive_verification": true,
+    "full_executable_archive": "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/source15-time_capacity-fixed.zip",
+    "archive_sha256": "4808d41b5929bbe9a35e04fdc7364bf74b0448870c5b84ed41d4af280c6f55b2"
+  },
+  {
+    "target": "time_capacity_store",
+    "gate": 8,
+    "original_gate": false,
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/source15-time_capacity_store-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 14.652289124999996,
+    "sha256": "b9397040fbf495da2986f3cee14f1a7ccd0b82cbf2e90cb717cced789693763c",
+    "stack_override": false,
+    "root": "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/default15/8-time_capacity_store",
+    "raw_retired_after_terminal_archive_verification": true,
+    "full_executable_archive": "/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/source15-time_capacity_store-fixed.zip",
+    "archive_sha256": "95572655e90182b53d2523f268b19013353fc55a4c131dca42f396731a22bb48"
+  }
+]

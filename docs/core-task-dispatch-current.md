@@ -1,6 +1,6 @@
 # MyCity 当前实际派工与交接
 
-**当前审计检查点v0.5.196：**root共享1项#136处于验证，独立准备0项；#137只读准备完成、尚未实施；#49/#50已校正未派工stage:todo。[当前事实与历史分隔](execution-current.md)，[审计入口](../AUDIT_HANDOFF.md)。
+**当前v0.5.197：**#136完整有限合同实际验收/关闭，父118开放；当前共享0+准备0，下一137尚未激活。不新增源码批次；[当前执行](execution-current.md)、[136证据](evidence/canonical-capacity-20261026/STATUS.md)。v196审计基线不变。
 
 **2026-10-25 当前执行入口：**[Issue执行与验收台账](issue-execution-ledger.md)及GitHub #2/#23。
 当前root是唯一共享writer、串行验证和发布/关闭负责人；旧主会话已停止，下面旧派工不再授权。

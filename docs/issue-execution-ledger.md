@@ -1,6 +1,6 @@
 # MyCity Issue 执行与验收台账
 
-当前实际在制见[执行清单](execution-current.md)：#136单一root验证、独立准备0项；父任务持续推进不算活跃开发。#49/#50剩余未派工，已校正stage:todo。v196为待验审计检查点，关闭0项；累计新业务3/历史补关0/缺陷1，积压19待集成/1待验证。
+当前实际在制见[执行清单](execution-current.md)：#136完整有限合同已实际验收关闭，父118开放；共享0+准备0，下一#137。累计新业务4/历史补关0/缺陷1，积压19待集成/0待验证；v197仅终态证据台账。#49/#50未派工stage:todo。
 
 2026-10-25，台账阶段v0.5.191，游戏实际验收v0.5.190。总体入口为[PRODUCT_BLUEPRINT](PRODUCT_BLUEPRINT.md)，需求见[逐条矩阵](product-coverage-and-requirements.md)。#132有限业务和#148布局缺陷已完整验收、发布、回填并实际关闭；父域/M0/16GB仍开放，见[设施证据](evidence/facility-operation-20261025/STATUS.md)。v191只同步关闭，不重跑或重复计业务；WIP和失败恢复原件保留。
 
@@ -55,7 +55,7 @@
 |[#133](https://github.com/TekesApps/MyCity/issues/133)|待开发|当前没有V2实际原writer/合格出水消费桥；不新派开发，root按原owner交付集成|
 |[#134](https://github.com/TekesApps/MyCity/issues/134)|阻塞|原交付已冻结；由原实施方按排程补模块，root唯一集成；当前未派新任务|
 |[#135](https://github.com/TekesApps/MyCity/issues/135)|待集成|通用候选到实际目录/全部必要provider未完成；原交付先集成，不新派工|
-|[#136](https://github.com/TekesApps/MyCity/issues/136)|待集成|限定consumer已验不等于全模式；开工前先固定实际专属路径与原owner，当前无新写授权|
+|[#136](https://github.com/TekesApps/MyCity/issues/136)|完成|原池时窗内核完整有限合同已验；[证据](evidence/canonical-capacity-20261026/STATUS.md)，其它consumer仍归父/领域任务|
 |[#137](https://github.com/TekesApps/MyCity/issues/137)|待集成|通用factory/provider/schema连接仍缺；不要求所有领域先完成，不宣称全产品开局可用|
 |[#138](https://github.com/TekesApps/MyCity/issues/138)|待开发|尚无实际收费教育业务实现/验收；owner未派工，先消化已有接线|
 |[#139](https://github.com/TekesApps/MyCity/issues/139)|待开发|基础教育完整实际profile未实现；不等待#52整个生命周期，但缺合法年龄源时阻塞相应验收|
@@ -126,3 +126,7 @@ v190的#132/#148已关，v191只同步台账。当前root将#133激活为唯一�
 ## v195关闭台账
 
 #135游戏增量在v194完整实际验收并发布，Issue及父101清单已独立回读；[关闭记录](evidence/task-registry-directory-20261026/closure.json)。本次文档不重复计业务。下一136/137按具体依赖消化，134缺真实到返来源；未知耗时起点不杜撰。
+
+## v0.5.197 当前关闭增量
+
+#136实现v196之后的受影响共享、原默认栈、实际normal角色保存重启/联合业务全部通过，原票/完整参考/冷恢复与必要预算齐全，已回填并关闭。父118继续开放；[关闭原件](evidence/canonical-capacity-20261026/closure.json)。当前统计和下一137以顶部执行清单为准，早期排队/进行中文字仅历史，不授予新写权。

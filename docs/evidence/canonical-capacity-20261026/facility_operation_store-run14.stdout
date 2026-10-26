@@ -1,0 +1,16 @@
+
+running 6 tests
+test altered_internal_operations_cannot_authenticate_against_real_original_tickets ... RETAINED_FACILITY_WORLD=/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run14/facility_operation_store/facility-92599-1792974508361405000
+ok
+test facility_cold_probe ... ignored
+test forged_income_window_and_matching_local_hash_cannot_replace_the_original_receipt ... RETAINED_FACILITY_WORLD=/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run14/facility_operation_store/facility-92599-1792974508492013000
+ok
+test lost_publication_reply_reopens_original_committed_work_once ... RETAINED_FACILITY_WORLD=/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run14/facility_operation_store/facility-92599-1792974508573582000
+ok
+test original_wal_checkpoint_retry_and_stopped_fraction_are_once ... RETAINED_FACILITY_WORLD=/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run14/facility_operation_store/facility-92599-1792974508654624000
+ok
+test partial_old_payroll_payment_restores_the_same_shared_income_window ... RETAINED_FACILITY_WORLD=/Volumes/HP P900/dev/MyCity/work/canonical-capacity-20261026/run14/facility_operation_store/facility-92599-1792974508838972000
+ok
+
+test result: ok. 5 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 6.07s
+

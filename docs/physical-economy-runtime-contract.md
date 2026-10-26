@@ -232,7 +232,7 @@ v0.5.184 已完成有限原账接线与串行验证，见 [实际证据](evidenc
   停机与历史处理责任仍保留；未来压缩须有独立原票/摘要迁移合同，不能静默删 run。
 
 
-## #136 原Resource/Lease时窗模式V1（设计已定，尚未实现/验收）
+## #136 原Resource/Lease时窗模式V1（v196实现，v197同步实际验收关闭）
 
 既有未登记资源继续原累计reserved+occupied门。显式新版登记将一个canonical/group及全部别名、单位/比例、scope、原SimulationTick和版本绑定到一个原Resource；不允许同一物理瓶颈拆名增容。现有venue/交通/工程等已绑定资源不得无迁移协议改模式；原已验venue保持旧规则。最初接线支持原整数槽可精确表示的Count、ItemsPerSecond、Kilowatts；IntervalLitres不是瞬时容量，仍unsupported，不能平均为峰值。此范围与既有候选区分一致，后续区间守恒属原父范围。
 
@@ -244,7 +244,7 @@ v0.5.184 已完成有限原账接线与串行验证，见 [实际证据](evidenc
 
 原writer在同Prepared更新原Lease、Resource投影与补充元数据。原通用Reserve/Occupy/Release不得绕过受管资源门；任何领域尝试新增不相容绑定或直接改受管Lease，必须在原提交前拒绝。取消仅处理Reserved；退出处理Actual且不以预测结束/关闭/过期代替原退出操作。计量满额先拒绝新增，必要结束路径须可原位释放并使用原Store责任控制保留，不另造安全认证系统或额外调度器。
 
-实施root唯一共享writer；确切文件/事前512MiB证据预算见work/canonical-capacity-20261026/coordinator-state.json，原118仅独立预期准备，不写游戏代码。验收包括不同consumer/别名同池、重叠拒绝与不重叠可接受、Actual越窗使后一等待/真实退出继续、关闭/减容/满额、旧模式、原票、正常保存/冷恢复及原共享资源预算。模型、窗口扫描/克隆、原Lease、存档恢复/角色重叠分别计费；128KiB/Engine4MiB/normal64MiB/共同8MiB/M0/默认栈不变。当前以上新增均not_run，不以设计或advisor结论关闭#136/#118。
+实施root唯一共享writer；确切文件/事前512MiB证据预算见work/canonical-capacity-20261026/coordinator-state.json，原118仅独立预期准备，不写游戏代码。验收包括不同consumer/别名同池、重叠拒绝与不重叠可接受、Actual越窗使后一等待/真实退出继续、关闭/减容/满额、旧模式、原票、正常保存/冷恢复及原共享资源预算。模型、窗口扫描/克隆、原Lease、存档恢复/角色重叠分别计费；128KiB/Engine4MiB/normal64MiB/共同8MiB/M0/默认栈不变。本段设计建立时以上新增均not_run；现已按下方实际结果完成#136有限合同，不以设计或advisor结论关闭父#118。
 
 
 ### #136与既有venue共存：完整身份门与模式数量视图
@@ -254,3 +254,7 @@ v0.5.184 已完成有限原账接线与串行验证，见 [实际证据](evidenc
 只在root venue_driver增加有界只读适配，不改原venue_capacity纯规则或其完整性判据。先以完整原Resource和完整non-venue IDs走原validate_opening，保留跨域身份/别名/资源分区门；另核完整原Lease token唯一及引用存在。再仅为旧模式的数量规则排除显式timed登记资源及其Lease，同步过滤投影non-venue IDs，其他未登记旧资源全保留旧总和校验。原slot索引和64行长度不变；虚拟None不授予真实空槽，实际分配仍在完整原Lease表找空位，满表照旧拒新。
 
 before、Reserve后的after、bind_reserved_offer和最终校验统一该只读视图，最终使用暂存timed candidate。原真实Resource/Lease从不被投影覆盖或伪改计数；timed部分仍由原driver校验峰和真实占用。新canonical/别名也不能与旧venue实体/别名或其他原Resource身份冲突。两份before/after固定数组同时计入8KiB临时预算（有编译期ABI上界检查），初始化/准备/恢复与原候选重叠均在原4MiB内拒绝超额；该数不是native栈峰或物理内存证明。当前修复和混合城市/满原表反例正验证，先前专项不当本修复通过。
+
+### #136 当前实现和验收终态（2026-10-26）
+
+原11文件在v196固定；当前共存修复后的6组共享、8默认门、真实normal角色两次授额/归还及保存重启原票、完整参考世界一致。旧生产与两员工均实际25秒。原4项子合同完成并关闭，父118/领域consumer/跨clock/区间Litres/硬件各保留其明确缺口；[证据与资源边界](evidence/canonical-capacity-20261026/STATUS.md)。该终态替代本节历史not_run，不改变规则或M0门。

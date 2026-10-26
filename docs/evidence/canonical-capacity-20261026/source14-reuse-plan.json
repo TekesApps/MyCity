@@ -1,0 +1,18 @@
+{
+  "current_compiled_inputs": "source14-build-inputs.json",
+  "source13_inputs_identical": true,
+  "source12_difference_only": [
+    "crates/city-storage/tests/time_capacity_store.rs"
+  ],
+  "reuse_current_core5": "run12-results.json time_capacity exit0; core production/core test/fixtures unchanged",
+  "reuse_current_direct4": "run13-results.json all exit0; source13/14 complete409-file convenience lists identical; audit460-file source manifest includes unchanged root fixtures",
+  "run_remaining_six": [
+    "continuous_supply",
+    "facility_operation_store",
+    "checkpoint",
+    "task_registry_directory",
+    "continuous_supply_due",
+    "water_treatment_due"
+  ],
+  "not_reusing": "source07/08/09 pre-coexistence default/role results as current proof"
+}

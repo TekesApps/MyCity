@@ -1,0 +1,14 @@
+
+running 9 tests
+test actual_original_stocks_two_pumps_same_window_and_heat_water_cost_close ... ok
+test forged_or_missing_original_receipts_never_authenticate_raw_provider ... ok
+test immutable_lots_and_receivers_cannot_be_spent_through_generic_moves_or_wrong_actor ... ok
+test original_clock_must_exist_before_any_new_machine_commitment ... ok
+test raw_checkpoint_preserves_fraction_but_is_not_an_authenticated_provider ... ok
+test second_pump_resource_and_joint_fee_failure_roll_back_all_original_business_rows ... ok
+test single_pump_changes_only_its_output_full_sink_cuts_and_stops_original_timeline ... ok
+test split_prefixes_preserve_fractional_energy_lot_cost_and_one_start_fee ... ok
+test zero_work_stop_refunds_only_unconverted_lots_and_keeps_actual_start_expense ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
