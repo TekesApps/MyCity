@@ -1,4 +1,6 @@
-# MyCity 当前审计入口：v0.5.201
+# MyCity 当前审计入口：v0.5.202
+
+#149已实际验收关闭，见[回执](docs/evidence/timeline-target-emergency-20261026/closure.json)；v202仅同步回执与台账，游戏源码与已验证v201相同。新审计可固定v201（源码与实际验证）或v202（另含实际Issue关闭），请记录完整commit。既有v200审计tag保持不变。
 
 当前main的#149已完成[有限合同验证](docs/evidence/timeline-target-emergency-20261026/STATUS.md)：生产字节与v200相同，专属测试修正held预留设置；原共享／默认栈／恢复及有限normal角色门通过。Issue实际关闭另看后续回执，不以tag代验收。新审计可固定v0.5.201；已经固定v200的审计继续有效，旧tag不移动。
 

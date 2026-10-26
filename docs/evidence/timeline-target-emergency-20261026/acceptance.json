@@ -1,6 +1,6 @@
 {
   "issue": 149,
-  "decision": "finite contract gates passed; publication and actual issue closure still pending",
+  "decision": "complete finite contract actually accepted and GitHub closed; original failed evidence retained",
   "decided_at": "2026-10-26T04:20:41.023874+00:00",
   "source_manifest": "source02-manifest.json",
   "production_transaction_sha256": "c77f9bc089db3f49fdc8ad9ad5e0411bfa237e4c28ed8a2a22d8a3f44b47b9a3",
@@ -22,6 +22,7 @@
     "GPU/UI"
   ],
   "new_business_accepted": 0,
-  "new_defect_closure": "pending actual GitHub close",
-  "pr": null
+  "new_defect_closure": "149 closed after independent publication and Issue readback",
+  "pr": null,
+  "closure_receipt": "closure.json"
 }

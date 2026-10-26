@@ -1,0 +1,52 @@
+{
+  "issue": 149,
+  "state": "closed",
+  "state_reason": "completed",
+  "accepted_at": "2026-10-26T04:23:13Z",
+  "accepted_at_definition": "actual root full-contract acceptance backfill comment timestamp, not inferred first-ready or source-delivery time",
+  "closed_at": "2026-10-26T04:23:38Z",
+  "acceptance_comment_id": 6408181360,
+  "acceptance_comment_url": "https://github.com/TekesApps/MyCity/issues/149#issuecomment-6408181360",
+  "production_candidate_commit": "ea0b7a0b469a1b5bfde78da3b96b92f65fac2362",
+  "production_candidate_tag": "v0.5.200",
+  "validated_commit": "0f5bae69b1cd58ed51087f5af23969816f0db75c",
+  "validated_tag": "v0.5.201",
+  "annotated_tag_object": "034fef1253f5c9121f337ad740bcfb857d9f5c20",
+  "github_body_sha256": "1a5b1d7d4546505a603dac5314a20b963f27190c13261b9580ee1bb72f88eca1",
+  "github_labels": [
+    "stage:done",
+    "type:defect"
+  ],
+  "parent118": "open, checklist149 independently read back",
+  "related136": "closed, independent149 fix association read back; original validation history retained",
+  "pr": null,
+  "phase_delta": {
+    "new_accepted_business": 0,
+    "historical_backfill_business": 0,
+    "defect_closed": 1,
+    "source_only_backlog_change": 0
+  },
+  "statistics_window": {
+    "start": "2026-10-25T02:39:00Z",
+    "end": "2026-10-26T04:23:38Z",
+    "new_accepted_business": [
+      132,
+      133,
+      135,
+      136,
+      137
+    ],
+    "historical_backfill_business": [],
+    "defects_closed": [
+      148,
+      149,
+      150
+    ],
+    "delivered_pending_integration": 18,
+    "delivered_pending_validation": 0
+  },
+  "first_ready": null,
+  "first_full_scope_delivery": null,
+  "cycle_seconds": null,
+  "cycle_unknown_reason": "activation, audit candidate, Issue creation and closing window are not reliable first-ready/full-scope delivery timestamps"
+}

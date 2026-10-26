@@ -1,27 +1,16 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-26T04:20:41.023874+00:00",
-  "source_head": "v0.5.201 pending publication; production ea0b7a0 audit200 unchanged",
-  "candidate": "149 finite verification passed;201 publication and actual issue closure pending",
+  "last_snapshot_at": "2026-10-26T04:25:51.146007+00:00",
+  "source_head": "0f5bae69b1cd58ed51087f5af23969816f0db75c",
+  "candidate": "149 accepted/closed;202 ledger only;next134 actual capability integration pending ownership activation",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
   "limits": {
     "shared_core_lanes": 1,
     "independent_preparations": 2,
     "reason_for_adjustment_required": true
   },
-  "active_shared_work": [
-    {
-      "issue": 149,
-      "owner": "01a166fc-e444-7602-ad22-3a8551dda487",
-      "files": [
-        "crates/city-core/src/transaction.rs",
-        "crates/city-storage/tests/timeline_cancel_emergency.rs"
-      ],
-      "status": "verification terminal passed; publication and actual backfill/closure pending",
-      "evidence": "docs/evidence/timeline-target-emergency-20261026/STATUS.md"
-    }
-  ],
+  "active_shared_work": [],
   "active_independent_preparations": [],
   "counting_rules": {
     "parents_are_not_active_work": true,
@@ -93,6 +82,7 @@
     "historical_backfill_business": [],
     "defects_closed": [
       148,
+      149,
       150
     ]
   },
@@ -509,7 +499,7 @@
     },
     {
       "issue": 149,
-      "execution_state": "validation:publication-and-closure-pending",
+      "execution_state": "completed:closed",
       "implementation_owner_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "integration_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "files_or_activation_boundary": [
@@ -521,13 +511,14 @@
       ],
       "real_integration_seam": "original Prepared emergency eligibility and original Store WAL admission; no driver/continuation changes",
       "acceptance_entry_and_gaps": [
-        "dedicated4/shared9/default9/normal-role passed; remaining publication and actual issue closure"
+        "full finite contract passed, independent publication and GitHub closure readback complete",
+        "real16GB/native/full M0/GPU/UI remain separate scopes"
       ],
       "timing": {
         "ready_at": null,
         "full_scope_source_delivered_at": null,
-        "accepted_at": null,
-        "issue_closed_at": null,
+        "accepted_at": "2026-10-26T04:23:13Z",
+        "issue_closed_at": "2026-10-26T04:23:38Z",
         "ready_to_acceptance_seconds": null,
         "source_to_acceptance_seconds": null,
         "unknown_reason": "activation and audit candidate timestamps are not reliable first-ready/full-scope delivery times"
@@ -707,6 +698,20 @@
       "comment": 6407361767,
       "implementation_commit": "824463c1f3325f86853045475d95e2b8df1811b3",
       "tag": "v0.5.198",
+      "business_acceptance_delta": 0,
+      "historical_backfill_delta": 0,
+      "defect_closure_delta": 1,
+      "first_ready": null,
+      "first_full_scope_source_delivery": null
+    },
+    {
+      "observed_at": "2026-10-26T04:23:13Z",
+      "kind": "completed_boundary_cancellation_defect_accepted_and_closed",
+      "issue": 149,
+      "closed_at": "2026-10-26T04:23:38Z",
+      "comment": 6408181360,
+      "implementation_commit": "0f5bae69b1cd58ed51087f5af23969816f0db75c",
+      "tag": "v0.5.201",
       "business_acceptance_delta": 0,
       "historical_backfill_delta": 0,
       "defect_closure_delta": 1,

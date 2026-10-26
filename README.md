@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.201`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.202`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.202 同步[#149实际验收关闭](docs/evidence/timeline-target-emergency-20261026/closure.json)及父118/关联136台账；v201游戏与验证字节不变。累计新验收业务5、历史补关0、缺陷3；18待集成/0待验证不变。本tag不新增业务，原M0/16GB等门保持原状态。
 
 v0.5.201 验证[#149完成边界取消与实际退出](docs/evidence/timeline-target-emergency-20261026/STATUS.md)：4父专项、9组共享、原8+新1默认栈和真实normal角色均通过，原票／中断／冷恢复保留原义务和占用。v200生产候选字节未变，仅修测试配额预留；Issue关闭另按实际回执。原M0／16GB／native／长期范围仍开放。
 
