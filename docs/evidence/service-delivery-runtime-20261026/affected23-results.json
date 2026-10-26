@@ -1,0 +1,30 @@
+[
+  {
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/service-delivery-runtime-20261026/shared22/05-mycity-core-mycity_core-fixed",
+      "--test-threads=1",
+      "--nocapture",
+      "housing_income::tests"
+    ],
+    "source": "source22-manifest.json",
+    "executable_sha256": "36acc57dc29cc20c4c446605059ff34fafd31068b82275fd32c53b04635b913c",
+    "exit_code": 0,
+    "seconds": 0.082460042,
+    "finished_at": "2026-10-26T08:07:07.702870+00:00",
+    "default_stack": true
+  },
+  {
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/service-delivery-runtime-20261026/shared22/05-mycity-core-mycity_core-fixed",
+      "--test-threads=1",
+      "--nocapture",
+      "member_activity::tests"
+    ],
+    "source": "source22-manifest.json",
+    "executable_sha256": "36acc57dc29cc20c4c446605059ff34fafd31068b82275fd32c53b04635b913c",
+    "exit_code": 0,
+    "seconds": 0.03445775000000001,
+    "finished_at": "2026-10-26T08:07:07.737923+00:00",
+    "default_stack": true
+  }
+]

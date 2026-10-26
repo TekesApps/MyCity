@@ -1,0 +1,29 @@
+[
+  {
+    "source": "source16",
+    "changed_source_paths": [
+      "crates/city-core/src/service_needs.rs"
+    ],
+    "old_production_body_equal_after_removing_new_cfg_test_child": true,
+    "shipping_source_body_sha256": "91af1bfaaa5483e9bb2204310c1ffb232888e0814eb5a836fd275568e39839f2",
+    "interpretation": "only test-only child inclusion; original fixed-program results retain source/version identity; no posthoc claim of rebuilding current binary"
+  },
+  {
+    "source": "source19",
+    "changed_source_paths": [
+      "crates/city-core/src/service_needs.rs"
+    ],
+    "old_production_body_equal_after_removing_new_cfg_test_child": true,
+    "shipping_source_body_sha256": "91af1bfaaa5483e9bb2204310c1ffb232888e0814eb5a836fd275568e39839f2",
+    "interpretation": "only test-only child inclusion; original fixed-program results retain source/version identity; no posthoc claim of rebuilding current binary"
+  },
+  {
+    "source": "source21",
+    "changed_source_paths": [
+      "crates/city-core/src/service_needs.rs"
+    ],
+    "old_production_body_equal_after_removing_new_cfg_test_child": true,
+    "shipping_source_body_sha256": "91af1bfaaa5483e9bb2204310c1ffb232888e0814eb5a836fd275568e39839f2",
+    "interpretation": "only test-only child inclusion; original fixed-program results retain source/version identity; no posthoc claim of rebuilding current binary"
+  }
+]

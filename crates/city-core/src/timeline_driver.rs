@@ -830,7 +830,7 @@ impl Frame<'_, '_> {
                     if !crate::service_needs_authority::due_page(self.service_needs,at,self.operation_id,self.service_working_base,crate::transaction::ENGINE_BYTE_BUDGET)? {return Ok(());}
                     if self.service_needs.as_deref().is_some_and(|n|n.delivery.is_some()){
                         let ledger=ledger!(self);
-                        apply_service_delivery(self.world,self.service_needs,self.facility_member,ledger,at,self.operation_id,Caller::System,None)?;
+                        apply_service_delivery(self.world,self.service_needs,self.facility_member,ledger,at,self.operation_id,Caller::System,None,self.housing_wage_window)?;
                     }
                     t.progress.last_complete = at;
                     t.progress.phase = None;

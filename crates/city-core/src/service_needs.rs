@@ -454,3 +454,7 @@ fn digest(value: &impl Serialize, domain: &[u8]) -> Result<[u8; 32], Error> {
     serde_json::to_writer(&mut writer, value).map_err(|_| Error::Budget)?;
     Ok(writer.hash.finalize().into())
 }
+
+#[cfg(test)]
+#[path="../tests/support/service_needs_component.rs"]
+mod component_tests;

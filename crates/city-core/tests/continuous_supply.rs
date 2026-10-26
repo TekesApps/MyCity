@@ -95,7 +95,7 @@ fn forged_or_missing_original_receipts_never_authenticate_raw_provider(){
     let check=raw.begin_continuous_supply_restore().unwrap();assert!(raw.finish_continuous_supply_restore(check).is_err());
     let mut check=raw.begin_continuous_supply_restore().unwrap();
     let wrong=mycity_core::transaction::JournalRecord{actor:1,emergency_eligible:false,operation_id:2,expected_revision:0,payload_sha256:[0;32],
-        outcome:Err(TxError::Unauthorized),actions:[None;mycity_core::transaction::MAX_ACTIONS],qualification_context:None,facility_context:None};
+        outcome:Err(TxError::Unauthorized),actions:[None;mycity_core::transaction::MAX_ACTIONS],qualification_context:None,facility_context:None,income_context:None};
     assert!(raw.check_continuous_supply_restore_receipt(&mut check,0,&wrong).is_err());assert!(!raw.continuous_supply_is_authenticated());
 }
 #[test]

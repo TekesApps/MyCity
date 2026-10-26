@@ -1,0 +1,30 @@
+[
+  {
+    "gate": 1,
+    "package": "mycity-core",
+    "target": "timeline",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/service-delivery-runtime-20261026/shared21/01-mycity-core-timeline-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "seconds": 40.53027925,
+    "source": "source21-manifest.json",
+    "executable_sha256": "31c96b8610a3d940bbd6a851f8cfc0db81b96e5e103beaccf13d4cb8065365ba",
+    "env": {
+      "TMPDIR": "/Volumes/HP P900/dev/MyCity/work/service-delivery-runtime-20261026/shared21/temp",
+      "MYCITY_FACILITY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-delivery-runtime-20261026/shared21/facility",
+      "MYCITY_QUALIFICATION_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-delivery-runtime-20261026/shared21/qualification",
+      "MYCITY_TYPED_OPENING_STORE_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-delivery-runtime-20261026/shared21/typed",
+      "MYCITY_TARGET_EMERGENCY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-delivery-runtime-20261026/shared21/target-cancel",
+      "MYCITY_TIME_CAPACITY_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-delivery-runtime-20261026/shared21/time",
+      "MYCITY_VENUE_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-delivery-runtime-20261026/shared21/venue",
+      "MYCITY_SERVICE_TEST_WORK": "/Volumes/HP P900/dev/MyCity/work/service-delivery-runtime-20261026/shared21/service",
+      "MYCITY_DIRECTORY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/service-delivery-runtime-20261026/shared21/directory",
+      "MYCITY_DIRECTORY_POOL_ROOT": "/Volumes/HP P900/dev/MyCity/work/s134/d21"
+    },
+    "default_stack": true,
+    "finished_at": "2026-10-26T07:57:03.996581+00:00"
+  }
+]

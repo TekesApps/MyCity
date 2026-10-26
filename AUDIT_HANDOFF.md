@@ -1,3 +1,13 @@
+# MyCity 当前接线状态：v0.5.205
+
+v0.5.204误标签实际指向v203旧提交，不含本次接线；保持不移动。实际本次发布为v205。
+
+外部审计已固定的`v0.5.203`不移动，发现须按该版本核实。当前main新增#134有限实际接线及验证，[状态/差项](docs/evidence/service-delivery-runtime-20261026/STATUS.md)与[验证清单](docs/evidence/service-delivery-runtime-20261026/verification-summary.json)区分已通过门、未完成合同和原完整恢复证据。当前不是全产品/完整#134验收版本。
+
+审计仍先只读；root保持共享唯一writer和编译测试串行。全员Driver到期后的实际到车接替继续开放，不能把正确等待当恢复闭合；旧公服审计候选迁移未验，原源/程序/存档保留。v203的24份无关WIP补充包和本机原件不变。无新增关闭或PR，原M0冻结标准不改。
+
+<details><summary>此前审计入口历史（对应固定旧版本）</summary>
+
 # MyCity 当前审计入口：v0.5.203
 
 请固定附注 tag `v0.5.203` 并记录完整 commit；main 后续可能推进。此次是当前源码检查点，**不是已通过验收的稳定版本**。最近已验收基线是 v0.5.201，v202同步实际关闭。新代码结果不能从旧基线继承。
@@ -39,5 +49,7 @@
 可执行 `python3 docs/evidence/audit-main-20261026/verify_snapshot.py` 只读核对源码与WIP包身份；它不是编译或游戏测试。旧[AUDIT v196快照](docs/evidence/audit-baseline-20261026/snapshot.json)保留历史，不覆盖本入口。
 
 完整源／失败程序／World／WAL／checkpoint与恢复证据保留在本机HP P900 `work/`，本轮不删除或覆写。异机审计可复核仓库内源码与概要；无法访问的本地原件必须明确未核。无PR、无新增Issue关闭，最新统计和差项以本次STATUS与Issue实际状态为准。
+
+</details>
 
 </details>

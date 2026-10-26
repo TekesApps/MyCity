@@ -295,6 +295,8 @@ pub struct Receipt {
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize)]
 pub struct JournalRecord {
+    #[serde(default,skip_serializing_if="Option::is_none")]
+    pub income_context:Option<crate::housing_income::IncomeContext>,
     pub actor: u32,
     pub emergency_eligible: bool,
     pub operation_id: u64,
@@ -1055,6 +1057,10 @@ impl Engine {
         crate::facility_authority::validate(&self.world,self.world.facility_work.as_deref(),self.world.member_activity.as_deref(),self.timeline.as_ref(),self.world.continuous_supply.as_deref(),None)?;
         check_facility_protection(&self.world,self.world.facility_work.as_deref(),self.world.economy.as_ref(),&[])?;
         crate::facility_authority::validate_income_window(self.world.facility_work.as_deref(),self.world.housing.as_deref().and_then(|h|h.paid_wages.as_deref()),self.timeline.as_ref())?;
+        if let Some(d)=self.world.service_needs.as_deref().and_then(|n|n.delivery.as_deref()){
+            let h=self.world.housing.as_deref().ok_or(TxError::InvalidOperation)?;
+            d.validate_income(self.world.scope,crate::member_qualification::housing_population_origin(self.world.scope,&h.opening),h.paid_wages.as_deref(),self.timeline.as_ref().map_or(0,|t|t.progress.at))?;
+        }
         if let Some(q)=self.world.qualification.as_deref(){q.validate(&self.world)?;}
         venue_driver::validate(&self.world, &self.resources, &self.leases, self.timeline.as_ref(), None, self.time_capacity.as_deref())?;
         if let Some(t) = self.timeline.as_ref() {
@@ -1063,7 +1069,7 @@ impl Engine {
         if let Some(runtime) = self.world.housing.as_deref() {
             match (runtime.paid_wages.as_deref(), self.timeline.as_ref()) {
                 (Some(window), Some(timeline)) => window
-                    .validate_with_sources(&runtime.opening,timeline,&crate::facility_authority::paid_sources(self.world.facility_work.as_deref()))
+                    .validate_with_sources(&runtime.opening,timeline,&all_paid_sources(self.world.facility_work.as_deref(),self.world.service_needs.as_deref()))
                     .map_err(|_| TxError::InvalidOperation)?,
                 (Some(_), None) => return Err(TxError::InvalidOperation),
                 (None, _) => {}
@@ -1435,7 +1441,7 @@ impl Engine {
                 crate::housing::PaidWageWindowStatus::CoverageIncomplete,
             ));
         };
-        match household_wage_summary(&runtime.opening,timeline,window,household_id,self.world.facility_work.as_deref()) {
+        match household_wage_summary(&runtime.opening,timeline,window,household_id,self.world.facility_work.as_deref(),self.world.service_needs.as_deref().and_then(|n|n.delivery.as_deref())) {
             Ok(summary) => {
                 let status = if summary.billed_arrears {
                     crate::housing::PaidWageWindowStatus::BilledArrears
@@ -1793,6 +1799,7 @@ impl Engine {
             actions,
             qualification_context: prepared.as_ref().ok().and_then(|p|p.qualification.as_ref().map(|q|q.context)),
             facility_context:prepared.as_ref().ok().and_then(|p|p.facility_effects),
+            income_context:prepared.as_ref().ok().and_then(|p|p.service_needs.as_deref()).and_then(|n|n.delivery.as_deref()).and_then(|d|d.income_anchor()).filter(|a|a.operation_id==env.operation_id),
         };
         // Build the compact retry summary before the durable callback. A conversion failure or
         // allocation panic must happen before publication, never after a successful WAL commit.
@@ -2175,7 +2182,7 @@ impl Engine {
             {
                 return Err(TxError::Timeline(crate::timeline::Error::LegacyClock));
             }
-            if (matches!(action, Action::Timeline { .. } | Action::SettleExit { .. })||matches!(action,Action::FacilityWork{command:crate::facility_authority::Command::Pay{..}}))
+            if (matches!(action, Action::Timeline { .. } | Action::SettleExit { .. } | Action::ServiceDelivery { .. })||matches!(action,Action::FacilityWork{command:crate::facility_authority::Command::Pay{..}}))
                 && housing_wage_window.is_none()
             {
                 housing_wage_window = self.world.housing.as_deref().map(|runtime| {
@@ -2190,7 +2197,7 @@ impl Engine {
                     if env.actions.len()!=1{return Err(TxError::InvalidOperation);}
                     let at=crate::education_authority::completed(timeline.as_ref())?;
                     let ledger=BootLedger{base:EconomicLedger{world:&self.world,accounts:&mut accounts,stocks:&mut stocks},resources:&mut resources,leases:&mut leases,next_token:&mut next_token};
-                    apply_service_delivery(&self.world,&mut service_needs,&mut facility_member,ledger,at,env.operation_id,caller,Some(command))?;
+                    apply_service_delivery(&self.world,&mut service_needs,&mut facility_member,ledger,at,env.operation_id,caller,Some(command),&mut housing_wage_window)?;
                 },
                 Action::FacilityWork{command}=>{
                     if env.actions.len()!=1{return Err(TxError::InvalidOperation);}
@@ -4289,6 +4296,10 @@ impl Engine {
             let t=timeline.as_ref().ok_or(TxError::InvalidOperation)?;let at=t.progress.at;
             crate::facility_authority::stamp_income_window(f,window,env.operation_id,next_revision,at)?;
         }
+        if let(Some(d),Some(window))=(service_needs.as_deref_mut().and_then(|n|n.delivery.as_deref_mut()),housing_wage_window.as_deref()){
+            let origin=crate::member_qualification::housing_population_origin(self.world.scope,&self.world.housing.as_deref().ok_or(TxError::InvalidOperation)?.opening);
+            d.stamp_income(self.world.scope,origin,window,env.operation_id,next_revision,timeline.as_ref().ok_or(TxError::InvalidOperation)?.progress.at)?;
+        }
         let timeline_progress = if env
             .actions
             .iter()
@@ -4450,7 +4461,7 @@ impl Engine {
             let mut ledger=BootLedger{base:EconomicLedger{world:&self.world,accounts:&mut accounts,stocks:&mut stocks},resources:&mut resources,leases:&mut leases,next_token:&mut next_token};
             runtime.validate_prepared(&mut ledger,timeline.as_ref())?;
         }
-        if let Some(window)=housing_wage_window.as_deref(){let h=self.world.housing.as_deref().ok_or(TxError::InvalidOperation)?;window.validate_with_sources(&h.opening,timeline.as_ref().ok_or(TxError::InvalidOperation)?,&crate::facility_authority::paid_sources(facility_work.as_deref())).map_err(|_|TxError::InvalidOperation)?;}
+        if let Some(window)=housing_wage_window.as_deref(){let h=self.world.housing.as_deref().ok_or(TxError::InvalidOperation)?;window.validate_with_sources(&h.opening,timeline.as_ref().ok_or(TxError::InvalidOperation)?,&all_paid_sources(facility_work.as_deref(),service_needs.as_deref())).map_err(|_|TxError::InvalidOperation)?;}
         let income=housing_wage_window.as_deref().or_else(||self.world.housing.as_deref().and_then(|h|h.paid_wages.as_deref()));
         crate::facility_authority::validate_income_window(facility_work.as_deref(),income,timeline.as_ref())?;
         let facility_effects=crate::facility_authority::effects(facility_work.as_deref(),env.operation_id)?;
@@ -5760,12 +5771,13 @@ fn prepare_housing_lease(
     Ok(())
 }
 
-fn household_wage_summary(opening:&crate::housing::OpeningHousing,timeline:&crate::timeline::Timeline,window:&crate::housing_income::PaidWageWindow,household:u32,facility:Option<&crate::facility_authority::Runtime>)->Result<crate::housing_income::PaidWageSummary,crate::housing_income::PaidWageError>{
+fn household_wage_summary(opening:&crate::housing::OpeningHousing,timeline:&crate::timeline::Timeline,window:&crate::housing_income::PaidWageWindow,household:u32,facility:Option<&crate::facility_authority::Runtime>,service:Option<&crate::service_delivery_authority::Runtime>)->Result<crate::housing_income::PaidWageSummary,crate::housing_income::PaidWageError>{
     use crate::housing_income::PaidWageError as E;
     let mut summary=window.summarize(opening,timeline,household)?;
     let start=summary.start_day.checked_mul(crate::timeline::DAY).ok_or(E::Overflow)?;let end=summary.end_day.checked_mul(crate::timeline::DAY).ok_or(E::Overflow)?;
     let(q,a,owed)=crate::facility_authority::wage_contracts(facility,summary.account,start,end,timeline.progress.last_complete).map_err(|_|E::Invalid)?;
-    summary.qualifying_contracts=summary.qualifying_contracts.checked_add(q).ok_or(E::Overflow)?;summary.active_contracts=summary.active_contracts.checked_add(a).ok_or(E::Overflow)?;summary.billed_arrears|=owed;Ok(summary)
+    summary.qualifying_contracts=summary.qualifying_contracts.checked_add(q).ok_or(E::Overflow)?;summary.active_contracts=summary.active_contracts.checked_add(a).ok_or(E::Overflow)?;summary.billed_arrears|=owed;
+    if let Some(s)=service{let(q,a,owed)=s.wage_contracts(summary.account,start,end,timeline.progress.last_complete).map_err(|_|E::Invalid)?;summary.qualifying_contracts=summary.qualifying_contracts.checked_add(q).ok_or(E::Overflow)?;summary.active_contracts=summary.active_contracts.checked_add(a).ok_or(E::Overflow)?;summary.billed_arrears|=owed;}Ok(summary)
 }
 #[allow(clippy::too_many_arguments)]
 fn prepare_housing_move(
@@ -5850,7 +5862,7 @@ fn prepare_housing_move(
             .map_err(|_| TxError::InvalidOperation)?;
         return Ok(());
     };
-    let summary = match household_wage_summary(opening,timeline,wage_window,household.household_id,facility) {
+    let summary = match household_wage_summary(opening,timeline,wage_window,household.household_id,facility,world.service_needs.as_deref().and_then(|n|n.delivery.as_deref())) {
         Ok(summary) => summary,
         Err(_) => {
             move_state
@@ -11094,12 +11106,13 @@ impl crate::service_delivery_authority::Ledger for ServiceLedger<'_>{
         Ok((crate::service_delivery_runtime::NeedKey{scope:n.opening().scope,city_id:n.opening().city_id,household_id:id,household_source:original.source_id,generation:original.generation,kind,occurrence_day:current.occurrence_day},row.generated_operations[kind.index()]))
     }
     fn link_need(&mut self,key:crate::service_delivery_runtime::NeedKey,id:u32)->Result<(),TxError>{self.needs.link_delivery(key,id).map_err(|_|TxError::InvalidOperation)}
-    fn qualified(&self,members:crate::member_qualification::MemberRange,driver:u64,at:u64)->Result<bool,TxError>{
+    fn service_qualified(&self,members:crate::member_qualification::MemberRange,at:u64)->Result<bool,TxError>{
+        use crate::{qualification_authority as q,member_qualification::BaseQualification as B};
+        Ok(q::check_job_at_boundary(self.base.base.world,at,q::JobRequirements{members,minimum_background:None,minimum_skill:None,required_base_mask:B::Police.bit(),required_endorsement_mask:0})?.status==q::JobStatus::Eligible)
+    }
+    fn driver_qualified(&self,driver:u64,at:u64)->Result<bool,TxError>{
         use crate::{qualification_authority as q,member_qualification::{BaseQualification as B,MemberRange}};
-        let req=|members,mask|q::JobRequirements{members,minimum_background:None,minimum_skill:None,required_base_mask:mask,required_endorsement_mask:0};
-        let whole=q::check_job_at_boundary(self.base.base.world,at,req(members,B::Police.bit()))?;
-        let driver=q::check_job_at_boundary(self.base.base.world,at,req(MemberRange{start:driver,end:driver.checked_add(1).ok_or(TxError::Overflow)?},B::Driver.bit()))?;
-        Ok(whole.status==q::JobStatus::Eligible&&driver.status==q::JobStatus::Eligible)
+        Ok(q::check_job_at_boundary(self.base.base.world,at,q::JobRequirements{members:MemberRange{start:driver,end:driver.checked_add(1).ok_or(TxError::Overflow)?},minimum_background:None,minimum_skill:None,required_base_mask:B::Driver.bit(),required_endorsement_mask:0})?.status==q::JobStatus::Eligible)
     }
     fn claim(&mut self,actor:u32,ids:[u32;3])->Result<[u64;3],TxError>{
         let mut out=[0;3];for(i,id)in ids.into_iter().enumerate(){
@@ -11149,14 +11162,17 @@ impl crate::service_delivery_authority::Ledger for ServiceLedger<'_>{
 }
 fn apply_service_delivery(
     world:&World,needs:&mut Option<Box<crate::service_needs::Runtime>>,members:&mut Option<Box<crate::member_activity::Ledger>>,
-    base:BootLedger<'_>,at:u64,operation:u64,caller:Caller,command:Option<crate::service_delivery_authority::Command>,
+    base:BootLedger<'_>,at:u64,operation:u64,caller:Caller,command:Option<crate::service_delivery_authority::Command>,window:&mut Option<Box<crate::housing_income::PaidWageWindow>>,
 )->Result<(),TxError>{
     let Some(needs)=needs.as_deref_mut()else{return if command.is_some(){Err(TxError::InvalidOperation)}else{Ok(())};};
     let Some(mut runtime)=needs.delivery.take()else{return if command.is_some(){Err(TxError::InvalidOperation)}else{Ok(())};};
     let members=members.as_deref_mut().ok_or(TxError::InvalidOperation)?;
     let root=needs.fingerprint().map_err(|_|TxError::InvalidOperation)?;let revision=world.revision.checked_add(1).ok_or(TxError::Overflow)?;
     let mut l=ServiceLedger{base,needs,members,at,operation,caller,root,revision};
-    let result=if let Some(c)=command{runtime.command(&mut l,c,at)}else{runtime.advance(&mut l,at)};
+    let before=runtime.paid_sources();
+    let result=(||{if let Some(c)=command{runtime.command(&mut l,c,at)?}else{runtime.advance(&mut l,at)?;}
+        record_service_paid(world,&before,&runtime.paid_sources(),at,window)
+    })();
     l.needs.delivery=Some(runtime);result
 }
 fn check_service_delivery_state(world:&World,needs:Option<&crate::service_needs::Runtime>,accounts:&DirtyAccounts,stocks:&DirtyStocks,resources:&ResourceRows,leases:&LeaseRows,economy:Option<&crate::economy::Economy>,facility:Option<&crate::facility_authority::Runtime>)->Result<(),TxError>{
@@ -11174,7 +11190,7 @@ fn check_service_delivery_state(world:&World,needs:Option<&crate::service_needs:
         let physical=[crew.crew_resource,crew.vehicle_resource,crew.tools_resource];
         for(id,token)in physical.into_iter().zip(task.assignment.lease_tokens){
             let lease=leases.iter().flatten().find(|l|l.token==token);
-            if t.motion==crate::service_delivery_authority::Motion::Finished{if lease.is_some(){return Err(TxError::Lease);}}
+            if matches!(t.motion,crate::service_delivery_authority::Motion::Finished|crate::service_delivery_authority::Motion::Settlement){if lease.is_some(){return Err(TxError::Lease);}}
             else if !lease.is_some_and(|l|l.actor==crew.operator&&l.resource==id&&l.units==1&&l.occupied){return Err(TxError::Lease);}
             if !resources.iter().any(|r|r.id==id){return Err(TxError::Resource);}
         }
@@ -11187,4 +11203,19 @@ fn service_delivery_boundary(world:&World,needs:&mut Option<Box<crate::service_n
     let root=needs.fingerprint().map_err(|_|TxError::InvalidOperation)?;
     let members=members.as_deref_mut().ok_or(TxError::InvalidOperation)?;let mut l=ServiceLedger{base,needs,members,at,operation,caller:Caller::System,root,revision:world.revision};
     let result=runtime.input_boundary(&mut l,at);l.needs.delivery=Some(runtime);result
+}
+
+fn all_paid_sources(f:Option<&crate::facility_authority::Runtime>,n:Option<&crate::service_needs::Runtime>)->[Option<crate::housing_income::PaidWageSource>;crate::housing_income::MAX_ADDITIONAL_PAID_SOURCES]{
+    let mut out=[None;crate::housing_income::MAX_ADDITIONAL_PAID_SOURCES];out[..4].copy_from_slice(&crate::facility_authority::paid_sources(f));
+    if let Some(d)=n.and_then(|n|n.delivery.as_deref()){out[4..52].copy_from_slice(&d.paid_sources());}out
+}
+fn record_service_paid(world:&World,before:&[Option<crate::housing_income::PaidWageSource>],after:&[Option<crate::housing_income::PaidWageSource>],at:u64,window:&mut Option<Box<crate::housing_income::PaidWageWindow>>)->Result<(),TxError>{
+    // Per-payee cumulative cash counters survive task reclamation. No wallet is combined.
+    let mut seen=[0u32;32];let mut count=0;
+    for s in after.iter().flatten(){if seen[..count].contains(&s.account){continue;}if count==seen.len(){return Err(TxError::WorkingLimit);}seen[count]=s.account;count+=1;
+        let sum=|v:&[Option<crate::housing_income::PaidWageSource>]|v.iter().flatten().filter(|p|p.account==s.account).try_fold(0u64,|n,p|n.checked_add(p.paid).ok_or(TxError::Overflow));
+        let delta=sum(after)?.checked_sub(sum(before)?).ok_or(TxError::InvalidOperation)?;if delta==0{continue;}
+        let w=window.as_deref_mut().ok_or(TxError::InvalidOperation)?;w.begin_coverage(at).map_err(|_|TxError::InvalidOperation)?;
+        w.record_paid_delta(&world.housing.as_deref().ok_or(TxError::InvalidOperation)?.opening,s.account,Money::new(i64::try_from(delta).map_err(|_|TxError::Overflow)?).map_err(|_|TxError::Overflow)?,at).map_err(|_|TxError::InvalidOperation)?;
+    }Ok(())
 }

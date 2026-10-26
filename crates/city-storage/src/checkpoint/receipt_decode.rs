@@ -25,6 +25,7 @@ pub(crate) fn decode_raw(
             "actions",
             "qualification_context",
             "facility_context",
+            "income_context",
         ],
         true,
         scratch,
@@ -52,6 +53,7 @@ pub(crate) fn decode_raw(
         actions,
         qualification_context: fields.optional(7, scratch)?,
         facility_context:fields.optional(8,scratch)?,
+        income_context:fields.optional(9,scratch)?,
     })
 }
 #[cfg(test)]
@@ -993,7 +995,7 @@ mod tests {
             payload_sha256: [0; 32],
             outcome: Err(TxError::StaleRevision),
             actions: [None; MAX_ACTIONS],
-            qualification_context: None, facility_context:None,
+            qualification_context: None, facility_context:None,income_context:None,
         };
         let raw = serde_json::to_string(&r).unwrap();
         compare_record(&raw.replacen("{", &format!("{{{}", " ".repeat(65536)), 1));
@@ -1040,7 +1042,7 @@ mod context_tests {
             payload_sha256: [0; 32],
             outcome: Err(TxError::StaleRevision),
             actions: [None; MAX_ACTIONS],
-            qualification_context: None, facility_context:None,
+            qualification_context: None, facility_context:None,income_context:None,
         };
         let mut value = serde_json::to_value(record).unwrap();
         for depth in 116..=132 {

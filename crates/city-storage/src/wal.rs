@@ -241,7 +241,7 @@ mod tests {
                 payload_sha256: hot.payload_sha256,
                 outcome: hot.outcome,
                 actions,
-                qualification_context: None, facility_context:None,
+                qualification_context: None, facility_context:None,income_context:None,
             };
             if id % 3 == 0 {
                 assert_eq!(record.outcome, Err(TxError::StaleRevision));

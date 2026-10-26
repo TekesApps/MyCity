@@ -3179,12 +3179,12 @@
         "取消/超时/闭城/在途返程不漏义务，原票重试和冷恢复",
         "完整有限合法服务链+拒绝反例，不用selector测试冒充实际交付"
       ],
-      "remaining": "income/receipt/restore bridge, bounded history/arrears, refusal/boundary/coexistence/shared/default/resource verification",
-      "evidence": "docs/handoffs/issue-57-service-delivery-runtime.md",
-      "implementation_tags": "v0.5.203 current incomplete source checkpoint; not full acceptance",
+      "remaining": "actual qualified relief from station to vehicle under existing74; old v203 candidate migration unverified; full contract open",
+      "evidence": "docs/evidence/service-delivery-runtime-20261026/STATUS.md",
+      "implementation_tags": "v0.5.205 finite integration; not full acceptance",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
       "issue_body_sha256": "6c8457780e1c9c5e8bdc719392de1b9be144bb6920110b9bb35af528f61d06fd",
-      "execution_state": "in_progress:actual-integration-unverified",
+      "execution_state": "in_progress:partial-verified-with-specific-dependency74",
       "execution_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "execution_contract": "docs/inputs/issue-ledger/execution-flow.json"
     },
@@ -3833,6 +3833,6 @@
       1,
       2
     ],
-    "note": "v203 source checkpoint;134 root integration1, preparation0; no new acceptance"
+    "note": "v205 partial134 verified, full contract open, no closures; concrete74 actual relief dependency"
   }
 }

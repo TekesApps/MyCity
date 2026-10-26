@@ -1,0 +1,37 @@
+{
+  "phase": "134 partial actual integration, full contract open",
+  "published_version": "v0.5.205",
+  "baseline": "v0.5.203 1de0d7f5618c12a6e108e47c8000c740ad9a7b7a",
+  "verification_window": {
+    "start": "2026-10-26T07:03:29.382411+00:00",
+    "end": "2026-10-26T08:07:07.737923+00:00",
+    "meaning": "this bounded verification stage, not development latency"
+  },
+  "business_accepted": 0,
+  "historical_closed": 0,
+  "defects_closed": 0,
+  "backlog_pending_integration": 18,
+  "backlog_pending_validation": 0,
+  "root_in_progress": 1,
+  "independent_preparation": 0,
+  "core_cases": 9,
+  "store_parent_cases": 5,
+  "store_cold_children": 6,
+  "normal_role_cases": 1,
+  "shared_default_gates": 20,
+  "additional_original_unit_groups": 2,
+  "current_prod_evidence_reuse": "source-evidence-reuse.json; only cfg(test) inclusion after direct/Store/normal current method bodies",
+  "full_issue_134_accepted": false,
+  "remaining": [
+    "actual qualified relief from station to vehicle when original in-vehicle Driver sources all expired (specific existing74 capability)",
+    "old incomplete v203 service candidate save migration not verified; retain original executable and source"
+  ],
+  "no_m0_budget_change": true,
+  "real16gb_native_speed_longterm_gpu_ui": "not_run",
+  "mistag_204": {
+    "points_to": "1de0d7f5618c12a6e108e47c8000c740ad9a7b7a",
+    "contains_this_phase": false,
+    "retained_immutable": true,
+    "cause": "staging allowlist omitted already-authorized initial file; commit failed but shell continued to tag/push"
+  }
+}

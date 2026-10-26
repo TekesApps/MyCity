@@ -1,0 +1,13 @@
+{
+  "cutoff_at": "2026-10-26T08:10:45.458585+00:00",
+  "complete_originals_present": true,
+  "files": 6262,
+  "bytes": 6339470797,
+  "budget_bytes": 12884901888,
+  "old1gib_exceeded": true,
+  "logical_bytes_not_apfs_space_freed": true,
+  "excluded_live": [
+    "ownership-and-acceptance.json"
+  ],
+  "future_publication_receipts_not_in_cutoff": true
+}

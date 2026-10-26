@@ -1,0 +1,11 @@
+{
+  "command": [
+    "/Users/frankqin/dev/MyCity/work/service-delivery-runtime-20261026/source16-service_delivery-fixed",
+    "--test-threads=1",
+    "--nocapture"
+  ],
+  "source": "source16-manifest.json",
+  "exit_code": 0,
+  "elapsed_seconds": 3.9347561670000006,
+  "finished_at": "2026-10-26T07:30:34.169206+00:00"
+}

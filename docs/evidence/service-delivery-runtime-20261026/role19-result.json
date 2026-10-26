@@ -1,0 +1,11 @@
+{
+  "command": [
+    "/Users/frankqin/dev/MyCity/work/service-delivery-runtime-20261026/source19-service_delivery_role-fixed",
+    "--test-threads=1",
+    "--nocapture"
+  ],
+  "source": "source19-manifest.json",
+  "exit_code": 0,
+  "elapsed_seconds": 8.561248542000001,
+  "finished_at": "2026-10-26T07:42:27.880280+00:00"
+}

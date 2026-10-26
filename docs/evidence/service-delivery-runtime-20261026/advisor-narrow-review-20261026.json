@@ -1,0 +1,22 @@
+{
+  "scope": "income bridge / current single-Police profile / real return responsibility",
+  "advisor": "/root/three_module_delivery_advisor",
+  "read_only": true,
+  "initial_findings": [
+    {
+      "finding": "multi-Trip global last_at ordering",
+      "status": "withdrawn for current profile",
+      "reason": "one kind/one crew, nonClosed same-crew admission prohibited; at most one physical trip"
+    },
+    {
+      "finding": "Settlement counted active",
+      "status": "fixed; Settlement excluded, arrears and actual duty interval retained"
+    },
+    {
+      "finding": "all in-vehicle Driver sources expired",
+      "status": "open; existing #74 concrete actual-to-vehicle relief capability missing; #134 cannot close"
+    }
+  ],
+  "narrow_fix_review": "no new definite blocker found in separate Police/Driver gates, original same-vehicle driver swap or Settlement eligibility; source review is not runtime acceptance",
+  "tests_later_than_review": "core16 qualification boundary/same-vehicle return passed; normal role19 passed; new Store history still running"
+}

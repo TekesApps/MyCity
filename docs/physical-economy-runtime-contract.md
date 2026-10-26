@@ -292,3 +292,11 @@ root确切写范围：assembly.rs、assembly/typed_opening.rs、transaction/slot
 新typed资料通过原同槽首建／恢复，SuppliedBytes和真实本地JSON经未改CLI均有实际证据。原schema wire等40项功能结果保持；source05只把typed Opening/Result临时值放独立noinline帧，修复了旧资格默认栈的真实失败，不提额、不删断言。原6+新2默认门、当前CLI3、真实normal角色30+30／原票冷恢复／完整Engine参考、两profile全部原槽表地址均通过。输入Reader length65536但实际owned131238B，单列caller／metadata；内部工作区152464B与原slot3601880B合3754344B<=4MiB。全Store／角色授额／工具参考开销和未测边界见[实际证据](evidence/typed-opening-provider-20261026/STATUS.md)。原目标和父120未来provider范围保留；149另排队复现。
 
 #137与#150已按原完整有限合同回填并实际关闭，父120仍开放；见v199关闭回执。该结论不覆盖独立149的pending目标/normal额度满新组合，后者仅源码报告待实测。
+
+### #134 当前收入/实际返程接线增量（2026-10-26，完整合同未闭合）
+
+公服工资只以同Prepared中实际现金支付的增量进入原PaidWageWindow，不能以应计、保护款或预测替代收入。来源身份分开，Payroll/设施/公服共用一个窗口；原JournalRecord可选income_context保存完整窗口来源，公服恢复沿原票核验。任务回收保留有界实际已付摘要、最近31日劳动资格与费用成本；更早未保留细节标未知，满表背压新接纳，不影响原欠薪付款。
+
+物理整备已完成与财务已结清分开：Settlement释放已经合法结束的原资源和成员占用，不再新增人时；欠薪仍留原任务，原雇主实际补款按付款日入桶。现场Police资格与当前Driver驾驶资格独立；同车原班组内合格成员交接不产生新人或假到达。全体原车内Driver均过期时须保留原位置/占用/费用和返程责任，实际到车接替能力具体挂#74，不能靠延长资格时窗、取消、预计返程或“等待正确”关闭#134。原已交付fleet_crew候选不是实际到车provider。
+
+当前公服审计候选格式迁移未验，原完整源/固定程序/World继续保留；不能为使旧摘要通过而补造没有的驾驶员、现金或历史。有限已通过场景、共享回归、原角色资源与完整业务验收分开报告，见 `evidence/service-delivery-runtime-20261026/STATUS.md`。

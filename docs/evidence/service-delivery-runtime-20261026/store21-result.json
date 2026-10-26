@@ -1,0 +1,11 @@
+{
+  "command": [
+    "/Users/frankqin/dev/MyCity/work/service-delivery-runtime-20261026/source21-service_delivery_store-fixed",
+    "--test-threads=1",
+    "--nocapture"
+  ],
+  "source": "source21-manifest.json",
+  "exit_code": 0,
+  "elapsed_seconds": 330.867629708,
+  "finished_at": "2026-10-26T07:54:24.724392+00:00"
+}
