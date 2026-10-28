@@ -1,0 +1,200 @@
+{
+  "schema": "mycity-finite-city-asset-joint-v1",
+  "issue": 21,
+  "baseline": "v0.5.218 f21efedeb37f03c59858a04e1314a79c22d72f8a",
+  "release": "v0.5.219",
+  "verification_window": {
+    "start": "2026-10-28T15:39:26.153767+00:00",
+    "end": "2026-10-28T15:59:21.333240+00:00",
+    "meaning": "validation window not development duration"
+  },
+  "production_code_changed": false,
+  "core": {
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/finite-city-asset-intake-20261029/joint05-city-core-finite_city_asset-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit": 0,
+    "seconds": 2.217815042
+  },
+  "store": {
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/finite-city-asset-intake-20261029/store03-city-storage-finite_city_asset_store-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit": 0,
+    "program_sha256": "06535217e1ff535222cfc918dcb568844fe4ab2210fce454ada1546714847c19",
+    "seconds": 12.068713792
+  },
+  "cold_processes": [
+    {
+      "file": "asset-close-joint-66826-1793202915873042000/closed-checkpoint-replay-cold-result.json",
+      "result": {
+        "exit": 0,
+        "pid": 66851,
+        "seconds": 0.837468833
+      }
+    },
+    {
+      "file": "asset-close-joint-66826-1793202915873042000/closed-day2-replay-cold-result.json",
+      "result": {
+        "exit": 0,
+        "pid": 66852,
+        "seconds": 0.827731916
+      }
+    },
+    {
+      "file": "asset-close-joint-66826-1793202915873042000/withdrawal-day1-cold-result.json",
+      "result": {
+        "exit": 0,
+        "pid": 66837,
+        "seconds": 0.643317958
+      }
+    },
+    {
+      "file": "asset-joint-66826-1793202910027317000/checkpoint-day2-cold-result.json",
+      "result": {
+        "exit": 0,
+        "pid": 66835,
+        "seconds": 0.805800959
+      }
+    },
+    {
+      "file": "asset-joint-66826-1793202910027317000/commission-replay-cold-result.json",
+      "result": {
+        "exit": 0,
+        "pid": 66833,
+        "seconds": 0.557926083
+      }
+    },
+    {
+      "file": "asset-joint-66826-1793202910027317000/wal-day1-cold-result.json",
+      "result": {
+        "exit": 0,
+        "pid": 66834,
+        "seconds": 0.597430791
+      }
+    }
+  ],
+  "normal_asset": [
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/finite-city-asset-intake-20261029/role02-city-headless-finite_city_role-fixed",
+        "--exact",
+        "actual_asset_and_payroll_and_service_keep_original_normal_role_budget",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "source": "role02-source-manifest.json",
+      "program_sha256": "679cc79ac32cb077a9de46104aaa1b8a20ed0e4a4811b13e179b94e951c25d1c",
+      "exit": 0,
+      "seconds": 11.470657375,
+      "summaries": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ]
+    }
+  ],
+  "resources": {
+    "arena_used_observed_max": 55798488,
+    "engine_owned_bytes": 3690456,
+    "not_native_16gb_speed_or_m0_acceptance": true,
+    "pool": {
+      "available_touched_bytes": 67108864,
+      "capacity_bytes": 67108864,
+      "fill_acknowledgements": 0,
+      "granted_capacity_bytes": 0,
+      "grants": 0,
+      "maximum_prepare_to_fill_or_reap_ns": 556484792,
+      "rejected_requests": 0,
+      "returns": 0,
+      "scans": 14,
+      "workspace_capacity_bytes": 0,
+      "workspace_fills": 2,
+      "workspace_grants": 2,
+      "workspace_returns": 2
+    },
+    "reference_and_creator_outside_shipping_role": true,
+    "store_owned_bytes": 42008795
+  },
+  "reuse": {
+    "baseline": "v0.5.218",
+    "tracked_build_files_checked": 497,
+    "tracked_changed": [
+      "crates/city-headless/tests/finite_city_role.rs"
+    ],
+    "production_changed": false,
+    "preserved_wip_count": 24,
+    "wip_changed": []
+  },
+  "business_closed": 0,
+  "historical_closed": 0,
+  "defects_closed": 0,
+  "whole_source_packages_retired": 0,
+  "whole_source_packages_remaining": 18,
+  "pr": "none; direct main integration",
+  "unverified": [
+    "full21/115/JPROD",
+    "geometry and resident identity of aggregate contractor seconds",
+    "Resource81 gate on Town recipe",
+    "Town quote replaced by actual road proof",
+    "native total footprint and actual16GB",
+    "sustainable game speed/fullM0 long run/GPU/Windows/UI"
+  ],
+  "evidence_root": "/Volumes/HP P900/dev/MyCity/work/finite-city-asset-intake-20261029",
+  "disk_budget_bytes": 2147483648,
+  "retention": "all source/program/failure/WAL/checkpoint originals retained; shared target retained for next check",
+  "normal_old_original": [
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/finite-city-asset-intake-20261029/role02-city-headless-finite_city_role-fixed",
+        "--exact",
+        "actual_boot_service_and_town_normal_role_keep_original_resource_budget",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "source": "role02-source-manifest.json",
+      "program_sha256": "679cc79ac32cb077a9de46104aaa1b8a20ed0e4a4811b13e179b94e951c25d1c",
+      "exit": 0,
+      "seconds": 8.985837042,
+      "summaries": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ]
+    }
+  ],
+  "normal_old_actual_members": [
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/finite-city-asset-intake-20261029/role02-city-headless-finite_city_role-fixed",
+        "--exact",
+        "actual_payroll_members_and_public_service_keep_original_normal_role_budget",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "source": "role02-source-manifest.json",
+      "program_sha256": "679cc79ac32cb077a9de46104aaa1b8a20ed0e4a4811b13e179b94e951c25d1c",
+      "exit": 0,
+      "seconds": 9.998754,
+      "summaries": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ]
+    }
+  ],
+  "disk_logical_bytes": 622352705
+}

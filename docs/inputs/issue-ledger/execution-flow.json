@@ -1,9 +1,9 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-28T15:26:05.462136+00:00",
-  "source_head": "v0.5.217 bf0a9d40f532410f9315e16adc17ff189e4f9082",
-  "candidate": "155/156 accepted, published, closed/read back; no active coding; next consume existing151 into21",
+  "last_snapshot_at": "2026-10-28T15:59:21.333240+00:00",
+  "source_head": "v0.5.219 finite joint tests; production unchanged fromv217/218",
+  "candidate": "21 finite asset/common city accepted; full21 remains open",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
   "limits": {
     "shared_core_lanes": 1,
@@ -871,13 +871,12 @@
     "note": "inspect exact current provider before choosing next seam; no batch module dispatch, no new grant or inferred cost from observations"
   },
   "latest_finite_increment": {
-    "issues": [
-      155,
-      156
-    ],
-    "release": "v0.5.217",
-    "status": "finite contracts closed; broad parents open",
-    "evidence": "docs/evidence/payroll-members-runtime-20261028/closure.json"
+    "issue": 21,
+    "release": "v0.5.219",
+    "state": "verified frozen; parent open",
+    "evidence": "docs/evidence/finite-city-asset-intake-20261029/STATUS.md",
+    "production_changed": false,
+    "business_close_delta": 0
   },
   "latest_active_evidence": null,
   "near_term_objective": "Close #151 original finite contract, then accept one sustainable finite-city business loop using existing integrated deliveries; no batch source-only models",
@@ -902,11 +901,11 @@
   },
   "next_finite_city": {
     "issue": 21,
-    "owner": "root; no new dispatch",
-    "scope": "consume existing accepted151 actual asset daily costs in common city scene, not whole asset domain",
+    "owner": "root; not dispatched",
+    "scope": "consume existing road/operating proof into same common input so actual accessibility changes sales/cost",
     "dependencies": [
-      "v217 actual Payroll/public-service/common Store scene",
-      "v213/214 accepted finite asset-capital contract"
+      "existing accepted road Town proof",
+      "v219 common asset/Payroll/Boot/service scene"
     ],
     "write_authority": [],
     "no_new_model_batches": true
