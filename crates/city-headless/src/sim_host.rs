@@ -1114,7 +1114,7 @@ fn run_owned(
                 }
             }
             Command::RunDue => (|| -> Result<Value,String> {
-                if let Some(binding)=bound_request.as_ref(){execution_protocol::validate_supported_request(binding)?;}
+                let requested_quota=match bound_request.as_ref(){Some(binding)=>execution_protocol::validate_supported_request(binding)?,None=>None};
                 use crate::task_registry_directory::{self as directory, Route, Action as Selected};
                 let directory=directory::collect(&store,worker.has_active_execution());
                 match directory {
@@ -1122,7 +1122,7 @@ fn run_owned(
                     Ok(directory)=>{
                         let stamp=if let Some(binding)=bound_request.as_ref(){
                             let prepared=execution_protocol::Prepared::new(&store,worker,&directory)?.ok_or("task_current_route_not_ready")?;
-                            prepared.validate_binding(binding)?;let stamp=prepared.stamp();
+                            prepared.validate_binding(binding)?;let stamp=prepared.stamp(binding)?;
                             event(&mut writer,request.id,"bound_task_selected",stamp.clone())?;Some(stamp)
                         }else{None};
                         let report=directory.report().map_err(err);
@@ -1139,7 +1139,7 @@ fn run_owned(
                                     Route::Selected(Selected::Air(selected))=>{
                                         let job=selected.job();
                                         let mode=match selected.mode(){crate::required_dispatch::SelectionMode::RegistrySelected=>"registry_selected",crate::required_dispatch::SelectionMode::MandatoryFallback=>"mandatory_fallback"};
-                                        required(&mut store,worker,&mut codec,Required{id:request.id,job,quota:None,rules:&rules,diag:&mut diag,timings:&timings,selection:Some(&selected)},&mut writer,&mut reader,None).map(|mut v|{
+                                        required(&mut store,worker,&mut codec,Required{id:request.id,job,quota:requested_quota,rules:&rules,diag:&mut diag,timings:&timings,selection:Some(&selected)},&mut writer,&mut reader,None).map(|mut v|{
                                             v["dispatch"]=json!("required_registry_v1");v["dispatch_state"]=json!("completed");v["selection_mode"]=json!(mode);v["selected_job"]=json!(job);v
                                         })
                                     },

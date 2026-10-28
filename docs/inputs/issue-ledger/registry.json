@@ -1,7 +1,7 @@
 {
   "schema": "mycity-issue-ledger-v1",
   "date": "2026-10-26",
-  "release": "v0.5.209",
+  "release": "v0.5.210",
   "scope": "完整既定产品；v190有限业务132与缺陷148真实验收关闭，v191仅同步台账，UI单独延期",
   "coordination": "当前root唯一共享writer/串行验证；旧主会话停用",
   "states": [
@@ -2347,22 +2347,21 @@
       "stage": "开发中",
       "owner": "root 01a166fc-e444-7602-ad22-3a8551dda487",
       "write_authority": [
-        "crates/city-headless/src/sim_task_observation.rs",
+        "crates/city-headless/src/task_execution_protocol.rs",
         "crates/city-headless/src/sim_host.rs",
-        "crates/city-headless/tests/task_execution_observation.rs",
+        "crates/city-headless/tests/task_execution_protocol.rs",
         "docs/SOFTWARE_ARCHITECTURE.md",
         "docs/execution-current.md",
         "docs/core-task-dispatch-current.md",
         "docs/issue-execution-ledger.md",
         "docs/inputs/issue-ledger/execution-flow.json",
         "docs/inputs/issue-ledger/registry.json",
-        "crates/city-headless/src/task_execution_protocol.rs",
-        "crates/city-headless/src/sim_client.rs",
-        "crates/city-headless/tests/task_execution_protocol.rs",
         "README.md",
         "AUDIT_HANDOFF.md",
-        "docs/evidence/task-execution-protocol-20261026/STATUS.md",
-        "docs/evidence/task-execution-protocol-20261026/verification-summary.json"
+        "crates/city-headless/tests/task_execution_pages.rs",
+        "docs/handoffs/issue-102-exact-pages-test-preparation.md",
+        "docs/evidence/bound-air-pages-20261028/STATUS.md",
+        "docs/evidence/bound-air-pages-20261028/verification-summary.json"
       ],
       "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
       "required_capabilities": [
@@ -2371,13 +2370,12 @@
       "acceptance": [
         "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
       ],
-      "remaining": "common refinement/grant interfaces, actual scratch/residency/switch-cost sources and generic coverage;103/104 separate open contracts",
-      "evidence": "docs/evidence/task-execution-protocol-20261026/STATUS.md",
-      "implementation_tags": "v0.5.209 finite capability/bound-request+real-observer-fault increment; v208 report and v160-167 evidence retained; full102 open",
+      "remaining": "actual model refinement and extra-grant interfaces; scratch/residency/switch-cost sources and wider generic coverage;103/104 separate",
+      "evidence": "docs/evidence/bound-air-pages-20261028/STATUS.md",
+      "implementation_tags": "v210 finite exact-pages common request; v209 bound execution and earlier evidence retained; full102 open",
       "pr": "No PR; root direct integration",
-      "issue_body_sha256": "b6bc421f604b27c6a274265559baf499b9b6f75c2b5ae0a33877de40c1ab5ef8",
-      "execution_state": "finite-bound-request-stage-frozen:full102-open",
-      "issue_body_sync": "prepared; post-publication live readback required"
+      "issue_body_sha256": "3c126ecfa8d7be133b0399d6a2e05e0c39f4c50ee299a50a30f5e64866145fd7",
+      "execution_state": "finite-exact-pages-stage-frozen:full102-open"
     },
     {
       "issue": 103,

@@ -103,7 +103,10 @@ fn zero_width_none_is_legal_and_unsupported_requests_do_not_consume_the_original
     let mut b=original.clone();b.intent=TaskExecutionIntent::RequestRefinement{strategy:"detail".into(),strategy_version:1};reject(&mut c,&p,6,b,"refinement_unsupported");
     let mut b=original.clone();b.intent=TaskExecutionIntent::RequestResources{cpu_nanoseconds:Some(1),additional_bytes:Some(1)};reject(&mut c,&p,7,b,"resource_change_unresolved");
     let mut b=original.clone();b.execution=TaskExecutionLocation::AirWorker;reject(&mut c,&p,8,b,"execution_or_strategy_mismatch");
-    assert_eq!(d,describe(&mut c,&p,9));let e=run_bound_page(&mut c,&p,10,&d,&mut reference,"timeline");c.stop().unwrap();
+    let mut b=original.clone();b.intent=TaskExecutionIntent::ExecuteExactPages{plan_version:mycity_headless::air_turns::PLAN_VERSION,
+        quota:mycity_headless::air_turns::Quota{source_limit:1,cell_limit:17,pages:1}};
+    reject(&mut c,&p,9,b,"task_exact_pages_requires_air");
+    assert_eq!(d,describe(&mut c,&p,10));let e=run_bound_page(&mut c,&p,11,&d,&mut reference,"timeline");c.stop().unwrap();
     let mut s=Store::open(&world,&rules()).unwrap();assert_eq!(s.state_hash().unwrap(),reference.state_hash().unwrap());assert!(s.receipt(e.operation_id).unwrap().is_some());
     let mut old=d["request"].clone();old["grant_bytes"]=json!(2*1024*1024);assert!(serde_json::from_value::<BoundTaskRequest>(old).is_err());
 }

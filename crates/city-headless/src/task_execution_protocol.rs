@@ -7,7 +7,7 @@ use serde_json::{json,Value};
 use sha2::{Digest,Sha256};
 use super::task_observation::{serialize_clock,serialize_key};
 
-pub const VERSION:u16=1;
+pub const VERSION:u16=2;
 pub(super) const METADATA_PLAN_BYTES:usize=64*1024;
 const CANONICAL_CAP:usize=8*1024;
 const DESCRIPTION_CAP:usize=16*1024;
@@ -20,6 +20,8 @@ pub enum TaskExecutionLocation { AirWorker, SimTimeline, Gpu }
 #[serde(tag="kind",rename_all="snake_case",deny_unknown_fields)]
 pub enum TaskExecutionIntent {
     ExecuteOriginal,
+    /// Equivalent numerical work; only its original Air page boundary changes.
+    ExecuteExactPages { plan_version:u16, quota:crate::air_turns::Quota },
     RequestRefinement { strategy:String, strategy_version:u16 },
     RequestResources { cpu_nanoseconds:Option<u64>, additional_bytes:Option<u64> },
 }
@@ -81,10 +83,20 @@ struct Canonical<'a> {
     directory_policy_version:u32,execution:TaskExecutionLocation,strategy:&'static str,strategy_version:u16,plan:Plan,
 }
 
+#[derive(Serialize)]
+struct AcceptedExecution<'a> {
+    encoding:&'static str,
+    request:&'a BoundTaskRequest,
+}
+
 fn capabilities(execution:Option<TaskExecutionLocation>)->Value {
     let air=execution==Some(TaskExecutionLocation::AirWorker);
     json!({"version":VERSION,"supported_request":"execute_original_current_selection",
-        "gpu":"unsupported","refinement_request":"unsupported_in_this_common_interface_use_existing_explicit_air_control",
+        "exact_pages":if air {json!({"intent":"execute_exact_pages","plan":crate::air_turns::PLAN_ID,
+            "plan_version":crate::air_turns::PLAN_VERSION,"effect":"equivalent_execution_granularity_not_model_refinement",
+            "quota_bounds":{"source_limit":[1,8192],"cell_limit":[1,1024],"pages":[1,16]},
+            "continuation":"original_PageControl_ticket_turn_instance; no_automatic_Continue"})}else{Value::Null},
+        "gpu":"unsupported","refinement_request":"unsupported_model_change; exact_pages_is_equivalent_execution_only",
         "additional_resource_request":"unresolved_no_new_grant_or_shortage_claim",
         "air_wire":compute_worker::PROTOCOL,"control_frame_limit_bytes":compute_worker::CONTROL_BYTES,
         "candidate_transport_limit_bytes":air.then_some(mycity_core::air::CHECKPOINT_BYTES),
@@ -118,7 +130,7 @@ impl Prepared {
             },
         };
         let engine=store.engine().map_err(|e|format!("{e:?}"))?;
-        let canonical=Canonical {encoding:"mycity-bound-task-typed-json-v1",capability_version:VERSION,sim_protocol:super::PROTOCOL,source_sha256:env!("MYCITY_SOURCE_SHA256"),
+        let canonical=Canonical {encoding:"mycity-bound-task-typed-json-v2",capability_version:VERSION,sim_protocol:super::PROTOCOL,source_sha256:env!("MYCITY_SOURCE_SHA256"),
             application_instance:crate::heap_meter::clock_reading().instance_unix_ns.to_string(),worker:WorkerState{active:worker.has_active_execution(),owner_empty:worker.is_empty(),pid:worker.pid_opt()},
             scope:Scope{world_id:scope.world(),branch_id:scope.branch(),city_id:None},store_sequence:store.committed_sequence(),progress:engine.timeline().map(|t|t.progress),
             continuation:store.continuation_status().map_err(|e|format!("{e:?}"))?,source:Source::from_binding(entry.binding.as_ref().ok_or("task_source_unavailable")?),
@@ -134,22 +146,61 @@ impl Prepared {
         if request.execution!=self.request.execution||request.strategy!=self.request.strategy||request.strategy_version!=self.request.strategy_version{return Err("task_execution_or_strategy_mismatch".into());}
         if request.binding_sha256!=self.request.binding_sha256{return Err("task_binding_stale_recover_original_result".into());}Ok(())
     }
-    pub(super) fn stamp(&self)->Value {json!({"capability_version":VERSION,"binding_sha256":self.request.binding_sha256,"recovery":self.recovery,"meaning":"validated_selection_not_business_completion_or_resource_grant"})}
-    fn description(&self)->Value {json!({"schema":"mycity-task-execution-capabilities-v1","state":"ready","capabilities":capabilities(Some(self.request.execution)),
+    pub(super) fn stamp(&self,request:&BoundTaskRequest)->Result<Value,String> {
+        // The base Describe digest covers selection. This digest also covers the
+        // actual requested initial plan/quota; subsequent controls keep their
+        // original ticket/turn/instance authority rather than rewriting it.
+        let accepted=AcceptedExecution{encoding:"mycity-accepted-task-execution-v1",request};
+        let bytes=serde_json::to_vec(&accepted).map_err(|e|e.to_string())?;
+        let digest:[u8;32]=Sha256::digest(&bytes).into();
+        Ok(json!({"capability_version":VERSION,"binding_sha256":self.request.binding_sha256,
+            "accepted_execution_sha256":digest,"accepted_execution_encoding":"mycity-accepted-task-execution-v1",
+            "initial_intent":request.intent,"recovery":self.recovery,"meaning":"validated_selection_not_business_completion_or_resource_grant"}))
+    }
+    fn description(&self)->Value {json!({"schema":"mycity-task-execution-capabilities-v2","state":"ready","capabilities":capabilities(Some(self.request.execution)),
         "selection":self.canonical,"selection_is_business_admission":false,"request":self.request,"recovery":self.recovery})}
 }
-pub(super) fn validate_supported_request(request:&BoundTaskRequest)->Result<(),String> {
+pub(super) fn validate_supported_request(request:&BoundTaskRequest)->Result<Option<crate::air_turns::Quota>,String> {
     if request.capability_version!=VERSION{return Err("task_capability_version_unsupported".into());}
     if request.execution==TaskExecutionLocation::Gpu{return Err("task_gpu_unsupported_no_cpu_fallback".into());}
-    match request.intent {TaskExecutionIntent::ExecuteOriginal=>{},TaskExecutionIntent::RequestRefinement{..}=>return Err("task_refinement_unsupported_no_strategy_substitution".into()),
-        TaskExecutionIntent::RequestResources{..}=>return Err("task_resource_change_unresolved_no_grant_or_shortage_claim".into())}
-    if request.strategy.is_empty()||request.strategy.len()>64||!request.strategy.bytes().all(|b|b.is_ascii_graphic()){return Err("task_strategy_label".into());}Ok(())
+    if request.strategy.is_empty()||request.strategy.len()>64||!request.strategy.bytes().all(|b|b.is_ascii_graphic()){return Err("task_strategy_label".into());}
+    match request.intent {
+        TaskExecutionIntent::ExecuteOriginal=>Ok(None),
+        TaskExecutionIntent::ExecuteExactPages{plan_version,quota}=>{
+            if request.execution!=TaskExecutionLocation::AirWorker{return Err("task_exact_pages_requires_air".into());}
+            if plan_version!=crate::air_turns::PLAN_VERSION||quota.validate().is_err(){return Err("task_exact_pages_plan".into());}
+            Ok(Some(quota))
+        },
+        TaskExecutionIntent::RequestRefinement{..}=>Err("task_refinement_unsupported_no_strategy_substitution".into()),
+        TaskExecutionIntent::RequestResources{..}=>Err("task_resource_change_unresolved_no_grant_or_shortage_claim".into()),
+    }
 }
 pub(super) fn describe(store:&Store,worker:&Worker)->Result<Value,String> {
     let dir=directory::collect(store,worker.has_active_execution()).map_err(|e|e.to_string())?;
     let result=if let Some(prepared)=Prepared::new(store,worker,&dir)?{prepared.description()}else {
         let state=match dir.route(){Route::NoWork=>"no_work",Route::Busy=>"busy",Route::Blocked(_)=>"blocked",_=>unreachable!()};
-        json!({"schema":"mycity-task-execution-capabilities-v1","state":state,"capabilities":capabilities(None),"request":Value::Null,"required_preserved":true})
+        json!({"schema":"mycity-task-execution-capabilities-v2","state":state,"capabilities":capabilities(None),"request":Value::Null,"required_preserved":true})
     };
     if serde_json::to_vec(&result).map_err(|e|e.to_string())?.len()>DESCRIPTION_CAP{return Err("task_description_bound".into());}Ok(result)
+}
+
+#[cfg(test)]
+mod exact_request_binding_tests {
+    use super::*;
+    #[test]
+    fn accepted_digest_binds_every_initial_quota_field_without_changing_selection() {
+        // Encoding contract only, not evidence of a real owner or grant.
+        let request=BoundTaskRequest{capability_version:VERSION,binding_sha256:[7;32],execution:TaskExecutionLocation::AirWorker,
+            strategy:mycity_core::air::STRATEGY.into(),strategy_version:1,intent:TaskExecutionIntent::ExecuteOriginal};
+        let prepared=Prepared{request:request.clone(),canonical:Value::Null,recovery:Value::Null};
+        let original=prepared.stamp(&request).unwrap();let mut seen=vec![original["accepted_execution_sha256"].clone()];
+        for quota in [crate::air_turns::Quota{source_limit:1,cell_limit:17,pages:1},
+            crate::air_turns::Quota{source_limit:2,cell_limit:17,pages:1},crate::air_turns::Quota{source_limit:1,cell_limit:18,pages:1},
+            crate::air_turns::Quota{source_limit:1,cell_limit:17,pages:2}] {
+            let mut changed=request.clone();changed.intent=TaskExecutionIntent::ExecuteExactPages{plan_version:crate::air_turns::PLAN_VERSION,quota};
+            assert_eq!(validate_supported_request(&changed).unwrap(),Some(quota));let stamp=prepared.stamp(&changed).unwrap();
+            assert_eq!(stamp["binding_sha256"],original["binding_sha256"]);assert!(!seen.contains(&stamp["accepted_execution_sha256"]));
+            assert_eq!(stamp["initial_intent"],serde_json::to_value(&changed.intent).unwrap());seen.push(stamp["accepted_execution_sha256"].clone());
+        }
+    }
 }

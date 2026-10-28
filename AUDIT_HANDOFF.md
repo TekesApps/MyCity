@@ -1,3 +1,9 @@
+# Current MyCity audit entry: v0.5.210
+
+#102共同绑定入口已支持原Air精确页计划：[接口、26项结果、失败及复用依据](docs/evidence/bound-air-pages-20261028/STATUS.md)。它只改变等价执行粒度，不是模型近似或新授额。初始实际intent/plan/quota单独绑定执行摘要；后续Continue仍经原ticket/turn/instance。3项最终source03重验保留分会话日志及完整取消态，23项生产字节未变的source02回归按原固定程序复用。原票、normal角色及退休责任不变。
+
+完整102/103/104仍Open；root本阶段冻结0+0，无新业务关闭。全部初始/失败/最终源码/固定程序/World/WAL/checkpoint与24无关WIP保留在HP P900 work/bound-air-pages-20261028及work/bp102；事前768MiB盘估算在第三次固定程序/恢复原件保存前修订为1GiB，运行时和M0门不变。没有新worktree/target/timer。以下旧入口是固定版本历史。
+
 # Current MyCity audit entry: v0.5.209
 
 #102有限共同能力/绑定原任务请求与真实观察故障已接线并验证：[结果/接口/限制](docs/evidence/task-execution-protocol-20261026/STATUS.md)。固定source08，40父测试+3实际冷进程；完整102/103/104仍Open。原核心业务/Store未改，原134验收归v206/207；不从本轮推导完整M0、16GB/native或全产品性能通过。root唯一writer，本阶段冻结0+0、无新派工/PR。

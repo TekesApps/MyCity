@@ -1,12 +1,14 @@
 # MyCity软件总体架构
 
-架构汇总S57；初版v0.5.22，现按W1—W4及T13-A的实际实现更新。历史冻结证据仍归其原发布版本。本篇总结软件如何运行，不再按建筑或游戏功能列策划清单。[完整产品蓝图](PRODUCT_BLUEPRINT.md)说明产品目标，本篇说明模块、状态、事件、进程、提交、恢复及资源归属；细节继承[A55部署契约](process-worker-and-render-architecture.md)和各运行专题。
+架构汇总S58；初版v0.5.22，现按W1—W4及T13-A的实际实现更新。历史冻结证据仍归其原发布版本。本篇总结软件如何运行，不再按建筑或游戏功能列策划清单。[完整产品蓝图](PRODUCT_BLUEPRINT.md)说明产品目标，本篇说明模块、状态、事件、进程、提交、恢复及资源归属；细节继承[A55部署契约](process-worker-and-render-architecture.md)和各运行专题。
 
 标记约定：**已实现**是当前代码存在，**已实测**仅指相应冻结证据的有限范围；**设计**不是已经具备的能力。当前已有单个纯空气worker、独立Sim Host、有界宿主协议及Store接纳／恢复；通用worker池、完整市民／建筑系统、UI、AgentKit和渲染仍未实现。W1—W3各有冻结运行证据；W4正式联合工件、限制和独立结论按[联合运行专题](background-joint-runtime.md)单列，不转用旧测试或文档作通过。实际16GB与全城性能仍未验。
 
 T13-A的当前构造边界见[固定词法容量阶段](evidence/m0-t13a-fixed-lexical/STATUS.md)：Store实际消费core双root／prepare、空间及Meta工作区；v1／genesis／v2收据正文使用Meta保留1MiB bit栈和借用span，区分忽略与Content校验。固定解析不等于整个冷开零分配；当前broker仍只授予既有IO／worker包，完整角色控制暂态及其授权仍在[NEXT](evidence/m0-t13a-fixed-lexical/NEXT.md)，不能据组件构造证明normal64或共享诊断预算已通过。
 
 **v209已实现的共同请求边界：**`DescribeTaskExecution`只描述原Directory当前选择，`RunBoundTask`绑定版本化类型编码、scope/完整来源/sequence/Progress/Continuation/实例和原策略，执行前重算原路由，仍经原handler与Store/原Air接纳提交。预先披露原operation/Job用于不确定回复恢复，过期拒绝不能代替幂等查询。资源/细化/GPU当前明确unsupported/未解；传输8MiB、业务asset2MiB、control64KiB与授权分别表达，无第二writer/授额/退休权。40父测试及3冷进程的有限证据见[状态](evidence/task-execution-protocol-20261026/STATUS.md)，完整102/103/104未验收。
+
+**v210已接线的#102等价执行请求（有限验证）：**共同能力/选择编码v2增加`ExecuteExactPages{plan_version,quota}`，只对原Directory当前Air选择进入既有`required(quota Some)`，不替换模型策略。Describe基础摘要绑定原来源；接受时另以`mycity-accepted-task-execution-v1`类型编码绑定完整实际请求，包括初始intent、plan和三个quota字段。后续Continue保持原ticket/turn/instance授权，不改初始摘要。quota是等价执行分段参数，并非CPU时间/内存硬授权；原段尾整场积分仍可超过cell_limit，工作计数分开报告。旧capability1在副作用前拒绝；请求描述不持久化，不迁移存档，也不能把新Describe当未确认原执行的重试。真实模型Refinement、额外资源与GPU继续unsupported/未解。复用原writer/owner/票/退休；[26项实际结果及复用依据](evidence/bound-air-pages-20261028/STATUS.md)，完整102/103/104仍开放。
 
 ## 1. 一句话结构与当前部署
 

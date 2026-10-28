@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.209`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.210`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.210 接入[共同绑定的Air精确分页请求](docs/evidence/bound-air-pages-20261028/STATUS.md)：显式等价页计划复用原控制/票据/owner，初始实际quota有独立执行摘要。26项按版本对应的检查通过；完整#102/103/104仍开放。
 
 v0.5.209 接入[绑定原任务的共同能力/执行请求](docs/evidence/task-execution-protocol-20261026/STATUS.md)：40父测试与3实际冷恢复子进程通过，仍沿原handler、原票和资源owner。完整#102/103/104开放；未增加业务验收或M0/16GB结论。
 
