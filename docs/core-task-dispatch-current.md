@@ -1,6 +1,6 @@
 # MyCity 当前实际派工与交接
 
-**当前v0.5.222回执同步（游戏/验证v221，0+0）：**#21实际道路分配→共同城市经营/资产日结，以及#157两处原票兼容已通过受影响/shared/default/normal/冷恢复。#157已实际回填关闭，完整21/117/115开放；[唯一当前事实](execution-current.md)及[结果](evidence/finite-city-road-intake-20261029/STATUS.md)。无新增业务关闭/历史补关，完整交付包18不机械核销，下一先核原供给/到期责任跨耗尽消费者，不新写模型。
+**当前v0.5.223，root0接线＋0活动准备，下一补货独立预期已冻结：**同一共同城市4日耗尽、工资结束、税/未来租金责任/折旧及冷恢复、原Sim资源门已实测；生产代码不变，本阶段无新关闭业务/历史/缺陷，完整18包不机械核销。下一只复用原Boot成功后Idle的真实Generator批次补货，先核Town已消费后的basis/原票，不造#144→Boot桥。[当前事实](execution-current.md)与[结果](evidence/finite-city-depletion-20261029/STATUS.md)。
 
 <details><summary>此前执行快照，仅对标明版本有效</summary>
 

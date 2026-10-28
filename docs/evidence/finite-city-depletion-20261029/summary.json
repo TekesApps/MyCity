@@ -1,0 +1,903 @@
+{
+  "schema": "mycity-finite-city-depletion-v1",
+  "issue": 21,
+  "baseline": "v0.5.222 8c1a997fbe2bb5b575f990d6c401198a6af98795",
+  "release": "v0.5.223",
+  "production_changed": false,
+  "verification_window": {
+    "start": "2026-10-28T16:36:41.171115+00:00",
+    "end": "2026-10-28T16:46:34.077216+00:00",
+    "meaning": "verification window, not development cycle"
+  },
+  "store": {
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/finite-city-depletion-20261029/store02-city-storage-finite_city_road-fixed",
+      "--exact",
+      "depleted_power_and_expired_payroll_keep_actual_costs_due_payments_and_restore",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit": 0,
+    "seconds": 7.682244,
+    "program_sha256": "37ad9192ea8236649576109ca78f476527d814e8adbb690e31b31888c1fa8fe7"
+  },
+  "two_cold_processes": [
+    {
+      "file": "depletion-80204-1793205672208369000/day3-cold-result.json",
+      "result": {
+        "exit": 0,
+        "seconds": 1.000260292
+      }
+    },
+    {
+      "file": "depletion-80204-1793205672208369000/day4-cold-result.json",
+      "result": {
+        "exit": 0,
+        "seconds": 1.035335125
+      }
+    }
+  ],
+  "normal_roles": [
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/finite-city-depletion-20261029/role01-city-headless-finite_city_role-fixed",
+        "--exact",
+        "actual_road_market_and_asset_city_keep_original_normal_role_budget",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "source": "role01-source-manifest.json",
+      "program_sha256": "e67ffd729bffca3bc483ab20734b8ed13526adb2880b430891d35c37361edbfd",
+      "exit": 0,
+      "seconds": 13.797338917,
+      "summaries": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/finite-city-depletion-20261029/role01-city-headless-finite_city_role-fixed",
+        "--exact",
+        "depleted_inputs_and_ended_payroll_keep_original_normal_role_budget",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "source": "role01-source-manifest.json",
+      "program_sha256": "e67ffd729bffca3bc483ab20734b8ed13526adb2880b430891d35c37361edbfd",
+      "exit": 0,
+      "seconds": 15.833733583000003,
+      "summaries": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ]
+    }
+  ],
+  "role_metrics": [
+    {
+      "case_index": 0,
+      "arena_used_observed_max": 55798488,
+      "engine_owned_bytes": 3690456,
+      "not_native_16gb_speed_or_m0_acceptance": true,
+      "pool": {
+        "available_touched_bytes": 67108864,
+        "capacity_bytes": 67108864,
+        "fill_acknowledgements": 0,
+        "granted_capacity_bytes": 0,
+        "grants": 0,
+        "maximum_prepare_to_fill_or_reap_ns": 740516875,
+        "rejected_requests": 0,
+        "returns": 0,
+        "scans": 14,
+        "workspace_capacity_bytes": 0,
+        "workspace_fills": 2,
+        "workspace_grants": 2,
+        "workspace_returns": 2
+      },
+      "reference_and_creator_outside_shipping_role": true,
+      "store_owned_bytes": 42008794
+    },
+    {
+      "case_index": 1,
+      "arena_used_observed_max": 55798488,
+      "engine_owned_bytes": 3690456,
+      "not_native_16gb_speed_or_m0_acceptance": true,
+      "pool": {
+        "available_touched_bytes": 67108864,
+        "capacity_bytes": 67108864,
+        "fill_acknowledgements": 0,
+        "granted_capacity_bytes": 0,
+        "grants": 0,
+        "maximum_prepare_to_fill_or_reap_ns": 849178083,
+        "rejected_requests": 0,
+        "returns": 0,
+        "scans": 18,
+        "workspace_capacity_bytes": 0,
+        "workspace_fills": 2,
+        "workspace_grants": 2,
+        "workspace_returns": 2
+      },
+      "reference_and_creator_outside_shipping_role": true,
+      "store_owned_bytes": 42008794
+    }
+  ],
+  "reuse": {
+    "baseline": "v222; current game v221",
+    "tracked_build_inputs": 502,
+    "changed": [
+      "crates/city-headless/tests/finite_city_role.rs",
+      "crates/city-storage/tests/finite_city_road.rs"
+    ],
+    "production_changed": false,
+    "previous_shipping_executable_sha256": "8b2a33143f95f4342844623f5c6af2788882e68ca7ed33e49c5abadce54dca11",
+    "current_shipping_executable_sha256": "19b8882de8c8e88103ae158931950da719784f2d97cd284959b1faaa84f287fd",
+    "shipping_executable_identical": false,
+    "preserved_wip": 24,
+    "wip_changed": []
+  },
+  "final_build_files_matched": 503,
+  "day3": {
+    "capital": {
+      "basis": 28916,
+      "charge_operation": 100,
+      "charged": 916,
+      "charged_at": 259200,
+      "charged_retirement_cost": 0,
+      "charged_subsequent_expense": 0,
+      "commission_operation": 41,
+      "commissioned_at": 61200,
+      "last_change_operation": 100,
+      "retired_at": null,
+      "retirement_cost": 0,
+      "retirement_operation": 0,
+      "stop_operation": 0,
+      "stopped_at": null,
+      "subsequent_expense": 0
+    },
+    "cash_total": 3100000,
+    "company_cash": 72867,
+    "payroll": [
+      84900,
+      235,
+      3000
+    ],
+    "retained": 473,
+    "sales": 68,
+    "stock_basis": [
+      [
+        15,
+        638
+      ],
+      [
+        16,
+        0
+      ]
+    ],
+    "stocks": [
+      [
+        15,
+        638
+      ],
+      [
+        16,
+        0
+      ],
+      [
+        3002,
+        0
+      ],
+      [
+        3003,
+        522000
+      ]
+    ],
+    "summary": {
+      "actual_sales": 68,
+      "day": 3,
+      "disposal": 0,
+      "freight": 476,
+      "goods_payments": 680,
+      "idle_labor_expense": 26,
+      "labor_basis": 54,
+      "market_demand": 100,
+      "operation_id": 100,
+      "produced": 68,
+      "reference_need": 100,
+      "unmet_market_demand": 32,
+      "utilities": 68,
+      "wages_accrued": 80,
+      "waste": 0
+    },
+    "tax": 472
+  },
+  "day4": {
+    "capital": {
+      "basis": 28916,
+      "charge_operation": 125,
+      "charged": 1200,
+      "charged_at": 345600,
+      "charged_retirement_cost": 0,
+      "charged_subsequent_expense": 0,
+      "commission_operation": 41,
+      "commissioned_at": 61200,
+      "last_change_operation": 125,
+      "retired_at": null,
+      "retirement_cost": 0,
+      "retirement_operation": 0,
+      "stop_operation": 0,
+      "stopped_at": null,
+      "subsequent_expense": 0
+    },
+    "cash_total": 3100000,
+    "company_cash": 72835,
+    "payroll": [
+      84900,
+      235,
+      3000
+    ],
+    "retained": 189,
+    "sales": 0,
+    "stock_basis": [
+      [
+        15,
+        638
+      ],
+      [
+        16,
+        0
+      ]
+    ],
+    "stocks": [
+      [
+        15,
+        638
+      ],
+      [
+        16,
+        0
+      ],
+      [
+        3002,
+        0
+      ],
+      [
+        3003,
+        522000
+      ]
+    ],
+    "summary": {
+      "actual_sales": 0,
+      "day": 4,
+      "disposal": 0,
+      "freight": 0,
+      "goods_payments": 0,
+      "idle_labor_expense": 0,
+      "labor_basis": 0,
+      "market_demand": 0,
+      "operation_id": 125,
+      "produced": 0,
+      "reference_need": 100,
+      "unmet_market_demand": 0,
+      "utilities": 0,
+      "wages_accrued": 0,
+      "waste": 0
+    },
+    "tax": 472
+  },
+  "day4_responsibilities": {
+    "claims": [
+      {
+        "due": 2678400,
+        "id": 901,
+        "paid": 0,
+        "payee": 1,
+        "payer": 2,
+        "principal": 1000,
+        "processed": false,
+        "source_ref": 1
+      },
+      {
+        "due": 172800,
+        "id": 902,
+        "paid": 280,
+        "payee": 1,
+        "payer": 7,
+        "principal": 280,
+        "processed": true,
+        "source_ref": 2
+      },
+      {
+        "due": 259200,
+        "id": 903,
+        "paid": 160,
+        "payee": 1,
+        "payer": 7,
+        "principal": 160,
+        "processed": true,
+        "source_ref": 3
+      },
+      {
+        "due": 345600,
+        "id": 904,
+        "paid": 32,
+        "payee": 1,
+        "payer": 7,
+        "principal": 32,
+        "processed": true,
+        "source_ref": 4
+      }
+    ],
+    "payroll": {
+      "accrued": 235,
+      "billed": 235,
+      "last_accrual": 345600,
+      "next_due": null,
+      "occurrences": 3,
+      "paid": 235,
+      "pending_cycle": null,
+      "remainder": 3000,
+      "spec": {
+        "cycle": {
+          "kind": "daily"
+        },
+        "ends_at": 259200,
+        "home_city": 0,
+        "hourly_cents": 10,
+        "id": 21,
+        "payee": 2,
+        "payer": 7
+      },
+      "started": 0,
+      "work_seconds": 84900,
+      "working": false
+    },
+    "service": {
+      "city_id": 1,
+      "covered_through": 345600,
+      "delivery": {
+        "closed_to_new": false,
+        "covered_through": 345600,
+        "tasks": [
+          {
+            "accepted_at": 28800,
+            "accepted_root": [
+              115,
+              136,
+              109,
+              156,
+              20,
+              91,
+              122,
+              187,
+              218,
+              82,
+              226,
+              29,
+              194,
+              21,
+              95,
+              228,
+              225,
+              176,
+              149,
+              2,
+              255,
+              230,
+              245,
+              188,
+              77,
+              170,
+              99,
+              134,
+              96,
+              1,
+              14,
+              187
+            ],
+            "accepted_world_revision": 21,
+            "accrued_cents": 2000,
+            "arrival_at": 29400,
+            "assignment": {
+              "funding_source": [
+                115,
+                136,
+                109,
+                156,
+                20,
+                91,
+                122,
+                187,
+                218,
+                82,
+                226,
+                29,
+                194,
+                21,
+                95,
+                228,
+                225,
+                176,
+                149,
+                2,
+                255,
+                230,
+                245,
+                188,
+                77,
+                170,
+                99,
+                134,
+                96,
+                1,
+                14,
+                187
+              ],
+              "inputs_source": [
+                115,
+                136,
+                109,
+                156,
+                20,
+                91,
+                122,
+                187,
+                218,
+                82,
+                226,
+                29,
+                194,
+                21,
+                95,
+                228,
+                225,
+                176,
+                149,
+                2,
+                255,
+                230,
+                245,
+                188,
+                77,
+                170,
+                99,
+                134,
+                96,
+                1,
+                14,
+                187
+              ],
+              "lease_tokens": [
+                6,
+                7,
+                8
+              ],
+              "member_activity": 1,
+              "origin_place": 101,
+              "protected_until": 43200,
+              "return_source": [
+                115,
+                136,
+                109,
+                156,
+                20,
+                91,
+                122,
+                187,
+                218,
+                82,
+                226,
+                29,
+                194,
+                21,
+                95,
+                228,
+                225,
+                176,
+                149,
+                2,
+                255,
+                230,
+                245,
+                188,
+                77,
+                170,
+                99,
+                134,
+                96,
+                1,
+                14,
+                187
+              ],
+              "route_version": 1,
+              "target_place": 102
+            },
+            "cancelled": false,
+            "crew_id": 1,
+            "deadline": {
+              "arrival": 29400,
+              "at": 115200,
+              "operation_id": 57,
+              "work_seconds": 3600
+            },
+            "delivery_id": 1,
+            "departure_at": 29100,
+            "energy_carry": {
+              "denominator": 3600,
+              "numerator": 100000,
+              "remainder": 0
+            },
+            "energy_mwh": 100000,
+            "fee_carry": {
+              "denominator": 3600,
+              "numerator": 1200,
+              "remainder": 0
+            },
+            "last_host_event": 5,
+            "last_operation": 57,
+            "last_work_sources": [
+              [
+                173,
+                113,
+                21,
+                240,
+                140,
+                243,
+                62,
+                114,
+                31,
+                54,
+                100,
+                135,
+                139,
+                27,
+                194,
+                156,
+                251,
+                62,
+                184,
+                121,
+                163,
+                214,
+                243,
+                105,
+                137,
+                177,
+                255,
+                77,
+                239,
+                162,
+                157,
+                239
+              ],
+              [
+                173,
+                113,
+                21,
+                240,
+                140,
+                243,
+                62,
+                114,
+                31,
+                54,
+                100,
+                135,
+                139,
+                27,
+                194,
+                156,
+                251,
+                62,
+                184,
+                121,
+                163,
+                214,
+                243,
+                105,
+                137,
+                177,
+                255,
+                77,
+                239,
+                162,
+                157,
+                239
+              ],
+              [
+                173,
+                113,
+                21,
+                240,
+                140,
+                243,
+                62,
+                114,
+                31,
+                54,
+                100,
+                135,
+                139,
+                27,
+                194,
+                156,
+                251,
+                62,
+                184,
+                121,
+                163,
+                214,
+                243,
+                105,
+                137,
+                177,
+                255,
+                77,
+                239,
+                162,
+                157,
+                239
+              ]
+            ],
+            "need": {
+              "city_id": 1,
+              "generation": 1,
+              "household_id": 7,
+              "household_source": 7001,
+              "kind": "Police",
+              "occurrence_day": 0,
+              "scope": {
+                "branch": 1,
+                "world": 1
+              }
+            },
+            "onsite_end": 33000,
+            "origins": {
+              "accepted": 21,
+              "arrived": 25,
+              "cancelled": 0,
+              "closed": 30,
+              "departed": 23,
+              "last_work": 27,
+              "need": 20,
+              "reset": 30,
+              "return_started": 27,
+              "returned": 29
+            },
+            "phase": "Closed",
+            "position": 101,
+            "reset_at": 33900,
+            "return_at": 33000,
+            "returned_at": 33300,
+            "revision": 10,
+            "water_carry": {
+              "denominator": 3600,
+              "numerator": 10000,
+              "remainder": 0
+            },
+            "water_ml": 10000,
+            "work_cursor": 33000,
+            "work_seconds": 3600
+          }
+        ],
+        "trips": [
+          {
+            "blocked": false,
+            "crew": 1,
+            "current_edge": null,
+            "cursor": 33900,
+            "delivery": 1,
+            "drive_energy_mwh": 30000,
+            "driver": 0,
+            "duty_started": 28800,
+            "edge_seconds": 0,
+            "edge_token": null,
+            "energy_basis_cents": 235,
+            "fee_paid": 2000,
+            "fee_protected": 0,
+            "household": 7,
+            "last_operation": 30,
+            "motion": "Finished",
+            "need_generated_operation": 20,
+            "path_index": 2,
+            "route_revision": 1,
+            "stock_energy_reserved": 0,
+            "stock_water_reserved": 0,
+            "wage_carry": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "wage_protected": 0,
+            "wages_due": [
+              1700,
+              1700,
+              0,
+              0
+            ],
+            "wages_paid": [
+              1700,
+              1700,
+              0,
+              0
+            ],
+            "water_basis_cents": 4
+          }
+        ],
+        "version": 3
+      },
+      "fingerprint": [
+        59,
+        86,
+        196,
+        82,
+        222,
+        162,
+        72,
+        131,
+        234,
+        78,
+        55,
+        46,
+        12,
+        37,
+        199,
+        116,
+        231,
+        85,
+        56,
+        41,
+        224,
+        201,
+        33,
+        248,
+        151,
+        146,
+        229,
+        234,
+        191,
+        151,
+        145,
+        36
+      ],
+      "households": [
+        {
+          "chain": [
+            90,
+            177,
+            232,
+            221,
+            209,
+            180,
+            240,
+            44,
+            232,
+            29,
+            245,
+            53,
+            6,
+            222,
+            9,
+            181,
+            112,
+            250,
+            178,
+            115,
+            98,
+            109,
+            246,
+            122,
+            145,
+            200,
+            95,
+            86,
+            132,
+            238,
+            150,
+            180
+          ],
+          "current": [
+            {
+              "deadline_day": 0,
+              "delivery_ref": 0,
+              "flags": 0,
+              "occurrence_day": 0
+            },
+            {
+              "deadline_day": 1,
+              "delivery_ref": 1,
+              "flags": 2,
+              "occurrence_day": 0
+            },
+            {
+              "deadline_day": 0,
+              "delivery_ref": 0,
+              "flags": 0,
+              "occurrence_day": 0
+            }
+          ],
+          "deadline_operations": [
+            0,
+            57,
+            0
+          ],
+          "entry": {
+            "at": 0,
+            "operation_id": 2
+          },
+          "generated_operations": [
+            0,
+            20,
+            0
+          ],
+          "household_id": 7,
+          "last_operation": 57,
+          "latest_deadlines": [
+            null,
+            {
+              "deadline_day": 1,
+              "occurrence_day": 0,
+              "operation_id": 57
+            },
+            null
+          ],
+          "next_days": [
+            59,
+            180,
+            31
+          ],
+          "summaries": [
+            {
+              "expired": 0,
+              "generated": 0,
+              "reminders": 0
+            },
+            {
+              "expired": 1,
+              "generated": 1,
+              "reminders": 0
+            },
+            {
+              "expired": 0,
+              "generated": 0,
+              "reminders": 0
+            }
+          ]
+        }
+      ],
+      "pending": null,
+      "version": 2
+    }
+  },
+  "disk_logical_bytes": 524186763,
+  "disk_budget_bytes": 1073741824,
+  "business_closed": 0,
+  "historical_backfill_closed": 0,
+  "defects_closed": 0,
+  "whole_source_packages_retired": 0,
+  "whole_source_packages_remaining": 18,
+  "parents_open": [
+    21,
+    117,
+    115
+  ],
+  "reliable_development_start": "unknown; not issue or tag time",
+  "pr": "none; direct main",
+  "evidence_root": "/Volumes/HP P900/dev/MyCity/work/finite-city-depletion-20261029",
+  "retention": "all source/program/World/WAL/checkpoint/proof/receipts preserved; same target retained for next check",
+  "unverified": [
+    "ongoing refuel/production/re-employment capability in this common input",
+    "low-cash wages or tax arrears combined with this case",
+    "rent actual31DAY/new natural needs outside4DAY",
+    "long term self-supply/full21/115",
+    "actual16GB/native total memory/product capacity/speed/fullM0 long-run/GPU/UI/Windows"
+  ]
+}

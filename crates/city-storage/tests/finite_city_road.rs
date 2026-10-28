@@ -29,3 +29,75 @@ fn cold(p:&Path,s:Store,operation:u64,label:&str){let input=p.join(format!("{lab
  let reference=s.engine().unwrap().world().view().town.unwrap().state.last_transport.unwrap();let h=reference.issued_proof_sha256.iter().map(|b|format!("{b:02x}")).collect::<String>();let proof:TransportProofAsset=serde_json::from_slice(&fs::read(p.join("world").join(format!("town-proof-{h}.json"))).unwrap()).unwrap();assert_eq!(proof.service_day,day);assert!(proof.assignment.matches(&proof.opening));for source in[101,102]{let expected=if matches!(scenario,fixture::Scenario::DoorCannotEnter)&&source==101{4}else{served};assert_eq!(proof.assignment.demand_outcomes.iter().find(|d|d.source_id==source).unwrap().served_people,expected);}
  fs::write(p.join(format!("day{day}-facts.json")),serde_json::to_vec_pretty(&f).unwrap()).unwrap();let hash=s.state_hash().unwrap();let seq=s.committed_sequence();assert!(s.settle_town_market(operation).unwrap().model.is_ok());assert_eq!(s.state_hash().unwrap(),hash);assert_eq!(s.committed_sequence(),seq);if day==2{s.checkpoint().unwrap();}cold(&p,s,operation,&format!("day{day}"));s=Store::open(&p.join("world"),RULES).unwrap();}
 }}
+
+/// Fixed opening endowments are finite. Exhaustion limits new output, while
+/// actual wages, inventory cost, tax and depreciation keep their own clocks.
+#[test]
+fn depleted_power_and_expired_payroll_keep_actual_costs_due_payments_and_restore() {
+    let (p, mut s) = create("depletion", fixture::Scenario::Open);
+    for (day, sales, freight, produced, cash, tax, retained, raw, electric, charged) in [
+        (1, 94, 658, 94, 71_955, 280, 281, 806, 168_000, 116),
+        (2, 100, 700, 100, 72_495, 440, 441, 706, 68_000, 516),
+        (3, 68, 476, 68, 72_867, 472, 473, 638, 0, 916),
+        (4, 0, 0, 0, 72_835, 472, 189, 638, 0, 1_200),
+    ] {
+        advance(&mut s, day * DAY);
+        let operation = s.committed_sequence() + 1;
+        assert!(s.settle_town_market(operation).unwrap().model.is_ok());
+        let f = facts(&s);
+        assert_eq!(f["sales"], json!(sales));
+        assert_eq!(f["summary"]["freight"], json!(freight));
+        assert_eq!(f["summary"]["produced"], json!(produced));
+        assert_eq!(f["company_cash"], json!(cash));
+        assert_eq!(f["tax"], json!(tax));
+        assert_eq!(f["retained"], json!(retained));
+        assert_eq!(f["stocks"], json!([[15, raw], [16, 0], [3002, electric], [3003, 522000]]));
+        assert_eq!(f["capital"]["basis"], json!(28_916));
+        assert_eq!(f["capital"]["charged"], json!(charged));
+        assert_eq!(f["cash_total"], json!(3_100_000));
+        if day >= 3 {
+            let e = s.engine().unwrap();
+            let t = e.timeline().unwrap();
+            let payroll = &t.payroll[0];
+            assert_eq!((payroll.work_seconds, payroll.paid.value(), payroll.remainder), (84_900, 235, 3_000));
+            assert!(!payroll.working);
+            assert_eq!(payroll.next_due, None);
+            assert_eq!((payroll.accrued.value(), payroll.billed.value()), (235, 235));
+            assert_eq!(f["summary"]["reference_need"], json!(100));
+            assert_eq!(f["summary"]["labor_basis"], json!(if day == 3 { 54 } else { 0 }));
+            assert_eq!(f["summary"]["idle_labor_expense"], json!(if day == 3 { 26 } else { 0 }));
+            let rent = t.claims.iter().find(|c| c.id == 901).unwrap();
+            assert_eq!((rent.due, rent.principal.value(), rent.paid.value(), rent.processed), (31 * DAY, 1000, 0, false));
+            let rent_source = t.rent_source_for_claim(rent).unwrap();
+            assert_eq!((rent_source.landlord, rent_source.tenant, rent_source.lease_id, rent_source.unit_id), (1, 2, 901, 71));
+            let taxes: Vec<_> = t.claims.iter().filter_map(|c| t.tax_source_for_claim(c).map(|source| (source, c))).collect();
+            assert_eq!(taxes.len(), 3);
+            assert_eq!(taxes.iter().map(|(_, c)| c.principal.value()).sum::<i64>(), 472);
+            assert_eq!(taxes.iter().map(|(_, c)| c.paid.value()).sum::<i64>(), if day == 3 { 440 } else { 472 });
+            for (period, assessed) in [(1, 280), (2, 160), (3, 32)] {
+                let (source, claim) = taxes.iter().find(|(source, _)| source.period == period).unwrap();
+                assert_eq!((source.company, source.policy_id, source.assessed.value()), (7, 21, assessed));
+                assert_eq!(claim.due, (period + 1) * DAY);
+            }
+            // There is still ample spendable cash in this fixed case. Every
+            // real claim due by this complete boundary must have been paid.
+            assert!(t.claims.iter().all(|c| c.due > day * DAY || c.paid == c.principal));
+            fs::write(p.join(format!("day{day}-responsibilities.json")), serde_json::to_vec_pretty(&json!({
+                "claims": t.claims,
+                "payroll": payroll,
+                "service": e.service_needs_summary(),
+            })).unwrap()).unwrap();
+        }
+        fs::write(p.join(format!("day{day}-facts.json")), serde_json::to_vec_pretty(&f).unwrap()).unwrap();
+        let hash = s.state_hash().unwrap();
+        let sequence = s.committed_sequence();
+        assert!(s.settle_town_market(operation).unwrap().model.is_ok());
+        assert_eq!(s.state_hash().unwrap(), hash);
+        assert_eq!(s.committed_sequence(), sequence);
+        if day >= 3 {
+            if day == 4 { s.checkpoint().unwrap(); }
+            cold(&p, s, operation, &format!("day{day}"));
+            s = Store::open(&p.join("world"), RULES).unwrap();
+        }
+    }
+}

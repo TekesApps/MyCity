@@ -1,8 +1,8 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-28T16:28:37.513936+00:00",
-  "source_head": "v0.5.221 2454b22f1de4d2b4740edc04677a595d1da4cf13",
+  "last_snapshot_at": "2026-10-28T16:36:41.171115+00:00",
+  "source_head": "v0.5.223 test-only4day; production unchanged fromv221",
   "candidate": "21 finite asset/common city accepted; full21 remains open",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
   "limits": {
@@ -854,16 +854,26 @@
       "deliverable": "source-derived lawful input/independent oracle/boundary and recovery expectations;unknown explicit",
       "canonical_code_write": false,
       "compile_test_authority": false
+    },
+    {
+      "issue": 21,
+      "owner": "/root/asset_cost_intake",
+      "scope": "existing Boot Generator refill after actual Town consumption, independent quantities/basis/cash",
+      "write_authority": [
+        "work/finite-city-refill-20261029/independent-expectations.md"
+      ],
+      "compile_test_authority": false,
+      "state": "completed frozen; preparation only"
     }
   ],
   "phase_result": {
     "business_accepted": 0,
     "historical_backfill": 0,
-    "defects_accepted": 1,
+    "defects_accepted": 0,
     "issue_closures_pending": false,
     "whole_packages_retired": 0,
-    "proof": "docs/evidence/finite-city-road-intake-20261029/STATUS.md",
-    "cycles": "unknown reliable start; verification window not development duration"
+    "proof": "docs/evidence/finite-city-depletion-20261029/STATUS.md",
+    "cycles": "unknown reliable start; not verification window"
   },
   "queued_next_102": {
     "owner": "root",
@@ -873,19 +883,23 @@
   },
   "latest_finite_increment": {
     "issue": 21,
-    "defect": 157,
-    "release": "v0.5.221",
-    "state": "verified frozen;157 actually closed; full parents open",
-    "evidence": "docs/evidence/finite-city-road-intake-20261029/STATUS.md",
+    "release": "v0.5.223",
+    "state": "verified frozen full parents open",
+    "evidence": "docs/evidence/finite-city-depletion-20261029/STATUS.md",
+    "production_changed": false,
     "business_close_delta": 0
   },
   "latest_active_evidence": null,
   "near_term_objective": "consume integrated deliveries into sustainable finite city;151/155 closed; next real road proof consumer, no new model batch",
   "next_acceptance_preparation": {
-    "state": "not dispatched",
-    "owner": "root judgment",
-    "scope": "finite common city across existing input exhaustion and actual mandatory obligations",
-    "write_authority": []
+    "issue": 21,
+    "owner": "/root/asset_cost_intake",
+    "scope": "existing Boot Generator refill after actual Town consumption, independent quantities/basis/cash",
+    "write_authority": [
+      "work/finite-city-refill-20261029/independent-expectations.md"
+    ],
+    "compile_test_authority": false,
+    "state": "completed frozen; preparation only"
   },
   "latest_completed_batch": {
     "business": [],
@@ -900,11 +914,12 @@
   },
   "next_finite_city": {
     "issue": 21,
-    "owner": "root; not dispatched",
-    "scope": "existing supply/due/operating sources across finite input exhaustion; actual stop/obligation continuation",
+    "owner": "root; not yet activated",
+    "scope": "existing same Boot generator repeat after consumed electric pool; actual in-flight/complete inputs and basis before next Town consumer",
     "dependencies": [
-      "v221 actual road proof/common city",
-      "existing supply/due authoritative providers"
+      "v223 open-road common city",
+      "existing Boot success→Idle/repeatGenerator",
+      "original fuel/cooling/fee and reserve gates"
     ],
     "write_authority": [],
     "no_new_model_batches": true
