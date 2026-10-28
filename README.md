@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.226`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.227`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.227 是[#159单资产维护来源/工资内核接线的进行中检查点](docs/evidence/maintenance-runtime-20261029/STATUS.md)，不是维护验收版本；来源与原候选/劳动专项通过，实际现场、停机、工料费用和Store恢复/normal仍待完成，159/36/117保持开放。
 
 v0.5.226 仅同步[#158实际关闭及父任务/执行台账](docs/evidence/boot-cost-partition-20261029/closure.json)，游戏源码和验证仍为v225；完整领域与真实硬件门未关闭。
 

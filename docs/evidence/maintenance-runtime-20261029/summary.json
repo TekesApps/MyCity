@@ -1,0 +1,185 @@
+{
+  "schema": "mycity-maintenance-sources-progress-v1",
+  "issue": 159,
+  "parent": 36,
+  "baseline": "v0.5.226 1938fa3ebd43714562653364d7c6522413a785ff",
+  "release": "v0.5.227 partial source/wage seam only",
+  "full_maintenance_accepted": false,
+  "verification_window": {
+    "start": "2026-10-28T18:24:04.032232+00:00",
+    "end": "2026-10-28T18:41:22.549661+00:00",
+    "meaning": "source preparation and actual validation, not full development cycle"
+  },
+  "first_attempt": [
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/maintenance-runtime-20261029/sources01-city-core-facility_operation-fixed",
+        "--exact",
+        "legacy_housing_header_stays_legal_before_the_original_wait_boundary",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit": 0,
+      "seconds": 0.819643708,
+      "program_sha256": "5d42e26392002bfa1a8be3f2cdd38c08d719551bdce271fc7862de6db86fb620",
+      "source": "sources01-source-manifest.json",
+      "summaries": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/maintenance-runtime-20261029/sources01-city-core-construction_engine-fixed",
+        "--exact",
+        "construction_action_and_journal_records_stay_inside_frozen_engine_budget",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit": 0,
+      "seconds": 0.6999140840000001,
+      "program_sha256": "b1f7e9e93e7d9c764345fd2a3a242448bc8ab4c8774ac1cd00ad353c0a903f13",
+      "source": "sources01-source-manifest.json",
+      "summaries": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/maintenance-runtime-20261029/sources01-city-core-maintenance_sources-fixed",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit": 101,
+      "seconds": 0.539195125,
+      "program_sha256": "9d2080f58bbbd6957a68416bf584ae655d5aac87c3e7ba64eb0c13e64c5fd087",
+      "source": "sources01-source-manifest.json",
+      "summaries": [
+        [
+          "FAILED",
+          "0",
+          "1",
+          "0"
+        ]
+      ]
+    }
+  ],
+  "final_and_remaining_tests": [
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/maintenance-runtime-20261029/sources02-city-core-maintenance_sources-fixed",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit": 0,
+      "seconds": 1.200492792,
+      "program_sha256": "0349f0398e5be881a6f1aaca3c54070bbcf80597203e5eae2cd09e39bd58ffcc",
+      "source": "sources02-source-manifest.json",
+      "summaries": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/maintenance-runtime-20261029/sources01-city-core-mycity_core-fixed",
+        "facility_work::tests::",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit": 0,
+      "seconds": 0.7013748340000001,
+      "program_sha256": "53c920c68427763408948ee4d06bbf6c4513d0cbf3b2da752a3100fb40c3c5d2",
+      "source": "sources01-source-manifest.json",
+      "summaries": [
+        [
+          "ok",
+          "19",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/maintenance-runtime-20261029/sources01-city-core-asset_maintenance-fixed",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit": 0,
+      "seconds": 0.474606458,
+      "program_sha256": "d0167ae03d71a30e30d5cbf8d1dcea1a13d52790312a65d13427a00d3ef79fb1",
+      "source": "sources01-source-manifest.json",
+      "summaries": [
+        [
+          "ok",
+          "10",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/maintenance-runtime-20261029/sources01-city-core-facility_operation-fixed",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit": 0,
+      "seconds": 4.202759707999999,
+      "program_sha256": "5d42e26392002bfa1a8be3f2cdd38c08d719551bdce271fc7862de6db86fb620",
+      "source": "sources01-source-manifest.json",
+      "summaries": [
+        [
+          "ok",
+          "13",
+          "0",
+          "0"
+        ]
+      ]
+    }
+  ],
+  "reuse_differences": [
+    "crates/city-core/tests/maintenance_sources.rs"
+  ],
+  "source_facts": [
+    "population/cash/stocks/household unchanged",
+    "new explicit first4 baseline35 preserves old Driver/Police",
+    "new profile limits valid_until30DAY20h covers actual commission61200+30DAY",
+    "operating_resource81 opening0; actual construction needed to publish2"
+  ],
+  "not_run": [
+    "real maintenance venue/Enter",
+    "temporary outage/restore capacity",
+    "actual maintenance material/labor/expense receipts",
+    "full shared regression",
+    "maintenance Store/WAL/checkpoint cold recovery",
+    "maintenance normal-role gate",
+    "actual16GB/native/long/GPU/UI"
+  ],
+  "phase_counts": {
+    "new_business_closed": 0,
+    "historical_backfill_closed": 0,
+    "defect_closed": 0,
+    "source_packages_before": 18,
+    "source_packages_after": 18,
+    "full_contract_delivery_cycle": "unknown"
+  },
+  "preserved_wip_count": 24,
+  "artifact_root": "/Volumes/HP P900/dev/MyCity/work/maintenance-runtime-20261029",
+  "disk_budget_bytes": 2147483648,
+  "logical_file_bytes": 162171353
+}

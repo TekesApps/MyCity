@@ -1,16 +1,30 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-28T18:10:47.541312+00:00",
-  "source_head": "v0.5.226 closure ledger; game v0.5.225 c65fb229654f9f313e8c5394d6472c43ad636c9c",
-  "candidate": "158 accepted/closed; next36 single asset maintenance real-source contract not yet activated",
+  "last_snapshot_at": "2026-10-28T18:38:43.196133+00:00",
+  "source_head": "v0.5.226 + scoped159 candidate sources01/02",
+  "candidate": "159 maintenance actual-source and work-kind bridge in progress; full authority pending",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
   "limits": {
     "shared_core_lanes": 1,
     "independent_preparations": 2,
     "reason_for_adjustment_required": true
   },
-  "active_shared_work": [],
+  "active_shared_work": [
+    {
+      "issue": 159,
+      "owner": "root",
+      "stage": "开发中",
+      "file_ownership": [
+        "crates/city-core/src/facility_work.rs",
+        "crates/city-core/src/facility_authority.rs provider reject new role only",
+        "crates/city-core/tests/maintenance_sources.rs",
+        "linked design/issue/evidence"
+      ],
+      "acceptance_card": "work/maintenance-runtime-20261029/execution-card.json",
+      "remaining": "actual venue, temporary outage, material/member/funds/P5/expense/Store/normal gate not yet wired"
+    }
+  ],
   "active_independent_preparations": [],
   "counting_rules": {
     "parents_are_not_active_work": true,
@@ -1007,9 +1021,9 @@
     "evidence": "docs/evidence/boot-cost-partition-20261029/closure.json"
   },
   "next_existing_delivery": {
-    "issue": 36,
+    "issue": 159,
     "owner": "root integration/acceptance, no new source write authority yet",
-    "stage": "source-contract preparation not activated",
+    "stage": "active root shared seam, not accepted",
     "deliverable": "one commissioned asset actual exposure -> earliest maintenance due -> real worker-seconds/material receipt; no fake construction-to-maintenance reuse",
     "current_gap": "maintenance profile/component mapping, actual exposure and maintenance labor/material receipts missing",
     "read_only_preparation": "docs/evidence/boot-cost-partition-20261029/next-existing-source-seam.md",

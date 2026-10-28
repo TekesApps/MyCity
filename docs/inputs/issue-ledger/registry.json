@@ -1,7 +1,7 @@
 {
   "schema": "mycity-issue-ledger-v1",
   "date": "2026-10-29",
-  "release": "v0.5.226 closure ledger; game v0.5.225",
+  "release": "v0.5.227 partial159 source/work-kind seam, not maintenance acceptance",
   "scope": "完整既定产品；v190有限业务132与缺陷148真实验收关闭，v191仅同步台账，UI单独延期",
   "coordination": "当前root唯一共享writer/串行验证；旧主会话停用",
   "states": [
@@ -3907,6 +3907,39 @@
       "pr": "本阶段无PR；root直接集成",
       "implementation_tags": "v0.5.225 c65fb229654f9f313e8c5394d6472c43ad636c9c",
       "closed_at": "2026-10-28T18:08:19Z"
+    },
+    {
+      "issue": 159,
+      "title": "单资产电气保养：临时停机、实际工料费用及恢复",
+      "url": "https://github.com/TekesApps/MyCity/issues/159",
+      "parent": 36,
+      "stage": "开发中",
+      "owner": "当前root共享唯一writer/集成验收；两准备已冻结",
+      "write_authority": [
+        "原36 asset_maintenance.rs/专属候选tests（worker冻结后root接收）",
+        "maintenance_opening.rs与来源tests",
+        "root facility_work.rs/旧provider拒绝",
+        "maintenance_authority/assembly/transaction/timeline_driver/member_activity/asset_cost_authority按具体接线",
+        "新增restore/decoder文件须先固定"
+      ],
+      "scope": "一个真实新投运电气被动支撑部件，30DAY日历保养，4人实际工时/相容材料，暂时停机与费用恢复",
+      "required_capabilities": [
+        "原construction投运及151资本来源",
+        "原qualification/member/venue/Funds/FacilityWork工资内核",
+        "原Resource canonical容量及原Store提交",
+        "明确新maintenance profile，旧运行来源不伪装"
+      ],
+      "acceptance": [
+        "真实due/现场/停机/工料/condition/复位",
+        "排他/资格/占用与未结承诺/半履约退出和欠薪",
+        "原资本不重置，费用只消费一次",
+        "原票/WAL/checkpoint冷恢复与写入中断",
+        "旧18/Journal/default/同槽/受影响共享/normal与owned工作区"
+      ],
+      "remaining": "来源门、原候选与工资内核通过；实际venue/停机/材料/P5/费用/Store/normal尚未接完",
+      "evidence": "docs/evidence/maintenance-runtime-20261029/STATUS.md",
+      "pr": "本阶段无PR；root直接集成的进行中检查点",
+      "implementation_tags": "v0.5.227 partial, not full acceptance"
     }
   ],
   "capability_edges": [
@@ -4074,14 +4107,14 @@
     }
   ],
   "unpublished_execution_update": {
-    "source_baseline": "v0.5.225 c65fb229654f9f313e8c5394d6472c43ad636c9c",
-    "shared_core_in_progress": 0,
+    "source_baseline": "v0.5.226 +159 sources01/02",
+    "shared_core_in_progress": 1,
     "independent_preparations_active": 0,
     "limits": [
       1,
       2
     ],
-    "note": "158 actually closed; readonly existing36/94 preparation frozen, source gates explicit; no new code modules, packages18 unchanged"
+    "note": "159 one actual integration in progress; 18 source packages not retired; no business/defect closure this phase"
   },
   "historical_execution_updates": [
     {

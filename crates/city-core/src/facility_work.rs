@@ -13,10 +13,10 @@ const DENOMINATOR: u128 = 3600;
 const MAX_CENTS: u64 = i64::MAX as u64;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub enum Role { Electric, Water }
+pub enum Role { Electric, Water, ElectricalMaintenance }
 impl Role {
     pub fn required_base(self) -> BaseQualification {
-        match self { Self::Electric => BaseQualification::Electric, Self::Water => BaseQualification::Water }
+        match self { Self::Electric => BaseQualification::Electric, Self::Water => BaseQualification::Water, Self::ElectricalMaintenance => BaseQualification::Electric }
     }
 }
 
@@ -77,7 +77,7 @@ impl Opening {
         let mut ended = false;
         for (index, slot) in self.contracts.iter().enumerate() {
             let Some(c) = slot else { ended = true; continue; };
-            if ended || c.id == 0 || c.version == 0 || c.device_id == 0 || c.venue_use_id == 0
+            if ended || c.id == 0 || c.version == 0 || (c.role == Role::ElectricalMaintenance && c.version != 2) || c.device_id == 0 || c.venue_use_id == 0
                 || c.employer_account == 0 || c.employee_account == 0
                 || c.employer_account == c.employee_account || c.hourly_cents_per_member == 0
                 || c.hourly_cents_per_member > MAX_CENTS || c.start >= c.end
@@ -139,10 +139,14 @@ impl Admission {
     }
 }
 
-/// Exact interval checked against original ledger settlement, device RUN and
-/// already-completed Timeline. Not serializable or accepted from external JSON.
+/// Exact interval checked against the original member settlement and either
+/// device RUN or a real maintenance order, at a completed Timeline boundary.
+/// This private provenance tag is not a durable fact or external JSON ingress.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum ObservedWorkKind { OperatingDevice, ElectricalMaintenance }
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(crate) struct ObservedInterval {
+    kind: ObservedWorkKind,
     contract: Contract,
     activity_id: u64,
     from: u64,
@@ -154,7 +158,14 @@ pub(crate) struct ObservedInterval {
 impl ObservedInterval {
     pub(crate) fn from_root(contract: Contract, activity_id: u64, from: u64, until: u64,
         ledger_operation_id: u64, device_operation_id: u64, timeline_operation_id: u64) -> Self {
-        Self { contract, activity_id, from, until, ledger_operation_id, device_operation_id, timeline_operation_id }
+        Self { kind:ObservedWorkKind::OperatingDevice, contract, activity_id, from, until, ledger_operation_id, device_operation_id, timeline_operation_id }
+    }
+    // Only the owning maintenance adapter may call this after actual member
+    // settlement while its original asset is stopped for this work order.
+    pub(crate) fn from_maintenance_root(contract: Contract, activity_id: u64, from: u64, until: u64,
+        ledger_operation_id: u64, order_operation_id: u64, timeline_operation_id: u64) -> Self {
+        Self { kind:ObservedWorkKind::ElectricalMaintenance, contract, activity_id, from, until,
+            ledger_operation_id, device_operation_id:order_operation_id, timeline_operation_id }
     }
 }
 
@@ -406,7 +417,10 @@ impl Runtime {
         let c = self.opening.contracts[i].ok_or(Error::Invalid)?;
         let mut next = self.clone();
         let r = next.records[i].as_mut().ok_or(Error::Invalid)?;
-        if c != observed.contract || r.activity_id != observed.activity_id { return Err(Error::Binding); }
+        if c != observed.contract || r.activity_id != observed.activity_id
+            || (c.role == Role::ElectricalMaintenance) != (observed.kind == ObservedWorkKind::ElectricalMaintenance) {
+            return Err(Error::Binding);
+        }
         if r.phase != Phase::Active { return Err(Error::State); }
         if observed.from != r.settled || observed.until <= observed.from
             || observed.until > c.end || observed.until > s.occurred_at
@@ -598,6 +612,36 @@ mod tests {
         let c = r.opening.contracts[0].unwrap();
         let candidate = r.confirm_payment(source(r, at), Payment::from_root(c, cents, cash)).unwrap();
         commit(r, candidate);
+    }
+
+    #[test]
+    fn maintenance_uses_its_real_order_source_and_original_wage_curve() {
+        let mut o = opening(2000, 4);
+        o.contracts[0].as_mut().unwrap().role = Role::ElectricalMaintenance;
+        o.contracts[0].as_mut().unwrap().version = 2;
+        let mut whole = Runtime::new(o).unwrap(); begin(&mut whole, 1, 50, 0);
+        let contract = whole.opening.contracts[0].unwrap();
+        // An electrical production proof is not a maintenance work order.
+        assert!(matches!(whole.record_interval(source(&whole, 3600), interval(&whole, 1, 0, 3600, 3600)),Err(Error::Binding)));
+        assert_eq!(whole.records[0].unwrap().earned,0);
+        let mut split = whole.clone();
+        let event = |from, until| ObservedInterval::from_maintenance_root(contract,50,from,until,101,201,301);
+        let candidate = whole.record_interval(source(&whole,3600),event(0,3600)).unwrap();commit(&mut whole,candidate);
+        for (from,until) in [(0,3599),(3599,3600)] {
+            let candidate = split.record_interval(source(&split,until),event(from,until)).unwrap();commit(&mut split,candidate);
+        }
+        // Four actual members x 3600s = 14400 person-seconds, at 2000 cents/person-hour.
+        for r in [&whole,&split] { let row = r.records[0].unwrap();
+            assert_eq!((row.work_seconds,row.earned,row.remainder),(3600,8000,0)); }
+        stop(&mut split,1,3600);assert_eq!(split.records[0].unwrap().due(),8000);
+        pay(&mut split,3000,401,3600);assert_eq!(split.records[0].unwrap().due(),5000);
+        let restored:Runtime=serde_json::from_slice(&serde_json::to_vec(&split).unwrap()).unwrap();
+        restored.validate_binding(&split.opening,3600).unwrap();
+        assert_eq!(restored.records[0].unwrap(),split.records[0].unwrap());
+        // Conversely an ordinary production contract cannot claim a maintenance proof.
+        let mut old=Runtime::new(opening(2000,4)).unwrap();begin(&mut old,1,50,0);
+        let c=old.opening.contracts[0].unwrap();
+        assert!(matches!(old.record_interval(source(&old,1),ObservedInterval::from_maintenance_root(c,50,0,1,101,201,301)),Err(Error::Binding)));
     }
 
     #[test]

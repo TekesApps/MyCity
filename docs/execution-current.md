@@ -1,10 +1,12 @@
 # 当前执行清单
 
-**当前v0.5.226关闭台账，游戏实现/验证v0.5.225：**#158新本地pool成本策略已有限验收，新开局显式版本使合法暂停/冷恢复不改成本，旧账语义保持。原18/Journal、受影响共享与实际同城补货/原normal预算门通过；[#158已实际关闭](evidence/boot-cost-partition-20261029/closure.json)。root共享0项、活动准备0项；原36/94只读准备已完成并冻结，未授予新模块写权。父8/21/117/115开放，本阶段新业务0/历史0、具体缺陷关闭1项（158），18完整包不机械减项。[结果与边界](evidence/boot-cost-partition-20261029/STATUS.md)。
+**当前唯一共享在制：#159 单资产电气保养的真实工料/停机接线，root唯一writer。**基线v0.5.226；原36/94只读核对已结束，原36候选和专属输入两项准备已交付冻结（活动准备0）。本轮先原18/Journal廉价兼容和来源/工资内核检查，未将候选或单元当作维护验收。[有限合同](asset-maintenance-runtime.md)、所有权/留证预算见`work/maintenance-runtime-20261029/execution-card.json`。
 
-原worker专属Sim测试已冻结，旧主会话不唤醒。原36/94实际交付包已核对：[下一有限来源入口](evidence/boot-cost-partition-20261029/next-existing-source-seam.md)。优先36单资产一次维护，先补运行暴露/维护工料与原票来源；94缺质量lot和必要终点较多，暂缓。未启动源码接线，不把施工工秒或废水体积冒充维护/固废事实。新v2同一旅程service[237,5]/export242/余电493，真实第二次生产后合池再消费，总basis2900闭合；旧v1原档仍按235/234恢复且不取得分段等价资格。只承诺同consumer顺序/同实际pool边界。无新常驻字段、独立账或通用框架；[设计](m0-boot-runtime.md)与#158同步。
+当前已接入原36候选文件及只读标识，工资内核增加明确ElectricalMaintenance(v2)来源种类；旧连续生产provider拒绝这种来源，不能伪装RUN产出。新的开局输入保留人口/钱物及旧Driver/Police，给[0,4)显式Electric资格。来源测试初版启用Timeline前读取资格被拒，source01失败程序/源码完整保留；source02补实际Enable后来源门通过。原工资19、候选10、旧设施劳动13及先行原18/128KiB、Journal4096通过；[固定程序与剩余](evidence/maintenance-runtime-20261029/STATUS.md)。所有结论仅对应固定程序，尚未发生维护工时/材料消费或condition改善。
 
-24 WIP、红例源/程序与全部必要恢复原件保留，原SSD唯一target/work串行；M0/Wait/96页/预算不改。真实16GB/native总峰值/持续速度/长期/GPU/UI未测。下一按有限城市具体需要接已有交付，暂缓无近期消费方的新模块、多档与GPU，不批量派工。
+剩余明确差项：project7在实际投运61200+30DAY后的维护现场真实Accept/Enter、临时停机/资源互斥、维护工单区间/原member与资金/材料、维护费用原Town消费、部分退出和原票/Store/normal门。不能拿旧场地offer/施工工秒/Payroll或非零ID补造这些事实；原151/158已关闭不重开，159/36/117仍开放。
+
+原M0/Wait/预算及24 WIP/失败和恢复原件不变，唯一外置SSD target/work串行；无新tree/计时器。暂缓94、替换/Bridge/自动事故/多档/GPU。新验收业务0/历史0/缺陷0，18源码包未整包核销。
 
 <details><summary>历史执行结论（仅对应标明版本，不代表当前源码）</summary>
 

@@ -164,6 +164,7 @@ fn provider<'a>(world:&'a World,c:w::Contract,proposed:Option<&'a crate::continu
     let matches=match c.role{
         w::Role::Electric=>c.device_id==u64::from(s.opening().resources[0]),
         w::Role::Water=>s.treatment_device()==Some(c.device_id),
+        w::Role::ElectricalMaintenance=>false, // Requires its own order authority; never production work_covered.
     };
     // Water is bound only to the explicit original V2 owner and its actual
     // segment coverage, never qualification alone or an unrelated plant ID.
