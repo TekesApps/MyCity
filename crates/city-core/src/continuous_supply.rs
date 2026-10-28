@@ -567,7 +567,7 @@ pub(crate) fn check_restore(world:&World,c:&mut RestoreCheck,index:usize,record:
     let r=world.continuous_supply.as_deref().ok_or(TxError::InvalidOperation)?;
     let ops=restore_operations(world);
     if index>MAX_RUNS||c.checked[index]||digest(r)?!=c.fingerprint||ops[index]!=Some(record.operation_id)
-        ||record.actions[1..].iter().any(Option::is_some){return Err(TxError::InvalidOperation);}
+        ||record.actions.iter().skip(1).any(Option::is_some){return Err(TxError::InvalidOperation);}
     let receipt=record.outcome.map_err(|_|TxError::InvalidOperation)?;
     let at=receipt.timeline.map(|p|p.at);
     if index<MAX_RUNS {

@@ -122,14 +122,14 @@ pub(crate) fn check_restore(world:&World,check:&mut RestoreCheck,index:usize,rec
     if index>=n::MAX_HOUSEHOLDS{
         if index>=MAX_RESTORE_REFS||check.checked[index]||r.fingerprint().map_err(bad)?!=check.expected{return Err(TxError::InvalidOperation);}
         let refs=delivery_refs(r);let expected=refs[index].ok_or(TxError::InvalidOperation)?;
-        if record.operation_id!=expected||record.outcome.is_err()||record.actions[1..].iter().any(Option::is_some)
+        if record.operation_id!=expected||record.outcome.is_err()||record.actions.iter().skip(1).any(Option::is_some)
             || (index!=MAX_RESTORE_REFS-1&&!matches!(record.actions[0],Some(Action::Timeline{..}|Action::ServiceDelivery{..}|Action::HousingLease{..}))){return Err(TxError::InvalidOperation);}
         if index==n::MAX_HOUSEHOLDS+crate::service_delivery_runtime::MAX_TASKS*12+9{
             let d=r.delivery.as_deref().ok_or(TxError::InvalidOperation)?;let need=d.recovery_history_need().ok_or(TxError::InvalidOperation)?;
             if !matches!(record.actions[0],Some(Action::ServiceDelivery{command:crate::service_delivery_authority::Command::Accept{household,crew}})if household==need.household_id&&d.opening().domain.crews.iter().any(|c|c.id==crew&&c.kind==need.kind)){return Err(TxError::InvalidOperation);}
         }
         if index==MAX_RESTORE_REFS-1{let a=r.delivery.as_deref().and_then(|d|d.income_anchor()).ok_or(TxError::InvalidOperation)?;
-            if record.income_context!=Some(a)||record.outcome.as_ref().is_ok_and(|receipt|receipt.revision!=a.revision){return Err(TxError::InvalidOperation);}}
+            if record.income_context()!=Some(a)||record.outcome.as_ref().is_ok_and(|receipt|receipt.revision!=a.revision){return Err(TxError::InvalidOperation);}}
         if let Some(d)=r.delivery.as_deref(){for task in d.tasks(){if task.origins.accepted==expected{
             if !matches!(record.actions[0],Some(Action::ServiceDelivery{command:crate::service_delivery_authority::Command::Accept{household,crew}}) if household==task.need.household_id&&crew==task.crew_id){return Err(TxError::InvalidOperation);}
         }}}
@@ -144,7 +144,7 @@ pub(crate) fn check_restore(world:&World,check:&mut RestoreCheck,index:usize,rec
     let Some(Action::HousingLease{offer_id,offer_sha256})=record.actions[0] else{return Err(TxError::InvalidOperation);};
     let offer=housing.opening.lease_offer(offer_id).map_err(bad)?;
     if record.operation_id!=entry.operation_id || record.actor!=household.account
-        || record.actions[1..].iter().any(Option::is_some) || record.outcome.is_err()
+        || record.actions.iter().skip(1).any(Option::is_some) || record.outcome.is_err()
         || offer.household_id!=row.household_id || offer.starts_at.value()<0
         || offer.starts_at.value() as u64!=entry.at
         || crate::housing::genesis_lease_offer_sha256(offer)!=offer_sha256

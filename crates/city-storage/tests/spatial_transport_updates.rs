@@ -1629,8 +1629,8 @@ fn spatial_request_and_failed_command_survive_two_hot_windows_and_archive_replay
     assert_eq!(failed_before.operation_id, failed_operation_id);
     assert_eq!(request_before.actions[0], Some(request_envelope.actions[0]));
     assert_eq!(failed_before.actions[0], Some(failed_envelope.actions[0]));
-    assert!(request_before.actions[1..].iter().all(Option::is_none));
-    assert!(failed_before.actions[1..].iter().all(Option::is_none));
+    assert!(request_before.actions.iter().skip(1).all(Option::is_none));
+    assert!(failed_before.actions.iter().skip(1).all(Option::is_none));
     let request_record_bytes = serde_json::to_vec(&request_before).unwrap();
     let failed_record_bytes = serde_json::to_vec(&failed_before).unwrap();
 

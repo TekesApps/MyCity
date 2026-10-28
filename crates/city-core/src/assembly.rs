@@ -100,6 +100,7 @@ pub struct Opening {
     pub service_needs: Option<crate::service_needs::Opening>,
     pub continuous_supply: Option<crate::continuous_supply::Opening>,
     pub facility_work: Option<crate::facility_authority::Opening>,
+    pub asset_capital: Option<Box<crate::asset_cost_authority::Opening>>,
 }
 
 // Decode-only backing reduces the derived visitor's aggregate stack temporaries.
@@ -111,42 +112,68 @@ mod private_openingdecode {
     #[serde(deny_unknown_fields, rename = "Opening")]
     pub(super) struct Opening {
         #[serde(deserialize_with = "crate::bounded_decode::text64")]
-        schema: String,
-        bootstrap: Bootstrap,
-        sources: Rows<OpeningSource, MAX_SOURCES>,
-        accounts: Rows<OpeningAccount, MAX_ACCOUNTS>,
-        stocks: Rows<OpeningStock, MAX_STOCKS>,
-        region: Option<Box<crate::region::Opening>>,
-        economy: Option<Box<crate::economy::Opening>>,
-        boot: Option<Box<crate::boot::Opening>>,
-        exchange: Option<Box<crate::exchange::Opening>>,
+        pub(super) schema: String,
+        pub(super) bootstrap: Bootstrap,
+        pub(super) sources: Rows<OpeningSource, MAX_SOURCES>,
+        pub(super) accounts: Rows<OpeningAccount, MAX_ACCOUNTS>,
+        pub(super) stocks: Rows<OpeningStock, MAX_STOCKS>,
+        pub(super) region: Option<Box<crate::region::Opening>>,
+        pub(super) economy: Option<Box<crate::economy::Opening>>,
+        pub(super) boot: Option<Box<crate::boot::Opening>>,
+        pub(super) exchange: Option<Box<crate::exchange::Opening>>,
         /// Optional fixed one-project prototype profile. Runtime changes only through Engine actions.
         #[serde(default)]
-        construction: Option<Box<crate::construction::Project>>,
+        pub(super) construction: Option<Box<crate::construction::Project>>,
         /// Optional fixed market profile. It is genesis configuration; runtime changes use
         /// compact Engine actions and persist in the same World/checkpoint.
         #[serde(default)]
-        town: Option<Box<crate::town_runtime::MarketProfile>>,
+        pub(super) town: Option<Box<crate::town_runtime::MarketProfile>>,
         /// Optional bounded housing stock and immutable one-shot lease-offer catalogue.
         #[serde(default)]
-        housing: Option<Box<crate::housing::OpeningHousing>>,
+        pub(super) housing: Option<Box<crate::housing::OpeningHousing>>,
         #[serde(default)]
-        venue: Option<Box<crate::venue_runtime::Opening>>,
+        pub(super) venue: Option<Box<crate::venue_runtime::Opening>>,
         #[serde(default)]
-        education: Option<Box<crate::education_runtime::Opening>>,
+        pub(super) education: Option<Box<crate::education_runtime::Opening>>,
         #[serde(default)]
-        qualification: Option<Box<crate::qualification_authority::Opening>>,
+        pub(super) qualification: Option<Box<crate::qualification_authority::Opening>>,
         #[serde(default)]
-        member_activity: Option<Box<crate::member_authority::Registration>>,
+        pub(super) member_activity: Option<Box<crate::member_authority::Registration>>,
         #[serde(default)]
-        service_needs: Option<Box<crate::service_needs::Opening>>,
+        pub(super) service_needs: Option<Box<crate::service_needs::Opening>>,
         #[serde(default)]
-        continuous_supply: Option<Box<crate::continuous_supply::Opening>>,
+        pub(super) continuous_supply: Option<Box<crate::continuous_supply::Opening>>,
         #[serde(default)]
-        facility_work: Option<Box<crate::facility_authority::Opening>>,
+        pub(super) facility_work: Option<Box<crate::facility_authority::Opening>>,
+        pub(super) asset_capital: Option<Box<crate::asset_cost_authority::Opening>>,
     }
 
     impl Opening {
+        #[inline(never)]
+        pub(super) fn from_public(value: super::Opening) -> Self {
+            Self {
+                schema: value.schema,
+                bootstrap: value.bootstrap,
+                sources: value.sources,
+                accounts: value.accounts,
+                stocks: value.stocks,
+                region: value.region.map(Box::new),
+                economy: value.economy.map(Box::new),
+                boot: value.boot.map(Box::new),
+                exchange: value.exchange.map(Box::new),
+                construction: value.construction.map(Box::new),
+                town: value.town.map(Box::new),
+                housing: value.housing.map(Box::new),
+                venue: value.venue.map(Box::new),
+                education: value.education.map(Box::new),
+                qualification: value.qualification.map(Box::new),
+                member_activity: value.member_activity.map(Box::new),
+                service_needs: value.service_needs.map(Box::new),
+                continuous_supply: value.continuous_supply.map(Box::new),
+                facility_work: value.facility_work.map(Box::new),
+                asset_capital: value.asset_capital,
+            }
+        }
         #[inline(never)]
         pub(super) fn finish(self) -> super::Opening {
             super::Opening {
@@ -168,6 +195,7 @@ mod private_openingdecode {
                 service_needs: self.service_needs.map(|value| *value),
                 continuous_supply: self.continuous_supply.map(|value| *value),
                 facility_work: self.facility_work.map(|value| *value),
+                asset_capital: self.asset_capital,
                 member_activity: self.member_activity.map(|value| *value),
             }
         }
@@ -286,14 +314,16 @@ pub struct OperatingModels {
     pub(crate) continuous_supply: Option<Box<crate::continuous_supply::Runtime>>,
     #[serde(skip_serializing_if="Option::is_none")]
     pub(crate) facility_work: Option<Box<crate::facility_authority::Runtime>>,
+    #[serde(skip_serializing_if="Option::is_none")]
+    pub(crate) asset_capital: Option<Box<crate::asset_cost_authority::Runtime>>,
 }
 impl OperatingModels {
-    fn empty(&self)->bool{self.service_needs.is_none()&&self.continuous_supply.is_none()&&self.facility_work.is_none()}
-    fn pack(service_needs:Option<Box<crate::service_needs::Runtime>>,continuous_supply:Option<Box<crate::continuous_supply::Runtime>>,facility_work:Option<Box<crate::facility_authority::Runtime>>)->Option<Box<Self>>{
-        let value=Self{service_needs,continuous_supply,facility_work};if value.empty(){None}else{Some(Box::new(value))}
+    fn empty(&self)->bool{self.service_needs.is_none()&&self.continuous_supply.is_none()&&self.facility_work.is_none()&&self.asset_capital.is_none()}
+    fn pack(service_needs:Option<Box<crate::service_needs::Runtime>>,continuous_supply:Option<Box<crate::continuous_supply::Runtime>>,facility_work:Option<Box<crate::facility_authority::Runtime>>,asset_capital:Option<Box<crate::asset_cost_authority::Runtime>>)->Option<Box<Self>>{
+        let value=Self{service_needs,continuous_supply,facility_work,asset_capital};if value.empty(){None}else{Some(Box::new(value))}
     }
 }
-static EMPTY_OPERATING_MODELS:OperatingModels=OperatingModels{service_needs:None,continuous_supply:None,facility_work:None};
+static EMPTY_OPERATING_MODELS:OperatingModels=OperatingModels{service_needs:None,continuous_supply:None,facility_work:None,asset_capital:None};
 
 #[derive(Serialize)]
 #[serde(deny_unknown_fields)]
@@ -336,13 +366,15 @@ impl World {
     fn service_needs_slot_mut(&mut self)->&mut Option<Box<crate::service_needs::Runtime>>{&mut self.operating_models.get_or_insert_with(||Box::new(OperatingModels::default())).service_needs}
     fn continuous_supply_slot_mut(&mut self)->&mut Option<Box<crate::continuous_supply::Runtime>>{&mut self.operating_models.get_or_insert_with(||Box::new(OperatingModels::default())).continuous_supply}
     fn facility_work_slot_mut(&mut self)->&mut Option<Box<crate::facility_authority::Runtime>>{&mut self.operating_models.get_or_insert_with(||Box::new(OperatingModels::default())).facility_work}
+    fn asset_capital_slot_mut(&mut self)->&mut Option<Box<crate::asset_cost_authority::Runtime>>{&mut self.operating_models.get_or_insert_with(||Box::new(OperatingModels::default())).asset_capital}
+    pub(crate) fn asset_capital_mut(&mut self)->Option<&mut crate::asset_cost_authority::Runtime>{self.operating_models.as_deref_mut()?.asset_capital.as_deref_mut()}
     pub(crate) const fn operating_header_bytes()->usize{size_of::<OperatingModels>()}
     fn pending_operating_header_bytes(&self)->usize{if self.operating_models.is_none(){Self::operating_header_bytes()}else{0}}
     fn operating_owned_bytes(&self)->usize{self.operating_models.as_ref().map_or(0,|_|Self::operating_header_bytes())}
-    pub(crate) fn commit_operating_states(&mut self,service_needs:Option<Box<crate::service_needs::Runtime>>,continuous_supply:Option<Box<crate::continuous_supply::Runtime>>,facility_work:Option<Box<crate::facility_authority::Runtime>>){
-        if service_needs.is_none()&&continuous_supply.is_none()&&facility_work.is_none(){self.operating_models=None;}
-        else if let Some(models)=self.operating_models.as_deref_mut(){models.service_needs=service_needs;models.continuous_supply=continuous_supply;models.facility_work=facility_work;}
-        else{self.operating_models=OperatingModels::pack(service_needs,continuous_supply,facility_work);}
+    pub(crate) fn commit_operating_states(&mut self,service_needs:Option<Box<crate::service_needs::Runtime>>,continuous_supply:Option<Box<crate::continuous_supply::Runtime>>,facility_work:Option<Box<crate::facility_authority::Runtime>>,asset_capital:Option<Box<crate::asset_cost_authority::Runtime>>){
+        if service_needs.is_none()&&continuous_supply.is_none()&&facility_work.is_none()&&asset_capital.is_none(){self.operating_models=None;}
+        else if let Some(models)=self.operating_models.as_deref_mut(){models.service_needs=service_needs;models.continuous_supply=continuous_supply;models.facility_work=facility_work;models.asset_capital=asset_capital;}
+        else{self.operating_models=OperatingModels::pack(service_needs,continuous_supply,facility_work,asset_capital);}
     }
     pub(crate) fn service_needs_mut(&mut self)->Option<&mut crate::service_needs::Runtime>{self.operating_models.as_deref_mut()?.service_needs.as_deref_mut()}
     pub(crate) fn continuous_supply_mut(&mut self)->Option<&mut crate::continuous_supply::Runtime>{self.operating_models.as_deref_mut()?.continuous_supply.as_deref_mut()}
@@ -388,6 +420,8 @@ mod private_worlddecode {
         continuous_supply: Option<Box<crate::continuous_supply::Runtime>>,
         #[serde(default)]
         facility_work: Option<Box<crate::facility_authority::Runtime>>,
+        #[serde(default)]
+        asset_capital: Option<Box<crate::asset_cost_authority::Runtime>>,
     }
 
     impl World {
@@ -413,7 +447,7 @@ mod private_worlddecode {
                 education: self.education,
                 member_activity: self.member_activity,
                 qualification: self.qualification,
-                operating_models:OperatingModels::pack(self.service_needs,self.continuous_supply,self.facility_work),
+                operating_models:OperatingModels::pack(self.service_needs,self.continuous_supply,self.facility_work,self.asset_capital),
             }
         }
     }
@@ -577,6 +611,8 @@ pub(crate) struct BusinessWorld<'a> {
     continuous_supply: &'a Option<Box<crate::continuous_supply::Runtime>>,
     #[serde(skip_serializing_if="Option::is_none")]
     facility_work: &'a Option<Box<crate::facility_authority::Runtime>>,
+    #[serde(skip_serializing_if="Option::is_none")]
+    asset_capital: &'a Option<Box<crate::asset_cost_authority::Runtime>>,
 }
 #[derive(Serialize)]
 pub(crate) struct BorrowedWorldView<'a> {
@@ -611,6 +647,8 @@ pub(crate) struct BorrowedWorldView<'a> {
     continuous_supply: &'a Option<Box<crate::continuous_supply::Runtime>>,
     #[serde(skip_serializing_if="Option::is_none")]
     facility_work: &'a Option<Box<crate::facility_authority::Runtime>>,
+    #[serde(skip_serializing_if="Option::is_none")]
+    asset_capital: &'a Option<Box<crate::asset_cost_authority::Runtime>>,
 }
 struct AccountViews<'a>(&'a World);
 impl Serialize for AccountViews<'_> {
@@ -655,9 +693,9 @@ impl Serialize for StockViews<'_> {
     }
 }
 impl World {
-    pub(crate) fn restore_empty() -> Result<Self, String> {
+    pub(crate) fn restore_empty_boxed() -> Result<Box<Self>, String> {
         let scope = Scope::new(1, 1).expect("internal scope");
-        Ok(Self {
+        Ok(Box::new(Self {
             scope,
             seed: 0,
             revision: 0,
@@ -680,7 +718,7 @@ impl World {
             member_activity: None,
             qualification: None,
             operating_models:None,
-        })
+        }))
     }
     pub(crate) fn reset_backing(&mut self) {
         self.accounts.reset_backing();
@@ -764,6 +802,7 @@ impl World {
             service_needs: &self.service_needs,
             continuous_supply: &self.continuous_supply,
             facility_work: &self.facility_work,
+            asset_capital: &self.asset_capital,
         }
     }
     pub(crate) fn borrowed_view(&self) -> BorrowedWorldView<'_> {
@@ -809,6 +848,7 @@ impl World {
             service_needs: &self.service_needs,
             continuous_supply: &self.continuous_supply,
             facility_work: &self.facility_work,
+            asset_capital: &self.asset_capital,
         }
     }
     pub(crate) fn restore_capacity(&mut self) -> Result<(), String> {
@@ -978,6 +1018,7 @@ impl World {
                 }
             }
         }
+        crate::asset_cost_authority::validate(self).map_err(str::to_owned)?;
         if let Some(town) = self.town {
             town.validate_persisted()
                 .map_err(|_| "checkpoint_town_profile")?;
@@ -1188,7 +1229,16 @@ impl World {
             }),
         }
     }
+    /// Borrow the authoritative market facts without copying a complete World view.
+    pub fn town_market(&self) -> Option<&crate::town_runtime::TownMarket> {
+        self.town.as_ref()
+    }
+    /// Exact project facts without materializing unrelated optional model views.
+    pub fn construction_project(&self) -> Option<crate::construction::Project> {
+        self.construction
+    }
     pub fn state_hash(&self) -> String {
+        if self.asset_capital.is_some() { return sha256(&serde_json::to_vec(&self.borrowed_view()).expect("finite exact world")); }
         sha256(&serde_json::to_vec(&self.view()).expect("finite exact world"))
     }
     /// Legacy base+Housing retains its original 128KiB gate. The explicit optional venue
@@ -1201,7 +1251,8 @@ impl World {
             + self.qualification.as_ref().map_or(0, |_| crate::qualification_authority::Runtime::owned_bytes())
             + self.service_needs.as_deref().map_or(0,crate::service_needs::Runtime::owned_capacity_bytes)
             + self.continuous_supply.as_deref().map_or(0, crate::continuous_supply::Runtime::owned_bytes)
-            + self.facility_work.as_ref().map_or(0, |_| crate::facility_authority::Runtime::owned_bytes()))
+            + self.facility_work.as_ref().map_or(0, |_| crate::facility_authority::Runtime::owned_bytes())
+            + self.asset_capital.as_ref().map_or(0, |_| crate::asset_cost_authority::Runtime::owned_bytes()))
             .and_then(|base| base.checked_add(validation_scratch))
             .is_some_and(|base| base <= WORLD_BYTE_BUDGET)
             && self.continuous_supply.as_deref().is_none_or(|r|r.owned_bytes()<=crate::continuous_supply::MAX_OWNED_BYTES)
@@ -1224,6 +1275,7 @@ impl World {
             + self.service_needs.as_deref().map_or(0,crate::service_needs::Runtime::owned_capacity_bytes)
             + self.continuous_supply.as_deref().map_or(0, crate::continuous_supply::Runtime::owned_bytes)
             + self.facility_work.as_ref().map_or(0, |_| crate::facility_authority::Runtime::owned_bytes())
+            + self.asset_capital.as_ref().map_or(0, |_| crate::asset_cost_authority::Runtime::owned_bytes())
             + self.operating_owned_bytes()
             + self
                 .housing
@@ -1368,6 +1420,11 @@ impl World {
                 self.owned_capacity_bytes().into(),
             );
         }
+        if self.asset_capital.is_some() {
+            let object=layout.as_object_mut().expect("layout object");
+            object.insert("asset_capital_owned_bytes".into(),crate::asset_cost_authority::Runtime::owned_bytes().into());
+            object.insert("asset_capital_restore_workspace_bytes".into(),crate::asset_cost_authority::Runtime::workspace_bytes().into());
+        }
         if self.operating_models.is_some(){
             layout.as_object_mut().expect("layout object").insert("operating_models_header_bytes".into(),self.operating_owned_bytes().into());
             layout.as_object_mut().expect("layout object").insert("owned_capacity_bytes".into(),self.owned_capacity_bytes().into());
@@ -1377,9 +1434,9 @@ impl World {
 }
 
 pub fn assemble(bytes: &[u8]) -> Result<World, String> {
-    let mut world = World::restore_empty()?;
+    let mut world = World::restore_empty_boxed()?;
     assemble_into(bytes, &mut world)?;
-    Ok(world)
+    Ok(*world)
 }
 /// Initial capital only, into an unpublished caller-owned root. Never for restore.
 pub(crate) fn assemble_into(bytes: &[u8], world: &mut World) -> Result<(), String> {
@@ -1390,7 +1447,9 @@ pub(crate) fn assemble_into(bytes: &[u8], world: &mut World) -> Result<(), Strin
     if typed_opening::selected(bytes) {
         return Err("typed_opening_requires_engine_context".into());
     }
-    let input: Opening = serde_json::from_slice(bytes).map_err(|e| {
+    // Decode the existing boxed backing first. Returning the large public Opening
+    // through serde_json's Result chain duplicated it in the caller's stack frame.
+    let input: OpeningDecode = serde_json::from_slice(bytes).map_err(|e| {
         if e.to_string().contains("model_rows_extra_record") {
             "opening_count_limit".to_owned()
         } else {
@@ -1424,13 +1483,13 @@ fn assemble_typed_with_resources_into(
         return Err("typed_opening_workspace_budget".into());
     }
     let opening=typed_opening::decode(bytes, resources)?;
-    assemble_opening_into(opening,world)
+    assemble_opening_into(OpeningDecode::from_public(opening),world)
 }
 
 // Decode must finish before reserving the larger validation/assembly frame.
 // Moving the same parsed input preserves all original checks and publication rules.
 #[inline(never)]
-fn assemble_opening_into(mut input: Opening, world: &mut World) -> Result<(), String> {
+fn assemble_opening_into(mut input: OpeningDecode, world: &mut World) -> Result<(), String> {
     if input.schema != ASSEMBLY_SCHEMA {
         return Err("unsupported_opening_schema".into());
     }
@@ -1508,7 +1567,7 @@ fn assemble_opening_into(mut input: Opening, world: &mut World) -> Result<(), St
     world.sources.copy_active_from(&input.sources);
     world.region = input
         .region
-        .map(crate::region::Region::new)
+        .map(|value| crate::region::Region::new(*value))
         .transpose()
         .map_err(|e| format!("region_{e:?}"))?;
     for a in &input.accounts {
@@ -1581,19 +1640,19 @@ fn assemble_opening_into(mut input: Opening, world: &mut World) -> Result<(), St
         }
     }
     if let Some(economy) = input.economy {
-        world.economy = Some(crate::economy::Economy::new(economy, world)?);
+        world.economy = Some(crate::economy::Economy::new(*economy, world)?);
     }
     if let Some(boot) = input.boot {
         world.boot = Some(crate::boot::Boot::new(
-            boot,
+            *boot,
             world,
             input.exchange.is_some(),
         )?);
     }
     if let Some(exchange) = input.exchange {
-        world.exchange = Some(crate::exchange::Exchange::new(exchange, world)?);
+        world.exchange = Some(crate::exchange::Exchange::new(*exchange, world)?);
     }
-    world.construction = input.construction;
+    world.construction = input.construction.map(|value|*value);
     if let Some(project) = world.construction {
         project
             .validate_profile()
@@ -1656,12 +1715,13 @@ fn assemble_opening_into(mut input: Opening, world: &mut World) -> Result<(), St
             }
         }
     }
-    world.town = input
-        .town
-        .map(crate::town_runtime::TownMarket::new)
-        .transpose()
-        .map_err(str::to_owned)?;
-    if let Some(town) = world.town {
+    // Avoid materializing several nested Option/Result copies of the large fixed
+    // town value, including on the common no-town opening path.
+    world.town = match input.town {
+        Some(profile) => Some(crate::town_runtime::TownMarket::new(*profile).map_err(str::to_owned)?),
+        None => None,
+    };
+    if let Some(town) = world.town.as_ref() {
         town.validate_initial_world(world).map_err(str::to_owned)?;
     }
     if let Some(opening) = input.housing {
@@ -1699,7 +1759,7 @@ fn assemble_opening_into(mut input: Opening, world: &mut World) -> Result<(), St
             &opening,
         )?;
         world.housing = Some(Box::new(HousingRuntime {
-            opening,
+            opening: *opening,
             state,
             paid_wages: None,
             moves: None,
@@ -1713,7 +1773,7 @@ fn assemble_opening_into(mut input: Opening, world: &mut World) -> Result<(), St
             return Err("venue_world_budget_before_allocation".into());
         }
         let housing = world.housing.as_deref().ok_or("venue_population_source_missing")?;
-        let runtime = crate::venue_runtime::Runtime::new(opening, world.scope, &housing.opening)?;
+        let runtime = crate::venue_runtime::Runtime::new(*opening, world.scope, &housing.opening)?;
         runtime.validate_population(world.scope, Some(&housing.opening))?;
         for venue in runtime.opening.venues.iter() {
             world.account_handle(venue.owner)?;
@@ -1726,7 +1786,7 @@ fn assemble_opening_into(mut input: Opening, world: &mut World) -> Result<(), St
         if world.owned_capacity_bytes().checked_add(additional)
             .and_then(|n|n.checked_add(crate::housing::MAX_VALIDATION_SCRATCH_BYTES))
             .is_none_or(|n|n>crate::transaction::ENGINE_BYTE_BUDGET) {return Err("member_world_budget_before_allocation".into());}
-        world.member_activity=Some(crate::member_authority::initialize(registration,world)?);
+        world.member_activity=Some(crate::member_authority::initialize(*registration,world)?);
     }
     if let Some(opening) = input.education {
         let additional = crate::education_runtime::Runtime::owned_bytes()
@@ -1737,14 +1797,14 @@ fn assemble_opening_into(mut input: Opening, world: &mut World) -> Result<(), St
             return Err("education_world_budget_before_allocation".into());
         }
         if world.member_activity.is_none() {world.member_activity=Some(crate::member_authority::initialize_education(world)?);}
-        world.education=Some(crate::education_authority::initialize(opening,world)?);
+        world.education=Some(crate::education_authority::initialize(*opening,world)?);
     }
     if let Some(opening)=input.qualification {
         let extra=crate::qualification_authority::Runtime::owned_bytes()+crate::qualification_authority::restore_bytes();
         if world.owned_capacity_bytes().checked_add(extra).is_none_or(|n|n>crate::transaction::ENGINE_BYTE_BUDGET) {
             return Err("qualification_world_budget_before_allocation".into());
         }
-        world.qualification=Some(crate::qualification_authority::initialize(opening,world)?);
+        world.qualification=Some(crate::qualification_authority::initialize(*opening,world)?);
     }
     if let Some(opening)=input.service_needs {
         let delivery_extra=match &opening.profile{crate::service_needs::Profile::LocalDevelopmentNaturalNeedsV1=>0,crate::service_needs::Profile::LocalDevelopmentWithDeliveryV2(input)=>input.owned_bytes()*2+crate::service_delivery_runtime::Runtime::owned_bytes()+size_of::<crate::service_delivery_authority::Runtime>()};
@@ -1753,15 +1813,21 @@ fn assemble_opening_into(mut input: Opening, world: &mut World) -> Result<(), St
             || world.owned_capacity_bytes().checked_add(extra).and_then(|n|n.checked_add(crate::housing::MAX_VALIDATION_SCRATCH_BYTES)).is_none_or(|n|n>crate::transaction::ENGINE_BYTE_BUDGET) {
             return Err("service_needs_world_budget_before_allocation".into());
         }
-        *world.service_needs_slot_mut()=Some(crate::service_needs_authority::initialize(opening,world)?);
+        *world.service_needs_slot_mut()=Some(crate::service_needs_authority::initialize(*opening,world)?);
     }
     if let Some(opening)=input.continuous_supply {
         if world.owned_capacity_bytes().checked_add(crate::continuous_supply::Runtime::opening_owned_bytes(&opening)+crate::continuous_supply::MAX_WORKSPACE_BYTES+world.pending_operating_header_bytes()).is_none_or(|n|n>crate::transaction::ENGINE_BYTE_BUDGET){return Err("continuous_supply_opening_budget".into());}
-        *world.continuous_supply_slot_mut()=Some(crate::continuous_supply::initialize(opening,world)?);
+        *world.continuous_supply_slot_mut()=Some(crate::continuous_supply::initialize(*opening,world)?);
+    }
+    if let Some(opening) = input.asset_capital {
+        let extra = crate::asset_cost_authority::Runtime::owned_bytes() + crate::asset_cost_authority::Runtime::workspace_bytes() + world.pending_operating_header_bytes();
+        if world.owned_capacity_bytes().checked_add(extra).is_none_or(|n|n>crate::transaction::ENGINE_BYTE_BUDGET) { return Err("asset_capital_opening_budget".into()); }
+        *world.asset_capital_slot_mut() = Some(Box::new(crate::asset_cost_authority::Runtime { opening: *opening, state: None }));
+        crate::asset_cost_authority::validate(world).map_err(str::to_owned)?;
     }
     if let Some(opening)=input.facility_work {
         if world.owned_capacity_bytes().checked_add(crate::facility_authority::Runtime::owned_bytes()+crate::facility_authority::MAX_WORKSPACE_BYTES+world.pending_operating_header_bytes()).is_none_or(|n|n>crate::transaction::ENGINE_BYTE_BUDGET){return Err("facility_work_opening_budget".into());}
-        *world.facility_work_slot_mut()=Some(crate::facility_authority::initialize(opening,world)?);
+        *world.facility_work_slot_mut()=Some(crate::facility_authority::initialize(*opening,world)?);
     }
     let housing_scratch = if world.housing.is_some() {
         crate::housing::MAX_VALIDATION_SCRATCH_BYTES
@@ -1837,6 +1903,7 @@ impl crate::restore_into::Restore for World {
         service_needs,19=>Into(service_needs_slot_mut),
         continuous_supply,20=>Into(continuous_supply_slot_mut),
         facility_work,21=>Into(facility_work_slot_mut),
+        asset_capital,22=>Into(asset_capital_slot_mut),
         });
         // Explicit null model fields must not leave an empty allocation in a legacy root.
         if self.operating_models.as_deref().is_some_and(OperatingModels::empty){self.operating_models=None;}

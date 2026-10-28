@@ -327,7 +327,7 @@ fn authenticate_anchor(scope:Scope,anchor:r::ReceiptAnchor,source:r::Origin,reco
         || anchor.epoch!=source.stream_epoch || anchor.through!=source.stream_sequence
         || anchor.store_ref!=source.operation_id || record.operation_id!=anchor.store_ref
         || record.actor!=0 || record.expected_revision!=source.revision || record.outcome.is_err()
-        || record.actions[0].is_none() || record.actions[1..].iter().any(Option::is_some)
+        || record.actions[0].is_none() || record.actions.iter().skip(1).any(Option::is_some)
         || receipt_digest(record).map_err(fail)?!=anchor.root {return Err(TxError::InvalidOperation);}
     match record.actions[0].ok_or(TxError::InvalidOperation)? {
         crate::transaction::Action::Education {command:Command::Event{expected_epoch,expected_sequence,..}}

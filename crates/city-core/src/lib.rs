@@ -7,6 +7,8 @@ use std::io::{self, Read};
 pub mod air;
 pub mod arena;
 pub mod assembly;
+pub mod asset_cost;
+pub mod asset_cost_authority;
 pub mod boot;
 mod bounded_decode;
 pub mod calendar;

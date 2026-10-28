@@ -1,16 +1,62 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-28T04:53:00.293192+00:00",
-  "source_head": "v0.5.212 source01 original role/Air-owner resource facts",
-  "candidate": "finite resource-facts increment verified/frozen",
+  "last_snapshot_at": "2026-10-28T10:52:40.341178+00:00",
+  "source_head": "v0.5.212 + uncommitted #151/#152/#153/#154",
+  "candidate": "#151 budget29 original18/3488B/full14/16cold passed; stack27 financial default2 passed; final30 affected shared/default/normal compiling; no closure",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
   "limits": {
     "shared_core_lanes": 1,
     "independent_preparations": 2,
     "reason_for_adjustment_required": true
   },
-  "active_shared_work": [],
+  "active_shared_work": [
+    {
+      "issue": 151,
+      "parent": 117,
+      "execution_state": "developing",
+      "implementation_owner_session": "01a166fc-e444-7602-ad22-3a8551dda487",
+      "integration_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
+      "files_or_activation_boundary": [
+        "crates/city-core/src/lib.rs",
+        "crates/city-core/src/asset_cost.rs",
+        "crates/city-core/tests/asset_cost.rs",
+        "docs/core-equity-integration.md",
+        "docs/execution-current.md",
+        "docs/core-task-dispatch-current.md",
+        "docs/issue-execution-ledger.md",
+        "docs/inputs/issue-ledger/execution-flow.json",
+        "docs/inputs/issue-ledger/registry.json",
+        "README.md",
+        "AUDIT_HANDOFF.md",
+        "crates/city-core/src/asset_cost_authority.rs",
+        "crates/city-core/src/assembly.rs",
+        "crates/city-core/src/town_runtime.rs",
+        "crates/city-core/src/transaction.rs",
+        "crates/city-core/src/assembly/typed_opening.rs (only absent asset field in existing constructor)"
+      ],
+      "actual_seams": [
+        "original Construction Prepared commission/withdraw",
+        "original TownSettle assessment and retained earnings"
+      ],
+      "dependencies": [
+        "existing actual construction spend and operating publication",
+        "original completed single-city Timeline",
+        "existing Town tax and original Store receipt"
+      ],
+      "remaining": [
+        "final affected shared regressions",
+        "final default restore and normal role resources",
+        "contract audit, publish and Issue closure"
+      ],
+      "evidence": "work/asset-capital-runtime-20261028",
+      "remaining_gaps": [
+        "final affected shared regressions",
+        "final default restore and normal role resources",
+        "contract audit, publish and Issue closure"
+      ]
+    }
+  ],
   "active_independent_preparations": [],
   "counting_rules": {
     "parents_are_not_active_work": true,
@@ -536,6 +582,46 @@
         "source_to_acceptance_seconds": null,
         "unknown_reason": "activation and audit candidate timestamps are not reliable first-ready/full-scope delivery times"
       }
+    },
+    {
+      "issue": 151,
+      "parent": 117,
+      "execution_state": "developing",
+      "implementation_owner_session": "01a166fc-e444-7602-ad22-3a8551dda487",
+      "integration_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
+      "files_or_activation_boundary": [
+        "crates/city-core/src/lib.rs",
+        "crates/city-core/src/asset_cost.rs",
+        "crates/city-core/tests/asset_cost.rs",
+        "docs/core-equity-integration.md",
+        "docs/execution-current.md",
+        "docs/core-task-dispatch-current.md",
+        "docs/issue-execution-ledger.md",
+        "docs/inputs/issue-ledger/execution-flow.json",
+        "docs/inputs/issue-ledger/registry.json",
+        "README.md",
+        "AUDIT_HANDOFF.md",
+        "crates/city-core/src/asset_cost_authority.rs",
+        "crates/city-core/src/assembly.rs",
+        "crates/city-core/src/town_runtime.rs",
+        "crates/city-core/src/transaction.rs"
+      ],
+      "actual_seams": [
+        "original Construction Prepared commission/withdraw",
+        "original TownSettle assessment and retained earnings"
+      ],
+      "dependencies": [
+        "existing actual construction spend and operating publication",
+        "original completed single-city Timeline",
+        "existing Town tax and original Store receipt"
+      ],
+      "remaining": [
+        "actual business tests and original basis/clock validation",
+        "Store original receipt/source recovery",
+        "affected regressions/default-stack/resource gate",
+        "complete contract acceptance and issue closure"
+      ],
+      "evidence": "work/asset-capital-runtime-20261028"
     }
   ],
   "duration_policy": {
@@ -848,5 +934,13 @@
     "source": "source01",
     "evidence": "docs/evidence/task-resource-facts-20261028/STATUS.md",
     "business_close_delta": 0
+  },
+  "latest_active_evidence": "work/asset-capital-runtime-20261028/integration04-business-result.json",
+  "near_term_objective": "Close #151 original finite contract, then accept one sustainable finite-city business loop using existing integrated deliveries; no batch source-only models",
+  "next_acceptance_preparation": {
+    "state": "completed read-only input extraction; root judgment pending",
+    "owner": "/root/finite_city_existing_inputs",
+    "scope": "specific existing fixture identities for one finite-city acceptance card",
+    "write_authority": []
   }
 }

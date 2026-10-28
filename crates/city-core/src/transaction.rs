@@ -293,21 +293,108 @@ pub struct Receipt {
     pub town: Option<crate::town_runtime::MarketSummary>,
 }
 
-#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
+// Existing flat receipt wire, compact in-memory body. Context-bearing commands
+// have one action; ordinary/failed batch tickets retain all sixteen exact actions.
+#[derive(Clone, Copy, Debug)]
 pub struct JournalRecord {
-    #[serde(default,skip_serializing_if="Option::is_none")]
-    pub income_context:Option<crate::housing_income::IncomeContext>,
-    pub actor: u32,
-    pub emergency_eligible: bool,
-    pub operation_id: u64,
-    pub expected_revision: u64,
-    pub payload_sha256: [u8; 32],
-    pub outcome: Result<Receipt, TxError>,
-    pub actions: [Option<Action>; MAX_ACTIONS],
-    #[serde(default, skip_serializing_if="Option::is_none")]
-    pub qualification_context: Option<crate::qualification_authority::Context>,
-    #[serde(default,skip_serializing_if="Option::is_none")]
-    pub facility_context:Option<crate::facility_authority::Effects>,
+    pub actor:u32, pub emergency_eligible:bool, pub operation_id:u64,
+    pub expected_revision:u64, pub payload_sha256:[u8;32],
+    pub outcome:Result<Receipt,TxError>, pub actions:JournalActions,
+}
+#[derive(Clone,Copy,Debug)]
+pub struct JournalActions(JournalBody);
+#[derive(Clone,Copy,Debug)]
+enum JournalBody {
+    Plain([Option<Action>;MAX_ACTIONS]),
+    Contextual { action:Option<Action>, qualification:Option<crate::qualification_authority::Context>,
+        facility:Option<crate::facility_authority::Effects>, income:Option<crate::housing_income::IncomeContext>,
+        asset:Option<crate::asset_cost_authority::Context> },
+}
+impl JournalActions {
+    pub fn plain(actions:[Option<Action>;MAX_ACTIONS])->Self {Self(JournalBody::Plain(actions))}
+    pub fn with_contexts(actions:[Option<Action>;MAX_ACTIONS],qualification:Option<crate::qualification_authority::Context>,
+        facility:Option<crate::facility_authority::Effects>,income:Option<crate::housing_income::IncomeContext>,
+        asset:Option<crate::asset_cost_authority::Context>)->Result<Self,&'static str>{
+        if qualification.is_some()&&!matches!(actions[0],Some(Action::Qualification{..})) {return Err("receipt_qualification_action");}
+        if asset.is_some()&&!matches!(actions[0],Some(Action::Construction{..}|Action::TownSettle{..})){return Err("receipt_asset_action");}
+        if (qualification.is_some()||facility.is_some()||income.is_some()||asset.is_some())&&actions[0].is_none(){return Err("receipt_context_requires_single_action");}
+        Self::from_wire_contexts(actions,qualification,facility,income,asset)
+    }
+    /// Wire decoding keeps the legacy empty-action diagnostic records readable;
+    /// actual source authority remains with each original receipt consumer.
+    pub fn from_wire_contexts(actions:[Option<Action>;MAX_ACTIONS],qualification:Option<crate::qualification_authority::Context>,
+        facility:Option<crate::facility_authority::Effects>,income:Option<crate::housing_income::IncomeContext>,
+        asset:Option<crate::asset_cost_authority::Context>)->Result<Self,&'static str>{
+        if qualification.is_none()&&facility.is_none()&&income.is_none()&&asset.is_none(){return Ok(Self::plain(actions));}
+        if actions[1..].iter().any(Option::is_some){return Err("receipt_context_requires_single_action");}
+        Ok(Self(JournalBody::Contextual{action:actions[0],qualification,facility,income,asset}))
+    }
+    pub fn iter(&self)->impl ExactSizeIterator<Item=&Option<Action>> { (0..MAX_ACTIONS).map(move|i|&self[i]) }
+}
+impl std::ops::Index<usize> for JournalActions {
+    type Output=Option<Action>;
+    fn index(&self,index:usize)->&Self::Output{
+        assert!(index<MAX_ACTIONS);
+        match &self.0 {JournalBody::Plain(a)=>&a[index],JournalBody::Contextual{action,..} if index==0=>action,_=>&None}
+    }
+}
+impl PartialEq for JournalActions{fn eq(&self,other:&Self)->bool{self.iter().eq(other.iter())}}
+pub struct JournalActionIter { actions:JournalActions,index:usize }
+impl Iterator for JournalActionIter {type Item=Option<Action>;fn next(&mut self)->Option<Self::Item>{if self.index==MAX_ACTIONS{return None;}let value=self.actions[self.index];self.index+=1;Some(value)}}
+impl IntoIterator for JournalActions {type Item=Option<Action>;type IntoIter=JournalActionIter;fn into_iter(self)->Self::IntoIter{JournalActionIter{actions:self,index:0}}}
+impl Serialize for JournalActions {
+    fn serialize<S:serde::Serializer>(&self,s:S)->Result<S::Ok,S::Error>{use serde::ser::SerializeSeq;let mut seq=s.serialize_seq(Some(MAX_ACTIONS))?;for action in self.iter(){seq.serialize_element(action)?;}seq.end()}
+}
+impl JournalRecord {
+    pub fn qualification_context(&self)->Option<crate::qualification_authority::Context>{match self.actions.0{JournalBody::Contextual{qualification,..}=>qualification,_=>None}}
+    pub fn facility_context(&self)->Option<crate::facility_authority::Effects>{match self.actions.0{JournalBody::Contextual{facility,..}=>facility,_=>None}}
+    pub fn income_context(&self)->Option<crate::housing_income::IncomeContext>{match self.actions.0{JournalBody::Contextual{income,..}=>income,_=>None}}
+    pub fn asset_capital_context(&self)->Option<crate::asset_cost_authority::Context>{match self.actions.0{JournalBody::Contextual{asset,..}=>asset,_=>None}}
+}
+impl Serialize for JournalRecord {
+    fn serialize<S:serde::Serializer>(&self,s:S)->Result<S::Ok,S::Error>{
+        use serde::ser::SerializeStruct;
+        let asset=self.asset_capital_context();let income=self.income_context();let qualification=self.qualification_context();let facility=self.facility_context();
+        let mut row=s.serialize_struct("JournalRecord",7+usize::from(asset.is_some())+usize::from(income.is_some())+usize::from(qualification.is_some())+usize::from(facility.is_some()))?;
+        if let Some(value)=asset{row.serialize_field("asset_capital_context",&value)?;}
+        if let Some(value)=income{row.serialize_field("income_context",&value)?;}
+        row.serialize_field("actor",&self.actor)?;row.serialize_field("emergency_eligible",&self.emergency_eligible)?;
+        row.serialize_field("operation_id",&self.operation_id)?;row.serialize_field("expected_revision",&self.expected_revision)?;
+        row.serialize_field("payload_sha256",&self.payload_sha256)?;row.serialize_field("outcome",&self.outcome)?;
+        row.serialize_field("actions",&self.actions)?;
+        if let Some(value)=qualification{row.serialize_field("qualification_context",&value)?;}
+        if let Some(value)=facility{row.serialize_field("facility_context",&value)?;}
+        row.end()
+    }
+}
+impl<'de> Deserialize<'de> for JournalRecord {
+    fn deserialize<D:serde::Deserializer<'de>>(d:D)->Result<Self,D::Error>{
+        #[derive(Deserialize)]
+        #[serde(field_identifier,rename_all="snake_case")]
+        enum Field { Actor,EmergencyEligible,OperationId,ExpectedRevision,PayloadSha256,Outcome,Actions,QualificationContext,FacilityContext,IncomeContext,AssetCapitalContext,#[serde(other)] Unknown }
+        struct Visitor;
+        impl<'de> serde::de::Visitor<'de> for Visitor {
+            type Value=JournalRecord;
+            fn expecting(&self,f:&mut std::fmt::Formatter)->std::fmt::Result{f.write_str("original flat journal record")}
+            fn visit_map<M:serde::de::MapAccess<'de>>(self,mut map:M)->Result<Self::Value,M::Error>{
+                let(mut actor,mut emergency,mut operation,mut revision,mut payload,mut outcome,mut actions)=(None,None,None,None,None,None,None);
+                let(mut qualification,mut facility,mut income,mut asset)=(None,None,None,None);
+                macro_rules! field {($slot:ident,$name:literal)=>{{if $slot.is_some(){return Err(serde::de::Error::duplicate_field($name));}$slot=Some(map.next_value()?);}}}
+                while let Some(key)=map.next_key::<Field>()?{match key{
+                    Field::Actor=>field!(actor,"actor"),Field::EmergencyEligible=>field!(emergency,"emergency_eligible"),
+                    Field::OperationId=>field!(operation,"operation_id"),Field::ExpectedRevision=>field!(revision,"expected_revision"),
+                    Field::PayloadSha256=>field!(payload,"payload_sha256"),Field::Outcome=>field!(outcome,"outcome"),Field::Actions=>field!(actions,"actions"),
+                    Field::QualificationContext=>field!(qualification,"qualification_context"),Field::FacilityContext=>field!(facility,"facility_context"),
+                    Field::IncomeContext=>field!(income,"income_context"),Field::AssetCapitalContext=>field!(asset,"asset_capital_context"),
+                    Field::Unknown=>{let _:serde::de::IgnoredAny=map.next_value()?;}
+                }}
+                macro_rules! required{($slot:ident,$name:literal)=>{$slot.ok_or_else(||serde::de::Error::missing_field($name))?}}
+                let actions=JournalActions::from_wire_contexts(required!(actions,"actions"),qualification.unwrap_or(None),facility.unwrap_or(None),income.unwrap_or(None),asset.unwrap_or(None)).map_err(serde::de::Error::custom)?;
+                Ok(JournalRecord{actor:required!(actor,"actor"),emergency_eligible:required!(emergency,"emergency_eligible"),operation_id:required!(operation,"operation_id"),expected_revision:required!(revision,"expected_revision"),payload_sha256:required!(payload,"payload_sha256"),outcome:required!(outcome,"outcome"),actions})
+            }
+        }
+        d.deserialize_struct("JournalRecord",&["actor","emergency_eligible","operation_id","expected_revision","payload_sha256","outcome","actions","qualification_context","facility_context","income_context","asset_capital_context"],Visitor)
+    }
 }
 
 /// In-memory retry window. Durable receipts continue to use the full `JournalRecord`; this
@@ -473,8 +560,10 @@ pub struct Engine {
 
 struct Prepared {
     facility_work: Option<Box<crate::facility_authority::Runtime>>,
+    asset_capital: Option<Box<crate::asset_cost_authority::Runtime>>,
     facility_member: Option<Box<crate::member_activity::Ledger>>,
     facility_effects:Option<crate::facility_authority::Effects>,
+    asset_capital_context:Option<crate::asset_cost_authority::Context>,
     continuous_supply: Option<Box<crate::continuous_supply::Runtime>>,
     service_needs: Option<Box<crate::service_needs::Runtime>>,
     qualification: Option<crate::qualification_authority::Candidate>,
@@ -530,7 +619,12 @@ pub(crate) const fn prepared_header_bytes() -> usize {
 }
 
 impl Engine {
-    pub fn new(world: World, mut resources: Vec<Resource>) -> Result<Self, TxError> {
+    pub fn new(world: World, resources: Vec<Resource>) -> Result<Self, TxError> {
+        Self::new_boxed(Box::new(world),resources)
+    }
+    // The restore slot already owns this exact Box; retain it through construction
+    // instead of returning/copying a large empty World through nested Results.
+    fn new_boxed(world: Box<World>, mut resources: Vec<Resource>) -> Result<Self, TxError> {
         if world.economy.is_some() && !resources.is_empty() {
             return Err(TxError::Resource);
         }
@@ -605,7 +699,7 @@ impl Engine {
         }
         drop(resources);
         let engine = Self {
-            world: Box::new(world),
+            world,
             resources: resource_rows,
             leases,
             next_token: 1,
@@ -1047,6 +1141,8 @@ impl Engine {
     fn validate_checkpoint_runtime(&self) -> Result<(), TxError> {
         if self.world.venue.is_some() && self.owned_capacity_bytes().checked_add(venue_driver::READ_SCRATCH_BYTES).is_none_or(|n| n > ENGINE_BYTE_BUDGET) { return Err(TxError::WorkingLimit); }
         time_capacity_driver::validate(&self.world, self.time_capacity.as_deref(), &self.resources, &self.leases)?;
+        crate::asset_cost_authority::validate(&self.world).map_err(|_|TxError::InvalidOperation)?;
+        if self.world.asset_capital.is_some() && self.owned_capacity_bytes().checked_add(crate::asset_cost_authority::Runtime::workspace_bytes()).is_none_or(|n|n>ENGINE_BYTE_BUDGET){return Err(TxError::WorkingLimit);}
         if self.world.service_needs.is_some() && self.owned_capacity_bytes().checked_add(self.world.service_needs.as_deref().map_or(0,crate::service_needs::Runtime::restore_workspace_bytes_for)).is_none_or(|n|n>ENGINE_BYTE_BUDGET){return Err(TxError::WorkingLimit);}
         if self.world.qualification.is_some() && self.owned_capacity_bytes().checked_add(crate::qualification_authority::restore_bytes())
             .is_none_or(|n|n>ENGINE_BYTE_BUDGET){return Err(TxError::WorkingLimit);}
@@ -1232,6 +1328,37 @@ impl Engine {
     }
     /// Store binds presence and immutable namespace against the original genesis.
     /// This digest deliberately excludes ordinal, active rows and consumed cursors.
+    pub fn asset_capital_registration(&self) -> Option<crate::asset_cost_authority::Opening> {
+        self.world.asset_capital.as_deref().map(|m| m.opening)
+    }
+    pub fn asset_capital_summary(&self) -> Option<crate::asset_cost_authority::State> { self.world.asset_capital.as_deref().and_then(|r|r.state) }
+    pub fn asset_capital_is_ready(&self) -> bool {
+        self.world.asset_capital.as_deref().and_then(|m| m.state).is_none_or(|s| s.ready)
+    }
+    pub fn asset_capital_receipt_operations(&self) -> [Option<u64>; 5] {
+        crate::asset_cost_authority::operations(self.world.asset_capital.as_deref().and_then(|m| m.state))
+    }
+    pub fn begin_asset_capital_restore(&self) -> Result<crate::asset_cost_authority::RestoreCheck, String> {
+        let m = self.world.asset_capital.as_deref().ok_or("asset_capital_profile")?;
+        Ok(crate::asset_cost_authority::RestoreCheck { opening: m.opening,
+            state: m.state.ok_or("asset_capital_state")?, seen: 0 })
+    }
+    pub fn check_asset_capital_original(&self, check: &mut crate::asset_cost_authority::RestoreCheck, index: usize, record: &JournalRecord) -> Result<(), String> {
+        crate::asset_cost_authority::check_original(self.world.scope,check.opening, check.state, index, record).map_err(|e| format!("asset_capital_original:{e:?}"))?;
+        check.seen |= 1 << index;
+        Ok(())
+    }
+    pub fn finish_asset_capital_restore(&mut self, check: crate::asset_cost_authority::RestoreCheck) -> Result<(), String> {
+        let m = self.world.asset_capital_mut().ok_or("asset_capital_profile")?;
+        let state = m.state.as_mut().ok_or("asset_capital_state")?;
+        let required = crate::asset_cost_authority::operations(Some(*state)).iter().enumerate()
+            .fold(0u8, |bits,(i,op)| bits | if op.is_some() {1 << i} else {0});
+        if m.opening != check.opening || *state != check.state || check.seen != required {
+            return Err("asset_capital_restore_incomplete".into());
+        }
+        state.ready = true;
+        Ok(())
+    }
     pub fn facility_work_is_authenticated(&self)->bool{self.world.facility_work.as_deref().is_none_or(|r|r.is_ready())}
     pub fn facility_work_registration(&self)->Option<[u8;32]>{self.world.facility_work.as_deref().map(|r|r.registration().expect("validated facility registration"))}
     pub fn facility_work_receipt_operations(&self)->[Option<u64>;crate::facility_authority::MAX_ANCHORS]{crate::facility_authority::restore_operations(&self.world)}
@@ -1787,6 +1914,11 @@ impl Engine {
         for (i, a) in env.actions.iter().enumerate() {
             actions[i] = Some(*a)
         }
+        let actions=match JournalActions::with_contexts(actions,
+            prepared.as_ref().ok().and_then(|p|p.qualification.as_ref().map(|q|q.context)),
+            prepared.as_ref().ok().and_then(|p|p.facility_effects),
+            prepared.as_ref().ok().and_then(|p|p.service_needs.as_deref()).and_then(|n|n.delivery.as_deref()).and_then(|d|d.income_anchor()).filter(|a|a.operation_id==env.operation_id),
+            prepared.as_ref().ok().and_then(|p|p.asset_capital_context)) {Ok(value)=>value,Err(_)=>return Ok(Err(TxError::InvalidOperation))};
         let record = JournalRecord {
             actor: caller.key(),
             emergency_eligible: prepared
@@ -1797,9 +1929,6 @@ impl Engine {
             payload_sha256: digest,
             outcome,
             actions,
-            qualification_context: prepared.as_ref().ok().and_then(|p|p.qualification.as_ref().map(|q|q.context)),
-            facility_context:prepared.as_ref().ok().and_then(|p|p.facility_effects),
-            income_context:prepared.as_ref().ok().and_then(|p|p.service_needs.as_deref()).and_then(|n|n.delivery.as_deref()).and_then(|d|d.income_anchor()).filter(|a|a.operation_id==env.operation_id),
         };
         // Build the compact retry summary before the durable callback. A conversion failure or
         // allocation panic must happen before publication, never after a successful WAL commit.
@@ -2048,6 +2177,7 @@ impl Engine {
         qualification_receipt: Option<&JournalRecord>,
         trace: &mut Trace<'_>,
     ) -> Result<Prepared, TxError> {
+        if !self.asset_capital_is_ready() { return Err(TxError::InvalidOperation); }
         let next_revision = self
             .world
             .revision
@@ -2085,6 +2215,8 @@ impl Engine {
             crate::facility_authority::check_peak(joint,ENGINE_BYTE_BUDGET)?;
         }
         let mut facility_work=self.world.facility_work.clone();
+        if self.world.asset_capital.is_some() && self.owned_capacity_bytes().checked_add(crate::asset_cost_authority::Runtime::workspace_bytes()).is_none_or(|n|n>ENGINE_BYTE_BUDGET) { return Err(TxError::WorkingLimit); }
+        let mut asset_capital=self.world.asset_capital.clone();
         let mut facility_member=if facility_work.is_some()||self.world.service_needs.as_deref().is_some_and(|n|n.delivery.is_some()){self.world.member_activity.clone()}else{None};
         let mut continuous_supply=self.world.continuous_supply.clone();
         let mut service_needs = self.world.service_needs.clone();
@@ -2511,6 +2643,7 @@ impl Engine {
                     {
                         return Err(TxError::InvalidOperation);
                     }
+                    let before = *p;
                     prepare_construction(
                         caller,
                         command,
@@ -2527,6 +2660,11 @@ impl Engine {
                         timeline.as_ref(),
                         town.as_ref(),
                     )?;
+                    if let Some(asset) = asset_capital.as_deref_mut() {
+                        if self.world.region.is_some() { return Err(TxError::InvalidOperation); }
+                        crate::asset_cost_authority::construction_transition(asset.opening, &mut asset.state,
+                            &before, p, env.operation_id, timeline.as_ref())?;
+                    }
                 }
                 Action::HousingLease {
                     offer_id,
@@ -2735,6 +2873,7 @@ impl Engine {
                         world: &self.world,
                         profile: &market.profile,
                         state: &mut town,
+                        asset_capital: asset_capital.as_deref_mut(),
                         timeline: t,
                         accounts: &mut accounts,
                         stocks: &mut stocks,
@@ -2822,6 +2961,7 @@ impl Engine {
                         world: &self.world,
                         profile: &market.profile,
                         state: &mut town,
+                        asset_capital: asset_capital.as_deref_mut(),
                         timeline: t,
                         accounts: &mut accounts,
                         stocks: &mut stocks,
@@ -4349,6 +4489,7 @@ impl Engine {
                 crate::housing_income::PaidWageWindow::owned_capacity_bytes,
             ));
         let projected=projected.saturating_add(continuous_supply.as_deref().map_or(0,|r|r.owned_bytes()+crate::continuous_supply::MAX_WORKSPACE_BYTES));
+        let projected=projected.saturating_add(asset_capital.as_ref().map_or(0, |_|crate::asset_cost_authority::Runtime::workspace_bytes()));
         let projected=projected.saturating_add(facility_work.as_ref().map_or(0,|_|crate::facility_authority::Runtime::owned_bytes()+crate::member_activity::Ledger::owned_bytes()+crate::facility_authority::MAX_WORKSPACE_BYTES));
         let projected = projected.saturating_add(service_needs.as_ref().map_or(0, |_|
             service_needs.as_deref().map_or(0,|n|n.owned_capacity_bytes()+n.candidate_bytes_for())));
@@ -4465,9 +4606,15 @@ impl Engine {
         let income=housing_wage_window.as_deref().or_else(||self.world.housing.as_deref().and_then(|h|h.paid_wages.as_deref()));
         crate::facility_authority::validate_income_window(facility_work.as_deref(),income,timeline.as_ref())?;
         let facility_effects=crate::facility_authority::effects(facility_work.as_deref(),env.operation_id)?;
+        let asset_capital_context = crate::asset_cost_authority::context(
+            self.world.scope,
+            self.world.asset_capital.as_deref().map(|m| m.opening),
+            self.world.asset_capital.as_deref().and_then(|m| m.state),
+            asset_capital.as_deref().and_then(|m| m.state), env.operation_id)?;
         Ok(Prepared {
+            asset_capital_context,
             facility_effects,
-            facility_work,facility_member,
+            facility_work,facility_member,asset_capital,
             continuous_supply,
             service_needs,
             qualification,
@@ -4529,7 +4676,7 @@ impl Engine {
         self.world.boot = prepared.boot;
         self.world.economy = prepared.economy;
         self.world.region = prepared.region;
-        self.world.commit_operating_states(prepared.service_needs,prepared.continuous_supply,prepared.facility_work);
+        self.world.commit_operating_states(prepared.service_needs,prepared.continuous_supply,prepared.facility_work,prepared.asset_capital);
         self.world.construction = prepared.construction;
         if let Some(candidate)=prepared.qualification {
             debug_assert_eq!(self.world.qualification.as_deref().expect("prepared qualification").fingerprint().ok(),Some(candidate.expected));
@@ -4803,6 +4950,7 @@ struct TownSettlementContext<'a> {
     world: &'a World,
     profile: &'a crate::town_runtime::MarketProfile,
     state: &'a mut Option<crate::town_runtime::MarketState>,
+    asset_capital: Option<&'a mut crate::asset_cost_authority::Runtime>,
     timeline: &'a mut crate::timeline::Timeline,
     accounts: &'a mut DirtyAccounts,
     stocks: &'a mut DirtyStocks,
@@ -4824,6 +4972,7 @@ fn prepare_town_settlement(
         world,
         profile,
         state,
+        asset_capital,
         timeline,
         accounts,
         stocks,
@@ -5406,6 +5555,7 @@ fn prepare_town_settlement(
     apply_company_tax_assessments(
         profile,
         market_state,
+        asset_capital,
         timeline,
         &batch,
         &worker_deltas,
@@ -5424,6 +5574,7 @@ fn prepare_town_settlement(
 fn apply_company_tax_assessments(
     profile: &crate::town_runtime::MarketProfile,
     market_state: &mut crate::town_runtime::MarketState,
+    mut asset_capital: Option<&mut crate::asset_cost_authority::Runtime>,
     timeline: &mut crate::timeline::Timeline,
     batch: &crate::town_economy::SettlementBatch,
     worker_deltas: &[(u32, u32, u64, i64, i64)],
@@ -5473,9 +5624,15 @@ fn apply_company_tax_assessments(
         let idle_labor = accrued_wages_cents
             .checked_sub(capitalized_labor_cents)
             .ok_or(TxError::InvalidOperation)?;
+        let depreciation = match asset_capital.as_deref_mut().filter(|a| a.opening.owner == rule.company) {
+            Some(a) => crate::asset_cost_authority::assess(a.opening, &mut a.state,
+                timeline.progress.last_complete, operation_id)?,
+            None => Money::ZERO,
+        };
         let margin_cents = sales_cents
             .checked_sub(sold_basis_cents)
             .and_then(|v| v.checked_sub(idle_labor))
+            .and_then(|v| v.checked_sub(i128::from(depreciation.value())))
             .ok_or(TxError::Overflow)?;
         let taxable_cents = margin_cents.max(0);
         let assessed_cents = taxable_cents

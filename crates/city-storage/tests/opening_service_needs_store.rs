@@ -184,7 +184,7 @@ fn state(store: &Store) -> Value {
     json!({
         "state_hash": store.state_hash().unwrap(),
         "registration": engine.service_needs_registration(),
-        "entry_receipt_operations": engine.service_needs_receipt_operations(),
+        "entry_receipt_operations": engine.service_needs_receipt_operations().as_slice(),
         "due_state": engine.service_needs_due_state().unwrap(),
         "timeline": engine.timeline().unwrap().progress,
     })

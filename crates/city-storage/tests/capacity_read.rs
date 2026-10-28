@@ -127,7 +127,7 @@ fn hot_archive_rejected_and_missing_receipts_keep_original_semantics() {
     assert_eq!(literal_sha, hot_original.payload_sha256);
     assert_eq!(hot_original.actor, 0); // Literal caller authority: System.
     assert_eq!(hot_original.actions[0], Some(hot_envelope.actions[0]));
-    assert!(hot_original.actions[1..].iter().all(Option::is_none));
+    assert!(hot_original.actions.iter().skip(1).all(Option::is_none));
     let hot = observe(&mut s, Some(1)).unwrap();
     assert_eq!(hot.projection.timeline_presence, TimelinePresence::Absent);
     assert!(hot.projection.progress.is_none());

@@ -162,9 +162,7 @@ fn settle(store: &mut Store) -> mycity_core::town_runtime::MarketSummary {
     store
         .engine()
         .unwrap()
-        .world()
-        .view()
-        .town
+        .world().town_market()
         .unwrap()
         .state
         .last_summary
@@ -249,9 +247,7 @@ fn paid_dividend_does_not_reduce_liquidation_capital_and_allocations_cold_replay
     let opening_register = store
         .engine()
         .unwrap()
-        .world()
-        .view()
-        .town
+        .world().town_market()
         .unwrap()
         .state
         .equity_registers
@@ -289,9 +285,7 @@ fn paid_dividend_does_not_reduce_liquidation_capital_and_allocations_cold_replay
         let register = store
             .engine()
             .unwrap()
-            .world()
-            .view()
-            .town
+            .world().town_market()
             .unwrap()
             .state
             .equity_registers
@@ -429,9 +423,7 @@ fn paid_dividend_does_not_reduce_liquidation_capital_and_allocations_cold_replay
     let dividend_register = store
         .engine()
         .unwrap()
-        .world()
-        .view()
-        .town
+        .world().town_market()
         .unwrap()
         .state
         .equity_registers
@@ -493,9 +485,7 @@ fn paid_dividend_does_not_reduce_liquidation_capital_and_allocations_cold_replay
     let register = store
         .engine()
         .unwrap()
-        .world()
-        .view()
-        .town
+        .world().town_market()
         .unwrap()
         .state
         .equity_registers
@@ -533,9 +523,7 @@ fn paid_dividend_does_not_reduce_liquidation_capital_and_allocations_cold_replay
         store
             .engine()
             .unwrap()
-            .world()
-            .view()
-            .town
+            .world().town_market()
             .unwrap()
             .state
             .exit

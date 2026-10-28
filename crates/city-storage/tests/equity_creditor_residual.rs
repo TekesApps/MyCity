@@ -154,9 +154,7 @@ fn settle(store: &mut Store) -> mycity_core::town_runtime::MarketSummary {
     store
         .engine()
         .unwrap()
-        .world()
-        .view()
-        .town
+        .world().town_market()
         .unwrap()
         .state
         .last_summary
@@ -259,9 +257,7 @@ fn future_creditor_blocks_equity_then_paid_in_and_surplus_are_distributed_once()
     let register = store
         .engine()
         .unwrap()
-        .world()
-        .view()
-        .town
+        .world().town_market()
         .unwrap()
         .state
         .equity_registers
@@ -349,9 +345,7 @@ fn future_creditor_blocks_equity_then_paid_in_and_surplus_are_distributed_once()
         store
             .engine()
             .unwrap()
-            .world()
-            .view()
-            .town
+            .world().town_market()
             .unwrap()
             .state
             .equity_registers
@@ -434,9 +428,7 @@ fn future_creditor_blocks_equity_then_paid_in_and_surplus_are_distributed_once()
     let register = store
         .engine()
         .unwrap()
-        .world()
-        .view()
-        .town
+        .world().town_market()
         .unwrap()
         .state
         .equity_registers

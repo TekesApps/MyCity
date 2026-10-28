@@ -70,7 +70,7 @@ fn apply(s:&mut Store,caller:Caller,action:Action)->Envelope {
 fn reject(s:&mut Store,caller:Caller,action:Action) {
     let old=s.engine().unwrap().business_comparison_checkpoint().unwrap();let input=env(s,action);let op=input.operation_id;let out=s.execute(caller,input).unwrap();
     assert!(out.model.is_err(),"{out:?}");
-    if let Some(ticket)=s.receipt(op).unwrap(){assert!(ticket.qualification_context.is_none());}
+    if let Some(ticket)=s.receipt(op).unwrap(){assert!(ticket.qualification_context().is_none());}
     assert_eq!(s.engine().unwrap().business_comparison_checkpoint().unwrap(),old);
 }
 fn event(s:&Store,action:er::Action)->Action {

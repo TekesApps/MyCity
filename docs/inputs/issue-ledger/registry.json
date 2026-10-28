@@ -1,7 +1,7 @@
 {
   "schema": "mycity-issue-ledger-v1",
-  "date": "2026-10-26",
-  "release": "v0.5.212",
+  "date": "2026-10-28",
+  "release": "v0.5.213",
   "scope": "完整既定产品；v190有限业务132与缺陷148真实验收关闭，v191仅同步台账，UI单独延期",
   "coordination": "当前root唯一共享writer/串行验证；旧主会话停用",
   "states": [
@@ -19,7 +19,10 @@
     124,
     148,
     149,
-    150
+    150,
+    152,
+    153,
+    154
   ],
   "hardware_issue": 114,
   "issues": [
@@ -3683,6 +3686,106 @@
       "pr": "none",
       "issue_body_sha256": "01aaa67906ad2ff8e79ea786e6f043d0ccd7b04306e3a347ccc29aa4f706bf32",
       "execution_state": "completed:closed"
+    },
+    {
+      "issue": 151,
+      "title": "[业务子任务] 自有工程资本、期间折旧与原税基恢复闭环",
+      "url": "https://github.com/TekesApps/MyCity/issues/151",
+      "parent": 117,
+      "stage": "待验证",
+      "owner": "root唯一共享writer/集成/串行验收",
+      "write_authority": [
+        "crates/city-core/src/asset_cost.rs",
+        "crates/city-core/src/asset_cost_authority.rs",
+        "crates/city-core/src/town_runtime.rs",
+        "crates/city-core/src/transaction.rs",
+        "crates/city-core/src/assembly.rs",
+        "crates/city-core/src/lib.rs",
+        "crates/city-core/tests/asset_capital_runtime.rs"
+      ],
+      "scope": "真实工程投运原资本、期间及后续费用进入原税基/留存、原票与Store恢复",
+      "required_capabilities": [
+        "原Construction实际材料工资和投运",
+        "完成态无Region本城Timeline",
+        "原Town税与Store提交/恢复"
+      ],
+      "acceptance": [
+        "独立业务正常/拒绝金额核对",
+        "原票及WAL/checkpoint冷恢复",
+        "受影响共享、默认栈和资源门"
+      ],
+      "remaining": "Necessary runtime checks passed; publish and actual Issue closure receipt pending",
+      "evidence": "docs/evidence/asset-capital-runtime-20261028/STATUS.md; external full originals in work/asset-capital-runtime-20261028",
+      "implementation_tags": "v0.5.213 pending publication",
+      "pr": "No PR, direct root integration",
+      "execution_state": "developing",
+      "execution_contract": "docs/inputs/issue-ledger/execution-flow.json"
+    },
+    {
+      "issue": 152,
+      "title": "原企业留存收益分配默认栈溢出",
+      "url": "https://github.com/TekesApps/MyCity/issues/152",
+      "parent": null,
+      "stage": "待验证",
+      "owner": "当前root；#151同一共享窗口，不新增在制线",
+      "write_authority": [
+        "既有共享核心与对应原兼容测试，root唯一writer"
+      ],
+      "scope": "具体回归修复，不调整原门",
+      "required_capabilities": [
+        "#151固定源码串行验证"
+      ],
+      "acceptance": [
+        "原红例、受影响业务/原票/恢复、必要默认栈和资源门"
+      ],
+      "remaining": "Necessary runtime checks passed; publish and actual Issue closure receipt pending",
+      "evidence": "docs/evidence/asset-capital-runtime-20261028/STATUS.md; external full originals in work/asset-capital-runtime-20261028",
+      "implementation_tags": "v0.5.213 pending publication",
+      "pr": "No PR, direct root integration"
+    },
+    {
+      "issue": 153,
+      "title": "可选资产原18单元World容量回归",
+      "url": "https://github.com/TekesApps/MyCity/issues/153",
+      "parent": null,
+      "stage": "待验证",
+      "owner": "当前root；#151同一共享窗口，不新增在制线",
+      "write_authority": [
+        "既有共享核心与对应原兼容测试，root唯一writer"
+      ],
+      "scope": "具体回归修复，不调整原门",
+      "required_capabilities": [
+        "#151固定源码串行验证"
+      ],
+      "acceptance": [
+        "原红例、受影响业务/原票/恢复、必要默认栈和资源门"
+      ],
+      "remaining": "Necessary runtime checks passed; publish and actual Issue closure receipt pending",
+      "evidence": "docs/evidence/asset-capital-runtime-20261028/STATUS.md; external full originals in work/asset-capital-runtime-20261028",
+      "implementation_tags": "v0.5.213 pending publication",
+      "pr": "No PR, direct root integration"
+    },
+    {
+      "issue": 154,
+      "title": "原JournalRecord常驻上下文越过4096B兼容门",
+      "url": "https://github.com/TekesApps/MyCity/issues/154",
+      "parent": null,
+      "stage": "待验证",
+      "owner": "当前root；#151同一共享窗口，不新增在制线",
+      "write_authority": [
+        "既有共享核心与对应原兼容测试，root唯一writer"
+      ],
+      "scope": "具体回归修复，不调整原门",
+      "required_capabilities": [
+        "#151固定源码串行验证"
+      ],
+      "acceptance": [
+        "原红例、受影响业务/原票/恢复、必要默认栈和资源门"
+      ],
+      "remaining": "Necessary runtime checks passed; publish and actual Issue closure receipt pending",
+      "evidence": "docs/evidence/asset-capital-runtime-20261028/STATUS.md; external full originals in work/asset-capital-runtime-20261028",
+      "implementation_tags": "v0.5.213 pending publication",
+      "pr": "No PR, direct root integration"
     }
   ],
   "capability_edges": [

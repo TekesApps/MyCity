@@ -1,0 +1,508 @@
+{
+  "at": "2026-10-28T11:15:05.989598+00:00",
+  "status": "finite_contract_verified_publication_pending",
+  "issues": [
+    151,
+    152,
+    153,
+    154
+  ],
+  "parent117_full_scope_complete": false,
+  "game_base": "0b6578b0270db53a6bb89dc1ac8aa3af09c1967e/v0.5.212",
+  "source_manifest": "provenance32-source-manifest.json",
+  "source_sha256": "c8b5eaf049ef8192b0698b6250aec883cc11da0a1b76a2a6a3ecf760e9821771",
+  "source_current_files_checked": 491,
+  "current_source_mismatches": [],
+  "only_delta_from_shared_final30": [
+    "crates/city-core/tests/asset_capital_runtime.rs"
+  ],
+  "source_reuse": "final30 shared/default results; boundary31 exercises newly added same-instant post-settlement commission and durable restore; provenance32 reruns actual role under exact new source fence",
+  "checks": {
+    "budget29": "original18 exact128KiB, receipt3488, 14 actual business/boundary, 2 parents/16 cold processes",
+    "final30": {
+      "source": "final30-source-manifest.json",
+      "results": [
+        {
+          "command": [
+            "/Users/frankqin/dev/MyCity/work/asset-capital-runtime-20261028/final30-city-core-mycity_core-fixed",
+            "--skip",
+            "layout_pressure::restore_into::tests::full_native_target_reuses_all_ten_backings_after_errors_and_reordered_fields",
+            "--nocapture",
+            "--test-threads=1"
+          ],
+          "exit_code": 0,
+          "seconds": 17.898074333,
+          "log": "/Users/frankqin/dev/MyCity/work/asset-capital-runtime-20261028/final30-run-00-mycity_core.log",
+          "summaries": [
+            [
+              "ok",
+              "310",
+              "0",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "/Users/frankqin/dev/MyCity/work/asset-capital-runtime-20261028/final30-city-storage-mycity_storage-fixed",
+            "--nocapture",
+            "--test-threads=1"
+          ],
+          "exit_code": 0,
+          "seconds": 33.991533875,
+          "log": "/Users/frankqin/dev/MyCity/work/asset-capital-runtime-20261028/final30-run-01-mycity_storage.log",
+          "summaries": [
+            [
+              "ok",
+              "36",
+              "0",
+              "0"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "/Users/frankqin/dev/MyCity/work/asset-capital-runtime-20261028/final30-city-storage-equity_runtime-fixed",
+            "--nocapture",
+            "--test-threads=1"
+          ],
+          "exit_code": 0,
+          "seconds": 8.196700292000003,
+          "log": "/Users/frankqin/dev/MyCity/work/asset-capital-runtime-20261028/final30-run-02-equity_runtime.log",
+          "summaries": [
+            [
+              "ok",
+              "2",
+              "0",
+              "0"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "/Users/frankqin/dev/MyCity/work/asset-capital-runtime-20261028/final30-city-storage-equity_dividend_liquidation-fixed",
+            "--nocapture",
+            "--test-threads=1"
+          ],
+          "exit_code": 0,
+          "seconds": 5.919457666000007,
+          "log": "/Users/frankqin/dev/MyCity/work/asset-capital-runtime-20261028/final30-run-03-equity_dividend_liquidation.log",
+          "summaries": [
+            [
+              "ok",
+              "1",
+              "0",
+              "0"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "/Users/frankqin/dev/MyCity/work/asset-capital-runtime-20261028/final30-city-storage-equity_creditor_residual-fixed",
+            "--nocapture",
+            "--test-threads=1"
+          ],
+          "exit_code": 0,
+          "seconds": 6.941319167000003,
+          "log": "/Users/frankqin/dev/MyCity/work/asset-capital-runtime-20261028/final30-run-04-equity_creditor_residual.log",
+          "summaries": [
+            [
+              "ok",
+              "1",
+              "0",
+              "0"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "/Users/frankqin/dev/MyCity/work/asset-capital-runtime-20261028/final30-city-storage-qualification_authority-fixed",
+            "--nocapture",
+            "--test-threads=1"
+          ],
+          "exit_code": 0,
+          "seconds": 66.96767587499998,
+          "log": "/Users/frankqin/dev/MyCity/work/asset-capital-runtime-20261028/final30-run-05-qualification_authority.log",
+          "summaries": [
+            [
+              "ok",
+              "6",
+              "0",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "/Users/frankqin/dev/MyCity/work/asset-capital-runtime-20261028/final30-city-storage-service_delivery_store-fixed",
+            "--nocapture",
+            "--test-threads=1"
+          ],
+          "exit_code": 0,
+          "seconds": 447.082179,
+          "log": "/Users/frankqin/dev/MyCity/work/asset-capital-runtime-20261028/final30-run-06-service_delivery_store.log",
+          "summaries": [
+            [
+              "ok",
+              "5",
+              "0",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "/Users/frankqin/dev/MyCity/work/asset-capital-runtime-20261028/final30-city-storage-capacity_read-fixed",
+            "--nocapture",
+            "--test-threads=1"
+          ],
+          "exit_code": 0,
+          "seconds": 5.089791249999962,
+          "log": "/Users/frankqin/dev/MyCity/work/asset-capital-runtime-20261028/final30-run-07-capacity_read.log",
+          "summaries": [
+            [
+              "ok",
+              "5",
+              "0",
+              "0"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "/Users/frankqin/dev/MyCity/work/asset-capital-runtime-20261028/final30-city-storage-opening_service_needs_store-fixed",
+            "--nocapture",
+            "--test-threads=1"
+          ],
+          "exit_code": 0,
+          "seconds": 6.07441874999995,
+          "log": "/Users/frankqin/dev/MyCity/work/asset-capital-runtime-20261028/final30-run-08-opening_service_needs_store.log",
+          "summaries": [
+            [
+              "ok",
+              "1",
+              "0",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "/Users/frankqin/dev/MyCity/work/asset-capital-runtime-20261028/final30-city-storage-opening_continuous_supply_store-fixed",
+            "--nocapture",
+            "--test-threads=1"
+          ],
+          "exit_code": 0,
+          "seconds": 6.068778957999939,
+          "log": "/Users/frankqin/dev/MyCity/work/asset-capital-runtime-20261028/final30-run-09-opening_continuous_supply_store.log",
+          "summaries": [
+            [
+              "ok",
+              "1",
+              "0",
+              "1"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "/Users/frankqin/dev/MyCity/work/asset-capital-runtime-20261028/final30-city-storage-venue_capacity-fixed",
+            "--nocapture",
+            "--test-threads=1"
+          ],
+          "exit_code": 0,
+          "seconds": 13.41115666600001,
+          "log": "/Users/frankqin/dev/MyCity/work/asset-capital-runtime-20261028/final30-run-10-venue_capacity.log",
+          "summaries": [
+            [
+              "ok",
+              "10",
+              "0",
+              "0"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "/Users/frankqin/dev/MyCity/work/asset-capital-runtime-20261028/final30-city-headless-engine_slot-fixed",
+            "--nocapture",
+            "--test-threads=1"
+          ],
+          "exit_code": 0,
+          "seconds": 13.141997542000013,
+          "log": "/Users/frankqin/dev/MyCity/work/asset-capital-runtime-20261028/final30-run-11-engine_slot.log",
+          "summaries": [
+            [
+              "ok",
+              "4",
+              "0",
+              "0"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "/Users/frankqin/dev/MyCity/work/asset-capital-runtime-20261028/final30-city-headless-stack_restore-fixed",
+            "--nocapture",
+            "--test-threads=1"
+          ],
+          "exit_code": 0,
+          "seconds": 4.356891541999971,
+          "log": "/Users/frankqin/dev/MyCity/work/asset-capital-runtime-20261028/final30-run-12-stack_restore.log",
+          "summaries": [
+            [
+              "ok",
+              "1",
+              "0",
+              "0"
+            ]
+          ]
+        },
+        {
+          "command": [
+            "/Users/frankqin/dev/MyCity/work/asset-capital-runtime-20261028/final30-city-headless-asset_capital_role-fixed",
+            "--nocapture",
+            "--test-threads=1"
+          ],
+          "exit_code": 0,
+          "seconds": 20.181785958999967,
+          "log": "/Users/frankqin/dev/MyCity/work/asset-capital-runtime-20261028/final30-run-13-asset_capital_role.log",
+          "summaries": [
+            [
+              "ok",
+              "1",
+              "0",
+              "0"
+            ]
+          ]
+        }
+      ],
+      "role_world": "/Volumes/HP P900/dev/MyCity/work/ac151world30",
+      "pool": "/Volumes/HP P900/dev/MyCity/work/ac151pool30",
+      "evidence": "/Users/frankqin/dev/MyCity/work/asset-capital-runtime-20261028/final30-evidence"
+    },
+    "boundary31": {
+      "command": [
+        "work/asset-capital-runtime-20261028/boundary31-city-core-asset_capital_runtime-fixed",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit_code": 0,
+      "seconds": 2.596755375,
+      "source": "boundary31-source-manifest.json"
+    },
+    "provenance32": {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/asset-capital-runtime-20261028/provenance32-city-headless-asset_capital_role-fixed",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "source": "provenance32-source-manifest.json",
+      "exit_code": 0,
+      "seconds": 11.949466791999999,
+      "world": "/Volumes/HP P900/dev/MyCity/work/ac151world32",
+      "pool": "/Volumes/HP P900/dev/MyCity/work/ac151pool32",
+      "evidence": "/Users/frankqin/dev/MyCity/work/asset-capital-runtime-20261028/provenance32-evidence"
+    },
+    "consumer33": "mechanical read-iterator test consumer compiles; unrelated full spatial scenario not rerun"
+  },
+  "resources": {
+    "after_first_owned_wait": {
+      "available_touched_bytes": 67108864,
+      "capacity_bytes": 67108864,
+      "fill_acknowledgements": 0,
+      "granted_capacity_bytes": 0,
+      "grants": 0,
+      "maximum_prepare_to_fill_or_reap_ns": 497531541,
+      "rejected_requests": 0,
+      "returns": 0,
+      "scans": 8,
+      "workspace_capacity_bytes": 0,
+      "workspace_fills": 1,
+      "workspace_grants": 1,
+      "workspace_returns": 1
+    },
+    "after_second_owned_wait": {
+      "available_touched_bytes": 67108864,
+      "capacity_bytes": 67108864,
+      "fill_acknowledgements": 0,
+      "granted_capacity_bytes": 0,
+      "grants": 0,
+      "maximum_prepare_to_fill_or_reap_ns": 604364791,
+      "rejected_requests": 0,
+      "returns": 0,
+      "scans": 15,
+      "workspace_capacity_bytes": 0,
+      "workspace_fills": 2,
+      "workspace_grants": 2,
+      "workspace_returns": 2
+    },
+    "arena_observed_peak_bytes": 55630776,
+    "balanced_after_owned_wait": true,
+    "creator_reference_and_hashing_outside_shipping_role": true,
+    "engine_owned_bytes": 3602120,
+    "native_16gb_speed_and_m0_acceptance": "not_run",
+    "pool_capacity_bytes": 67108864,
+    "role_grant_bytes": 61865984,
+    "source_sha256": "c8b5eaf049ef8192b0698b6250aec883cc11da0a1b76a2a6a3ecf760e9821771",
+    "store_owned_bytes": 41920381
+  },
+  "headless_fixed": "/Volumes/HP P900/dev/MyCity/work/asset-capital-runtime-20261028/provenance32-city-headless-mycity-headless-fixed",
+  "headless_sha256": "049bcb4dcaf6c01f478eecc94e061d5aaa2ee84a30cc441d0a3bff54cf688071",
+  "cold_processes": [
+    {
+      "file": "/Volumes/HP P900/dev/MyCity/work/asset-capital-runtime-20261028/budget29-evidence/asset-capital-business-32878-1793184111608508000/day1-wal/exit.json",
+      "result": {
+        "code": 0,
+        "pid": 32898,
+        "timed_out": false
+      }
+    },
+    {
+      "file": "/Volumes/HP P900/dev/MyCity/work/asset-capital-runtime-20261028/budget29-evidence/asset-capital-business-32878-1793184111608508000/day3-wal/exit.json",
+      "result": {
+        "code": 0,
+        "pid": 32924,
+        "timed_out": false
+      }
+    },
+    {
+      "file": "/Volumes/HP P900/dev/MyCity/work/asset-capital-runtime-20261028/budget29-evidence/asset-capital-business-32878-1793184111608508000/closed-unconsumed-checkpoint/exit.json",
+      "result": {
+        "code": 0,
+        "pid": 32932,
+        "timed_out": false
+      }
+    },
+    {
+      "file": "/Volumes/HP P900/dev/MyCity/work/asset-capital-runtime-20261028/budget29-evidence/asset-capital-business-32878-1793184111608508000/day3-checkpoint/exit.json",
+      "result": {
+        "code": 0,
+        "pid": 32925,
+        "timed_out": false
+      }
+    },
+    {
+      "file": "/Volumes/HP P900/dev/MyCity/work/asset-capital-runtime-20261028/budget29-evidence/asset-capital-business-32878-1793184111608508000/closed-day4-checkpoint/exit.json",
+      "result": {
+        "code": 0,
+        "pid": 32941,
+        "timed_out": false
+      }
+    },
+    {
+      "file": "/Volumes/HP P900/dev/MyCity/work/asset-capital-runtime-20261028/budget29-evidence/asset-capital-business-32878-1793184111608508000/day1-checkpoint/exit.json",
+      "result": {
+        "code": 0,
+        "pid": 32904,
+        "timed_out": false
+      }
+    },
+    {
+      "file": "/Volumes/HP P900/dev/MyCity/work/asset-capital-runtime-20261028/budget29-evidence/asset-capital-business-32878-1793184111608508000/closed-day4-wal/exit.json",
+      "result": {
+        "code": 0,
+        "pid": 32940,
+        "timed_out": false
+      }
+    },
+    {
+      "file": "/Volumes/HP P900/dev/MyCity/work/asset-capital-runtime-20261028/budget29-evidence/asset-capital-business-32878-1793184111608508000/commission-wal/exit.json",
+      "result": {
+        "code": 0,
+        "pid": 32885,
+        "timed_out": false
+      }
+    },
+    {
+      "file": "/Volumes/HP P900/dev/MyCity/work/asset-capital-runtime-20261028/budget29-evidence/asset-capital-business-32878-1793184111608508000/unconsumed-expense-checkpoint/exit.json",
+      "result": {
+        "code": 0,
+        "pid": 32919,
+        "timed_out": false
+      }
+    },
+    {
+      "file": "/Volumes/HP P900/dev/MyCity/work/asset-capital-runtime-20261028/budget29-evidence/asset-capital-business-32878-1793184111608508000/withdrawal-checkpoint/exit.json",
+      "result": {
+        "code": 0,
+        "pid": 32916,
+        "timed_out": false
+      }
+    },
+    {
+      "file": "/Volumes/HP P900/dev/MyCity/work/asset-capital-runtime-20261028/budget29-evidence/asset-capital-business-32878-1793184111608508000/unconsumed-expense-wal/exit.json",
+      "result": {
+        "code": 0,
+        "pid": 32918,
+        "timed_out": false
+      }
+    },
+    {
+      "file": "/Volumes/HP P900/dev/MyCity/work/asset-capital-runtime-20261028/budget29-evidence/asset-capital-business-32878-1793184111608508000/withdrawal-wal/exit.json",
+      "result": {
+        "code": 0,
+        "pid": 32915,
+        "timed_out": false
+      }
+    },
+    {
+      "file": "/Volumes/HP P900/dev/MyCity/work/asset-capital-runtime-20261028/budget29-evidence/asset-capital-business-32878-1793184111608508000/closed-unconsumed-wal/exit.json",
+      "result": {
+        "code": 0,
+        "pid": 32926,
+        "timed_out": false
+      }
+    },
+    {
+      "file": "/Volumes/HP P900/dev/MyCity/work/asset-capital-runtime-20261028/budget29-evidence/asset-capital-business-32878-1793184111608508000/commission-checkpoint/exit.json",
+      "result": {
+        "code": 0,
+        "pid": 32896,
+        "timed_out": false
+      }
+    },
+    {
+      "file": "/Volumes/HP P900/dev/MyCity/work/asset-capital-runtime-20261028/budget29-evidence/asset-capital-partial-wal-32878-1793184127061953000/commission-wal/exit.json",
+      "result": {
+        "code": 0,
+        "pid": 32954,
+        "timed_out": false
+      }
+    },
+    {
+      "file": "/Volumes/HP P900/dev/MyCity/work/asset-capital-runtime-20261028/budget29-evidence/asset-capital-partial-wal-32878-1793184127061953000/commission-checkpoint/exit.json",
+      "result": {
+        "code": 0,
+        "pid": 32962,
+        "timed_out": false
+      }
+    }
+  ],
+  "preserved_unrelated_wip": 24,
+  "hardware": "hw.model: Mac16,1\nhw.memsize: 34359738368",
+  "os": "ProductName:\t\tmacOS\nProductVersion:\t\t26.6.2\nBuildVersion:\t\t25G83",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "work": "/Volumes/HP P900/dev/MyCity/work",
+  "not_run": [
+    "real16GB/native/RSS/whole-game sustainable capacity or speed",
+    "GPU/UI/Windows",
+    "long pressure/M0 full frozen acceptance"
+  ],
+  "publication": {
+    "commit": null,
+    "tag": null,
+    "pr": null
+  },
+  "delivery_metrics": {
+    "new_business_accepted": 1,
+    "historical_registration_closed": 0,
+    "defects_accepted": 3,
+    "actual_issue_closures_pending": true,
+    "full_source_handoff_backlog_before": 18,
+    "full_source_handoff_backlog_after": 18,
+    "intake117": "finite self-owned asset seam consumed; remaining parent scope open",
+    "ready_to_accept_duration": "unknown reliable start",
+    "source_delivery_to_acceptance_duration": "unknown reliable start"
+  }
+}

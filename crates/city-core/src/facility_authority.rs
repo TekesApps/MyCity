@@ -417,7 +417,7 @@ fn coupled_stop_record(world:&World,r:&Runtime,target:w::Contract,record:&crate:
 pub(crate) fn check_restore(world:&World,c:&mut RestoreCheck,index:usize,record:&crate::transaction::JournalRecord)->Result<(),TxError>{
     use crate::transaction::Action;
     let r=world.facility_work.as_deref().ok_or(TxError::InvalidOperation)?;
-    if index>=MAX_ANCHORS||c.checked[index]||digest(r)?!=c.fingerprint||record.actions[1..].iter().any(Option::is_some){return Err(TxError::InvalidOperation);}
+    if index>=MAX_ANCHORS||c.checked[index]||digest(r)?!=c.fingerprint||record.actions.iter().skip(1).any(Option::is_some){return Err(TxError::InvalidOperation);}
     let a=anchors(r)[index].ok_or(TxError::InvalidOperation)?;let receipt=record.outcome.map_err(fail)?;
     if a.operation_id!=record.operation_id||receipt.operation_id!=record.operation_id||receipt.timeline.is_none_or(|p|p.at!=a.occurred_at){return Err(TxError::InvalidOperation);}
     let timeline=matches!(record.actions[0],Some(Action::Timeline{command:crate::timeline::Command::Advance{..}}))&&record.actor==0;
@@ -426,7 +426,7 @@ pub(crate) fn check_restore(world:&World,c:&mut RestoreCheck,index:usize,record:
         // The matching concrete event anchor is also mandatory and checked.
     } else if index==21 {
         let anchor=r.income_window_anchor.ok_or(TxError::InvalidOperation)?;
-        if receipt.revision!=anchor.revision||record.facility_context.and_then(|c|c.income_window)!=Some(anchor.hash){return Err(TxError::InvalidOperation);}
+        if receipt.revision!=anchor.revision||record.facility_context().and_then(|c|c.income_window)!=Some(anchor.hash){return Err(TxError::InvalidOperation);}
         let eligible=matches!(record.actions[0],Some(Action::Timeline{..}))&&record.actor==0
             ||matches!(record.actions[0],Some(Action::SettleExit{..}))
             ||matches!(record.actions[0],Some(Action::FacilityWork{command:Command::Pay{..}}));
@@ -445,7 +445,7 @@ pub(crate) fn check_restore(world:&World,c:&mut RestoreCheck,index:usize,record:
         if index%4==2&&row.last_payment.is_none_or(|v|v.cash_operation_id!=record.operation_id){return Err(TxError::InvalidOperation);}
         {
 
-            let effect=record.facility_context.and_then(|v|v.contracts[i]).filter(|v|v.contract_id==terms.id).ok_or(TxError::InvalidOperation)?;
+            let effect=record.facility_context().and_then(|v|v.contracts[i]).filter(|v|v.contract_id==terms.id).ok_or(TxError::InvalidOperation)?;
             if index%4==0&&effect.begin!=Some(digest(&("facility-admission-v2",terms.id,row.begin,row.qualification_source,row.started,row.activity_id))?){return Err(TxError::InvalidOperation);}
             if index%4==3&&effect.stopped!=Some(digest(&("facility-stop-v2",terms.id,row.stopped,row.settled,row.work_seconds,row.earned,row.remainder))?){return Err(TxError::InvalidOperation);}
             if index%4==1&&effect.interval!=Some(digest(&("facility-actual-interval-v2",terms.id,row.last_interval.ok_or(TxError::InvalidOperation)?))?){return Err(TxError::InvalidOperation);}

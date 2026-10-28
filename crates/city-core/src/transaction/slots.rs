@@ -25,7 +25,7 @@ pub struct EngineSlot {
 impl EngineSlot {
     pub fn new() -> Result<Self, String> {
         Ok(Self {
-            engine: Engine::new(World::restore_empty()?, vec![]).map_err(|e| format!("{e:?}"))?,
+            engine: Engine::new_boxed(World::restore_empty_boxed()?, vec![]).map_err(|e| format!("{e:?}"))?,
             valid: false,
         })
     }

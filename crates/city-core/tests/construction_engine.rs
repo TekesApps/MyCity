@@ -166,7 +166,7 @@ fn compensated_operational_engine() -> Engine {
     )
     .unwrap();
     assert_eq!(
-        e.world().view().construction.unwrap().phase,
+        e.world().construction_project().unwrap().phase,
         Phase::Operational
     );
     e
@@ -226,7 +226,7 @@ fn construction_auto(e: &mut Engine, caller: Caller, command: C) -> Result<(), T
     construction(e, caller, command, id)
 }
 fn effect_id(e: &Engine) -> u64 {
-    let p = e.world().view().construction.unwrap();
+    let p = e.world().construction_project().unwrap();
     OPERATION_PREFIX | (p.id << 32) | u64::from(p.next_effect)
 }
 fn file_and_approve(e: &mut Engine) {
@@ -431,7 +431,7 @@ fn modern_unstarted_road_can_cancel_while_legacy_rejection_is_preserved() {
         } else {
             outcome.unwrap();
             assert_eq!(
-                e.world().view().construction.unwrap().phase,
+                e.world().construction_project().unwrap().phase,
                 Phase::Cancelled
             );
         }
@@ -525,7 +525,7 @@ fn clearance_metadata_start_is_atomic_and_rejects_a_future_restored_clock() {
     assert_eq!(e.export_checkpoint().unwrap(), before);
     assert_eq!(e.state_hash(), before_hash);
 
-    let original_token = e.world().view().construction.unwrap().site_token;
+    let original_token = e.world().construction_project().unwrap().site_token;
     let before_cash = cash(&e, 4);
     let before_stock = stock(&e, 1);
     let receipt = e.execute(Caller::Account(4), env.clone()).unwrap();
@@ -536,7 +536,7 @@ fn clearance_metadata_start_is_atomic_and_rejects_a_future_restored_clock() {
     // retries belong to Store's immutable receipt archive tests, not this API.
     assert_eq!(reopened.state_hash(), e.state_hash());
     assert_eq!(reopened.export_checkpoint().unwrap(), after);
-    let clearing = reopened.world().view().construction.unwrap();
+    let clearing = reopened.world().construction_project().unwrap();
     assert_eq!(clearing.phase, Phase::Demolition);
     assert_eq!(clearing.site_token, original_token);
     assert_eq!(
@@ -586,7 +586,7 @@ fn durable_hook_failure_does_not_publish_and_retry_after_commit_returns_original
     let record_count = e.journal().len();
     let original_receipt = e.journal().last().unwrap().outcome.unwrap();
     let occupied = e.resources().iter().find(|r| r.id == 80).unwrap().occupied;
-    let site_token = e.world().view().construction.unwrap().site_token.unwrap();
+    let site_token = e.world().construction_project().unwrap().site_token.unwrap();
     let lease = e
         .leases()
         .iter()
@@ -623,7 +623,7 @@ fn non_draft_checkpoint_restores_exact_site_lease_and_continues_to_operational_w
     forged["world"]["construction"]["site_token"] = json!(u64::MAX);
     assert!(Engine::restore_checkpoint(&serde_json::to_vec(&forged).unwrap()).is_err());
     let mut e = Engine::restore_checkpoint(&checkpoint).unwrap();
-    let p = e.world().view().construction.unwrap();
+    let p = e.world().construction_project().unwrap();
     assert_eq!(p.phase, Phase::Building);
     let token = p.site_token.unwrap();
     assert!(e.leases().iter().flatten().any(|l| l.token == token
@@ -734,7 +734,7 @@ fn retrofit_publication_and_rejected_demolition_keep_the_operating_capacity() {
         accept,
     )
     .unwrap();
-    let before = e.world().view().construction.unwrap();
+    let before = e.world().construction_project().unwrap();
     assert_eq!(before.kind, Kind::Retrofit);
     assert_eq!(before.phase, Phase::Operational);
     assert!(before.operating_published);
@@ -745,7 +745,7 @@ fn retrofit_publication_and_rejected_demolition_keep_the_operating_capacity() {
         C::BeginDemolition { waste_receiver: 3 },
     )
     .unwrap();
-    assert_eq!(e.world().view().construction.unwrap().phase, Phase::Review);
+    assert_eq!(e.world().construction_project().unwrap().phase, Phase::Review);
     construction_auto(
         &mut e,
         Caller::Account(2),
@@ -756,7 +756,7 @@ fn retrofit_publication_and_rejected_demolition_keep_the_operating_capacity() {
         },
     )
     .unwrap();
-    let retained = e.world().view().construction.unwrap();
+    let retained = e.world().construction_project().unwrap();
     assert_eq!(retained.phase, Phase::Operational);
     assert!(retained.operating_published);
     assert_eq!(retained.site_token, before.site_token);
@@ -790,7 +790,7 @@ fn operating_capacity_is_published_and_withdrawn_only_when_consumers_allow_it() 
         accept,
     )
     .unwrap();
-    let project = e.world().view().construction.unwrap();
+    let project = e.world().construction_project().unwrap();
     assert!(project.operating_published);
     assert_eq!(
         e.resources().iter().find(|r| r.id == 81).unwrap().capacity,
@@ -813,7 +813,7 @@ fn operating_capacity_is_published_and_withdrawn_only_when_consumers_allow_it() 
         },
     )
     .unwrap();
-    let project = e.world().view().construction.unwrap();
+    let project = e.world().construction_project().unwrap();
     assert_eq!(project.phase, Phase::Operational);
     assert!(project.operating_published);
     assert_eq!(
@@ -876,8 +876,8 @@ fn operating_capacity_is_published_and_withdrawn_only_when_consumers_allow_it() 
     )
     .unwrap();
     construction_auto(&mut e, Caller::Account(4), C::Prepare).unwrap();
-    assert_eq!(e.world().view().construction.unwrap().phase, Phase::Ready);
-    assert!(e.world().view().construction.unwrap().operating_published);
+    assert_eq!(e.world().construction_project().unwrap().phase, Phase::Ready);
+    assert!(e.world().construction_project().unwrap().operating_published);
     assert_eq!(
         construction_auto(&mut e, Caller::Account(4), C::Start),
         Err(TxError::Capacity)
@@ -886,7 +886,7 @@ fn operating_capacity_is_published_and_withdrawn_only_when_consumers_allow_it() 
         e.resources().iter().find(|r| r.id == 81).unwrap().capacity,
         4
     );
-    assert!(e.world().view().construction.unwrap().operating_published);
+    assert!(e.world().construction_project().unwrap().operating_published);
 
     run(
         &mut e,
@@ -906,19 +906,19 @@ fn operating_capacity_is_published_and_withdrawn_only_when_consumers_allow_it() 
         e.resources().iter().find(|r| r.id == 81).unwrap().capacity,
         2
     );
-    assert!(!e.world().view().construction.unwrap().operating_published);
+    assert!(!e.world().construction_project().unwrap().operating_published);
     assert_eq!(
-        e.world().view().construction.unwrap().phase,
+        e.world().construction_project().unwrap().phase,
         Phase::Demolition
     );
     construction_auto(&mut e, Caller::Account(3), C::Pause).unwrap();
-    assert_eq!(e.world().view().construction.unwrap().phase, Phase::Paused);
+    assert_eq!(e.world().construction_project().unwrap().phase, Phase::Paused);
     let paused_checkpoint = e.export_checkpoint().unwrap();
     let mut e = Engine::restore_checkpoint(&paused_checkpoint).unwrap();
-    assert_eq!(e.world().view().construction.unwrap().phase, Phase::Paused);
+    assert_eq!(e.world().construction_project().unwrap().phase, Phase::Paused);
     construction_auto(&mut e, Caller::Account(3), C::Resume).unwrap();
     assert_eq!(
-        e.world().view().construction.unwrap().phase,
+        e.world().construction_project().unwrap().phase,
         Phase::Demolition
     );
     advance(&mut e, NEXT_SHIFT);
@@ -944,7 +944,7 @@ fn operating_capacity_is_published_and_withdrawn_only_when_consumers_allow_it() 
             amount: protected,
         },
     );
-    let next_effect = e.world().view().construction.unwrap().next_effect;
+    let next_effect = e.world().construction_project().unwrap().next_effect;
     let owner_cash = cash(&e, 4);
     let receiver_cash = cash(&e, 3);
     let waste_occupied = e.resources().iter().find(|r| r.id == 82).unwrap().occupied;
@@ -957,7 +957,7 @@ fn operating_capacity_is_published_and_withdrawn_only_when_consumers_allow_it() 
     assert_eq!(cash(&e, 4), owner_cash);
     assert_eq!(cash(&e, 3), receiver_cash);
     assert_eq!(
-        e.world().view().construction.unwrap().next_effect,
+        e.world().construction_project().unwrap().next_effect,
         next_effect
     );
     assert_eq!(
@@ -993,7 +993,7 @@ fn operating_capacity_is_published_and_withdrawn_only_when_consumers_allow_it() 
             token: receiver_lease,
         },
     );
-    let next_effect = e.world().view().construction.unwrap().next_effect;
+    let next_effect = e.world().construction_project().unwrap().next_effect;
     let owner_cash = cash(&e, 4);
     let receiver_cash = cash(&e, 3);
     assert_eq!(
@@ -1003,7 +1003,7 @@ fn operating_capacity_is_published_and_withdrawn_only_when_consumers_allow_it() 
     assert_eq!(cash(&e, 4), owner_cash);
     assert_eq!(cash(&e, 3), receiver_cash);
     assert_eq!(
-        e.world().view().construction.unwrap().next_effect,
+        e.world().construction_project().unwrap().next_effect,
         next_effect
     );
     assert_eq!(
@@ -1025,7 +1025,7 @@ fn operating_capacity_is_published_and_withdrawn_only_when_consumers_allow_it() 
     assert_eq!(cash(&e, 4), 1_200_000 - 28_800 - 28_800 - 250);
     let close = effect_id(&e);
     construction(&mut e, Caller::Account(4), C::Close, close).unwrap();
-    assert_eq!(e.world().view().construction.unwrap().phase, Phase::Closed);
+    assert_eq!(e.world().construction_project().unwrap().phase, Phase::Closed);
     assert_eq!(
         e.resources().iter().find(|r| r.id == 80).unwrap().occupied,
         0
@@ -1074,7 +1074,7 @@ fn generic_release_cannot_break_project_site_binding_and_cold_restore_can_contin
     enable_timeline(&mut reopened);
     advance(&mut reopened, END_OF_SHIFT);
     work(&mut reopened).unwrap();
-    let project = reopened.world().view().construction.unwrap();
+    let project = reopened.world().construction_project().unwrap();
     assert_eq!(project.completed_worker_seconds, BUILD_SECONDS);
     assert_eq!(project.phase, Phase::Building);
     assert_eq!(stock(&reopened, 1), (599_000, 239_600));
@@ -1088,7 +1088,7 @@ fn engine_uses_actual_source_lot_basis_for_budget_and_rejects_actual_overrun_ato
     enable_timeline(&mut lower_actual);
     advance(&mut lower_actual, END_OF_SHIFT);
     work(&mut lower_actual).unwrap();
-    let project = lower_actual.world().view().construction.unwrap();
+    let project = lower_actual.world().construction_project().unwrap();
     assert_eq!(project.spent, Money::new(29_200).unwrap());
     assert_eq!(stock(&lower_actual, 1), (599_000, 239_600));
 
@@ -1128,7 +1128,7 @@ fn authoritative_work_skips_untrusted_estimate_even_when_its_sum_overflows() {
     advance(&mut e, END_OF_SHIFT);
 
     work(&mut e).unwrap();
-    let project = e.world().view().construction.unwrap();
+    let project = e.world().construction_project().unwrap();
     assert_eq!(project.spent, Money::new(29_200).unwrap());
     assert_eq!(stock(&e, 1), (599_000, 239_600));
 }
@@ -1198,13 +1198,17 @@ fn construction_action_and_journal_records_stay_inside_frozen_engine_budget() {
     use mycity_core::transaction::{Action, JournalRecord, ENGINE_BYTE_BUDGET};
     use std::mem::size_of;
     let e = engine(1_000, 1_000_000, 1);
+    println!("RECEIPT_SIZES journal={} asset_option={} qualification_option={} facility_option={}",
+        size_of::<JournalRecord>(),size_of::<Option<mycity_core::asset_cost_authority::Context>>(),
+        size_of::<Option<mycity_core::qualification_authority::Context>>(),
+        size_of::<Option<mycity_core::facility_authority::Effects>>());
     assert!(
         size_of::<Action>() <= 128,
         "Action grew beyond compact journal envelope"
     );
     assert!(
         size_of::<JournalRecord>() <= 4096,
-        "journal receipt footprint unexpectedly expanded"
+        "journal receipt footprint unexpectedly expanded: {} > 4096", size_of::<JournalRecord>()
     );
     assert!(size_of::<Project>() <= STATE_BUDGET_BYTES);
     assert!(e.owned_capacity_bytes() <= ENGINE_BYTE_BUDGET);
@@ -1287,7 +1291,7 @@ fn compensation_payment_requires_owner_filing_and_party_acceptance_and_is_exactl
     )
     .unwrap();
     assert_eq!(
-        recovered.world().view().construction.unwrap().phase,
+        recovered.world().construction_project().unwrap().phase,
         Phase::Rejected
     );
     assert_eq!(cash(&recovered, 4), payer_before - 10_000);
@@ -1354,7 +1358,7 @@ fn demolition_checkpoint_resolves_historic_compensation_payee_without_current_ga
         C::BeginDemolition { waste_receiver: 3 },
     )
     .unwrap();
-    let project = e.world().view().construction.unwrap();
+    let project = e.world().construction_project().unwrap();
     assert_eq!(project.review_round(), 2);
     assert_eq!(project.phase, Phase::Review);
     assert!(Engine::restore_checkpoint(&e.export_checkpoint().unwrap()).is_ok());
@@ -1382,7 +1386,7 @@ fn checkpoint_cannot_relabel_paid_initial_review_as_demolition_review() {
         },
     )
     .unwrap();
-    let project = e.world().view().construction.unwrap();
+    let project = e.world().construction_project().unwrap();
     assert_eq!(project.phase, Phase::Review);
     assert_eq!(project.review_round(), 1);
     assert!(project

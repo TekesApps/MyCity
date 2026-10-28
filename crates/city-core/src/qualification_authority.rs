@@ -284,7 +284,7 @@ pub(crate) fn examination_anchor(world:&World,slot:u8)->Result<ExaminationAnchor
 }
 fn validate_ticket(scope:crate::arena::Scope,reference:q::ReceiptRef,record:&JournalRecord)->Result<(Command,Context),TxError> {
     if record.actor!=0 || record.operation_id!=original_id(reference.operation_id)? || record.payload_sha256!=reference.source
-        || record.outcome.is_err() || record.actions[1..].iter().any(Option::is_some)
+        || record.outcome.is_err() || record.actions.iter().skip(1).any(Option::is_some)
         || record.outcome.as_ref().map_err(|_|TxError::InvalidOperation)?.revision!=record.expected_revision.checked_add(1).ok_or(TxError::Overflow)?
     {return Err(TxError::InvalidOperation);}
     let action=record.actions[0].ok_or(TxError::InvalidOperation)?;
@@ -294,7 +294,7 @@ fn validate_ticket(scope:crate::arena::Scope,reference:q::ReceiptRef,record:&Jou
     if kind!=reference.kind || slot!=reference.slot {return Err(TxError::InvalidOperation);}
     let env=Envelope{world:scope.world(),branch:scope.branch(),operation_id:record.operation_id,expected_revision:record.expected_revision,actions:vec![action]};
     if digest(&env,b"",32*1024)?!=record.payload_sha256 {return Err(TxError::InvalidOperation);}
-    let context=record.qualification_context.ok_or(TxError::InvalidOperation)?;
+    let context=record.qualification_context().ok_or(TxError::InvalidOperation)?;
     match (command,context) {
         (Command::Examination{attempt,expected_root,progress_binding,content,result,..},Context::Examination{record:full})=>{
             let x=full.examination();let origin=full.origin();

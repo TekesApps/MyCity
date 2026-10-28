@@ -26,6 +26,7 @@ pub(crate) fn decode_raw(
             "qualification_context",
             "facility_context",
             "income_context",
+            "asset_capital_context",
         ],
         true,
         scratch,
@@ -50,10 +51,7 @@ pub(crate) fn decode_raw(
         expected_revision: fields.get(3, scratch)?,
         payload_sha256: fields.get(4, scratch)?,
         outcome: fields.get(5, scratch)?,
-        actions,
-        qualification_context: fields.optional(7, scratch)?,
-        facility_context:fields.optional(8,scratch)?,
-        income_context:fields.optional(9,scratch)?,
+        actions:mycity_core::transaction::JournalActions::from_wire_contexts(actions,fields.optional(7,scratch)?,fields.optional(8,scratch)?,fields.optional(9,scratch)?,fields.optional(10,scratch)?).map_err(crate::metadata::lexical::error)?,
     })
 }
 #[cfg(test)]
@@ -994,8 +992,7 @@ mod tests {
             expected_revision: 0,
             payload_sha256: [0; 32],
             outcome: Err(TxError::StaleRevision),
-            actions: [None; MAX_ACTIONS],
-            qualification_context: None, facility_context:None,income_context:None,
+            actions: mycity_core::transaction::JournalActions::plain([None; MAX_ACTIONS]),
         };
         let raw = serde_json::to_string(&r).unwrap();
         compare_record(&raw.replacen("{", &format!("{{{}", " ".repeat(65536)), 1));
@@ -1041,8 +1038,7 @@ mod context_tests {
             expected_revision: 0,
             payload_sha256: [0; 32],
             outcome: Err(TxError::StaleRevision),
-            actions: [None; MAX_ACTIONS],
-            qualification_context: None, facility_context:None,income_context:None,
+            actions: mycity_core::transaction::JournalActions::plain([None; MAX_ACTIONS]),
         };
         let mut value = serde_json::to_value(record).unwrap();
         for depth in 116..=132 {
@@ -1101,10 +1097,10 @@ mod context_tests {
         // A frozen seven-field wire, independently spelled rather than generated
         // from the new record type. No Context is silently added on reencoding.
         let typed:JournalRecord=serde_json::from_str(&raw).unwrap();
-        assert!(typed.qualification_context.is_none());
+        assert!(typed.qualification_context().is_none());
         assert_eq!(serde_json::to_string(&typed).unwrap(),raw);
         let bounded=decode(&raw).unwrap();
-        assert!(bounded.qualification_context.is_none());
+        assert!(bounded.qualification_context().is_none());
         assert_eq!(serde_json::to_string(&bounded).unwrap(),raw);
         let mut value=serde_json::to_value(typed).unwrap();
         let source=mycity_core::member_qualification::ReadSource{scope:mycity_core::arena::Scope::new(1,1).unwrap(),
@@ -1112,8 +1108,26 @@ mod context_tests {
         value["qualification_context"]=serde_json::to_value(mycity_core::qualification_authority::Context::Source{source}).unwrap();
         let raw=serde_json::to_string(&value).unwrap();
         assert_eq!(serde_json::to_value(serde_json::from_str::<JournalRecord>(&raw).unwrap()).unwrap(),serde_json::to_value(decode(&raw).unwrap()).unwrap());
-        let decoded=decode(&raw).unwrap();assert!(decoded.qualification_context.is_some());
+        let decoded=decode(&raw).unwrap();assert!(decoded.qualification_context().is_some());
         let raw=raw.replacen("\"qualification_context\":", "\"qualification_context\":null,\"qualification_context\":",1);
+        assert!(serde_json::from_str::<JournalRecord>(&raw).is_err());assert!(decode(&raw).is_err());
+    }
+
+    #[test]
+    fn shared_context_wire_keeps_facility_and_income_together_without_action_truncation() {
+        // Parser compatibility fixture, not a claim of actual wages or authority.
+        let raw=format!(r#"{{"actor":0,"emergency_eligible":false,"operation_id":7,"expected_revision":2,"payload_sha256":[{}],"outcome":{{"Err":"stale_revision"}},"actions":[{}]}}"#,
+            vec!["0";32].join(","),vec!["null";16].join(","));
+        let mut value:serde_json::Value=serde_json::from_str(&raw).unwrap();
+        value["actions"][0]=serde_json::to_value(Action::Timeline{command:mycity_core::timeline::Command::Advance{target:86400,limit:256}}).unwrap();
+        value["facility_context"]=serde_json::json!({"contracts":[null,null,null,null],"income_window":vec![9;32]});
+        value["income_context"]=serde_json::json!({"version":1,"operation_id":7,"revision":3,"at":86400,"window_sha256":vec![9;32]});
+        let raw=serde_json::to_string(&value).unwrap();
+        let typed:JournalRecord=serde_json::from_str(&raw).unwrap();let bounded=decode(&raw).unwrap();
+        assert_eq!(serde_json::to_value(typed).unwrap(),value);assert_eq!(serde_json::to_value(bounded).unwrap(),value);
+        assert!(bounded.facility_context().is_some()&&bounded.income_context().is_some());
+        value["actions"][1]=value["actions"][0].clone();
+        let raw=serde_json::to_string(&value).unwrap();
         assert!(serde_json::from_str::<JournalRecord>(&raw).is_err());assert!(decode(&raw).is_err());
     }
 

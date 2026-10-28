@@ -1182,6 +1182,7 @@ impl Store {
         let original_service_needs_registration=genesis_engine.service_needs_registration();
         let original_continuous_supply_registration=genesis_engine.continuous_supply_registration();
         let original_facility_registration=genesis_engine.facility_work_registration();
+        let original_asset_capital_registration=genesis_engine.asset_capital_registration();
         let (mut sequence, mut chain) = if let Some(reference) = &root.checkpoint_v2 {
             let (sequence, chain) = checkpoint_v2::open_into(
                 dir,
@@ -1218,6 +1219,7 @@ impl Store {
             return Err(Error::Invalid("qualification_genesis_registration_mismatch"));
         }
         if genesis_engine.continuous_supply_registration()!=original_continuous_supply_registration{return Err(Error::Invalid("continuous_supply_genesis_registration_mismatch"));}
+        if genesis_engine.asset_capital_registration()!=original_asset_capital_registration{return Err(Error::Invalid("asset_capital_genesis_registration_mismatch"));}
         if genesis_engine.facility_work_registration()!=original_facility_registration{return Err(Error::Invalid("facility_work_genesis_registration_mismatch"));}
         if genesis_engine.service_needs_registration()!=original_service_needs_registration {
             return Err(Error::Invalid("service_needs_genesis_registration_mismatch"));
@@ -1277,6 +1279,22 @@ impl Store {
                 genesis_engine.check_facility_work_restore_receipt(&mut check,index,&original).map_err(Error::Model)?;
             }}
             genesis_engine.finish_facility_work_restore(check).map_err(Error::Model)?;
+        }
+
+        if !genesis_engine.asset_capital_is_ready() {
+            let mut check = genesis_engine.begin_asset_capital_restore().map_err(Error::Model)?;
+            let refs = genesis_engine.asset_capital_receipt_operations();
+            for (index, operation) in refs.iter().enumerate() {
+                let Some(operation) = *operation else { continue; };
+                if refs[..index].contains(&Some(operation)) { continue; }
+                let original = checkpoint::lookup_archived_at(dir, &root, operation, &mut metadata)?
+                    .ok_or(Error::Invalid("asset_capital_original_missing"))?;
+                for (slot, same) in refs.iter().enumerate().filter(|(_,r)| **r == Some(operation)) {
+                    let _ = same;
+                    genesis_engine.check_asset_capital_original(&mut check, slot, &original).map_err(Error::Model)?;
+                }
+            }
+            genesis_engine.finish_asset_capital_restore(check).map_err(Error::Model)?;
         }
 
         let wal_base_sequence = sequence;

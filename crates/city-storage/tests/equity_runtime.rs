@@ -186,9 +186,7 @@ fn settle(store: &mut Store) -> mycity_core::town_runtime::MarketSummary {
     store
         .engine()
         .unwrap()
-        .world()
-        .view()
-        .town
+        .world().town_market()
         .unwrap()
         .state
         .last_summary
@@ -277,9 +275,7 @@ fn actual_contributions_tax_dividend_treasury_spend_and_liquidation_survive_reco
     let opening_paid = store
         .engine()
         .unwrap()
-        .world()
-        .view()
-        .town
+        .world().town_market()
         .unwrap()
         .state
         .equity_registers
@@ -290,9 +286,7 @@ fn actual_contributions_tax_dividend_treasury_spend_and_liquidation_survive_reco
     let initial_register = store
         .engine()
         .unwrap()
-        .world()
-        .view()
-        .town
+        .world().town_market()
         .unwrap()
         .state
         .equity_registers
@@ -331,9 +325,7 @@ fn actual_contributions_tax_dividend_treasury_spend_and_liquidation_survive_reco
     let register = store
         .engine()
         .unwrap()
-        .world()
-        .view()
-        .town
+        .world().town_market()
         .unwrap()
         .state
         .equity_registers
@@ -418,9 +410,7 @@ fn actual_contributions_tax_dividend_treasury_spend_and_liquidation_survive_reco
     let first_cursor = store
         .engine()
         .unwrap()
-        .world()
-        .view()
-        .town
+        .world().town_market()
         .unwrap()
         .state
         .tax_cursors
@@ -439,9 +429,7 @@ fn actual_contributions_tax_dividend_treasury_spend_and_liquidation_survive_reco
         store
             .engine()
             .unwrap()
-            .world()
-            .view()
-            .town
+            .world().town_market()
             .unwrap()
             .state
             .tax_cursors
@@ -548,9 +536,7 @@ fn actual_contributions_tax_dividend_treasury_spend_and_liquidation_survive_reco
     let register = store
         .engine()
         .unwrap()
-        .world()
-        .view()
-        .town
+        .world().town_market()
         .unwrap()
         .state
         .equity_registers
@@ -560,9 +546,7 @@ fn actual_contributions_tax_dividend_treasury_spend_and_liquidation_survive_reco
         store
             .engine()
             .unwrap()
-            .world()
-            .view()
-            .town
+            .world().town_market()
             .unwrap()
             .state
             .tax_cursors
@@ -597,9 +581,7 @@ fn actual_contributions_tax_dividend_treasury_spend_and_liquidation_survive_reco
     let register = store
         .engine()
         .unwrap()
-        .world()
-        .view()
-        .town
+        .world().town_market()
         .unwrap()
         .state
         .equity_registers
@@ -630,9 +612,7 @@ fn actual_contributions_tax_dividend_treasury_spend_and_liquidation_survive_reco
         store
             .engine()
             .unwrap()
-            .world()
-            .view()
-            .town
+            .world().town_market()
             .unwrap()
             .state
             .exit
@@ -661,9 +641,7 @@ fn loss_and_paid_unmodeled_claims_cannot_be_distributed() {
     assert!(
         loss.engine()
             .unwrap()
-            .world()
-            .view()
-            .town
+            .world().town_market()
             .unwrap()
             .state
             .tax_cursors
