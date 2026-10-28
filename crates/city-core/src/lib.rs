@@ -182,6 +182,7 @@ impl<'de> Deserialize<'de> for FrozenLabel {
                     }
                     "pboot-cold-scale-v1" => Ok(FrozenLabel("pboot-cold-scale-v1")),
                     "pboot-cold-micro-v1" => Ok(FrozenLabel("pboot-cold-micro-v1")),
+                    "pboot-local-development-v1" => Ok(FrozenLabel("pboot-local-development-v1")),
                     "volatile_only" => Ok(FrozenLabel("volatile_only")),
                     _ => Err(E::custom("unsupported_frozen_label")),
                 }

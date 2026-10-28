@@ -1,0 +1,128 @@
+{
+  "at": "2026-10-28T11:57:23.472022+00:00",
+  "issue": 21,
+  "base": "v0.5.214",
+  "status": "local_profile_coexistence_and_restore_verified_full_business_open",
+  "current_source_files": 494,
+  "current_source_unchanged": true,
+  "direct_final": [
+    {
+      "label": "restore09-finite_city_runtime",
+      "exit": 0,
+      "seconds": 1.079565916,
+      "program_sha256": "297f78b5f97b9037c5c5138b2f4d1c4cc0e61c3d6c6ed306d17c39344309b466",
+      "source": "restore09-source-manifest.json",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/finite-city-runtime-20261028/restore09-city-core-finite_city_runtime-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ]
+    },
+    {
+      "label": "restore10-finite_city_store",
+      "exit": 0,
+      "seconds": 4.183090958,
+      "program_sha256": "ed549087c85e98a31b35813376dda1a08de345a6f8af73985474e1f6f5ea7f7e",
+      "source": "restore10-source-manifest.json",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/finite-city-runtime-20261028/restore10-city-storage-finite_city_store-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ]
+    }
+  ],
+  "affected_prior": [
+    {
+      "label": "restore06-town_utility_engine",
+      "exit": 0,
+      "seconds": 1.351174,
+      "program_sha256": "e0cd8e143c310851a2350e71f8686d0bf45b5aa959e08597cfdb727dfa3feb60",
+      "source": "restore06-source-manifest.json",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/finite-city-runtime-20261028/restore06-city-core-town_utility_engine-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ]
+    },
+    {
+      "label": "restore06-boot",
+      "exit": 0,
+      "seconds": 2.091099208,
+      "program_sha256": "ff0ccc6029405696d5f9422a0ca4c26b0716ef4f0a118e2400c456f9e48378f6",
+      "source": "restore06-source-manifest.json",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/finite-city-runtime-20261028/restore06-city-core-boot-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ]
+    },
+    {
+      "label": "restore06-timeline",
+      "exit": 0,
+      "seconds": 55.981040875000005,
+      "program_sha256": "1648f689e3d4fc68f3462c9fe81571176767ab559549902fd958b5b6919679b1",
+      "source": "restore06-source-manifest.json",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/finite-city-runtime-20261028/restore06-city-core-timeline-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ]
+    },
+    {
+      "label": "restore07-boot",
+      "exit": 0,
+      "seconds": 71.697668125,
+      "program_sha256": "7521550099ca059cf50dbe2ff02de21e1e9aba9bea261198ab09a1e0e23afc2e",
+      "source": "restore07-source-manifest.json",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/finite-city-runtime-20261028/restore07-city-storage-boot-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ]
+    },
+    {
+      "label": "restore07-town_utility_recovery",
+      "exit": 0,
+      "seconds": 7.309990499999998,
+      "program_sha256": "5be06ab508a5a6666ad2837ae2bf07e4c61d3ee14a61b1d6890079f84abfbd5a",
+      "source": "restore07-source-manifest.json",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/finite-city-runtime-20261028/restore07-city-storage-town_utility_recovery-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ]
+    }
+  ],
+  "reuse_reason": "Boot shape production same as restore06/07; only later production delta explicit LOCAL_PROFILE frozen label decoder entry, exercised by restore10 cold checkpoint; original labels/branches/types unchanged",
+  "failure_kept": [
+    "coexist01",
+    "coexist02",
+    "coexist03",
+    "coexist04",
+    "restore08 checkpoint-day2 unsupported_frozen_label"
+  ],
+  "cold_final": [
+    "wal-day1",
+    "checkpoint-day2"
+  ],
+  "not_run": [
+    "full finite-city contract",
+    "actual Boot to public-service utility bridge",
+    "aggregate payroll to unique member/time binding",
+    "normal-role compound resource gate",
+    "native RSS and real16GB",
+    "full M0",
+    "typed Opening new profile",
+    "UI/GPU/Windows"
+  ],
+  "new_business_closed": 0,
+  "historical_closed": 0,
+  "defects_closed": 0,
+  "full_packages_backlog": 18,
+  "phase_evidence_budget_bytes": 2147483648,
+  "initial_disk_budget_exceedance_record": "disk-budget-revision.json",
+  "preserved_wip_files_unchanged": 24,
+  "raw_evidence_root": "/Volumes/HP P900/dev/MyCity/work/finite-city-runtime-20261028",
+  "hardware": "Mac16,1 32GiB macOS26.6.2; HP P900 USB/APFS SSD; existing unique target/work",
+  "pr": null
+}

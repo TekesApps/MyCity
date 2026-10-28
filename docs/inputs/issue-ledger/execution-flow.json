@@ -1,16 +1,37 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-28T11:30:00.455254+00:00",
-  "source_head": "v0.5.213 game implementation; v0.5.214 closure documentation",
-  "candidate": "No current code blocker; #151/#152/#153/#154 accepted and actually closed; next finite-city input card pending root review",
+  "last_snapshot_at": "2026-10-28T11:43:10.524479+00:00",
+  "source_head": "v0.5.215 local Boot coexistence checkpoint",
+  "candidate": "#21 local Boot profile and same Store cold restore verified; actual service utility source bridge remains next",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
   "limits": {
     "shared_core_lanes": 1,
     "independent_preparations": 2,
     "reason_for_adjustment_required": true
   },
-  "active_shared_work": [],
+  "active_shared_work": [
+    {
+      "issue": 21,
+      "owner": "root / 01a166fc-e444-7602-ad22-3a8551dda487",
+      "stage": "开发中",
+      "files": [
+        "tests/fixtures/finite-city/opening.rs",
+        "crates/city-core/tests/finite_city_runtime.rs",
+        "crates/city-core/src/boot.rs",
+        "crates/city-core/src/lib.rs",
+        "crates/city-storage/tests/finite_city_store.rs"
+      ],
+      "base": "v0.5.214",
+      "entry": "original_service_and_two_market_days_share_one_clock_cash_and_utility_stock",
+      "remaining": [
+        "actual public utility consumption source bridge",
+        "aggregate payroll/member activity coexistence limit",
+        "affected resource gate"
+      ],
+      "evidence": "work/finite-city-runtime-20261028"
+    }
+  ],
   "active_independent_preparations": [],
   "counting_rules": {
     "parents_are_not_active_work": true,

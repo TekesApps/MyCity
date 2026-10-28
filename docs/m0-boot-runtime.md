@@ -4,6 +4,12 @@ v0.5.15更新：只有显式[T09联合profile](m0-regional-fulfilment.md)允许B
 
 v0.5.14，2026-10-19。补[M0计划](m0-implementation-plan.md)P-BOOT表要求的完整**有限启动输入实验**：缺源拒绝、真实有限启动源及费用、共享容量、失败收尾、持久恢复。与已完成的[P-E0／P-E1](m0-economy-runtime.md)一起登记T08有限实验。当前仍只有Rust／headless，没有UI。
 
+## 本城有限共存 profile（#21，开发中）
+
+`pboot-local-development-v1` 显式复用原六库存配方、60秒到期、成本/容量与故障合同，仅支持无Region、无Exchange、无Economy的本城开局。总Stock可为6到原MAX_STOCKS，六个Boot绑定仍唯一且有相同商品/owner/来源/容量校验；额外业务库存不属于Boot守恒池。装配与保存恢复采用同一限制。原micro与scale的精确形状和M0门保持，不把“有Town”冒充跨城joint。原typed Opening provider未新增此profile分支，当前只有显式原JSON输入。
+
+Timeline启用后复用已有timeline_driver到期切段、P3完成和Boot.time推进；不新建时钟或自动产出，未完成作业不可消费。公服若消费Boot输出必须沿原出口分类和同一成本池记一次；普通直接扣Stock不能冒充该接线。当前共同fixture公服仍用显式有限期初库存，供给消费桥待完成。有限两日场景不是无限供给、完整网络、经济平衡或产品容量通过。验证终态见后续#21证据，当前未验收。
+
 ## 1. profile与验收范围
 
 `pboot-cold-micro-v1`是独立laboratory profile，包含一个泵和一个冷态微型燃料机组。它不替换[LC38正式设施生命周期第5节](first-release-lifecycle-inputs-and-exit.md#5-煤机与泵启动依赖运行和安全停机)中的煤机2h／200kWh／20m³和泵0.5h／25kWh／5m³，也不签收其人员、真实接网、连续稳态、煤灰、4h安全停机或24h保全。当前两设施的Start接纳一个60秒的“冷启动及首批试运行”作业；期内产出不可用，到期才发布，不等同于煤机启动期间可发电。

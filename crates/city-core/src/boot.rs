@@ -7,6 +7,8 @@ use crate::{
 use serde::{Deserialize, Serialize};
 pub const PROFILE: &str = "pboot-cold-micro-v1";
 pub const SCALE_PROFILE: &str = "pboot-cold-scale-v1";
+/// Same finite recipe, scoped to a local city without Region/Exchange.
+pub const LOCAL_PROFILE: &str = "pboot-local-development-v1";
 pub const SECONDS: u64 = 60;
 fn zero_quantity(value: &Quantity) -> bool {
     *value == Quantity::ZERO
@@ -164,14 +166,16 @@ pub(crate) trait Ledger {
 impl Boot {
     pub(crate) fn new(o: Opening, w: &World, joint: bool) -> Result<Self, String> {
         let scaled = o.profile == SCALE_PROFILE;
-        let profile = if scaled { SCALE_PROFILE } else { PROFILE };
+        let local = o.profile == LOCAL_PROFILE;
+        let profile = if local { LOCAL_PROFILE } else if scaled { SCALE_PROFILE } else { PROFILE };
         if o.schema != "mycity-m0-boot-v1"
             || o.profile != profile
             || (w.region.is_some() && !joint)
             || w.economy.is_some()
-            || (!scaled && w.stock_ids.len() != if joint { 14 } else { 6 })
+            || (!local && !scaled && w.stock_ids.len() != if joint { 14 } else { 6 })
             || (scaled
                 && (!joint || !(14..=crate::assembly::MAX_STOCKS).contains(&w.stock_ids.len())))
+            || (local && (joint || w.region.is_some() || !(6..=crate::assembly::MAX_STOCKS).contains(&w.stock_ids.len())))
             || o.operator == o.contractor
             || o.resources[0] == 0
             || o.resources[1] == 0
@@ -370,12 +374,14 @@ impl Boot {
             }
         }
         let scaled = self.profile.as_str() == SCALE_PROFILE;
-        if ![PROFILE, SCALE_PROFILE].contains(&self.profile.as_str())
+        let local = self.profile.as_str() == LOCAL_PROFILE;
+        if ![PROFILE, SCALE_PROFILE, LOCAL_PROFILE].contains(&self.profile.as_str())
             || w.economy.is_some()
             || (w.region.is_some() && !joint)
-            || (!scaled && w.stock_ids.len() != if joint { 14 } else { 6 })
+            || (!local && !scaled && w.stock_ids.len() != if joint { 14 } else { 6 })
             || (scaled
                 && (!joint || !(14..=crate::assembly::MAX_STOCKS).contains(&w.stock_ids.len())))
+            || (local && (joint || w.region.is_some() || !(6..=crate::assembly::MAX_STOCKS).contains(&w.stock_ids.len())))
             || self.operator == self.contractor
             || self.resources.contains(&0)
             || self.resources[0] == self.resources[1]

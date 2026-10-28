@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.214`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.215`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.215 接通[#21本城有限Boot profile的共同输入与冷恢复](docs/evidence/finite-city-runtime-20261028/STATUS.md)：旧profile不变，同一存档实际公服到返、两日日结与WAL/checkpoint原票重试通过；实际公服供给桥和完整业务资源门仍未完成，#21开放。
 
 v0.5.214 仅同步[#151及三项具体回归的实际关闭回执](docs/evidence/asset-capital-runtime-20261028/closure.json)与当前执行状态；游戏实现/验证见v213。父117仍开放，原完整M0和真实16GB产品容量不变。下一只固定已有业务的有限城市共同输入，不新增模型批次。
 

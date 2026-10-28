@@ -1,6 +1,6 @@
 # MyCity 当前实际派工与交接
 
-**当前唯一执行状态：#151/#152/#153/#154已实际验收关闭，游戏v0.5.213，回执同步v0.5.214。** [结果](evidence/asset-capital-runtime-20261028/STATUS.md)／[回执](evidence/asset-capital-runtime-20261028/closure.json)。父117开放。root唯一共享writer，当前0接线+0准备；下一只固定已有业务的两日有限城市共同输入与真实来源，不派新源码批次。旧快照不覆盖[当前执行](execution-current.md)。
+**当前唯一执行：#21有限城市共同输入接线，root唯一共享writer，1项接线+0准备。**v0.5.215本地Boot profile共存/两日业务与同Store冷恢复已验证；[证据与差项](evidence/finite-city-runtime-20261028/STATUS.md)。下一实际公服供给消费桥；不新增模型批次。151/152/153/154实际关闭继续有效，父117/21/115仍开放。当前文件和边界见[执行清单](execution-current.md)。
 
 <details><summary>历史派工快照</summary>
 

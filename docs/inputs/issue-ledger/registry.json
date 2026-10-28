@@ -1,7 +1,7 @@
 {
   "schema": "mycity-issue-ledger-v1",
   "date": "2026-10-28",
-  "release": "v0.5.214",
+  "release": "v0.5.215",
   "scope": "完整既定产品；v190有限业务132与缺陷148真实验收关闭，v191仅同步台账，UI单独延期",
   "coordination": "当前root唯一共享writer/串行验证；旧主会话停用",
   "states": [
@@ -469,9 +469,9 @@
       "url": "https://github.com/TekesApps/MyCity/issues/21",
       "parent": 2,
       "stage": "开发中",
-      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "owner": "当前root 01a166fc-e444-7602-ad22-3a8551dda487唯一共享writer/集成/验收；1有限接线/0准备",
       "write_authority": [
-        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+        "root: crates/city-core/src/boot.rs, lib.rs; core/tests/finite_city_runtime.rs; storage/tests/finite_city_store.rs; tests/fixtures/finite-city/opening.rs; linked docs"
       ],
       "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
       "required_capabilities": [
@@ -480,11 +480,11 @@
       "acceptance": [
         "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
       ],
-      "remaining": "完整父范围及未关子任务仍开放",
-      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
-      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "remaining": "完整父范围开放；下一Boot实际输出到公服消费分类桥，账户Payroll与成员时窗联合证据、边界/原票/恢复及必要资源门；不以本地profile共存代替闭环验收",
+      "evidence": "docs/evidence/finite-city-runtime-20261028/STATUS.md; work/finite-city-runtime-20261028完整源码/固定程序/失败/恢复原件",
+      "implementation_tags": "v0.5.215本地profile首段共存与冷恢复增量；完整21/115未验收",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
-      "issue_body_sha256": "e79c633b448b929963265125dce62321093b8a1dc8c46e386354e1ea8d62a649"
+      "issue_body_sha256": "242f9c54c2ac01238638b096c77ac59479503431ca7a1b8f3d5687c897aeac10"
     },
     {
       "issue": 22,
