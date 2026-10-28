@@ -221,7 +221,7 @@ impl Runtime {
             +match &self.opening.profile{Profile::LocalDevelopmentNaturalNeedsV1=>0,Profile::LocalDevelopmentWithDeliveryV2(input)=>input.owned_bytes()}
     }
     pub(crate) fn owned_capacity_bytes(&self)->usize{Self::owned_bytes()+self.delivery_extra_bytes()}
-    pub(crate) fn candidate_bytes_for(&self)->usize{Self::candidate_bytes()+self.delivery_extra_bytes()}
+    pub(crate) fn candidate_bytes_for(&self)->usize{Self::candidate_bytes()+self.delivery_extra_bytes()+self.delivery.as_ref().map_or(0,|_|size_of::<Option<crate::service_delivery_authority::BootUse>>())}
     pub(crate) fn restore_workspace_bytes_for(&self)->usize{Self::restore_workspace_bytes()+self.delivery_extra_bytes()}
     pub const fn candidate_bytes() -> usize {
         size_of::<Candidate>() + Self::owned_bytes() + MAX_EFFECTS * size_of::<Effect>()

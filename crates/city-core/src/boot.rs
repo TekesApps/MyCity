@@ -279,6 +279,14 @@ impl Boot {
         self.exported_basis = add(self.exported_basis, cost)?;
         Ok(cost)
     }
+    /// The local profile has no Exchange or other export class.
+    pub(crate) fn validate_local_exports(&self,service_quantity:[Quantity;2],service_basis:[Money;2])->Result<(),TxError>{
+        if self.profile.as_str()!=LOCAL_PROFILE{return Ok(());}
+        let electricity=plus(plus(self.local_electricity_exported,self.local_construction_exported[0])?,service_quantity[0])?;
+        let water=plus(self.local_construction_exported[1],service_quantity[1])?;
+        let basis=add(add(add(self.local_electricity_basis,self.local_construction_basis[0])?,self.local_construction_basis[1])?,add(service_basis[0],service_basis[1])?)?;
+        if self.exports!=[electricity,water]||self.exported_basis!=basis{return Err(error(Error::Invariant));}Ok(())
+    }
     pub(crate) fn export_local_electricity(
         &mut self,
         quantity: Quantity,

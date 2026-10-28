@@ -715,6 +715,7 @@ impl Engine {
         venue_driver::validate(&engine.world, &engine.resources, &engine.leases, engine.timeline.as_ref(), None, engine.time_capacity.as_deref())?;
         crate::education_authority::validate(&engine.world, engine.timeline.as_ref())?;
         crate::service_needs_authority::validate(&engine.world,engine.world.service_needs.as_deref(),engine.timeline.as_ref(),engine.world.region.as_ref())?;
+        check_service_boot_exports(engine.world.boot.as_ref(),engine.world.service_needs.as_deref())?;
         crate::continuous_supply::validate(&engine.world,engine.world.continuous_supply.as_deref(),engine.timeline.as_ref(),&engine.resources,&engine.leases)?;
         crate::facility_authority::validate(&engine.world,engine.world.facility_work.as_deref(),engine.world.member_activity.as_deref(),engine.timeline.as_ref(),engine.world.continuous_supply.as_deref(),None)?;
         if let Some(q)=engine.world.qualification.as_deref(){q.validate(&engine.world)?;}
@@ -1148,6 +1149,7 @@ impl Engine {
             .is_none_or(|n|n>ENGINE_BYTE_BUDGET){return Err(TxError::WorkingLimit);}
         crate::education_authority::validate(&self.world, self.timeline.as_ref())?;
         crate::service_needs_authority::validate(&self.world,self.world.service_needs.as_deref(),self.timeline.as_ref(),self.world.region.as_ref())?;
+        check_service_boot_exports(self.world.boot.as_ref(),self.world.service_needs.as_deref())?;
         if self.world.continuous_supply.is_some()&&self.owned_capacity_bytes().checked_add(crate::continuous_supply::MAX_WORKSPACE_BYTES).is_none_or(|n|n>ENGINE_BYTE_BUDGET){return Err(TxError::WorkingLimit);}
         crate::continuous_supply::validate(&self.world,self.world.continuous_supply.as_deref(),self.timeline.as_ref(),&self.resources,&self.leases)?;
         crate::facility_authority::validate(&self.world,self.world.facility_work.as_deref(),self.world.member_activity.as_deref(),self.timeline.as_ref(),self.world.continuous_supply.as_deref(),None)?;
@@ -2329,7 +2331,7 @@ impl Engine {
                     if env.actions.len()!=1{return Err(TxError::InvalidOperation);}
                     let at=crate::education_authority::completed(timeline.as_ref())?;
                     let ledger=BootLedger{base:EconomicLedger{world:&self.world,accounts:&mut accounts,stocks:&mut stocks},resources:&mut resources,leases:&mut leases,next_token:&mut next_token};
-                    apply_service_delivery(&self.world,&mut service_needs,&mut facility_member,ledger,at,env.operation_id,caller,Some(command),&mut housing_wage_window)?;
+                    apply_service_delivery(&self.world,&mut service_needs,&mut facility_member,ledger,&mut boot,at,env.operation_id,caller,Some(command),&mut housing_wage_window)?;
                 },
                 Action::FacilityWork{command}=>{
                     if env.actions.len()!=1{return Err(TxError::InvalidOperation);}
@@ -4597,6 +4599,7 @@ impl Engine {
         crate::facility_authority::validate(&self.world,facility_work.as_deref(),facility_member.as_deref().or(education.as_ref().map(|e|&*e.ledger)).or(self.world.member_activity.as_deref()),timeline.as_ref(),continuous_supply.as_deref(),venue.as_ref())?;
         check_facility_protection(&self.world,facility_work.as_deref(),economy.as_ref(),&accounts)?;
         crate::service_needs_authority::validate(&self.world,service_needs.as_deref(),timeline.as_ref(),region.as_ref())?;
+        check_service_boot_exports(boot.as_ref(),service_needs.as_deref())?;
         check_service_delivery_state(&self.world,service_needs.as_deref(),&accounts,&stocks,&resources,&leases,economy.as_ref(),facility_work.as_deref())?;
         if let Some(runtime)=continuous_supply.as_deref(){
             let mut ledger=BootLedger{base:EconomicLedger{world:&self.world,accounts:&mut accounts,stocks:&mut stocks},resources:&mut resources,leases:&mut leases,next_token:&mut next_token};
@@ -11236,7 +11239,7 @@ mod education_restore_budget_tests {
 
 // Shared tables only: this adapter owns no wallet, inventory, capacity or member pool.
 struct ServiceLedger<'a>{
-    base:BootLedger<'a>,needs:&'a mut crate::service_needs::Runtime,
+    base:BootLedger<'a>,boot:&'a mut Option<crate::boot::Boot>,boot_use:&'a mut Option<crate::service_delivery_authority::BootUse>,needs:&'a mut crate::service_needs::Runtime,
     members:&'a mut crate::member_activity::Ledger,at:u64,operation:u64,caller:Caller,root:[u8;32],revision:u64,
 }
 impl ServiceLedger<'_>{
@@ -11322,23 +11325,39 @@ impl crate::service_delivery_authority::Ledger for ServiceLedger<'_>{
     fn stock_available(&mut self,id:u32,owner:u32,electric:bool)->Result<u64,TxError>{u64::try_from(self.owned_stock(id,owner,electric)?.quantity.value()).map_err(|_|TxError::Stock)}
     fn consume(&mut self,id:u32,owner:u32,quantity:u64,electric:bool)->Result<u64,TxError>{
         if quantity==0{return Ok(0);}let mut s=self.owned_stock(id,owner,electric)?;let q=Quantity::new(i64::try_from(quantity).map_err(|_|TxError::Overflow)?).map_err(|_|TxError::Stock)?;
+        if let Some(b)=self.boot.as_mut(){if b.governs(id){
+            let index=if electric{0}else{1};
+            if b.profile.as_str()!=crate::boot::LOCAL_PROFILE||id!=b.stocks[index+1]||owner!=b.operator{return Err(TxError::Stock);}
+            let u=self.boot_use.as_mut().ok_or(TxError::InvalidOperation)?;
+            let cost=b.export(index,q,&mut self.base)?;u.record(b,index,q,cost)?;
+            return u64::try_from(cost.value()).map_err(|_|TxError::Overflow);
+        }}
         let basis=stock_slice_basis(&s,q)?;consume_stock(&mut s,q,basis)?;crate::economy::Ledger::put_stock(&mut self.base.base,id,s)?;u64::try_from(basis.value()).map_err(|_|TxError::Overflow)
     }
 }
 fn apply_service_delivery(
     world:&World,needs:&mut Option<Box<crate::service_needs::Runtime>>,members:&mut Option<Box<crate::member_activity::Ledger>>,
-    base:BootLedger<'_>,at:u64,operation:u64,caller:Caller,command:Option<crate::service_delivery_authority::Command>,window:&mut Option<Box<crate::housing_income::PaidWageWindow>>,
+    base:BootLedger<'_>,boot:&mut Option<crate::boot::Boot>,at:u64,operation:u64,caller:Caller,command:Option<crate::service_delivery_authority::Command>,window:&mut Option<Box<crate::housing_income::PaidWageWindow>>,
 )->Result<(),TxError>{
     let Some(needs)=needs.as_deref_mut()else{return if command.is_some(){Err(TxError::InvalidOperation)}else{Ok(())};};
     let Some(mut runtime)=needs.delivery.take()else{return if command.is_some(){Err(TxError::InvalidOperation)}else{Ok(())};};
     let members=members.as_deref_mut().ok_or(TxError::InvalidOperation)?;
     let root=needs.fingerprint().map_err(|_|TxError::InvalidOperation)?;let revision=world.revision.checked_add(1).ok_or(TxError::Overflow)?;
-    let mut l=ServiceLedger{base,needs,members,at,operation,caller,root,revision};
+    let mut boot_use=runtime.boot_use.as_deref().copied();
+    let mut l=ServiceLedger{base,boot,boot_use:&mut boot_use,needs,members,at,operation,caller,root,revision};
     let before=runtime.paid_sources();
     let result=(||{if let Some(c)=command{runtime.command(&mut l,c,at)?}else{runtime.advance(&mut l,at)?;}
         record_service_paid(world,&before,&runtime.paid_sources(),at,window)
     })();
+    if let Some(u)=runtime.boot_use.as_deref_mut(){*u=(*l.boot_use).ok_or(TxError::InvalidOperation)?;}
     l.needs.delivery=Some(runtime);result
+}
+fn check_service_boot_exports(boot:Option<&crate::boot::Boot>,needs:Option<&crate::service_needs::Runtime>)->Result<(),TxError>{
+    let delivery=needs.and_then(|n|n.delivery.as_deref());
+    if let Some(d)=delivery{d.opening().validate_boot_binding(boot)?;}
+    let usage=delivery.and_then(|d|d.boot_use.as_deref());
+    if let Some(b)=boot{b.validate_local_exports(usage.map_or([Quantity::ZERO;2],|u|u.quantity),usage.map_or([Money::ZERO;2],|u|u.basis))?;}
+    Ok(())
 }
 fn check_service_delivery_state(world:&World,needs:Option<&crate::service_needs::Runtime>,accounts:&DirtyAccounts,stocks:&DirtyStocks,resources:&ResourceRows,leases:&LeaseRows,economy:Option<&crate::economy::Economy>,facility:Option<&crate::facility_authority::Runtime>)->Result<(),TxError>{
     let Some(d)=needs.and_then(|n|n.delivery.as_deref())else{return Ok(());};
@@ -11363,10 +11382,10 @@ fn check_service_delivery_state(world:&World,needs:Option<&crate::service_needs:
             if !leases.iter().flatten().any(|l|l.token==token&&l.actor==crew.operator&&l.resource==binding.resource&&l.occupied&&l.units==1){return Err(TxError::Lease);}}
     }Ok(())
 }
-fn service_delivery_boundary(world:&World,needs:&mut Option<Box<crate::service_needs::Runtime>>,members:&mut Option<Box<crate::member_activity::Ledger>>,base:BootLedger<'_>,at:u64,operation:u64)->Result<Option<u64>,TxError>{
+fn service_delivery_boundary(world:&World,needs:&mut Option<Box<crate::service_needs::Runtime>>,members:&mut Option<Box<crate::member_activity::Ledger>>,base:BootLedger<'_>,boot:&mut Option<crate::boot::Boot>,at:u64,operation:u64)->Result<Option<u64>,TxError>{
     let Some(needs)=needs.as_deref_mut()else{return Ok(None);};let Some(runtime)=needs.delivery.take()else{return Ok(None);};
     let root=needs.fingerprint().map_err(|_|TxError::InvalidOperation)?;
-    let members=members.as_deref_mut().ok_or(TxError::InvalidOperation)?;let mut l=ServiceLedger{base,needs,members,at,operation,caller:Caller::System,root,revision:world.revision};
+    let members=members.as_deref_mut().ok_or(TxError::InvalidOperation)?;let mut boot_use=runtime.boot_use.as_deref().copied();let mut l=ServiceLedger{base,boot,boot_use:&mut boot_use,needs,members,at,operation,caller:Caller::System,root,revision:world.revision};
     let result=runtime.input_boundary(&mut l,at);l.needs.delivery=Some(runtime);result
 }
 

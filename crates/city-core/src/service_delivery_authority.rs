@@ -1,7 +1,7 @@
 //! Original-writer service bridge. The graph supplies legal edges, not arrival facts.
 //! This runtime is staged with the existing needs, member, Resource/Lease and money state.
 use crate::{arena::Scope, member_qualification::MemberRange, model_rows::{Record,Rows},
-    service_delivery_runtime as d, service_needs::Kind, transaction::TxError, transport};
+    service_delivery_runtime as d, service_needs::Kind, transaction::TxError, transport, units::Money};
 use serde::{Deserialize,Serialize};
 use sha2::{Digest,Sha256};
 
@@ -12,7 +12,7 @@ pub const MAX_ROUTES:usize=32;
 pub const MAX_PATH:usize=16;
 pub const MAX_OWNED_BYTES:usize=128*1024;
 #[derive(Clone,Copy,Debug,PartialEq,Eq,Serialize,Deserialize)]
-pub enum Profile { LocalDevelopmentEdgeDrivenPoliceV1, LocalDevelopmentEdgeDrivenPoliceRecoveryV2 }
+pub enum Profile { LocalDevelopmentEdgeDrivenPoliceV1, LocalDevelopmentEdgeDrivenPoliceRecoveryV2, LocalDevelopmentEdgeDrivenPoliceBootV3 }
 #[derive(Clone,Copy,Debug,Serialize,Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct EdgeBinding {pub edge:u32,pub resource:u32,pub energy_mwh_per_second:u64}
@@ -47,9 +47,18 @@ fn bad(_:impl std::fmt::Debug)->TxError{TxError::InvalidOperation}
 fn add(a:u64,b:u64)->Result<u64,TxError>{a.checked_add(b).ok_or(TxError::Overflow)}
 fn mul(a:u64,b:u64)->Result<u64,TxError>{a.checked_mul(b).ok_or(TxError::Overflow)}
 impl Opening {
+    pub(crate) fn boot_bound(&self)->bool{self.profile==Profile::LocalDevelopmentEdgeDrivenPoliceBootV3}
+    pub(crate) fn validate_boot_binding(&self,boot:Option<&crate::boot::Boot>)->Result<(),TxError>{
+        if self.boot_bound(){
+            let b=boot.ok_or(TxError::InvalidOperation)?;
+            if b.profile.as_str()!=crate::boot::LOCAL_PROFILE||self.recovery.is_some()
+                ||self.crews.is_empty()||self.crews.iter().any(|c|c.employer!=b.operator||c.energy_stock!=b.stocks[1]||c.water_stock!=b.stocks[2]){return Err(TxError::InvalidOperation);}
+        }else if boot.is_some_and(|b|self.crews.iter().any(|c|b.governs(c.energy_stock)||b.governs(c.water_stock))||self.recovery.as_deref().is_some_and(|r|b.governs(r.energy_stock))){return Err(TxError::InvalidOperation);}
+        Ok(())
+    }
     pub fn validate(&self)->Result<(),TxError>{
         self.domain.validate().map_err(bad)?;self.graph.validate().map_err(bad)?;
-        if !matches!((self.version,self.profile,self.recovery.is_some()),(1,Profile::LocalDevelopmentEdgeDrivenPoliceV1,false)|(2,Profile::LocalDevelopmentEdgeDrivenPoliceRecoveryV2,true)) || self.domain.crews.len()!=self.crews.len() || !self.graph.demands.is_empty()
+        if !matches!((self.version,self.profile,self.recovery.is_some()),(1,Profile::LocalDevelopmentEdgeDrivenPoliceV1,false)|(2,Profile::LocalDevelopmentEdgeDrivenPoliceRecoveryV2,true)|(3,Profile::LocalDevelopmentEdgeDrivenPoliceBootV3,false)) || self.domain.crews.len()!=self.crews.len() || !self.graph.demands.is_empty()
             || self.edges.is_empty() || self.routes.is_empty(){return Err(TxError::InvalidOperation);}
         for (i,e) in self.edges.iter().enumerate(){
             let edge=self.graph.edges.iter().find(|r|r.id==e.edge).ok_or(TxError::InvalidOperation)?;
@@ -158,10 +167,26 @@ struct ContractArchive{delivery:u32,member:u64,account:u32,start:u64,end:u64}
 impl Record for ContractArchive{fn inactive()->Self{Self{delivery:0,member:0,account:0,start:0,end:0}}}
 #[derive(Clone,Copy,Debug,Default,Serialize,Deserialize)]
 struct CostArchive{fees:u64,energy_basis:u64,water_basis:u64,drive_mwh:u64}
+/// Historical classification of actual Boot exports, never an available stock.
+#[derive(Clone,Copy,Debug,PartialEq,Eq,Serialize,Deserialize)]
+#[serde(deny_unknown_fields)]
+pub(crate) struct BootUse {
+    pub version:u32,pub operator:u32,pub stocks:[u32;2],
+    pub quantity:[crate::units::Quantity;2],pub basis:[Money;2],
+}
+impl BootUse {
+    fn new(c:CrewBinding)->Self{Self{version:1,operator:c.employer,stocks:[c.energy_stock,c.water_stock],quantity:[crate::units::Quantity::ZERO;2],basis:[Money::ZERO;2]}}
+    pub(crate) fn record(&mut self,b:&crate::boot::Boot,index:usize,q:crate::units::Quantity,cost:Money)->Result<(),TxError>{
+        if index>1||self.version!=1||self.operator!=b.operator||self.stocks!=[b.stocks[1],b.stocks[2]]{return Err(TxError::InvalidOperation);}
+        self.quantity[index]=self.quantity[index].checked_add(q).map_err(|_|TxError::Overflow)?;
+        self.basis[index]=self.basis[index].checked_add(cost).map_err(|_|TxError::Overflow)?;Ok(())
+    }
+}
 #[derive(Clone,Debug,Serialize,Deserialize)]
 #[serde(deny_unknown_fields,try_from="WireRuntime")]
 pub struct Runtime {
     #[serde(skip)] ready:bool,
+    #[serde(default,skip_serializing_if="Option::is_none")]pub(crate) boot_use:Option<Box<BootUse>>,
     opening:Box<Opening>,domain:Box<d::Runtime>,trips:Rows<Trip,{d::MAX_TASKS}>,
     paid_archive:Rows<PaidArchive,32>,contracts_archive:Rows<ContractArchive,64>,cost_archive:CostArchive,
     #[serde(default,skip_serializing_if="Option::is_none")] income_anchor:Option<Box<crate::housing_income::IncomeContext>>,
@@ -172,13 +197,14 @@ pub const LEGACY_COMPAT_ERROR:&str="service_delivery_audit_v203_requires_origina
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
 struct WireRuntime{
+ boot_use:Option<Box<BootUse>>,
  opening:Box<Opening>,domain:Box<d::Runtime>,trips:Rows<Trip,{d::MAX_TASKS}>,
  paid_archive:Option<Rows<PaidArchive,32>>,contracts_archive:Option<Rows<ContractArchive,64>>,cost_archive:Option<CostArchive>,
  income_anchor:Option<Box<crate::housing_income::IncomeContext>>,recovery:Option<Box<RecoveryState>>,
  closed_to_new:bool,wake:bool,edge_open:[bool;MAX_EDGES],covered_through:u64,
 }
 impl TryFrom<WireRuntime>for Runtime{type Error=&'static str;fn try_from(w:WireRuntime)->Result<Self,Self::Error>{
- Ok(Self{ready:false,opening:w.opening,domain:w.domain,trips:w.trips,paid_archive:w.paid_archive.ok_or(LEGACY_COMPAT_ERROR)?,contracts_archive:w.contracts_archive.ok_or(LEGACY_COMPAT_ERROR)?,cost_archive:w.cost_archive.ok_or(LEGACY_COMPAT_ERROR)?,income_anchor:w.income_anchor,recovery:w.recovery,closed_to_new:w.closed_to_new,wake:w.wake,edge_open:w.edge_open,covered_through:w.covered_through})}}
+ Ok(Self{ready:false,boot_use:w.boot_use,opening:w.opening,domain:w.domain,trips:w.trips,paid_archive:w.paid_archive.ok_or(LEGACY_COMPAT_ERROR)?,contracts_archive:w.contracts_archive.ok_or(LEGACY_COMPAT_ERROR)?,cost_archive:w.cost_archive.ok_or(LEGACY_COMPAT_ERROR)?,income_anchor:w.income_anchor,recovery:w.recovery,closed_to_new:w.closed_to_new,wake:w.wake,edge_open:w.edge_open,covered_through:w.covered_through})}}
 #[derive(Clone,Copy,Debug,PartialEq,Eq,Serialize,Deserialize)]
 #[serde(deny_unknown_fields)]
 pub enum Command { ActivateRecovery,DispatchRecovery{delivery:u32,plan:u32},CloseRecoveryStandby,FundRecoveryWages{cents:u64},Accept{household:u32,crew:u32},Cancel{delivery:u32},BeginReturn{delivery:u32},FundWages{delivery:u32,cents:u64},SetDriver{delivery:u32,member:u64},SetOpen{open:bool},SetEdgeOpen{edge:u32,open:bool} }
@@ -220,7 +246,8 @@ impl d::Authority for Grant {
 impl Runtime {
     pub(crate) fn new(opening:Opening)->Result<Self,TxError>{opening.validate()?;let mut edge_open=[false;MAX_EDGES];for(i,b)in opening.edges.iter().enumerate(){edge_open[i]=opening.edge(b.edge)?.0.open;}
         let domain=Box::new(d::Runtime::new(opening.domain.clone(),0).map_err(bad)?);
-        Ok(Self{ready:true,opening:Box::new(opening),domain,trips:Rows::new().map_err(bad)?,paid_archive:Rows::new().map_err(bad)?,contracts_archive:Rows::new().map_err(bad)?,cost_archive:CostArchive::default(),income_anchor:None,recovery:None,closed_to_new:false,wake:false,edge_open,covered_through:0})}
+        let boot_use=if opening.boot_bound(){Some(Box::new(BootUse::new(*opening.crews.first().ok_or(TxError::InvalidOperation)?)))}else{None};
+        Ok(Self{ready:true,boot_use,opening:Box::new(opening),domain,trips:Rows::new().map_err(bad)?,paid_archive:Rows::new().map_err(bad)?,contracts_archive:Rows::new().map_err(bad)?,cost_archive:CostArchive::default(),income_anchor:None,recovery:None,closed_to_new:false,wake:false,edge_open,covered_through:0})}
     pub(crate) fn wake_after_input_change(&mut self){self.wake=self.trips.iter().any(|t|t.motion!=Motion::Finished)||self.recovery.as_deref().is_some_and(RecoveryState::physical);for t in self.trips.iter_mut(){t.blocked=false;}if let Some(r)=self.recovery.as_deref_mut(){r.blocked=false;}}
     pub(crate) fn mark_authenticated(&mut self)->Result<(),TxError>{self.validate()?;self.domain.mark_authenticated().map_err(bad)?;self.ready=true;Ok(())}
     pub(crate) fn validate_member_rows(&self,ledger:&crate::member_activity::Ledger)->Result<(),TxError>{
@@ -237,9 +264,13 @@ impl Runtime {
     pub fn tasks(&self)->&[d::Task]{self.domain.tasks()}
     pub fn covered_through(&self)->u64{self.covered_through}
     pub fn is_ready(&self)->bool{self.ready&&self.domain.is_ready()}
-    pub(crate) fn owned_bytes(&self)->usize{std::mem::size_of::<Self>()+self.opening.owned_bytes()+d::Runtime::owned_bytes()+d::MAX_TASKS*std::mem::size_of::<Trip>()+32*std::mem::size_of::<PaidArchive>()+64*std::mem::size_of::<ContractArchive>()+self.income_anchor.as_ref().map_or(0,|_|std::mem::size_of::<crate::housing_income::IncomeContext>())+self.recovery.as_ref().map_or(0,|_|std::mem::size_of::<RecoveryState>())}
+    pub(crate) fn owned_bytes(&self)->usize{std::mem::size_of::<Self>()+self.boot_use.as_ref().map_or(0,|_|std::mem::size_of::<BootUse>())+self.opening.owned_bytes()+d::Runtime::owned_bytes()+d::MAX_TASKS*std::mem::size_of::<Trip>()+32*std::mem::size_of::<PaidArchive>()+64*std::mem::size_of::<ContractArchive>()+self.income_anchor.as_ref().map_or(0,|_|std::mem::size_of::<crate::housing_income::IncomeContext>())+self.recovery.as_ref().map_or(0,|_|std::mem::size_of::<RecoveryState>())}
     pub fn fingerprint(&self)->Result<[u8;32],TxError>{Ok(Sha256::digest(serde_json::to_vec(self).map_err(bad)?).into())}
     pub(crate) fn validate(&self)->Result<(),TxError>{self.opening.validate()?;self.domain.validate().map_err(bad)?;
+        if self.opening.boot_bound()!=self.boot_use.is_some(){return Err(TxError::InvalidOperation);}
+        if let Some(u)=self.boot_use.as_deref(){let c=self.opening.crews.first().ok_or(TxError::InvalidOperation)?;
+            if u.version!=1||u.operator!=c.employer||u.stocks!=[c.energy_stock,c.water_stock]
+                ||(0..2).any(|i|u.quantity[i]==crate::units::Quantity::ZERO&&u.basis[i]!=Money::ZERO){return Err(TxError::InvalidOperation);}}
         if self.owned_bytes()>MAX_OWNED_BYTES{return Err(TxError::WorkingLimit);}
         for t in self.trips.iter(){let task=self.domain.task(t.delivery).ok_or(TxError::InvalidOperation)?;
             let group=self.opening.domain.crews.iter().find(|c|c.id==t.crew).ok_or(TxError::InvalidOperation)?;
@@ -468,7 +499,7 @@ pub(crate) fn service_member_owner(delivery:u32)->u64{0x5300_0000_0000_0000|u64:
 /// Genesis registration uses original identities; runtime activity still needs its actual
 /// original crew qualification, membership, stock and lease gates at each transition.
 pub(crate) fn validate_opening(world:&crate::assembly::World,input:&Opening)->Result<(),TxError>{
-    input.validate()?;
+    input.validate()?;input.validate_boot_binding(world.boot.as_ref())?;
     let housing=&world.housing.as_deref().ok_or(TxError::InvalidOperation)?.opening;
     if world.region.is_some()||input.domain.scope!=world.scope||housing.city_id!=Some(input.domain.city_id)
         ||input.domain.population_origin!=crate::member_qualification::housing_population_origin(world.scope,housing)

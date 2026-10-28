@@ -1,0 +1,360 @@
+{
+  "at": "2026-10-28T13:01:59.375234+00:00",
+  "base": "dd380f15d75562daeafe8b8242beca2c1347a524/v0.5.215",
+  "planned_release": "v0.5.216",
+  "issue": 21,
+  "status": "finite_boot_service_source_bridge_verified_full_city_contract_open",
+  "new_business_closed": 0,
+  "historical_closed": 0,
+  "defects_closed": 0,
+  "full_source_package_backlog": 18,
+  "source_manifest": "bridge-source-manifest.json",
+  "source_files": 495,
+  "current_source_files_match": true,
+  "source_reuse": {
+    "bridge13": {
+      "changed_inputs_from_final": [
+        "crates/city-core/tests/finite_city_runtime.rs",
+        "crates/city-headless/tests/finite_city_role.rs",
+        "crates/city-storage/tests/finite_city_store.rs"
+      ],
+      "production_inputs_equal": true
+    },
+    "bridge14": {
+      "changed_inputs_from_final": [
+        "crates/city-core/tests/finite_city_runtime.rs",
+        "crates/city-headless/tests/finite_city_role.rs",
+        "crates/city-storage/tests/finite_city_store.rs"
+      ],
+      "production_inputs_equal": true
+    },
+    "bridge15": {
+      "changed_inputs_from_final": [
+        "crates/city-core/tests/finite_city_runtime.rs",
+        "crates/city-headless/tests/finite_city_role.rs",
+        "crates/city-storage/tests/finite_city_store.rs"
+      ],
+      "production_inputs_equal": true
+    },
+    "compat16": {
+      "changed_inputs_from_final": [
+        "crates/city-core/tests/finite_city_runtime.rs",
+        "crates/city-headless/tests/finite_city_role.rs",
+        "crates/city-storage/tests/finite_city_store.rs"
+      ],
+      "production_inputs_equal": true
+    },
+    "role17": {
+      "changed_inputs_from_final": [
+        "crates/city-core/tests/finite_city_runtime.rs",
+        "crates/city-storage/tests/finite_city_store.rs"
+      ],
+      "production_inputs_equal": true
+    },
+    "atomic19": {
+      "changed_inputs_from_final": [
+        "crates/city-core/tests/finite_city_runtime.rs"
+      ],
+      "production_inputs_equal": true
+    },
+    "direct20": {
+      "changed_inputs_from_final": [],
+      "production_inputs_equal": true
+    },
+    "shared21": {
+      "changed_inputs_from_final": [],
+      "production_inputs_equal": true
+    }
+  },
+  "direct": {
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/finite-city-runtime-20261028/direct20-city-core-finite_city_runtime-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit": 0,
+    "seconds": 1.468969,
+    "build": "direct20-build-result.json",
+    "default_stack": true,
+    "world": "/Volumes/HP P900/dev/MyCity/work/finite-city-runtime-20261028/direct20-world"
+  },
+  "legacy_and_reclaim": [
+    {
+      "label": "compat16-facility_operation",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/finite-city-runtime-20261028/compat16-city-core-facility_operation-fixed",
+        "--exact",
+        "legacy_housing_header_stays_legal_before_the_original_wait_boundary",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "source": "compat16-source-manifest.json",
+      "program_sha256": "5f50da223df42a8d0face1086ba1aee57fe77e41e8ce5111932f31ac6eb8f964",
+      "exit": 0,
+      "seconds": 2.429051917,
+      "summaries": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    {
+      "label": "compat16-construction_engine",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/finite-city-runtime-20261028/compat16-city-core-construction_engine-fixed",
+        "--exact",
+        "construction_action_and_journal_records_stay_inside_frozen_engine_budget",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "source": "compat16-source-manifest.json",
+      "program_sha256": "e58cb35b2b7588ce693dc790cb1408ed871f66f68b71b28687dbab5cb96f601c",
+      "exit": 0,
+      "seconds": 2.408061958,
+      "summaries": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    {
+      "label": "compat16-asset_capital_runtime",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/finite-city-runtime-20261028/compat16-city-core-asset_capital_runtime-fixed",
+        "--exact",
+        "configured_asset_carrier_is_charged_and_original_housing_budget_refuses_atomically",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "source": "compat16-source-manifest.json",
+      "program_sha256": "d83490c72398908d498923338aae14bafa7b80a2402ac9e2ec86114986c148aa",
+      "exit": 0,
+      "seconds": 2.8071712499999997,
+      "summaries": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    {
+      "label": "compat16-service_delivery",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/finite-city-runtime-20261028/compat16-city-core-service_delivery-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "source": "compat16-source-manifest.json",
+      "program_sha256": "61622c03b772afa233df9e2bffb4b0f0ec451a0fca8710881fb3f9ac89f290c1",
+      "exit": 0,
+      "seconds": 9.946509375,
+      "summaries": [
+        [
+          "ok",
+          "9",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    {
+      "label": "bridge15-finite_city_store",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/finite-city-runtime-20261028/bridge15-city-storage-finite_city_store-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "source": "bridge15-source-manifest.json",
+      "program_sha256": "6354d2b7626f6946ca45f8e93f110f2c323d14f7450a28d4a038b415230b41a0",
+      "exit": 0,
+      "seconds": 572.648043875,
+      "summaries": [
+        [
+          "ok",
+          "3",
+          "0",
+          "1"
+        ]
+      ]
+    }
+  ],
+  "atomic_and_normal_role": [
+    {
+      "label": "atomic19-finite_city_store",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/finite-city-runtime-20261028/atomic19-city-storage-finite_city_store-fixed",
+        "--exact",
+        "interrupted_consumption_keeps_boot_stock_and_service_meter_on_one_original_ticket",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit": 0,
+      "seconds": 3.838631792,
+      "source": "atomic19-source-manifest.json",
+      "program_sha256": "9ee025c01f2543c3e87a4a0710721c750ee040f08f793ec199a592dc37130c20",
+      "summaries": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    {
+      "label": "role17-finite_city_role",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/finite-city-runtime-20261028/role17-city-headless-finite_city_role-fixed",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit": 0,
+      "seconds": 20.991559084,
+      "source": "role17-source-manifest.json",
+      "program_sha256": "c005a444bea7533a339f334c7476f3065825092ffad0ab586e70905f40d98447",
+      "summaries": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ]
+    }
+  ],
+  "shared": [
+    {
+      "source": "shared21-source-manifest.json",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/finite-city-runtime-20261028/shared21-city-core-mycity_core-fixed",
+        "--skip",
+        "layout_pressure::restore_into::tests::full_native_target_reuses_all_ten_backings_after_errors_and_reordered_fields",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "program_sha256": "14df5f6293f46841eba1c22b331b7b9ff84c0e10740e982715266f762dc17b58",
+      "exit": 0,
+      "seconds": 18.139719208,
+      "summaries": [
+        [
+          "ok",
+          "310",
+          "0",
+          "1"
+        ]
+      ]
+    },
+    {
+      "source": "shared22-source-manifest.json",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/finite-city-runtime-20261028/shared22-city-storage-mycity_storage-fixed",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "program_sha256": "b9d6a6159034e531a38ad64a830d0ddf01c9a09c652b45c4e6cfe9ac1d09c369",
+      "exit": 101,
+      "seconds": 25.444259834,
+      "summaries": [
+        [
+          "FAILED",
+          "34",
+          "2",
+          "0"
+        ]
+      ]
+    }
+  ],
+  "shared_terminal_interpretation": "core310 passed/1 ignored/1 unrelated diagnostic filtered; storage34 passed and2 failed for missing explicit SSD evidence env, same fixed program2 selected passed after setting env query23; no 36-test rerun",
+  "role_resources": {
+    "arena_used_observed_max": 55785328,
+    "engine_owned_bytes": 3677304,
+    "not_native_16gb_speed_or_m0_acceptance": true,
+    "pool": {
+      "available_touched_bytes": 67108864,
+      "capacity_bytes": 67108864,
+      "fill_acknowledgements": 0,
+      "granted_capacity_bytes": 0,
+      "grants": 0,
+      "maximum_prepare_to_fill_or_reap_ns": 713308333,
+      "rejected_requests": 0,
+      "returns": 0,
+      "scans": 14,
+      "workspace_capacity_bytes": 0,
+      "workspace_fills": 2,
+      "workspace_grants": 2,
+      "workspace_returns": 2
+    },
+    "reference_and_creator_outside_shipping_role": true,
+    "store_owned_bytes": 41995638
+  },
+  "role_samples": [
+    {
+      "grant": 61865984,
+      "allocation_failures": 0,
+      "used": 55785328
+    },
+    {
+      "grant": 61865984,
+      "allocation_failures": 0,
+      "used": 55706032
+    },
+    {
+      "grant": 61865984,
+      "allocation_failures": 0,
+      "used": 55705952
+    },
+    {
+      "grant": 61865984,
+      "allocation_failures": 0,
+      "used": 55706040
+    },
+    {
+      "grant": 61865984,
+      "allocation_failures": 0,
+      "used": 55706040
+    },
+    {
+      "grant": 61865984,
+      "allocation_failures": 0,
+      "used": 55706040
+    }
+  ],
+  "unverified": [
+    "Payroll member/time binding with ServiceWork",
+    "full finite-city/JPROD21/115",
+    "full product supported capacity and speed",
+    "normal resource across long calendar reclaim workload",
+    "native footprint and real16GB",
+    "GPU/UI/Windows/fullM0 long gate",
+    "typed Opening new profile",
+    "cross-city or RecoveryV2 Boot-source profile"
+  ],
+  "failure_evidence": [
+    "bridge11 build errors before execution",
+    "atomic18 extra new same-target Advance rejected Timeline(Cursor), harness corrected only",
+    "shared22 two query cases missing mandatory SSD env; raw failure retained"
+  ],
+  "advisor": "source-only focused review, no new concrete blocker; does not substitute actual validation",
+  "preserved_wip_files": 24,
+  "budget_bytes": 2147483648,
+  "logical_du_kib": 1801324,
+  "raw_evidence_root": "/Volumes/HP P900/dev/MyCity/work/finite-city-runtime-20261028",
+  "role_world": "/Volumes/HP P900/dev/MyCity/work/finite-city-runtime-20261028/role17-finite_city_role-evidence/normal-role-19357/world",
+  "role_pool": "/Volumes/HP P900/dev/MyCity/work/fc216pool17",
+  "hardware": "Mac16,1 / 34359738368 bytes RAM; HP P900 USB/APFS; unique existing target/work",
+  "pr": null,
+  "acceptance_cycle_start": "unknown; build/verification timestamps are not development cycle",
+  "statistics_window": {
+    "start": "2026-10-28T12:00:15.402824+00:00",
+    "end": "2026-10-28T13:01:59.375234+00:00",
+    "scope": "root changes after v215; all closure counts0; verification duration not development cycle"
+  }
+}

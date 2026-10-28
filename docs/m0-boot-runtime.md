@@ -83,3 +83,13 @@ Boot内联实测448B／实验世界，固定2作业，无逐人／逐设备数�
 [短进程观测](evidence/m0-t08-boot/process.txt)：M4／32GiB，七分支完整探针1.26s，maximum RSS8798208B、peak footprint6881616B。这不是城市吞吐、长跑、GPU或16GB设备证据；完整产品3.10GiB常态候选和16GB联合门未改成PASS。
 
 advisor做了方案澄清和一轮最终只读代码检查：电池／水箱、最坏故障收容、不可退回已耗投入、同池容量与失败回执均已落实，无新增阻断；测试由主执行取得。P-BOOT计划中的有限实验至此签收，不再靠扩事故故事延长本专题。T08三项有限实验通过后，下一依赖主线是T09区域实际履约／容量来源整合；LC38真实生命周期、连续公用网、统一执行器、完整日历、长期平衡与16GB联合门仍保留。
+
+## #21 公服实际消费桥（开发中，未验收）
+
+显式公服 `LocalDevelopmentEdgeDrivenPoliceBootV3` 只绑定同一 `pboot-local-development-v1` 的 operator 与电/水输出；所有crew使用相同源，保持Police原非饮用用水用途，本版不混用普通库存/其他源或Recovery。旧V1和RecoveryV2仍用其原普通库存；若偷偷指向Boot受管库存则拒绝，不能漏记出口。
+
+实际消费沿同一Prepared内的Boot.export一次扣原Stock并取同一lot basis，公服使用该返回值记录成本；不再次收费或扣物。source分类保存在已按需分配的公服Runtime可选boxed BootUse（version1、operator、两个stock及终身实际quantity/basis），不是库存余额。关闭/归档/reclaim不清零、不重复归档此累计。新V3缺累计登记拒绝恢复，零值只由明确新开局初始化，不从旧存量差额补造历史。旧普通profile没有该字段，旧序列保持省略。
+
+本地profile的原Boot总exports与basis严格等于Town、Construction、公服三个实际类别之和；装配身份、准备提交边界和保存恢复对同一绑定/累计核对。旧跨城Exchange规则不变。owned包括公服Runtime新增可选指针与Box payload；Prepared原状态/深clone与候选工作区按现有service预算覆盖，局部book副本另计candidate工作字节；恢复重叠通过原delivery_extra计入。没有扩大128KiB/4096B/normal/M0门，native栈/真实16GB仍需实际证据。
+
+首验必须覆盖真实行驶与现场电水、与Town共享源、零消费/真实不足拒绝、原票重试和WAL/checkpoint冷恢复；跨任务回收链须核累计不丢后才可签收该桥。现有CostArchive缺旧现场电水量，不宣称可由其独立重算全部历史。

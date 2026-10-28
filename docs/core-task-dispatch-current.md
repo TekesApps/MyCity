@@ -1,6 +1,6 @@
 # MyCity 当前实际派工与交接
 
-**当前唯一执行：#21有限城市共同输入接线，root唯一共享writer，1项接线+0准备。**v0.5.215本地Boot profile共存/两日业务与同Store冷恢复已验证；[证据与差项](evidence/finite-city-runtime-20261028/STATUS.md)。下一实际公服供给消费桥；不新增模型批次。151/152/153/154实际关闭继续有效，父117/21/115仍开放。当前文件和边界见[执行清单](execution-current.md)。
+**当前唯一结论：v0.5.216公服实际供给消费桥接线已收口；完整21/115开放。**[证据与差项](evidence/finite-city-runtime-20261028/BRIDGE.md)。root唯一共享writer，当前0编码/0活动准备。下一只固定Payroll成员/群组工作时窗接入原账的有限合同，未定文件/API不授写，不新派源码批次。151与152–154旧关闭结果有效，父117/21/115仍开放；详见[当前执行](execution-current.md)。
 
 <details><summary>历史派工快照</summary>
 

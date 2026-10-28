@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.215`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.216`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.216 接通[#21原Boot输出→实际Police消费](docs/evidence/finite-city-runtime-20261028/BRIDGE.md)，与Town同源用电、原票/中断/冷恢复、5任务回收及原normal资源门通过；账户Payroll成员时窗仍未接，完整城市/21/115开放。
 
 v0.5.215 接通[#21本城有限Boot profile的共同输入与冷恢复](docs/evidence/finite-city-runtime-20261028/STATUS.md)：旧profile不变，同一存档实际公服到返、两日日结与WAL/checkpoint原票重试通过；实际公服供给桥和完整业务资源门仍未完成，#21开放。
 

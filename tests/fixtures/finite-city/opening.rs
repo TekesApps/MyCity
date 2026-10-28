@@ -35,3 +35,13 @@ pub fn input()->Value {
 pub fn resources()->Vec<Resource> {
     let mut r=service::resources();r.extend([Resource::new(3101,1).unwrap(),Resource::new(3102,1).unwrap()]);r
 }
+
+/// New explicit service strategy consumes the original Boot outputs, not a refill.
+pub fn boot_service_input()->Value {
+    let mut v=input();
+    let delivery=&mut v["service_needs"]["profile"]["LocalDevelopmentWithDeliveryV2"];
+    delivery["version"]=json!(3);delivery["profile"]=json!("LocalDevelopmentEdgeDrivenPoliceBootV3");
+    for c in delivery["crews"].as_array_mut().unwrap(){c["energy_stock"]=json!(3002);c["water_stock"]=json!(3003);c["police_utility_water_stock"]=json!(3003);}
+    v["stocks"].as_array_mut().unwrap().retain(|s|s["id"]!=991&&s["id"]!=992);
+    v["sources"].as_array_mut().unwrap().retain(|s|s["id"]!=9010&&s["id"]!=9011);v
+}

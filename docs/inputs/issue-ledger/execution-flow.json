@@ -1,37 +1,16 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-28T11:43:10.524479+00:00",
-  "source_head": "v0.5.215 local Boot coexistence checkpoint",
-  "candidate": "#21 local Boot profile and same Store cold restore verified; actual service utility source bridge remains next",
+  "last_snapshot_at": "2026-10-28T13:05:13.703567+00:00",
+  "source_head": "v0.5.216 finite Boot-service source bridge",
+  "candidate": "Boot-service bridge verified; next finite Payroll member/time source binding contract pending concrete API",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
   "limits": {
     "shared_core_lanes": 1,
     "independent_preparations": 2,
     "reason_for_adjustment_required": true
   },
-  "active_shared_work": [
-    {
-      "issue": 21,
-      "owner": "root / 01a166fc-e444-7602-ad22-3a8551dda487",
-      "stage": "开发中",
-      "files": [
-        "tests/fixtures/finite-city/opening.rs",
-        "crates/city-core/tests/finite_city_runtime.rs",
-        "crates/city-core/src/boot.rs",
-        "crates/city-core/src/lib.rs",
-        "crates/city-storage/tests/finite_city_store.rs"
-      ],
-      "base": "v0.5.214",
-      "entry": "original_service_and_two_market_days_share_one_clock_cash_and_utility_stock",
-      "remaining": [
-        "actual public utility consumption source bridge",
-        "aggregate payroll/member activity coexistence limit",
-        "affected resource gate"
-      ],
-      "evidence": "work/finite-city-runtime-20261028"
-    }
-  ],
+  "active_shared_work": [],
   "active_independent_preparations": [],
   "counting_rules": {
     "parents_are_not_active_work": true,
@@ -932,5 +911,19 @@
     "full_source_handoff_backlog": 18,
     "evidence": "docs/evidence/asset-capital-runtime-20261028/closure.json",
     "reliable_cycle_start": "unknown; do not use issue creation or close window as development duration"
+  },
+  "next_finite_city": {
+    "issue": 21,
+    "linked_labor_parent": 5,
+    "owner": "root, not newly dispatched",
+    "scope": "Payroll21 member/cohort identity plus actual 09-17 work interval on existing member_activity with ServiceWork",
+    "concrete_gap": "PayrollSpec has no member range; AddPayroll/accrual never claims member_activity",
+    "dependencies": [
+      "#129 member ledger concrete API",
+      "#134 ServiceWork existing claims",
+      "existing Timeline wage facts and Store receipts"
+    ],
+    "write_authority": "not yet expanded; fix finite contract and exact files before implementation",
+    "no_new_model_batches": true
   }
 }
