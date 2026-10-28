@@ -1,7 +1,7 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-28T15:59:21.333240+00:00",
+  "last_snapshot_at": "2026-10-28T16:03:18.232541+00:00",
   "source_head": "v0.5.219 finite joint tests; production unchanged fromv217/218",
   "candidate": "21 finite asset/common city accepted; full21 remains open",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
@@ -11,7 +11,15 @@
     "reason_for_adjustment_required": true
   },
   "active_shared_work": [],
-  "active_independent_preparations": [],
+  "active_independent_preparations": [
+    {
+      "state": "read-only active",
+      "owner": "/root/finite_city_existing_inputs",
+      "scope": "existing road/town proof consumer and versioned minimal input differences againstv219",
+      "write_authority": [],
+      "compile_test_authority": false
+    }
+  ],
   "counting_rules": {
     "parents_are_not_active_work": true,
     "frozen_deliveries_are_not_active_workers": true,
@@ -856,13 +864,13 @@
     }
   ],
   "phase_result": {
-    "business_accepted": 1,
+    "business_accepted": 0,
     "historical_backfill": 0,
-    "defects_accepted": 1,
+    "defects_accepted": 0,
     "issue_closures_pending": false,
     "whole_packages_retired": 0,
-    "proof": "docs/evidence/payroll-members-runtime-20261028/STATUS.md",
-    "cycles": "unknown reliable start; verification window is not development time"
+    "proof": "docs/evidence/finite-city-asset-intake-20261029/STATUS.md",
+    "cycles": "unknown reliable start; window not development duration"
   },
   "queued_next_102": {
     "owner": "root",
@@ -879,12 +887,13 @@
     "business_close_delta": 0
   },
   "latest_active_evidence": null,
-  "near_term_objective": "Close #151 original finite contract, then accept one sustainable finite-city business loop using existing integrated deliveries; no batch source-only models",
+  "near_term_objective": "consume integrated deliveries into sustainable finite city;151/155 closed; next real road proof consumer, no new model batch",
   "next_acceptance_preparation": {
-    "state": "not dispatched",
-    "scope": "existing151 actual asset daily costs into21 common scene; determine inputs and direct missing boundary first",
-    "owner": "root judgment before any scoped preparation",
-    "write_authority": []
+    "state": "read-only active",
+    "owner": "/root/finite_city_existing_inputs",
+    "scope": "existing road/town proof consumer and versioned minimal input differences againstv219",
+    "write_authority": [],
+    "compile_test_authority": false
   },
   "latest_completed_batch": {
     "business": [
@@ -957,6 +966,23 @@
         ],
         "write_authority": "not yet expanded; fix finite contract and exact files before implementation",
         "no_new_model_batches": true
+      }
+    },
+    {
+      "phase_result": {
+        "business_accepted": 1,
+        "historical_backfill": 0,
+        "defects_accepted": 1,
+        "issue_closures_pending": false,
+        "whole_packages_retired": 0,
+        "proof": "docs/evidence/payroll-members-runtime-20261028/STATUS.md",
+        "cycles": "unknown reliable start; verification window is not development time"
+      },
+      "next_acceptance_preparation": {
+        "state": "not dispatched",
+        "scope": "existing151 actual asset daily costs into21 common scene; determine inputs and direct missing boundary first",
+        "owner": "root judgment before any scoped preparation",
+        "write_authority": []
       }
     }
   ]

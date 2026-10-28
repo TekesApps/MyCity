@@ -1,8 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.219`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.220`。已开始Rust模型与headless CLI，当前不做UI。
 
-v0.5.219 将既有资产成本接入住房/实际劳动/公服/Boot/Town共同场景，有限正常、关闭、拒绝、冷恢复及原normal预算门已验证；[实际结果与未验范围](docs/evidence/finite-city-asset-intake-20261029/STATUS.md)。完整#21/#115开放，当前0接线/0准备，不新增模型。
+v0.5.219 将既有资产成本接入住房/实际劳动/公服/Boot/Town共同场景，有限正常、关闭、拒绝、冷恢复及原normal预算门已验证；[实际结果与未验范围](docs/evidence/finite-city-asset-intake-20261029/STATUS.md)。完整#21/#115开放；v220仅同步现行派工/台账，当前0接线/1项只读道路proof输入准备，不新增模型。
 
 v0.5.217 完成[#155实际岗位工时与公服成员共存](docs/evidence/payroll-members-runtime-20261028/STATUS.md)，修复#156正常存档恢复入口。共享/默认栈与原normal角色有限门通过；旧回收长例本次超时不计通过，复用范围单列。Issue关闭按后续回执，完整城市/16GB/M0长期仍未验收。
 

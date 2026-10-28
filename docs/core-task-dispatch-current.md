@@ -1,6 +1,6 @@
 # MyCity 当前实际派工与交接
 
-**当前唯一结论：v0.5.216公服实际供给消费桥接线已收口；完整21/115开放。**[证据与差项](evidence/finite-city-runtime-20261028/BRIDGE.md)。root唯一共享writer，当前0编码/0活动准备。下一只固定Payroll成员/群组工作时窗接入原账的有限合同，未定文件/API不授写，不新派源码批次。151与152–154旧关闭结果有效，父117/21/115仍开放；详见[当前执行](execution-current.md)。
+**当前唯一结论：v0.5.219有限资产/住房/实际Payroll/公服/Boot/Town共同运行已验收冻结；完整21/115开放。**[实际结果](evidence/finite-city-asset-intake-20261029/STATUS.md)。#151/#155/#156原合同已关闭，不重做；root共享接线0项，独立只读准备1项（/root/finite_city_existing_inputs，核对既有道路经营proof与当前输入最小差异，无写权/编译权）。下一先固定现成消费者、实际道路来源及共同预期，不新派源码批次；全部生产写入仍属root。[当前执行](execution-current.md)与JSON台账为现行入口，下方旧派工均历史。
 
 <details><summary>历史派工快照</summary>
 
