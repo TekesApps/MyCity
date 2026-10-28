@@ -261,7 +261,7 @@ pub(crate) fn check_original(scope:crate::arena::Scope,opening:Opening,state:Sta
         Event::Commission{..}=>matches!(action,Some(Action::Construction{command:C::AcceptInspection{accepted:true,..}})),
         Event::Stop{..}=>matches!(action,Some(Action::Construction{command:C::Start})),
         Event::Expense{..}=>matches!(action,Some(Action::Construction{..})),
-        Event::Assessment{..}=>matches!(action,Some(Action::TownSettle{..})),
+        Event::Assessment{..}=>matches!(action,Some(Action::TownSettle{..}|Action::TownTransportSettle{..})),
         Event::Retirement{..}=>matches!(action,Some(Action::Construction{command:C::Close})),
     };
     if !valid_event{return Err(TxError::InvalidOperation);}

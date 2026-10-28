@@ -1,0 +1,5 @@
+# 原advisor只读窄核回填
+
+/root/three_module_delivery_advisor确认实际road02阻断的两处精确限制：JournalActions::with_contexts热写资产action gate只列Construction/TownSettle；asset_cost_authority::check_original冷恢复Assessment只认TownSettle。后者若不同时修复，保存恢复仍会拒绝。bounded decoder没有第三道同类限制，已有TownTransportSettle与from_wire_contexts支持。
+
+结论支持两处同时加入TownTransportSettle；不改JournalRecord布局/Context v3/摘要/金额/预算。既有proof、System、单动作、日期/generation门继续沿原路径。建议正常、热冷原票、WAL/checkpoint/半写、旧TownSettle与旧无资产道路检查。该报告仅静态核对，未运行测试；未审Sim WIP wrapper，执行结果仍由root原件证明。

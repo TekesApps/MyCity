@@ -1,5 +1,10 @@
 # MyCity 当前实际派工与交接
 
+**当前v0.5.221有限验证已完成，正在唯一发布/关闭收尾（1+0）：**#21实际道路分配→共同城市经营/资产日结，以及#157两处原票兼容已通过受影响/shared/default/normal/冷恢复。#157待实际回填关闭，完整21/117/115开放；[唯一当前事实](execution-current.md)及[结果](evidence/finite-city-road-intake-20261029/STATUS.md)。无新增业务关闭/历史补关，完整交付包18不机械核销，下一先核原供给/到期责任跨耗尽消费者，不新写模型。
+
+<details><summary>此前执行快照，仅对标明版本有效</summary>
+
+
 **当前唯一结论：v0.5.219有限资产/住房/实际Payroll/公服/Boot/Town共同运行已验收冻结；完整21/115开放。**[实际结果](evidence/finite-city-asset-intake-20261029/STATUS.md)。#151/#155/#156原合同已关闭，不重做；root共享接线0项，独立只读准备1项（/root/finite_city_existing_inputs，核对既有道路经营proof与当前输入最小差异，无写权/编译权）。下一先固定现成消费者、实际道路来源及共同预期，不新派源码批次；全部生产写入仍属root。[当前执行](execution-current.md)与JSON台账为现行入口，下方旧派工均历史。
 
 <details><summary>历史派工快照</summary>
@@ -1069,5 +1074,7 @@ v190的#132/#148已关，v191只同步台账。当前root将#133激活为唯一�
 有限133实际Closed/stage:done，父92勾选并Open；实现/验收v192而非本tag。[关闭记录](evidence/water-treatment-runtime-20261025/closure.json)。当前0+0，新增验收业务2（132/133）、历史补关0、缺陷1（148）；21待集成/0待验证。134真实来源未满足时不静默跳过，按具体依赖转向135–137既有交付。
 
 #135已实际Closed，新增验收业务累计3/历史补关0/缺陷1，20待集成/0待验证；[实际关闭证据](evidence/task-registry-directory-20261026/closure.json)。v195仅关闭台账，未重跑或重复计业务。
+
+</details>
 
 </details>

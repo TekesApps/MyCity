@@ -316,7 +316,7 @@ impl JournalActions {
         facility:Option<crate::facility_authority::Effects>,income:Option<crate::housing_income::IncomeContext>,
         asset:Option<crate::asset_cost_authority::Context>)->Result<Self,&'static str>{
         if qualification.is_some()&&!matches!(actions[0],Some(Action::Qualification{..})) {return Err("receipt_qualification_action");}
-        if asset.is_some()&&!matches!(actions[0],Some(Action::Construction{..}|Action::TownSettle{..})){return Err("receipt_asset_action");}
+        if asset.is_some()&&!matches!(actions[0],Some(Action::Construction{..}|Action::TownSettle{..}|Action::TownTransportSettle{..})){return Err("receipt_asset_action");}
         if (qualification.is_some()||facility.is_some()||income.is_some()||asset.is_some())&&actions[0].is_none(){return Err("receipt_context_requires_single_action");}
         Self::from_wire_contexts(actions,qualification,facility,income,asset)
     }

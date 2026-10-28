@@ -10,6 +10,8 @@ T13-A的当前构造边界见[固定词法容量阶段](evidence/m0-t13a-fixed-l
 
 **v210已接线的#102等价执行请求（有限验证）：**共同能力/选择编码v2增加`ExecuteExactPages{plan_version,quota}`，只对原Directory当前Air选择进入既有`required(quota Some)`，不替换模型策略。Describe基础摘要绑定原来源；接受时另以`mycity-accepted-task-execution-v1`类型编码绑定完整实际请求，包括初始intent、plan和三个quota字段。后续Continue保持原ticket/turn/instance授权，不改初始摘要。quota是等价执行分段参数，并非CPU时间/内存硬授权；原段尾整场积分仍可超过cell_limit，工作计数分开报告。旧capability1在副作用前拒绝；请求描述不持久化，不迁移存档，也不能把新Describe当未确认原执行的重试。真实模型Refinement、额外资源与GPU继续unsupported/未解。复用原writer/owner/票/退休；[26项实际结果及复用依据](evidence/bound-air-pages-20261028/STATUS.md)，完整102/103/104仍开放。
 
+#21有限共同城市场景正在消费已有Store道路日结：Sim新增`SettleTownMarket { operation }`，只收原操作身份，由Sim唯一Store读取既有不可变allocation、生成/保管当日proof并走原Engine `TownTransportSettle`；客户端不提交quote、proof、时钟或新的资源授权。operation保留区与原Execute一致，未到完整日界仍拒绝，重复沿Store原票恢复；不是新增worker/求解器或自动推进时钟。#157使相同资产Assessment context兼容原普通和transport日结，JournalRecord布局及Context v3不变；本候选是否已验以当前执行及发布证据为准。
+
 ## 1. 一句话结构与当前部署
 
 一个权威模拟核心拥有城市状态与排程，通过一个持久化提交口修改世界；工具、未来App、Agent和渲染通过命令／只读投影使用它，计算worker只产生可拒绝、可重算的候选。

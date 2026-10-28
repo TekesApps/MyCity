@@ -127,6 +127,9 @@ pub enum Command {
     Status,
     Progress,
     Execute { envelope: Envelope },
+    /// Issue the original Store-owned road proof and settle the complete local day.
+    /// The client supplies only its original operation identity, never a proof or quote.
+    SettleTownMarket { operation: u64 },
     RunRequired { job: u64 },
     /// Select one real mandatory job or one page of an already accepted P5
     /// boundary. It never accepts a new future Timeline target.
@@ -1110,6 +1113,15 @@ fn run_owned(
                     Err("sim_internal_control_reserved".into())
                 } else {
                     crate::cpu_log::execute(&mut store,Caller::System,envelope,&mut diag)
+                        .and_then(|v| serde_json::to_value(v).map_err(err))
+                }
+            }
+            Command::SettleTownMarket { operation } => {
+                let prefix = operation & 0xf000_0000_0000_0000;
+                if matches!(prefix, SERVICE_CONTINUATION_PREFIX | 0xd000_0000_0000_0000 | 0xe000_0000_0000_0000) {
+                    Err("sim_internal_control_reserved".into())
+                } else {
+                    store.settle_town_market(operation).map_err(err)
                         .and_then(|v| serde_json::to_value(v).map_err(err))
                 }
             }

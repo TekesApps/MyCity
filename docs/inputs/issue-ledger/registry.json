@@ -23,7 +23,8 @@
     152,
     153,
     154,
-    156
+    156,
+    157
   ],
   "hardware_issue": 114,
   "issues": [
@@ -3845,6 +3846,33 @@
       "pr": "本阶段无PR；main直接集成",
       "implementation_tags": "v0.5.217 bf0a9d40f532410f9315e16adc17ff189e4f9082",
       "closed_at": "2026-10-28T15:22:39Z"
+    },
+    {
+      "issue": 157,
+      "title": "道路proof日结携带资产折旧原票被拒且不能恢复",
+      "url": "https://github.com/TekesApps/MyCity/issues/157",
+      "parent": 117,
+      "stage": "待验证",
+      "owner": "当前root，与21同一共享窗口",
+      "write_authority": [
+        "transaction.rs asset action gate",
+        "asset_cost_authority.rs Assessment action gate",
+        "21专属测试/证据/台账"
+      ],
+      "scope": "同一真实日结的TownTransportSettle兼容原资产Context；不改布局/版本/预算",
+      "required_capabilities": [
+        "现有Store管理道路proof与原日结",
+        "v213/219资产原票及保存恢复"
+      ],
+      "acceptance": [
+        "道路正常/断路/不可进门共同两日日成本",
+        "半WAL/已提交丢回复/热冷原票/checkpoint",
+        "旧普通TownSettle与旧无资产道路",
+        "原18预算/default/受影响共享/normal"
+      ],
+      "remaining": "road04共同业务及冷恢复已过；受影响共享终态/Sim新入口/default/normal待齐",
+      "evidence": "work/finite-city-road-intake-20261029",
+      "pr": "本阶段无PR；尚未发布"
     }
   ],
   "capability_edges": [
@@ -4012,13 +4040,25 @@
     }
   ],
   "unpublished_execution_update": {
-    "baseline_at": "2026-10-25T02:39:00Z",
+    "source_baseline": "v0.5.220",
     "shared_core_in_progress": 1,
     "independent_preparations_active": 0,
     "limits": [
       1,
       2
     ],
-    "note": "v205 partial134 verified, full contract open, no closures; concrete74 actual relief dependency"
-  }
+    "note": "21 real road proof common city and157 narrow original-context repair; no new models"
+  },
+  "historical_execution_updates": [
+    {
+      "baseline_at": "2026-10-25T02:39:00Z",
+      "shared_core_in_progress": 1,
+      "independent_preparations_active": 0,
+      "limits": [
+        1,
+        2
+      ],
+      "note": "v205 partial134 verified, full contract open, no closures; concrete74 actual relief dependency"
+    }
+  ]
 }
