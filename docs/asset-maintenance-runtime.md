@@ -16,6 +16,16 @@ v0.5.226基线有原#36隔离候选，但没有真实维护工单、材料消费
 4. P53至少一净班组小时必须4名实际相容人员工作3600秒=14400人秒。原工资算法按每成员小时价与真实区间累计，余数、原保护资金和PaidWageWindow来源保留；不复制工资/资金账。maintenance JobKind与生产RUN来源类型明确区分，旧连续供应provider不能接收维护工单为产出。
 5. 新工单的明确配方需有相容的有限实物Stock及原lot成本；参考0.001K和参考单价只决定合法配方，不把现金变材料，也不改实际basis。候选只有在root Prepared实际消费人秒/材料后才能推进；部分工料的实际改善沿原min(work fraction, material fraction)及累计差额，不能凭付款恢复condition。
 
+### 首个有限输入的明确参数与来源
+
+新注册使用facility authority v3及maintenance opening v1，原生产v2和缺省None保持原语义。维护payload挂在原facility按需backing中，不加World常驻领域，不建立新工资或容量池。旧候选profile v1保留替换配方；维护专用v2明确替换不支持，配方为0且拒绝Replace，不能为通过注册虚构替换投入。
+
+project7的普通电气支撑部件1：30DAY检查和服务周期；每次检查1440人秒（4人×360秒），服务14400人秒（4人×3600秒）；日历磨损10bps/DAY、运行磨损0、服务改善200bps。首次due为真实投运61200秒+30DAY。材料限定原owner7的Raw Stock15、25毫Q；固定参考K=28916分与参考单价1200分/Q给出0.001K对应向上取整25毫Q的原型配方，不把参考价写成真实Stock成本。原Stock实际1000毫Q/basis1000分，25毫Q真实成本为25分；工资每成员小时2000分，检查和服务合计8800分，未发生前仍只属独立预期。无另收的年度参考费。这些是明确游戏参数，平衡/容量没有实测支持。
+
+新fixture另明确期初维修场地1591、Resource1592容量4，owner/operator7，用途159，绑定该唯一维修合同22的[0,4)成员及30DAY+17h至20h窗口。新场地容量不是资产输出的2单位，人口/现金/材料原件不增。用途159仅在该maintenance注册及合同/场地归属匹配时进入原Venue路径，不开放未绑定的新用途；注册不是Accept/Enter，也不替代实际员工通勤或工时。
+
+owned按facility root+维护Box及component Vec容量累计；prepare前计入维护副本，恢复沿原Engine同槽/copy并计所有payload。编码包络继续占原8KiB预算，注册先为完整单部件snapshot留3KiB，实际状态再次核验；不增M0/Journal额度。
+
 ## 真正的停机、现场与退出
 
 - 临时停机不调用Construction Withdraw，不触发永久停折旧/拆除。首个明确新fixture的资产operating_base_capacity=0、Resource初始0，投运真实发布2单位；原base2 fixture和M0保留。这样停机不撤回归属不明的旧共同容量。

@@ -1,9 +1,9 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-28T19:23:32.064642+00:00",
-  "source_head": "v0.5.228 partial159 maintenance resume kernel + old compatibility",
-  "candidate": "159 actual authority in progress; venue/outage/material/expense not yet implemented",
+  "last_snapshot_at": "2026-10-28T20:01:03.704770+00:00",
+  "source_head": "v0.5.229 partial159 registration and actual commissioning; not acceptance",
+  "candidate": "159 actual maintenance execution chain in progress; no full acceptance",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
   "limits": {
     "shared_core_lanes": 1,
@@ -16,13 +16,21 @@
       "owner": "root",
       "stage": "开发中",
       "file_ownership": [
-        "crates/city-core/src/facility_work.rs",
-        "crates/city-core/src/facility_authority.rs provider reject new role only",
+        "crates/city-core/src/maintenance_authority.rs",
+        "crates/city-core/src/asset_maintenance.rs original candidate revision/restore/owned",
+        "crates/city-core/src/facility_authority.rs original optional backing/registration/validation",
+        "crates/city-core/src/assembly.rs optional layout/owned",
+        "crates/city-core/src/transaction.rs original Prepared commissioning and narrow summary",
+        "crates/city-core/src/transaction/venue_driver.rs maintenance-bound venue purpose only",
+        "crates/city-core/src/lib.rs module registration",
         "crates/city-core/tests/maintenance_sources.rs",
+        "crates/city-core/tests/asset_maintenance.rs",
+        "tests/fixtures/facility-work/opening.rs legacy maintenance None",
+        "tests/fixtures/finite-city/maintenance_opening.rs",
         "linked design/issue/evidence"
       ],
       "acceptance_card": "work/maintenance-runtime-20261029/execution-card.json",
-      "remaining": "source/gap-resume primitive and old compatibility passed; next actual venue/outage authority -> material/Funds/P5/expense/Store/normal"
+      "remaining": "actual due/safe outage/venue entry/member/Funds/material/P5/expense/restart and maintenance Store/normal"
     }
   ],
   "active_independent_preparations": [],
@@ -886,7 +894,7 @@
     "defects_accepted": 0,
     "issue_closures_pending": false,
     "whole_packages_retired": 0,
-    "proof": "docs/evidence/finite-city-refill-20261029/STATUS.md",
+    "proof": "docs/evidence/maintenance-runtime-20261029/REGISTRATION.md",
     "cycles": "unknown reliable start; not verification time"
   },
   "queued_next_102": {
@@ -903,12 +911,11 @@
     "production_changed": false,
     "business_close_delta": 0
   },
-  "latest_active_evidence": null,
-  "near_term_objective": "consume integrated deliveries into sustainable finite city;151/155 closed; next real road proof consumer, no new model batch",
+  "latest_active_evidence": "docs/evidence/maintenance-runtime-20261029/REGISTRATION.md",
+  "near_term_objective": "sustainable finite common city by consuming existing deliveries;151 closed;159 is sole active seam",
   "next_acceptance_preparation": {
-    "state": "read-only source extraction complete, not runtime proof",
-    "owner": "/root/finite_city_existing_inputs",
-    "scope": "legacy pool rounding coverage and next real counterexample only",
+    "state": "both original159 preparations frozen;0 active",
+    "owner": "root consumes already delivered fixed sources and original36 candidate",
     "write_authority": []
   },
   "latest_completed_batch": {
@@ -1022,11 +1029,11 @@
   },
   "next_existing_delivery": {
     "issue": 159,
-    "owner": "root integration/acceptance, no new source write authority yet",
+    "owner": "root sole shared writer/integration/acceptance",
     "stage": "active root shared seam, not accepted",
     "deliverable": "one commissioned asset actual exposure -> earliest maintenance due -> real worker-seconds/material receipt; no fake construction-to-maintenance reuse",
-    "current_gap": "maintenance profile/component mapping, actual exposure and maintenance labor/material receipts missing",
-    "read_only_preparation": "docs/evidence/boot-cost-partition-20261029/next-existing-source-seam.md",
+    "current_gap": "actual due/safe outage/venue entry/member/Funds/material/P5/expense/restart and maintenance Store/normal",
+    "read_only_preparation": "existing frozen36 candidate and maintenance opening consumed;no new preparation required",
     "deferred": 94
   }
 }

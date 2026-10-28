@@ -1,0 +1,2547 @@
+[
+  {
+    "file": ".cargo/config.toml",
+    "sha256": "22291f9a08bff4503ee169cd55ed0cfb79bb7106b46a81f8068ad2fc56c8cf1b",
+    "bytes": 40
+  },
+  {
+    "file": "AGENTS.md",
+    "sha256": "4d98ff76945e616da417e18c962a8923da370189ed0ece4f3dc73bfbac84e936",
+    "bytes": 12480
+  },
+  {
+    "file": "Cargo.lock",
+    "sha256": "7da5c54a8499a07cbc71dcecce0c0095d4af3b8b6e5052783f20d188037b6dd6",
+    "bytes": 17634
+  },
+  {
+    "file": "Cargo.toml",
+    "sha256": "5143563f797f253bd6f824c132cacc6c31d3745544f27c5a5145b321dfe76ef5",
+    "bytes": 517
+  },
+  {
+    "file": "crates/city-core/Cargo.toml",
+    "sha256": "d774e781cbdd6c1dddbecbb1b5bb5a2ab9a2f26a4fe372d36682b35524f00f6a",
+    "bytes": 512
+  },
+  {
+    "file": "crates/city-core/examples/canonical_integer_probe.rs",
+    "sha256": "b3b0fc33141504b78b8de4f09abaa36318881f2ca992d27a6cae23e640e30b1c",
+    "bytes": 3953
+  },
+  {
+    "file": "crates/city-core/examples/construction.rs",
+    "sha256": "6673c5f751564fb6fc0abc3587f08f4f51af9861838136722f97085a30868554",
+    "bytes": 10523
+  },
+  {
+    "file": "crates/city-core/examples/market_access.rs",
+    "sha256": "07422fdf6c94ad8c011eb51686fba6678bb2aa858317a5d8afdc5d63c050e1d4",
+    "bytes": 9498
+  },
+  {
+    "file": "crates/city-core/examples/town_economy.rs",
+    "sha256": "aece90d5fe1b66b786f3c69d16d4d27a99e9c923a40e1ca9220d411e240df153",
+    "bytes": 993
+  },
+  {
+    "file": "crates/city-core/examples/town_employment.rs",
+    "sha256": "95666b741c4649178ab6664e688b0914fe31397194bafe9f0d28bcf864624972",
+    "bytes": 23704
+  },
+  {
+    "file": "crates/city-core/examples/town_market.rs",
+    "sha256": "dd27bf861d0d144b839b929da37d56c496f031c1261679af3f35a4393a49404a",
+    "bytes": 25641
+  },
+  {
+    "file": "crates/city-core/examples/town_utility.rs",
+    "sha256": "ec0ab8c7b3b7c3bb4e8f48833adc30f5d27bc32969ba438b1b89102cd877926c",
+    "bytes": 11336
+  },
+  {
+    "file": "crates/city-core/examples/transport.rs",
+    "sha256": "b6fd7a6bf277459395d01a14b7336c2dc4c2f2240a722a6e11345b26d9cd7e15",
+    "bytes": 2646
+  },
+  {
+    "file": "crates/city-core/examples/transport_capacity.rs",
+    "sha256": "50cd74c8348779a4959b35d6e05eb7b3374475dc460db93feb612b4b844bb9d7",
+    "bytes": 16310
+  },
+  {
+    "file": "crates/city-core/examples/unfinished_clearance.rs",
+    "sha256": "933bfd47bc3e0d75096e0f24795a03c7ffbf40c6e722facc27dcd4721522a15a",
+    "bytes": 13115
+  },
+  {
+    "file": "crates/city-core/fixtures/town-economy-day.json",
+    "sha256": "1856329e54234f79b2bad009aa257b14d07293ab120663042f602dc3cf06adbe",
+    "bytes": 2740
+  },
+  {
+    "file": "crates/city-core/src/air.rs",
+    "sha256": "258006161eaedebce0051f0207489557d1b7255084bbf669f1869e901cbdc103",
+    "bytes": 31923
+  },
+  {
+    "file": "crates/city-core/src/air/resident.rs",
+    "sha256": "fca633ed582d1ac7572593a127c1c80df5b6023ffa825caec386b9e44d2d126c",
+    "bytes": 5791
+  },
+  {
+    "file": "crates/city-core/src/air/rows.rs",
+    "sha256": "ba59d4f2f141e298acd54af6638d3fa6bcf1d42ea7d83e86f8fb1df949b3991c",
+    "bytes": 4995
+  },
+  {
+    "file": "crates/city-core/src/air/slot.rs",
+    "sha256": "a1001b99c7ac54be5c428d1aae8b2bb5efc3c4e92d8d60586152a9e007a44d4a",
+    "bytes": 9812
+  },
+  {
+    "file": "crates/city-core/src/air/wire.rs",
+    "sha256": "ba3119763d42e7107d18d4aff8ae37aa29ef42beacca82d9fd8357e0854a290e",
+    "bytes": 5606
+  },
+  {
+    "file": "crates/city-core/src/air/workspace.rs",
+    "sha256": "8390c578665b5ab1f55bbd3f57e2ccfee4c58f84fcead5336c459fd6b173c0ea",
+    "bytes": 19238
+  },
+  {
+    "file": "crates/city-core/src/arena.rs",
+    "sha256": "bc90cf70ebcce91395032ac54e97205b86324b9fb6f986988b6e3f4197dfc4e8",
+    "bytes": 22289
+  },
+  {
+    "file": "crates/city-core/src/arena/layout_into.rs",
+    "sha256": "b746363fb30254fc2245c065323fea8b12b11c04573c1de4ea4624490d3640f0",
+    "bytes": 2517
+  },
+  {
+    "file": "crates/city-core/src/arena/restore.rs",
+    "sha256": "c3d28296c4a7af74a3a28107d293b0a0eaf9db7ea3c8e0913f90d27666501e9d",
+    "bytes": 6995
+  },
+  {
+    "file": "crates/city-core/src/assembly.rs",
+    "sha256": "9be8a7c1d64919931f05b8f5d981fbacacfaa0e0a160d4c31ecc49795e5be2a1",
+    "bytes": 101007
+  },
+  {
+    "file": "crates/city-core/src/assembly/typed_opening.rs",
+    "sha256": "f1c7d2bb3f886e9f64053ab516eec4be7cbcf006a60a1b8ab48068ce682f73f1",
+    "bytes": 14321
+  },
+  {
+    "file": "crates/city-core/src/assembly_decode_compat_tests.rs",
+    "sha256": "1b1c71828199b796e19e5cb68f8ccbc82b8e40fa4f932fe2837c120961e5d7fc",
+    "bytes": 18315
+  },
+  {
+    "file": "crates/city-core/src/asset_cost.rs",
+    "sha256": "7051d6d6557b706d1177cb453a56bb95a55747b0e369f0717a04c6a740f18db4",
+    "bytes": 20223
+  },
+  {
+    "file": "crates/city-core/src/asset_cost_authority.rs",
+    "sha256": "65b9e3bc1dc6c2318fb5ef471028470940f52badc9ed5fb44e25c0634aed56b8",
+    "bytes": 19009
+  },
+  {
+    "file": "crates/city-core/src/asset_maintenance.rs",
+    "sha256": "4bce795811d17586ecaff370d1b1e4937ddb601aca5dbb83094e30e0ff8f5dad",
+    "bytes": 20015
+  },
+  {
+    "file": "crates/city-core/src/background.rs",
+    "sha256": "57e19b584f5196cbbfdd68f20fb32dd9280c8f6ade473379a2b2fe49832d9d4d",
+    "bytes": 32725
+  },
+  {
+    "file": "crates/city-core/src/boot.rs",
+    "sha256": "5dc914f3eaa58de8a6fda218f99b1d02f8ee444eb1f59141b71936666769978b",
+    "bytes": 29734
+  },
+  {
+    "file": "crates/city-core/src/bounded_decode.rs",
+    "sha256": "b2a9627d9b227240a397af8e487e7b7fee8b18598ca35da30f2b183f2700d7e7",
+    "bytes": 3569
+  },
+  {
+    "file": "crates/city-core/src/calendar.rs",
+    "sha256": "024f41d89824889e4e0978d43c01354915893dc3ffe728f91d13a9f00dd064ec",
+    "bytes": 4491
+  },
+  {
+    "file": "crates/city-core/src/canonical.rs",
+    "sha256": "c533a4b933c80edaba2aba2b29c860284cadb3446e590b01ba9901b03e615510",
+    "bytes": 23721
+  },
+  {
+    "file": "crates/city-core/src/construction/mod.rs",
+    "sha256": "731736809953fc14a4dd35c74a7bb0e7f1df45fc339af3de30e912c846ed878e",
+    "bytes": 113599
+  },
+  {
+    "file": "crates/city-core/src/continuous_supply.rs",
+    "sha256": "e27e8f8b9ad7ba5eab665adad3b4c2bca0db91dbfb2cdc281fb97b37d60e7cc8",
+    "bytes": 51103
+  },
+  {
+    "file": "crates/city-core/src/continuous_supply/cost_curve.rs",
+    "sha256": "779c2b8a2a6a3d18846cc734b212bd202602ef7ad741178b631624647ca02ca0",
+    "bytes": 15472
+  },
+  {
+    "file": "crates/city-core/src/continuous_supply/v2.rs",
+    "sha256": "0bd446748ce39517270f7871c155646439c92892c2c615f39844e7224e70a25d",
+    "bytes": 45847
+  },
+  {
+    "file": "crates/city-core/src/course_completion.rs",
+    "sha256": "4ee70da50e951a17dcff33822d27987b4ecc7cd3e178e4a888f7db20ae648b83",
+    "bytes": 37709
+  },
+  {
+    "file": "crates/city-core/src/diagnostics.rs",
+    "sha256": "edfd4f07ba85df7d4a7aadc758bf75ece60fb7ee0cbbd4289296d357fd263cb7",
+    "bytes": 4243
+  },
+  {
+    "file": "crates/city-core/src/economy.rs",
+    "sha256": "123ff28924407a71012fa88156c97190b2388bf99685bd744862b5a45b902e2b",
+    "bytes": 33880
+  },
+  {
+    "file": "crates/city-core/src/education.rs",
+    "sha256": "e079c067e538bd312f20807ecd2bdfc1087b558ad7e5b0f87978dfbadaa4e198",
+    "bytes": 24290
+  },
+  {
+    "file": "crates/city-core/src/education_authority.rs",
+    "sha256": "ea9e66cdd8bdbd51cacdcccd66d8b0f98a9b381d0984f4106bbda08d20fda01a",
+    "bytes": 26925
+  },
+  {
+    "file": "crates/city-core/src/education_runtime.rs",
+    "sha256": "9f6fdd07452752770f2752bad8726d0e2584dc976ec914379b9f922105a1784d",
+    "bytes": 64323
+  },
+  {
+    "file": "crates/city-core/src/electric_dispatch/continuous_genset.rs",
+    "sha256": "6abafe357451afcb50980e2391d579723a8941d8fc7a21d7d82271e6aff05e1b",
+    "bytes": 28149
+  },
+  {
+    "file": "crates/city-core/src/exchange.rs",
+    "sha256": "f14e3bc12072bc45d61c3dc8850270863c7b7365cee03b8a0a8af662c68ae123",
+    "bytes": 47138
+  },
+  {
+    "file": "crates/city-core/src/facility_authority.rs",
+    "sha256": "cfc5ea9f9dd40111def979b4c55259d7057b308168423fb6bff86e8eb5839fab",
+    "bytes": 45090
+  },
+  {
+    "file": "crates/city-core/src/facility_work.rs",
+    "sha256": "ceb6ae70569f76e7b16bfd37eb3f3312460966e68b0a3a8ce5ee8c930c225861",
+    "bytes": 59003
+  },
+  {
+    "file": "crates/city-core/src/fixed_restore.rs",
+    "sha256": "5191f818314f10c1f94507e45cc989ea4de5f55758a1a8aaae35dcf34fca9de4",
+    "bytes": 11188
+  },
+  {
+    "file": "crates/city-core/src/housing.rs",
+    "sha256": "5f5ebceb061da37a6c290ce9c8d41e13256bdceebb8df07f07edd80e3599c446",
+    "bytes": 157758
+  },
+  {
+    "file": "crates/city-core/src/housing_income.rs",
+    "sha256": "bc505f9d18a9d0f2ac0904311260c02b9360dcb93897c3de8a0ac3fb09575966",
+    "bytes": 18781
+  },
+  {
+    "file": "crates/city-core/src/housing_runtime_move.rs",
+    "sha256": "a2cad6b1a9d9a3bf116e7f939fccf9fa9691823e6d997395698dc1e3780aab93",
+    "bytes": 18320
+  },
+  {
+    "file": "crates/city-core/src/inbox.rs",
+    "sha256": "505a14a7d11aea22cee6b69217ce6e625e5a96e195b621fc64005240f9ffc8c7",
+    "bytes": 14135
+  },
+  {
+    "file": "crates/city-core/src/labor_qualification.rs",
+    "sha256": "5298eccfae4d62fb7557bf9e3119c4d07fbefad398602b932faa7310d7751245",
+    "bytes": 19094
+  },
+  {
+    "file": "crates/city-core/src/layout_pressure.rs",
+    "sha256": "dcf782841353ded48ffa7d7ab4a46cdf8910cfa858907c04c34ffcdaa07b2377",
+    "bytes": 15847
+  },
+  {
+    "file": "crates/city-core/src/layout_pressure/restore_into.rs",
+    "sha256": "32ae159bac3d0a1ed148b007e390db2a5ced634f2656ef3f7c4aa6846ca8b29d",
+    "bytes": 8939
+  },
+  {
+    "file": "crates/city-core/src/lib.rs",
+    "sha256": "654872d295334842a4e1006079014c7ef6de4d78510d1e7caa83cdfc3562211e",
+    "bytes": 7086
+  },
+  {
+    "file": "crates/city-core/src/maintenance_authority.rs",
+    "sha256": "671dd5859e66f10bb0e30700789a12736bbaef8f0c05f3fbc927288b5fcdad88",
+    "bytes": 6324
+  },
+  {
+    "file": "crates/city-core/src/market_access.rs",
+    "sha256": "730a898298c33a82f5791f7f27231e09db1c6ecea3cc52a1822e1e60cb7ef06f",
+    "bytes": 37340
+  },
+  {
+    "file": "crates/city-core/src/member_activity.rs",
+    "sha256": "701718a79c4211343a550d431bc46919c65b700defd7c09b1f1995fce07bba5d",
+    "bytes": 20796
+  },
+  {
+    "file": "crates/city-core/src/member_authority.rs",
+    "sha256": "2378fd6a0048cc49592e04098680442542f4afa4a20d55d42db4742713d5be46",
+    "bytes": 4541
+  },
+  {
+    "file": "crates/city-core/src/member_qualification.rs",
+    "sha256": "727957769dc89e2d97914e284b18d94bff08bbb302be478e05de07d50037e0d6",
+    "bytes": 3296
+  },
+  {
+    "file": "crates/city-core/src/model_capacity.rs",
+    "sha256": "94eebd77d6dd7f41bf7bbdaed40551d08b6b669ab2bf19e7f350ce6da7294342",
+    "bytes": 9204
+  },
+  {
+    "file": "crates/city-core/src/model_rows.rs",
+    "sha256": "995120e551d1c7e4269e61ace201f814408a3f871b672f4a913542c0e6add09c",
+    "bytes": 12894
+  },
+  {
+    "file": "crates/city-core/src/opening_loader.rs",
+    "sha256": "e65a5bef33f29ecb7617d2baf0ec03c928ca83998e9b97c8fc607c89dcabf15c",
+    "bytes": 5110
+  },
+  {
+    "file": "crates/city-core/src/payroll_members.rs",
+    "sha256": "befefb11cdcfef3245fa0d6ed94444957483dd191c97c98d7e1793f76c1beb52",
+    "bytes": 23246
+  },
+  {
+    "file": "crates/city-core/src/probes.rs",
+    "sha256": "0bb820cbf32b8bb82fe0271e1ba8dbef6f9304c56e167e60c4d510a29c107ef2",
+    "bytes": 6224
+  },
+  {
+    "file": "crates/city-core/src/qualification_authority.rs",
+    "sha256": "100a49d7513abbcb4c05b1410a37560a53af6c6a26330ddbab55ba24225db165",
+    "bytes": 38195
+  },
+  {
+    "file": "crates/city-core/src/qualification_state.rs",
+    "sha256": "a3c149f4a2de1cb06f93232fe39f6a27a385802dffa1eb0cc26c34428d221ad6",
+    "bytes": 53257
+  },
+  {
+    "file": "crates/city-core/src/region.rs",
+    "sha256": "268428ff0ee0b608ec686547b040a6fd919ecf889737f0f5471c735df8d3fd71",
+    "bytes": 16074
+  },
+  {
+    "file": "crates/city-core/src/restore_into.rs",
+    "sha256": "2ec15b6881d076664959fd00ad059fa1465cc02544388312bc7bee03fee600b0",
+    "bytes": 4560
+  },
+  {
+    "file": "crates/city-core/src/schedule.rs",
+    "sha256": "169aa624ee8a91f7869ab8d3010a693e05937298b5aa039bc36232da1e153825",
+    "bytes": 14993
+  },
+  {
+    "file": "crates/city-core/src/service_delivery_authority.rs",
+    "sha256": "bd02c08923c78da3dcb68df4157908bf8417bb245760682bf8a879ad865bf51a",
+    "bytes": 56403
+  },
+  {
+    "file": "crates/city-core/src/service_delivery_recovery.rs",
+    "sha256": "00e248fc4719e862d5b92e182b9a02986077430d1810121c3e721f4cd1b76884",
+    "bytes": 26362
+  },
+  {
+    "file": "crates/city-core/src/service_delivery_runtime.rs",
+    "sha256": "59707e121a8ab4d76ba75a306a9706f8ba3af6ab1c1fe822ea8ad580344d80b9",
+    "bytes": 35744
+  },
+  {
+    "file": "crates/city-core/src/service_needs.rs",
+    "sha256": "dc4803f2ae0b2a90b2cef43fe821e0666065b09b7a37767f523072810165d2c2",
+    "bytes": 28736
+  },
+  {
+    "file": "crates/city-core/src/service_needs_authority.rs",
+    "sha256": "a82884e2f981097bcc545ddc06d898016b712ad14a7600cdc39f7e03be905a6c",
+    "bytes": 13183
+  },
+  {
+    "file": "crates/city-core/src/spatial_geometry_permissions.rs",
+    "sha256": "3867a6d615ca5f36ff6554ff294e8c186385058a705ede06a5ae8305182fe59e",
+    "bytes": 36381
+  },
+  {
+    "file": "crates/city-core/src/spatial_transport_permissions.rs",
+    "sha256": "e59e0053bdabecc302517460f1d84569cedd9ee615a359c121ecc54b7755e046",
+    "bytes": 85626
+  },
+  {
+    "file": "crates/city-core/src/task_registry.rs",
+    "sha256": "46416b1c6e7af291c2285c2ab70b2c9c74e819b9fd27221b2712ca93dcce724b",
+    "bytes": 12194
+  },
+  {
+    "file": "crates/city-core/src/time_capacity.rs",
+    "sha256": "5698544a8e0dfcad0c702324abfe9ee84b3407b073b6fc37cbb1950b51016dd8",
+    "bytes": 8667
+  },
+  {
+    "file": "crates/city-core/src/timeline.rs",
+    "sha256": "eb55de8eb51540ae88085a2f10cce92678f55235b9cc6fef75f8398a355f86b2",
+    "bytes": 35984
+  },
+  {
+    "file": "crates/city-core/src/timeline_driver.rs",
+    "sha256": "8cd68a34b58a22542d1265ae8dc8a6e18b7ca143a37f25e63ff1399facfca88d",
+    "bytes": 57768
+  },
+  {
+    "file": "crates/city-core/src/town_economy.rs",
+    "sha256": "48ad6a65473a5f99846eab64cb73324d613919a3a433e1cd018d9adf35de53f6",
+    "bytes": 70920
+  },
+  {
+    "file": "crates/city-core/src/town_economy/equity.rs",
+    "sha256": "699a723aae3fd682ea1bbbbb1ac7da991c6e6b3722de41b1551d81c5d18af5ae",
+    "bytes": 33143
+  },
+  {
+    "file": "crates/city-core/src/town_economy/exit.rs",
+    "sha256": "ed901fc4832a04c64abf5b079fc90f8bdbe3ada9b81fe7a3117d81428bf726f8",
+    "bytes": 23214
+  },
+  {
+    "file": "crates/city-core/src/town_runtime.rs",
+    "sha256": "d6b3edeb0a0241f5a8fa4cae43a9a8b33d83f8181ba81430df3698d189396ee9",
+    "bytes": 61545
+  },
+  {
+    "file": "crates/city-core/src/town_utility.rs",
+    "sha256": "5642c21d18f8ee0b41e7a555d753bc6dc239d776ce8c86eb8b024cf07094c370",
+    "bytes": 3183
+  },
+  {
+    "file": "crates/city-core/src/transaction.rs",
+    "sha256": "6c9bdd577a1907fc631c70830fb97d6401de41b25436e4a85a80eea9ffcf3e95",
+    "bytes": 512042
+  },
+  {
+    "file": "crates/city-core/src/transaction/bundle.rs",
+    "sha256": "405961995b104d3ed2a27769ec4b067d01ee0dd4d6c5713c82cdc42f9c509030",
+    "bytes": 2200
+  },
+  {
+    "file": "crates/city-core/src/transaction/slots.rs",
+    "sha256": "fe7a1cda104450e66c148e59c6fddbd11bf83a95828ac9cbb42f625d8063d8cc",
+    "bytes": 17740
+  },
+  {
+    "file": "crates/city-core/src/transaction/time_capacity_driver.rs",
+    "sha256": "db0b130f5aaaed5893c6fe7788ce4ba3ac925138100068ef32a82e4d7174f561",
+    "bytes": 9311
+  },
+  {
+    "file": "crates/city-core/src/transaction/venue_driver.rs",
+    "sha256": "3db86a1697410f77b6075b4fc4bead5f332d8f130d2dcc1a520613208ba3ede2",
+    "bytes": 16467
+  },
+  {
+    "file": "crates/city-core/src/transaction/workspace.rs",
+    "sha256": "f345907e815ebd305fd0430e119c1bb71caba33237c9c0a6e1031ba9b76a38a9",
+    "bytes": 15092
+  },
+  {
+    "file": "crates/city-core/src/transport.rs",
+    "sha256": "fe9cae4ab20eb3d94f8e88b1ac3f531cbb03622effbedc1437b933d5954a888d",
+    "bytes": 37548
+  },
+  {
+    "file": "crates/city-core/src/units.rs",
+    "sha256": "5f20d2e724726647970d20a728737dc0fb5bae5d76f4e16ab7e03e2f2949e2cf",
+    "bytes": 9546
+  },
+  {
+    "file": "crates/city-core/src/utility_network/rational_v3.rs",
+    "sha256": "ae2809b0034716dc193a973e583097fd8e77224ca3bd675e3b83316a739e94c5",
+    "bytes": 38180
+  },
+  {
+    "file": "crates/city-core/src/venue_capacity.rs",
+    "sha256": "740ea42021880e0c07f00ec9a82ba67e81c1a7b9e331ea2843d1a33c3e28a66a",
+    "bytes": 52070
+  },
+  {
+    "file": "crates/city-core/src/venue_runtime.rs",
+    "sha256": "dfd82894ba37994a3685067f64fa167de9c722e0bfd499d34155c5692028dd55",
+    "bytes": 15017
+  },
+  {
+    "file": "crates/city-core/src/water_treatment.rs",
+    "sha256": "7a06d60f21e98ca8fa8774624759383aa0e8c4b5606e10732757606abb2e55de",
+    "bytes": 54261
+  },
+  {
+    "file": "crates/city-core/src/water_treatment_authority.rs",
+    "sha256": "e637e0d840960b291d8bc83fc097c16fb31055b065b3fffa0bf58556af412d73",
+    "bytes": 37271
+  },
+  {
+    "file": "crates/city-core/src/worker_protocol_observation.rs",
+    "sha256": "e20c840eba8d3019a3675b11f736e45160a3ae5ffaf2b7fcba26ea6a24050e85",
+    "bytes": 18029
+  },
+  {
+    "file": "crates/city-core/src/worker_protocol_observation_tests.rs",
+    "sha256": "15f93ae5398bfb3e6f120cbcfad9bea9b2ddd8df207341caee4063ac5c9b9400",
+    "bytes": 10880
+  },
+  {
+    "file": "crates/city-core/tests/air.rs",
+    "sha256": "85b46bdd914fa725958aa6aca30cb18ff822ea8bc791193f8f3efb2276e07580",
+    "bytes": 18692
+  },
+  {
+    "file": "crates/city-core/tests/air_workspace.rs",
+    "sha256": "3623f77cbd9d4270f374900c99ba701177911c7c96e076636537839f10bfeae6",
+    "bytes": 8212
+  },
+  {
+    "file": "crates/city-core/tests/asset_capital_runtime.rs",
+    "sha256": "2fd940013ebc323fbacdc3cdeb82197ad600d6b64b3d23911790742e619a42bc",
+    "bytes": 28906
+  },
+  {
+    "file": "crates/city-core/tests/asset_cost.rs",
+    "sha256": "e2d368f2f921b965334f4633810311d4b87f3e85421784f61d820664e1b67e56",
+    "bytes": 14779
+  },
+  {
+    "file": "crates/city-core/tests/asset_maintenance.rs",
+    "sha256": "1da91757616c0d47aaa427637d4ea64a94597e025ad3e14275fc9885d8761e5d",
+    "bytes": 13181
+  },
+  {
+    "file": "crates/city-core/tests/background.rs",
+    "sha256": "aa93a639ce40327dd142b992620e0ee1040b2b3e48df7f0440ad07097f45502f",
+    "bytes": 9760
+  },
+  {
+    "file": "crates/city-core/tests/boot.rs",
+    "sha256": "57953e318d2595ffbbaf349327f257338bb2bf9c8bb0e23acc505a0e36ab680f",
+    "bytes": 14442
+  },
+  {
+    "file": "crates/city-core/tests/construction.rs",
+    "sha256": "4cb12958e10294ab2eade790b82a3455df56b64b200ae5111a5900f000910a6d",
+    "bytes": 20302
+  },
+  {
+    "file": "crates/city-core/tests/construction_engine.rs",
+    "sha256": "cce2186adc686a27a05e678c804cae82cc1a947f79e6ff7e628f19e3f8ddca98",
+    "bytes": 47465
+  },
+  {
+    "file": "crates/city-core/tests/continuous_supply.rs",
+    "sha256": "f51bbb09aea4590e50afdeafd0acc2f9be81c524d885f923b634beb11667c0fb",
+    "bytes": 8424
+  },
+  {
+    "file": "crates/city-core/tests/economy.rs",
+    "sha256": "58c5cb92b764b30bd333a031408bbe208b0df71089b8f5523ba2567d6534bbda",
+    "bytes": 16353
+  },
+  {
+    "file": "crates/city-core/tests/education.rs",
+    "sha256": "bf05aa3e1e342afc296cb500612d0f958cdca375ea54171256266bbfd6c42e8d",
+    "bytes": 19180
+  },
+  {
+    "file": "crates/city-core/tests/education_runtime.rs",
+    "sha256": "3a44c0051a1fe7f09464097e401d4ec1e0ec8f94af2f44d4170c06639aabbebf",
+    "bytes": 32407
+  },
+  {
+    "file": "crates/city-core/tests/electric_dispatch_continuous_genset.rs",
+    "sha256": "0c1a214b6c50e659a419c8690a72d41de3760d82d1a444bbd0823a15d25f7081",
+    "bytes": 24213
+  },
+  {
+    "file": "crates/city-core/tests/exchange.rs",
+    "sha256": "c33474e70e06386c9f186485eda1983dcf49f511d54d54712aa9ba895ec47d4e",
+    "bytes": 18808
+  },
+  {
+    "file": "crates/city-core/tests/facility_operation.rs",
+    "sha256": "2aa5708f527161937965d7c18dc336ba830628620332050b237cb4f77a578d0d",
+    "bytes": 12052
+  },
+  {
+    "file": "crates/city-core/tests/finite_city_asset.rs",
+    "sha256": "0df88e7ce16d1a86454b00ede4a47b9530da4dfb24ce5a9745a21b5363a1f0de",
+    "bytes": 8168
+  },
+  {
+    "file": "crates/city-core/tests/finite_city_runtime.rs",
+    "sha256": "7d6abda9708dec7509bdf7569a1cc90b2ea27cb5d89354cec6950bdc3b7e9355",
+    "bytes": 8680
+  },
+  {
+    "file": "crates/city-core/tests/fixtures/issue-120/canonical/core-town-utility-opening.json",
+    "sha256": "c9d3713d817fada2054641260c220447f7f2496d64f1ac5340bfa3e1cba4e2a0",
+    "bytes": 15917
+  },
+  {
+    "file": "crates/city-core/tests/fixtures/issue-120/canonical/m0-background-joint-opening.json",
+    "sha256": "8f9b0281a4855eb568de58baa1b569a36c9c3cf9d6522d94f6b18abde108ec0c",
+    "bytes": 13466
+  },
+  {
+    "file": "crates/city-core/tests/fixtures/issue-120/canonical/m0-boot-opening.json",
+    "sha256": "d2505d4b292ee8745de0266178168853f09a0a71a767b8e74598bf0f105f12da",
+    "bytes": 2612
+  },
+  {
+    "file": "crates/city-core/tests/fixtures/issue-120/canonical/m0-e0-opening.json",
+    "sha256": "6756555697457b3de5307086610a108c88d15650c6e668da0cdf990ca52b874c",
+    "bytes": 857
+  },
+  {
+    "file": "crates/city-core/tests/fixtures/issue-120/canonical/m0-economy-opening.json",
+    "sha256": "964ee93769377f4d2ecae7e4b20bdfb191c61acbf1960f8a89109b3507771f94",
+    "bytes": 8688
+  },
+  {
+    "file": "crates/city-core/tests/fixtures/issue-120/canonical/m0-exchange-opening.json",
+    "sha256": "e8471dd9b12a69fc5710dcb13fb43860ced9be046c07ec72e7ba6d3f45da6fe9",
+    "bytes": 13118
+  },
+  {
+    "file": "crates/city-core/tests/fixtures/issue-120/canonical/m0-region-opening.json",
+    "sha256": "b654f042638d2efd3b058b87590a1c0446dcec2112faa99f10f6eefafed91544",
+    "bytes": 2300
+  },
+  {
+    "file": "crates/city-core/tests/fixtures/issue-120/canonical/source-manifest.json",
+    "sha256": "3f0c63cf948a0bc2a42b865ee604cd7f0d32e08eb7dec60f391ebf171d4ef7ac",
+    "bytes": 1271
+  },
+  {
+    "file": "crates/city-core/tests/fixtures/issue-120/diagnostic-v3/opening_loader-tests-original.rs",
+    "sha256": "00da3de1636ce02ef2d21a459623574960a2a18bf2795502518e47f887106837",
+    "bytes": 12455
+  },
+  {
+    "file": "crates/city-core/tests/fixtures/issue-120/diagnostic-v3/opening_loader.rs",
+    "sha256": "74a73a1e9e0e259180fe3ba2e25fd300ea8dd0d6d9f0aa47cd1695f9ae3fd961",
+    "bytes": 4520
+  },
+  {
+    "file": "crates/city-core/tests/fixtures/issue-120/opening.json",
+    "sha256": "15619083300c66c0871f90bbaca29ba35d6a28b5fe39e374f437766320a8a450",
+    "bytes": 354
+  },
+  {
+    "file": "crates/city-core/tests/fixtures/town-business-exit/solvent.json",
+    "sha256": "6bf354f60f045520918e022b6cbb18eceeffd8826ff3d3e53b0b6621238b0110",
+    "bytes": 763
+  },
+  {
+    "file": "crates/city-core/tests/layout_pressure.rs",
+    "sha256": "7bccf3ad681b8198ee82b353721e032e39d0562c11d2fe076379d2ac1ea35ba0",
+    "bytes": 3329
+  },
+  {
+    "file": "crates/city-core/tests/maintenance_sources.rs",
+    "sha256": "e31c0b07338b06bc411d381fb9b14a010619817e6786193a84fc714992b43b60",
+    "bytes": 9471
+  },
+  {
+    "file": "crates/city-core/tests/market_access.rs",
+    "sha256": "ee59d64c64d2a70d0ff2ef9094f15d4f436956e618edd484884223900da411a7",
+    "bytes": 22117
+  },
+  {
+    "file": "crates/city-core/tests/opening_loader.rs",
+    "sha256": "32230106b6b8ffb57b50795aa66adaa908364e938efe064d5cbfec9b22e8c55c",
+    "bytes": 19669
+  },
+  {
+    "file": "crates/city-core/tests/opening_typed.rs",
+    "sha256": "78cd4a3d2a19e9afc156bec70d0cbfa82a596cb73f53ed5b957cfedb810eac29",
+    "bytes": 11310
+  },
+  {
+    "file": "crates/city-core/tests/payroll_members.rs",
+    "sha256": "bfc39be88366f37810a4d71f8a2092bed8f5fbca3c734dfb87889f1e99e42238",
+    "bytes": 18132
+  },
+  {
+    "file": "crates/city-core/tests/region.rs",
+    "sha256": "0855074456a278c53ce24a28bd3eac1b0c744ed74f3b17a6fdbe24a8620ddff9",
+    "bytes": 8451
+  },
+  {
+    "file": "crates/city-core/tests/resource_capacity.rs",
+    "sha256": "4be405bc526879f55d104218c9a5cf9d9240628680116bd8dad24616281d399c",
+    "bytes": 3478
+  },
+  {
+    "file": "crates/city-core/tests/scale_assembly.rs",
+    "sha256": "8ebfa2253cbce5553d3126f1366312767e832d53016789373e71785fcd66a273",
+    "bytes": 13015
+  },
+  {
+    "file": "crates/city-core/tests/service_delivery.rs",
+    "sha256": "2a4a0faf500305225b7ad03ba2859bf61e4e7bcb662e21b1e910cda57dc1871b",
+    "bytes": 16230
+  },
+  {
+    "file": "crates/city-core/tests/service_delivery_runtime.rs",
+    "sha256": "a6d43b8f9dc84f194e0ae447e19849aa0952c2ea6a5f1fa0c3149119f90975af",
+    "bytes": 26804
+  },
+  {
+    "file": "crates/city-core/tests/service_needs.rs",
+    "sha256": "5849b91c24c5be73a1ca5dcfe3bfe5a1acedc683451bb38514f8b721c647caf2",
+    "bytes": 640
+  },
+  {
+    "file": "crates/city-core/tests/service_recovery.rs",
+    "sha256": "fbd7d1b183ef4bbd81f1881a3441aec2fbe66fe2c719905b0a793e7d2555bfa8",
+    "bytes": 11985
+  },
+  {
+    "file": "crates/city-core/tests/sha256_vectors.rs",
+    "sha256": "1fc8d2d6f09b76f7c276f1bc3fbcc4073a7c2e03f0b1a6ea21732531494ed6ba",
+    "bytes": 2077
+  },
+  {
+    "file": "crates/city-core/tests/support/service_needs_component.rs",
+    "sha256": "61c8baa6e66feb935d45433ea25b74b33a6648b8bc7f6e7d088765a1e131cd25",
+    "bytes": 11085
+  },
+  {
+    "file": "crates/city-core/tests/task_registry.rs",
+    "sha256": "65961c53610be602276d40921eb02843743e8dc35f3489a4812fcf89f6551d37",
+    "bytes": 15181
+  },
+  {
+    "file": "crates/city-core/tests/time_capacity.rs",
+    "sha256": "9df86f4ebc2a659e793e0aca9835f43aac9b35b536397ef4309b730ea58ec708",
+    "bytes": 5627
+  },
+  {
+    "file": "crates/city-core/tests/timeline.rs",
+    "sha256": "02839021747eec6fb895f00a927789c6305d5dcf1631ef5e7a6fd5b0bf043912",
+    "bytes": 23814
+  },
+  {
+    "file": "crates/city-core/tests/town_business_exit.rs",
+    "sha256": "286ea598f1ea97bc5ee532e5565edba838ae605123862efbf0c06db1529c77ce",
+    "bytes": 12133
+  },
+  {
+    "file": "crates/city-core/tests/town_market_scenarios.py",
+    "sha256": "ccd86a0ea56a2007762ce505d985d6082d7d4d6fe1d3019e62d3cb84cee6025a",
+    "bytes": 6569
+  },
+  {
+    "file": "crates/city-core/tests/town_profile_decode.rs",
+    "sha256": "7c62d7bdf76b6d600e1bd68929a0c67a72c1360694539dfaf3192a70b4081490",
+    "bytes": 7825
+  },
+  {
+    "file": "crates/city-core/tests/town_utility_binding.rs",
+    "sha256": "027553bde4f77a8b00e5837e6ec7f9f2a9c5b4fed4f43fc562be9429f6d6958a",
+    "bytes": 3017
+  },
+  {
+    "file": "crates/city-core/tests/town_utility_engine.rs",
+    "sha256": "2eb7450c00932f465c96320fc78a838e2ba0f398707e837497dc4cdd805f0e2c",
+    "bytes": 21108
+  },
+  {
+    "file": "crates/city-core/tests/utility_network_v3.rs",
+    "sha256": "6434138bb31b2638004eb3e22de02af1ed2cfb37644aa538442e4adeb3da319f",
+    "bytes": 22048
+  },
+  {
+    "file": "crates/city-core/tests/venue_capacity_tests.rs",
+    "sha256": "59b1589e0971616b48db5727e5c65b21436780d420ea24262181fa969165d598",
+    "bytes": 32359
+  },
+  {
+    "file": "crates/city-core/tests/water_treatment.rs",
+    "sha256": "5a8cfe2b7fe18ab245ff365b59ea160d83feb2dcb47b9e3d599293d4edd59976",
+    "bytes": 49851
+  },
+  {
+    "file": "crates/city-core/tests/water_treatment_runtime.rs",
+    "sha256": "dcb484007c22a43caea6c203acb19d8b8849f230cf850d369f0a060da62cfac7",
+    "bytes": 26850
+  },
+  {
+    "file": "crates/city-headless/Cargo.toml",
+    "sha256": "9f0350153f65c71798bc848d6e4aba563f49c94537fdddb6da977a4135111455",
+    "bytes": 741
+  },
+  {
+    "file": "crates/city-headless/build.rs",
+    "sha256": "dc3b2d5a78e57bd54dee5256341eb86a475090552d482054860c6faf2010ef73",
+    "bytes": 2257
+  },
+  {
+    "file": "crates/city-headless/examples/air_hotpath.rs",
+    "sha256": "dccf2a13b9c6309af56dba5c46c0a0ecdbd08257895f86bee5542aac2cfe520d",
+    "bytes": 3174
+  },
+  {
+    "file": "crates/city-headless/src/adaptive_client.rs",
+    "sha256": "dc797eb96e5b2b737313a868fd7b732ca21e4f09e18c3be70b5fc31dc7742cd7",
+    "bytes": 14019
+  },
+  {
+    "file": "crates/city-headless/src/adaptive_client_tests.rs",
+    "sha256": "1d5b19179693df9bb4ddd8bd29c457b9f737b9ace701e0a0573dcef5b2576caa",
+    "bytes": 2375
+  },
+  {
+    "file": "crates/city-headless/src/air_page_metrics.rs",
+    "sha256": "ca737c2f7306a89d54fa7a1edcd5f8d0378809f92d90d02d79dd22067745717a",
+    "bytes": 11053
+  },
+  {
+    "file": "crates/city-headless/src/air_page_metrics_tests.rs",
+    "sha256": "bc518899e60b3cf329d0a1a3a71e334ec4c5fe90f4180aedf2b9652412e0976a",
+    "bytes": 8429
+  },
+  {
+    "file": "crates/city-headless/src/air_page_policy.rs",
+    "sha256": "53ad76913e6168e60bc3eacc040c0f87b3223ba42ac6dc3bb8355156e138a0d2",
+    "bytes": 9791
+  },
+  {
+    "file": "crates/city-headless/src/air_page_policy_tests.rs",
+    "sha256": "434e70435e3d9b3c88ade186a5c266a3c02de199d5724d85fd3afe4aa920dd1f",
+    "bytes": 10506
+  },
+  {
+    "file": "crates/city-headless/src/air_probe.rs",
+    "sha256": "286b249c12c3a79e2a7a5a0f9db3872848067f1c9f2a144593546432ee749de5",
+    "bytes": 9151
+  },
+  {
+    "file": "crates/city-headless/src/air_turns.rs",
+    "sha256": "3d1c286926cd7f78dd2e619dcc667292aa5e0e0b9fb4ee9fe099052d872a45d4",
+    "bytes": 8902
+  },
+  {
+    "file": "crates/city-headless/src/air_turns_tests.rs",
+    "sha256": "40da2bd663585a06b27b8c261aec63270c6af70a5ddd4732865a6ac64a12b143",
+    "bytes": 8326
+  },
+  {
+    "file": "crates/city-headless/src/background_probe.rs",
+    "sha256": "7557f0dccc3b3aeaa53a090734ad8c091f534c6a79ef9a63cbb22f5bce72e36c",
+    "bytes": 10019
+  },
+  {
+    "file": "crates/city-headless/src/boot_probe.rs",
+    "sha256": "d36c7428fdcede2d7f0eb9b6e21bd7cc10227d85b082a710a2c0bfdc0f5aace9",
+    "bytes": 13237
+  },
+  {
+    "file": "crates/city-headless/src/compute_worker.rs",
+    "sha256": "84da6dbc01f72d92142c689e06a5bb24642b5be42776fbd7eecfefae253b13be",
+    "bytes": 63560
+  },
+  {
+    "file": "crates/city-headless/src/continuity.rs",
+    "sha256": "83555b647c858ce25d40e79808b2086d67e3bda044d7f0af8a315c0b9267f05b",
+    "bytes": 14601
+  },
+  {
+    "file": "crates/city-headless/src/control_data.rs",
+    "sha256": "1ea5e39717122541a84eb9e4e226b371ab17777c93f4cfec23689c1a56b3a215",
+    "bytes": 12457
+  },
+  {
+    "file": "crates/city-headless/src/cpu_log.rs",
+    "sha256": "075d019ec6d8d126497779b5bb205cd9a7348be47ec8d0c0549735cdc080841d",
+    "bytes": 27536
+  },
+  {
+    "file": "crates/city-headless/src/diagnostic_contract.rs",
+    "sha256": "90cccdc7fd3fd7b645b3db397f20f82d913272b81bf9ac2b1f21dfad3ef365a8",
+    "bytes": 1450
+  },
+  {
+    "file": "crates/city-headless/src/economy_probe.rs",
+    "sha256": "dc2c462ea8b0fd5427d281997bbb54030f2bed8c238b69822d28ebaf0e76b47b",
+    "bytes": 17918
+  },
+  {
+    "file": "crates/city-headless/src/exchange_probe.rs",
+    "sha256": "16b19c6d26e856b9f58e8e75ef725912b27d693dde9a9fc396adec80a802c7df",
+    "bytes": 15304
+  },
+  {
+    "file": "crates/city-headless/src/group_sampler.rs",
+    "sha256": "0d8f3ae1f42dab1a93f740576a57aba35a32a61a15c7e442508be4c89500c219",
+    "bytes": 12891
+  },
+  {
+    "file": "crates/city-headless/src/heap_meter.rs",
+    "sha256": "ec97a18f31faca15fe25756052016516c7a194ecd25c6cfc2ab086bd0edec716",
+    "bytes": 7616
+  },
+  {
+    "file": "crates/city-headless/src/joint_driver.rs",
+    "sha256": "94b46b9f5196fbcddc40f8d39d1e49bbc6e0a52368edcbd30e5b251819fd1b67",
+    "bytes": 23313
+  },
+  {
+    "file": "crates/city-headless/src/joint_probe.rs",
+    "sha256": "748a45e27960bb5bfa311c21133008d9aaa4a25a4c8397147d61be14c63fe30f",
+    "bytes": 18664
+  },
+  {
+    "file": "crates/city-headless/src/joint_reference.rs",
+    "sha256": "cf0f9ad36f9cc6118cb27f6c5b19683e39c2456b43782957b587f0b5ee71c36e",
+    "bytes": 19078
+  },
+  {
+    "file": "crates/city-headless/src/layout_load.rs",
+    "sha256": "9b24ad69611184a6b214db3b1d8d152f4f0294a34080711eb8bf63548b536ce5",
+    "bytes": 98398
+  },
+  {
+    "file": "crates/city-headless/src/layout_load/bounded_table.rs",
+    "sha256": "08f1754b947763d2552aa41ced8d88e03fba4522caca3294ec22e747f422b89e",
+    "bytes": 5292
+  },
+  {
+    "file": "crates/city-headless/src/layout_load/bounded_table/inplace.rs",
+    "sha256": "8a3b2f9e35ac01a8c15297a06751f34d383ac907209c4f9801222ee845c8216b",
+    "bytes": 5492
+  },
+  {
+    "file": "crates/city-headless/src/layout_load/decode_workspace.rs",
+    "sha256": "4af7b48652a8334d84614c13625498a8b2bb231b678f639bea1d5ca227e0b53e",
+    "bytes": 9864
+  },
+  {
+    "file": "crates/city-headless/src/layout_load/r07.rs",
+    "sha256": "235bfc87d89e62c04f4aa2bca9028bf7f9bb310c36175aeaff8c42af2865c188",
+    "bytes": 24972
+  },
+  {
+    "file": "crates/city-headless/src/layout_load/restore_index.rs",
+    "sha256": "bd75816e431d0ec3bbf9ab9b54d4fe16ec15aadda66753839dbdc57ac64dff47",
+    "bytes": 8141
+  },
+  {
+    "file": "crates/city-headless/src/layout_load/reusable_io.rs",
+    "sha256": "7f488d2eab4e894cb2513a76b534216c06aea585f40864186ab15c967d91bd49",
+    "bytes": 4403
+  },
+  {
+    "file": "crates/city-headless/src/lib.rs",
+    "sha256": "404ab19ce27e51ba4cd71bceaf1ffbb188fdcba0da814beba2196a67179aeb36",
+    "bytes": 1221
+  },
+  {
+    "file": "crates/city-headless/src/main.rs",
+    "sha256": "9504963778cde9aa4fa385395d9fa2d8474e25b1d3c739d383509f3f2e06d881",
+    "bytes": 53285
+  },
+  {
+    "file": "crates/city-headless/src/model_compare.rs",
+    "sha256": "5ce1c8c60d6b85543600b03858a5171a54da3c462848bb0f62a200f3ce0fd0cd",
+    "bytes": 3690
+  },
+  {
+    "file": "crates/city-headless/src/native_observer.rs",
+    "sha256": "4cad9d4ad918c6b63ec47828c61340825bb2a7b0ae7408e4aee4ffcb54a17f30",
+    "bytes": 13298
+  },
+  {
+    "file": "crates/city-headless/src/native_watch/clock.rs",
+    "sha256": "7224c24307b64d7b11dc930e50aff6125756679471060a1a9677dc1975db0c77",
+    "bytes": 4756
+  },
+  {
+    "file": "crates/city-headless/src/native_watch/disk.rs",
+    "sha256": "73cdf7ad9ad89cb49974aae5af96fcb0b9025888bdca2a5ffc600f4c16c3dd98",
+    "bytes": 3175
+  },
+  {
+    "file": "crates/city-headless/src/native_watch/fixture.rs",
+    "sha256": "f30532246f2a3029764630a738a3b3ff7dba51f16106294b269709009b10433b",
+    "bytes": 4556
+  },
+  {
+    "file": "crates/city-headless/src/native_watch/mod.rs",
+    "sha256": "60f1dfc5f53b04aa6966f6c508c81e06a6b12376908b1a24dd294045b315ce3a",
+    "bytes": 25494
+  },
+  {
+    "file": "crates/city-headless/src/native_watch/owner.rs",
+    "sha256": "4a69b18d2a148600fcc3ec462b581f86bf518e84599cf6253ccc893bc9f0d020",
+    "bytes": 2174
+  },
+  {
+    "file": "crates/city-headless/src/native_watch/registration.rs",
+    "sha256": "c3e4313c0a3b73ef5d06033708eac5a217e5ad041d3e4c5017f20d29fcd1aca3",
+    "bytes": 6398
+  },
+  {
+    "file": "crates/city-headless/src/native_watch/summary.rs",
+    "sha256": "9bae886441b1040d8e6d961945a7c90a58ff1fd611b52815fc19299085f0444a",
+    "bytes": 4635
+  },
+  {
+    "file": "crates/city-headless/src/native_watch/system.rs",
+    "sha256": "0897aa931a1644c52aa45598f605c0ca228d19613d61bd9b8c9fdefa325c52bb",
+    "bytes": 6516
+  },
+  {
+    "file": "crates/city-headless/src/native_watch/tracker.rs",
+    "sha256": "b9d156d374dc58124ae4e747cf121f94793448ba1d390406d2996526178fa375",
+    "bytes": 12002
+  },
+  {
+    "file": "crates/city-headless/src/normal_pool.rs",
+    "sha256": "a61e36fe484ed5bd61d2876b034c6dc87f69df3a3d98b6bd630d01415d39c744",
+    "bytes": 87412
+  },
+  {
+    "file": "crates/city-headless/src/normal_pool/broker.rs",
+    "sha256": "dc9988f3b33a6b18bb81f323eb7e243b57c916d0d2b576004c361e65b67beeb4",
+    "bytes": 48625
+  },
+  {
+    "file": "crates/city-headless/src/normal_pool/mapped_pages.rs",
+    "sha256": "d68ebb1b11cc3bcc3282d74175cf6cb91c1218633b4a4e2bb704b795aeb6b80f",
+    "bytes": 4190
+  },
+  {
+    "file": "crates/city-headless/src/normal_pool/startup_owner.rs",
+    "sha256": "339120a36a86716c532814388e4f9e9e0bff322fac3f8655725635fedee4339c",
+    "bytes": 12473
+  },
+  {
+    "file": "crates/city-headless/src/normal_pool/startup_owner_tests.rs",
+    "sha256": "1720886d2a3b0100256b50ae9645af6794a8ca1dab255b1b41b93af5d25fa3bc",
+    "bytes": 1460
+  },
+  {
+    "file": "crates/city-headless/src/normal_pool/workspace.rs",
+    "sha256": "16fec9ca7e44ea8ee87cb48b0e5558986e9dde8612143a73c8e772a3ecfcc507",
+    "bytes": 18129
+  },
+  {
+    "file": "crates/city-headless/src/normal_pool_pending_tests.rs",
+    "sha256": "d339ec6773385689a9ad9b96e30ec1783fb5eafe414583bde798a878a3e13da5",
+    "bytes": 30568
+  },
+  {
+    "file": "crates/city-headless/src/observer_clock.rs",
+    "sha256": "8defe75e936f7a8f91cfc42757cc219af274b9bd42a2fceb6770661ff2688a38",
+    "bytes": 4363
+  },
+  {
+    "file": "crates/city-headless/src/opening_cli.rs",
+    "sha256": "c5d9e9055734100dbb4327e0f710465f22f8257599d9341b150698be850d5e87",
+    "bytes": 2861
+  },
+  {
+    "file": "crates/city-headless/src/opening_source_provider.rs",
+    "sha256": "5c36fa4aa58bebbcdf6dbcf11e537fd19863438984173f7a57252c22046d1b62",
+    "bytes": 12834
+  },
+  {
+    "file": "crates/city-headless/src/opening_source_provider_tests.rs",
+    "sha256": "c5cd100373f1b94169d8029f0d1630f6eff460c2ef8ef8bb997a6bf3086de879",
+    "bytes": 8569
+  },
+  {
+    "file": "crates/city-headless/src/pe0_speed.rs",
+    "sha256": "e64c28245c3f89fdddffb0de0a2ae292d40d4d4af66c2a7bba606428635f7e2d",
+    "bytes": 16811
+  },
+  {
+    "file": "crates/city-headless/src/query_observation.rs",
+    "sha256": "aac80af13a8a0bd5caf367497ffcfbcb85bf9ea269d2f0ec7ca3c9c2002ba09e",
+    "bytes": 6487
+  },
+  {
+    "file": "crates/city-headless/src/query_observation_tests.rs",
+    "sha256": "f0e907b12217a4a2e218a419f3c983f537f1a181af49566eb76b54072c30044e",
+    "bytes": 13105
+  },
+  {
+    "file": "crates/city-headless/src/r07_exercise.rs",
+    "sha256": "4765e352eab3c309744f2593bda884f006eeac99b2bca3f19fdfc774506b3246",
+    "bytes": 7062
+  },
+  {
+    "file": "crates/city-headless/src/r07_runtime.rs",
+    "sha256": "cc1e9905c70a77169419b3fb9251043d88778e94f22dbf77d0a3c1db35678695",
+    "bytes": 6864
+  },
+  {
+    "file": "crates/city-headless/src/required_dispatch.rs",
+    "sha256": "e159d8cdb582506c148bcc08040d975a869f2cbc13c79339a8d3d1f594933d67",
+    "bytes": 22402
+  },
+  {
+    "file": "crates/city-headless/src/required_dispatch/supply.rs",
+    "sha256": "b5742e1490cccda0ad9316b1baccef67fb52a5d614896c4d73becc5d3bede50f",
+    "bytes": 13646
+  },
+  {
+    "file": "crates/city-headless/src/scale_endurance.rs",
+    "sha256": "6a68d47b55f986dee8fc61aac4c777face305ca33fdf0ad2627219e0e74172fc",
+    "bytes": 21149
+  },
+  {
+    "file": "crates/city-headless/src/scale_metrics.rs",
+    "sha256": "f835bbffc11b33fa485f23e628cf96b08d945fbf8d46e185cfb63ff2421bf14d",
+    "bytes": 6727
+  },
+  {
+    "file": "crates/city-headless/src/scale_model_task.rs",
+    "sha256": "d2a550e94c58429d657ebf766572899dd13a07380f9d8050f1059a5e734e884a",
+    "bytes": 26476
+  },
+  {
+    "file": "crates/city-headless/src/scale_model_task/stream.rs",
+    "sha256": "f40e22f7077a7945349b6650f7ac70d9a153827f225f757b73f4b4caa58f53c8",
+    "bytes": 14220
+  },
+  {
+    "file": "crates/city-headless/src/scale_rare.rs",
+    "sha256": "a82f19b757d8a461ebfe5d911981e5cbfeb2e0f0866bb8623cbd6dfbab1ea8be",
+    "bytes": 12710
+  },
+  {
+    "file": "crates/city-headless/src/scale_reference.rs",
+    "sha256": "b65287a39492dfac6beb21c8181d2cfbe8a1a9eaec177fa1e80af876a19458ac",
+    "bytes": 21237
+  },
+  {
+    "file": "crates/city-headless/src/scale_sim.rs",
+    "sha256": "04c85806d9ad9791433c1728c18d1054a9d00260b6f0fe1ed8b2942d489e4966",
+    "bytes": 37887
+  },
+  {
+    "file": "crates/city-headless/src/scale_speed.rs",
+    "sha256": "7622cdbcd28f2402cef7a113b9c3b9ba43dde7face94dd5ff930feb4d221ca0d",
+    "bytes": 24808
+  },
+  {
+    "file": "crates/city-headless/src/scale_storage.rs",
+    "sha256": "773f8d21e77a841d1aaebf42ad9a224cffd4022eaf173b736b38961e17f8d39e",
+    "bytes": 8103
+  },
+  {
+    "file": "crates/city-headless/src/session.rs",
+    "sha256": "9f8b055012911e8401a0eb0c473d74d6ffc021173229910e66f28811a99161ef",
+    "bytes": 19199
+  },
+  {
+    "file": "crates/city-headless/src/sim_client.rs",
+    "sha256": "0115d5fdc0e289081c0eb867eed24ec3c2f798edd9e978e84dd2b5f45b86383f",
+    "bytes": 18077
+  },
+  {
+    "file": "crates/city-headless/src/sim_host.rs",
+    "sha256": "707a181a9af70dcf3cc0fa9803641e6165472355456742106ca420ef88128999",
+    "bytes": 60842
+  },
+  {
+    "file": "crates/city-headless/src/sim_probe.rs",
+    "sha256": "c5ac9f42641b21355624b4e1e7fed63b11bd2e6fe09eaa62ba768877fc7be05c",
+    "bytes": 10189
+  },
+  {
+    "file": "crates/city-headless/src/sim_task_observation.rs",
+    "sha256": "62ef2b05c781bb7652ea44324a2d2ab7485f71a0ab2608caf523d0456c8c0450",
+    "bytes": 20674
+  },
+  {
+    "file": "crates/city-headless/src/steady/driver.rs",
+    "sha256": "72d8137510e41b159941cbc1325bfbf3c99b492a0ef6749862805b0f7397f5aa",
+    "bytes": 11681
+  },
+  {
+    "file": "crates/city-headless/src/steady/mod.rs",
+    "sha256": "a871a6a3e4870bfcc4af231a89acd9a5583efd0a2f9497a409d17caf579a1305",
+    "bytes": 6243
+  },
+  {
+    "file": "crates/city-headless/src/steady/supervisor.rs",
+    "sha256": "234ade30a66d64ba177395b3162196acfda99f083ba9dee0a275d4f12e5c8c22",
+    "bytes": 10926
+  },
+  {
+    "file": "crates/city-headless/src/task_execution_protocol.rs",
+    "sha256": "6d86f5738d240615bc2a955a52628cb19f671cf1fc7023a045482ba8c7fc370a",
+    "bytes": 14354
+  },
+  {
+    "file": "crates/city-headless/src/task_registry_adapter.rs",
+    "sha256": "d83fc8fad10df1416e24c3dcb4607686441d70eb11080d07058c8631b327d131",
+    "bytes": 8621
+  },
+  {
+    "file": "crates/city-headless/src/task_registry_directory.rs",
+    "sha256": "d10be85487224d23bf8c5da70cbcebc99a245b1f559a229effdc573c7402a36f",
+    "bytes": 16131
+  },
+  {
+    "file": "crates/city-headless/src/timeline_probe.rs",
+    "sha256": "4a4271eed82cf8aeab1d00cf00fcd9dd40f10fe3132ac9ba4be9bfb4f2a22a7c",
+    "bytes": 7498
+  },
+  {
+    "file": "crates/city-headless/src/vm_trace.rs",
+    "sha256": "57307be40fc962a8bfd10578473f04f758300a82e1075efc5433fa2b3ab74b97",
+    "bytes": 6785
+  },
+  {
+    "file": "crates/city-headless/src/worker_cache.rs",
+    "sha256": "c1609e28b24e0529ee46e7b581238efdafff84c4946e3db064b1e9fb44c1adf4",
+    "bytes": 8447
+  },
+  {
+    "file": "crates/city-headless/src/worker_cpu_metrics.rs",
+    "sha256": "aab1cb5610ade6ffe514eee2afb9e497ef7ff45aa366b34012bf9d1c6081089e",
+    "bytes": 10782
+  },
+  {
+    "file": "crates/city-headless/src/worker_cpu_metrics_tests.rs",
+    "sha256": "1176bb20e705a754887f9a53b3d113af8a0f1e93a1919996ec5416ce9c2b0685",
+    "bytes": 7583
+  },
+  {
+    "file": "crates/city-headless/src/worker_probe.rs",
+    "sha256": "f2120f69a74e185ac9fa5b5745ee4f7a33d44dd8f11d457fbb4301e1fd855e2b",
+    "bytes": 7649
+  },
+  {
+    "file": "crates/city-headless/src/worker_protocol_observation.rs",
+    "sha256": "29f47a2932e7f58279150bbe683674032d181b8c19c2d8371ff028fe133ff2c2",
+    "bytes": 11384
+  },
+  {
+    "file": "crates/city-headless/src/worker_protocol_observation_tests.rs",
+    "sha256": "f61c0fbbf9c4fb4767604e79b5be50a9911fdf354acccc5f303e50df880e10a0",
+    "bytes": 8199
+  },
+  {
+    "file": "crates/city-headless/src/worker_resource_observation.rs",
+    "sha256": "58c593088713dd25a2c400a14af75678f744f33e431df96188a3ca481d1eb53a",
+    "bytes": 3264
+  },
+  {
+    "file": "crates/city-headless/src/worker_slots.rs",
+    "sha256": "f57e8e2d0551ace210b2b96786d75244c2b009aee791bcf66852082235b05331",
+    "bytes": 18374
+  },
+  {
+    "file": "crates/city-headless/tests/air.rs",
+    "sha256": "cc614d96d7c5ef787e3e9d4eef27c9a2e1f0397ddd4a9938a3c97338ae918a5f",
+    "bytes": 4115
+  },
+  {
+    "file": "crates/city-headless/tests/air_turn_control.rs",
+    "sha256": "f99f086b0447315221f7f5d1c7e9bbbe7091c7110a8819eafa754be1234b92a5",
+    "bytes": 34801
+  },
+  {
+    "file": "crates/city-headless/tests/asset_capital_role.rs",
+    "sha256": "918d64c218ddfe207cc3fbc0c338ce36236c46e85dbbb233277c03e30c91905f",
+    "bytes": 18165
+  },
+  {
+    "file": "crates/city-headless/tests/baseline.rs",
+    "sha256": "806d9dc25860198e929ac1ef98cfbfb4a66c298e369826e8ff8049345cf6182e",
+    "bytes": 13743
+  },
+  {
+    "file": "crates/city-headless/tests/broker.rs",
+    "sha256": "a8499d5639caeabbfdd4bdd39ddc9db302ba36e372d89a0d84bfddfe125f9ba5",
+    "bytes": 31302
+  },
+  {
+    "file": "crates/city-headless/tests/comparison_codec.rs",
+    "sha256": "0c94dd970186fa5dacf0d52fb1ba26e363e90190fdccbbeb6ba8681fed5488d8",
+    "bytes": 4323
+  },
+  {
+    "file": "crates/city-headless/tests/compute_worker.rs",
+    "sha256": "fdfc8504cf22ee9988c6df154bbd1b3b24a0f2e6bf647da8d2ca84f253616088",
+    "bytes": 26338
+  },
+  {
+    "file": "crates/city-headless/tests/continuous_supply_due.rs",
+    "sha256": "a4694a9b79dc0ce93169ca3479da8ed7baa59485a54c445369f8554080418865",
+    "bytes": 35569
+  },
+  {
+    "file": "crates/city-headless/tests/economy_short.rs",
+    "sha256": "b29992df96a9d044da0b1bfade6eecfded6646d1cbc14b8a0b59e32a91c04649",
+    "bytes": 2407
+  },
+  {
+    "file": "crates/city-headless/tests/engine_slot.rs",
+    "sha256": "5fa570272c7d67ba138cbbec230fb691b5c66125a5148b58a17ecb32f8bd486f",
+    "bytes": 7102
+  },
+  {
+    "file": "crates/city-headless/tests/finite_city_role.rs",
+    "sha256": "6eab1a023605ee64eec58f23a379e82e111cfdd2ba376992ef39ea58ca1bcca5",
+    "bytes": 20182
+  },
+  {
+    "file": "crates/city-headless/tests/group_sampler.rs",
+    "sha256": "efa8e9b8d98604749619b263e830386411acca9eedbce7abebf35dd540222dcd",
+    "bytes": 1714
+  },
+  {
+    "file": "crates/city-headless/tests/heap_meter.rs",
+    "sha256": "e705eb16c20c311b2c1f595536bf7ad7312350e4a174f6b56fca5c14a97a0d1b",
+    "bytes": 1990
+  },
+  {
+    "file": "crates/city-headless/tests/joint_reference.rs",
+    "sha256": "10aea25d3cde414bcd58595c9c5f2b9b5d5f67c203a9140f265e6613e42ee388",
+    "bytes": 5284
+  },
+  {
+    "file": "crates/city-headless/tests/joint_sim.rs",
+    "sha256": "5af8d77080d075045e368bec3b8c4f89bff7cd0f0e34c44fc87e5f5c965a97a2",
+    "bytes": 5351
+  },
+  {
+    "file": "crates/city-headless/tests/normal_pool.rs",
+    "sha256": "297100e58a55c39699c4e4cd6f449fbd218e32da1c6c28792f7d2fa064aa2b71",
+    "bytes": 23963
+  },
+  {
+    "file": "crates/city-headless/tests/opening_cli.rs",
+    "sha256": "373cfe0420fbd3fa4d8bc5a16eddc75ca5463d2d3e1c08a6893d35e22f9175ef",
+    "bytes": 7525
+  },
+  {
+    "file": "crates/city-headless/tests/opening_typed_cli.rs",
+    "sha256": "6902f26e9b9c1bf35e23cb241ae6ff4dcecb44ca78f75d897d85387e65161af0",
+    "bytes": 5024
+  },
+  {
+    "file": "crates/city-headless/tests/r07_report.rs",
+    "sha256": "50388f8a4c79d0f6a5cb42834d45f2d686bb5e6ed6b2c44fbe861636cd412449",
+    "bytes": 981
+  },
+  {
+    "file": "crates/city-headless/tests/role_arena.rs",
+    "sha256": "f046fa5424a48180640f95c5acd2584e6ebeddcfffa305851f33222bda393249",
+    "bytes": 7582
+  },
+  {
+    "file": "crates/city-headless/tests/scale_model_task.rs",
+    "sha256": "98204480636a03255c67748d0b2f116084065ed69a03970108e038a9668ada9b",
+    "bytes": 16325
+  },
+  {
+    "file": "crates/city-headless/tests/scale_rare.rs",
+    "sha256": "c2c3ba6d3b339f0662cad644f913c03fe3e57472fc99d5f32de165210d08274f",
+    "bytes": 3440
+  },
+  {
+    "file": "crates/city-headless/tests/scale_reference.rs",
+    "sha256": "da43a1d47cf63b8436fb03e805640fae041278e483f5cb5b184108c5366870fc",
+    "bytes": 673
+  },
+  {
+    "file": "crates/city-headless/tests/scale_sim.rs",
+    "sha256": "13d11f963dc6ff5fb3e450c9c220755805be6bda28f2fc9c6ebec45770b92f00",
+    "bytes": 7187
+  },
+  {
+    "file": "crates/city-headless/tests/service_delivery_role.rs",
+    "sha256": "e7ed0dcbcfb8e53227e7fc5523b070e55ae20c20334b094efc9e1ba86d901943",
+    "bytes": 6556
+  },
+  {
+    "file": "crates/city-headless/tests/service_needs_due.rs",
+    "sha256": "2c588f11924ccab576432ccdf6454b9c6133a8c413ef84eb9b3f788ef284d9b7",
+    "bytes": 21334
+  },
+  {
+    "file": "crates/city-headless/tests/service_recovery_role.rs",
+    "sha256": "f969b2cb9e5308792c9dba1b7441633fa34bb3990ae56ede000bbf8175efa434",
+    "bytes": 8491
+  },
+  {
+    "file": "crates/city-headless/tests/session.rs",
+    "sha256": "562f9e8a5bb3159dd348d1f7226f478cfadd5dbf0148c8596d680f83df821b74",
+    "bytes": 27373
+  },
+  {
+    "file": "crates/city-headless/tests/session_observation_access.rs",
+    "sha256": "9a02e36767ba5a2c283ccfe4d7b151c9301fe3a02e724b15f5d76154c6f3c874",
+    "bytes": 9002
+  },
+  {
+    "file": "crates/city-headless/tests/sim_host.rs",
+    "sha256": "79e3a202de3ca118185fc2a8ed55682a71f2b617edf7a7fbb56bce9bf344f6b3",
+    "bytes": 14624
+  },
+  {
+    "file": "crates/city-headless/tests/stack_restore.rs",
+    "sha256": "ec3ab2522a670e4269a261773a4eefd484846b181310808735de4761feb272d2",
+    "bytes": 1679
+  },
+  {
+    "file": "crates/city-headless/tests/steady.rs",
+    "sha256": "e9d5081af5088821dec06f0fadf055d387aa068c938d2b10da41db6cce859b5e",
+    "bytes": 4504
+  },
+  {
+    "file": "crates/city-headless/tests/support/client_slot_lifecycle.rs",
+    "sha256": "df648bd907aab78491baa48525af9dbaf5f1a575041685fb05f167971b081686",
+    "bytes": 11427
+  },
+  {
+    "file": "crates/city-headless/tests/support/lifecycle_artifacts.rs",
+    "sha256": "07c030b45eabe583f65390fb2ca4e37b2d00b254a4ed2949d3b241eb53dc126f",
+    "bytes": 780
+  },
+  {
+    "file": "crates/city-headless/tests/task_execution_observation.rs",
+    "sha256": "f947b3ab89b6fef48e3e67c72d173a4800ee45e6a3a7196bb34f1182a6d983e6",
+    "bytes": 10447
+  },
+  {
+    "file": "crates/city-headless/tests/task_execution_pages.rs",
+    "sha256": "d77dfac5cf6596b8f5225cccc777baefb27d18e971b0fb31d52b17f56f36aa98",
+    "bytes": 15634
+  },
+  {
+    "file": "crates/city-headless/tests/task_execution_protocol.rs",
+    "sha256": "fe7e65c256f93cc71e57b9f6c180c6c0565adf4ebcf4c9af0e4e8b524635b4e8",
+    "bytes": 23099
+  },
+  {
+    "file": "crates/city-headless/tests/task_registry_adapter.rs",
+    "sha256": "ca7c655eb0d9eee418392d70556485c8262800f7e27d87b7d2a355c5ab467760",
+    "bytes": 7715
+  },
+  {
+    "file": "crates/city-headless/tests/task_registry_directory.rs",
+    "sha256": "48c5f262042d5cb3549f3a9865f38854279c1a5511c64cdf350e50eae430aeed",
+    "bytes": 29310
+  },
+  {
+    "file": "crates/city-headless/tests/task_registry_dispatch.rs",
+    "sha256": "0dad9fd0e9d266daec6533457412cbed1b96e24d9bea687e2d8679c7bc0354bb",
+    "bytes": 16869
+  },
+  {
+    "file": "crates/city-headless/tests/task_registry_due.rs",
+    "sha256": "1bbbca6706f0ee360afb814f593d5888a5594aab4656c2db7ccad9176c37b0aa",
+    "bytes": 27501
+  },
+  {
+    "file": "crates/city-headless/tests/task_resource_observation.rs",
+    "sha256": "f367263ad8967c9ae6e1eee2962bfb00d8eff25fb327e37c3e172201831a4fea",
+    "bytes": 16735
+  },
+  {
+    "file": "crates/city-headless/tests/water_treatment_due.rs",
+    "sha256": "e6c9da1042e42894edc5f26bbbb56f50716aec737159e559e24ec2230dbb6e64",
+    "bytes": 8510
+  },
+  {
+    "file": "crates/city-map/Cargo.toml",
+    "sha256": "20b50ad9a48f8f47fc853ea61bdbb72c5ac944de908e876b0d10db27ee323dea",
+    "bytes": 349
+  },
+  {
+    "file": "crates/city-map/examples/geometry_revision_candidate.rs",
+    "sha256": "8abba5df1690cd3384bfc36429dc752a053e0ab5f353b5803e0124a2e7314ae3",
+    "bytes": 14446
+  },
+  {
+    "file": "crates/city-map/src/assets.rs",
+    "sha256": "43caf7e12749649c40401ec56d3e2da1049be4b45d434d81ff4499bf6a172f0c",
+    "bytes": 3352
+  },
+  {
+    "file": "crates/city-map/src/assets/workspace.rs",
+    "sha256": "44746d32021c9e41504d47c28f7c875a37e6df31036e8b5762039c8d3bd71a07",
+    "bytes": 2807
+  },
+  {
+    "file": "crates/city-map/src/bounded.rs",
+    "sha256": "d591fcbd824d48f280982e88a473e89e29701c5eadd73647d50a478cfa70a7c3",
+    "bytes": 2593
+  },
+  {
+    "file": "crates/city-map/src/geometry.rs",
+    "sha256": "d2160459bce558192237559449bec9b26c6acde4a6f048f3ae15ddb12b243362",
+    "bytes": 18101
+  },
+  {
+    "file": "crates/city-map/src/geometry_revision.rs",
+    "sha256": "2ce10f9e2760d34fbde81828ba0a3d7180de8fb3d8ddade6baf16e29bd141bbd",
+    "bytes": 14976
+  },
+  {
+    "file": "crates/city-map/src/gpu_layout.rs",
+    "sha256": "3ad033913d0c4397af29e777826d07c18274623de98b8e4ae0e617c316965631",
+    "bytes": 5689
+  },
+  {
+    "file": "crates/city-map/src/gpu_layout.wgsl",
+    "sha256": "c2ba4ba736f8621e69348287a7caaec4f512509a9ebb6f6b3930a2759f0d3637",
+    "bytes": 625
+  },
+  {
+    "file": "crates/city-map/src/lib.rs",
+    "sha256": "5d6a597d659ff2f5851d5a8f986325d943d9031be2f2995f30d8503eb80b6b85",
+    "bytes": 5758
+  },
+  {
+    "file": "crates/city-map/src/probe.rs",
+    "sha256": "a2c0e1de71dbbf3802f8c217ef1551822820d64632fe1af10ae7c7aada7e737d",
+    "bytes": 3621
+  },
+  {
+    "file": "crates/city-map/src/scene.rs",
+    "sha256": "e0b69fe55d287dae9a40b59cc904261c91dfaa24f040684e1cb13ab5a4a147a8",
+    "bytes": 10427
+  },
+  {
+    "file": "crates/city-map/src/scene/workspace.rs",
+    "sha256": "24da5f3037248069dadea99798faedd3a065254e71fca3b584023cb434a0e4a8",
+    "bytes": 5663
+  },
+  {
+    "file": "crates/city-map/src/terrain.rs",
+    "sha256": "013a6481de1eaf417a931d49fb446082b9f792a9b86eda286399760582ea20b4",
+    "bytes": 20469
+  },
+  {
+    "file": "crates/city-map/src/terrain/small_png.rs",
+    "sha256": "a5cec14de756075e2d96083d9ab901aa3e603a844e5e1083698c447665698d01",
+    "bytes": 8353
+  },
+  {
+    "file": "crates/city-map/src/terrain/workspace.rs",
+    "sha256": "5936a74afc218ffbfb7230d08fcacc6a927f24c802acfb080c5fe177e1101148",
+    "bytes": 10416
+  },
+  {
+    "file": "crates/city-map/src/traffic_adapter.rs",
+    "sha256": "dbb39708e528510348eb72b10e1738368d3a33c080d16c29b48c12d74eca2012",
+    "bytes": 9788
+  },
+  {
+    "file": "crates/city-map/tests/geometry_revision.rs",
+    "sha256": "efb2fca9fcb832485ed3b73a2df074700ab8c7d954a06ca33c4e4717b0edb0ea",
+    "bytes": 22685
+  },
+  {
+    "file": "crates/city-map/tests/spatial.rs",
+    "sha256": "d51b3500690372e065351f2c848d35edaf5e186b993837c3e904058aab0d0e64",
+    "bytes": 22943
+  },
+  {
+    "file": "crates/city-map/tests/traffic_adapter.rs",
+    "sha256": "2f50ad399a4279cdf213148d259b4f100018d0bb489e511f000f230b371ca628",
+    "bytes": 7037
+  },
+  {
+    "file": "crates/city-map/tests/workspace.rs",
+    "sha256": "020dd041e5732cbf87d6620d80a3b10317d36b0c915fc7e156a69beb4eb6b30c",
+    "bytes": 6293
+  },
+  {
+    "file": "crates/city-role-allocator/Cargo.toml",
+    "sha256": "3dcefb649c9266fe0760df74782c297848f6c66c683994b002dac2f577940d60",
+    "bytes": 492
+  },
+  {
+    "file": "crates/city-role-allocator/src/adapter.rs",
+    "sha256": "803444311b1d06c517de3f8791638295b096c90b86558ce212f5a49263db0539",
+    "bytes": 15986
+  },
+  {
+    "file": "crates/city-role-allocator/src/bin/role-arena-probe.rs",
+    "sha256": "dddf9eccbd8ae69276fae4872b88c0a3002d1ce0342fcfba7e3234e0d8ac0a2d",
+    "bytes": 1912
+  },
+  {
+    "file": "crates/city-role-allocator/src/lib.rs",
+    "sha256": "5986ab147cdd0d8f83a088dc282fd807868354c02e31804a7fd02ca2f4a06245",
+    "bytes": 253
+  },
+  {
+    "file": "crates/city-role-allocator/tests/process.rs",
+    "sha256": "cedeade474419ee6fce15dee2401f6294c084838202ed48854308c8ab538e8de",
+    "bytes": 617
+  },
+  {
+    "file": "crates/city-storage/Cargo.toml",
+    "sha256": "38e3be055504b2845ec352b2ff0a10448fc7c1ed9faf049a7750325a6ff5f709",
+    "bytes": 353
+  },
+  {
+    "file": "crates/city-storage/examples/core_joint_equity_spatial.rs",
+    "sha256": "b1a0bbe308b8e1e4e67877388f94770b6851a8fdf6b2cb5b341448beea800469",
+    "bytes": 34511
+  },
+  {
+    "file": "crates/city-storage/examples/payroll_exit.rs",
+    "sha256": "8981cda66b66443317631a9e4f852f1c7eaa19b9d2479355906534952ad73bbf",
+    "bytes": 6507
+  },
+  {
+    "file": "crates/city-storage/examples/spatial_geometry_scenario.rs",
+    "sha256": "0da54b6b741f961d0432b19ca232b2f47b43c3c42fdcb462802b65eaedf0be62",
+    "bytes": 7761
+  },
+  {
+    "file": "crates/city-storage/examples/spatial_transport_scenario.rs",
+    "sha256": "33d03f2ce4ad6a0259e69d641e6f902ebae9ef133e5e8df45529f3180b35f56e",
+    "bytes": 42477
+  },
+  {
+    "file": "crates/city-storage/examples/spatial_transport_updates.rs",
+    "sha256": "c9b5eee10280471ab174459c04a9d85e963fab1be7270c2821263a077cae033e",
+    "bytes": 6804
+  },
+  {
+    "file": "crates/city-storage/examples/support/household_wage_spatial.rs",
+    "sha256": "021bded0aeb815428d8e5679f234091b642d2aad29103f2a7dc6a71902d7770c",
+    "bytes": 34506
+  },
+  {
+    "file": "crates/city-storage/examples/support/spatial_geometry_apply.rs",
+    "sha256": "086ffa05f19a4b154d8e7fab181f8ed8143fe5c9e7c1451e8034920db77c8ab6",
+    "bytes": 57333
+  },
+  {
+    "file": "crates/city-storage/examples/support/town_equity_28d.rs",
+    "sha256": "90fd9f06e25868ac5af2295c76797566ea73b108d50af595e27f804af164c58d",
+    "bytes": 25896
+  },
+  {
+    "file": "crates/city-storage/examples/town_business_28d.rs",
+    "sha256": "0744683a5a10145737fbad8623d90b9a2797f6770d8e00ae23e4a4e7d7523c0a",
+    "bytes": 19123
+  },
+  {
+    "file": "crates/city-storage/examples/town_business_exit.rs",
+    "sha256": "da98f565aaf0d1a9fe39fc9243c8e16185a14d71213498b13701feb3557ccda8",
+    "bytes": 13960
+  },
+  {
+    "file": "crates/city-storage/examples/town_equity.rs",
+    "sha256": "2b9f3f7ae4db9559ebb2290606b1e1da684c40b1cb6413560aba8b96b1fa0c03",
+    "bytes": 15177
+  },
+  {
+    "file": "crates/city-storage/examples/town_equity_28d.rs",
+    "sha256": "e427a0b9f2a6da7367af4b79b003ead9b729686982fde3a34dbb6704bb13d238",
+    "bytes": 4790
+  },
+  {
+    "file": "crates/city-storage/examples/town_equity_creditor_residual.rs",
+    "sha256": "61b18e98d49875563a3d2bc6fc2b50a3dbafb2b3a3710839a373d9e56ac1c3e6",
+    "bytes": 16909
+  },
+  {
+    "file": "crates/city-storage/examples/town_household_wage_spatial.rs",
+    "sha256": "3c51764142edb3ee384f070c4118b4ef6a57c0d8746b849a54f0224978b4011b",
+    "bytes": 2191
+  },
+  {
+    "file": "crates/city-storage/examples/town_housing.rs",
+    "sha256": "24ab500728f4b4d2fb53b0e9ff77a323ae065f6b25de9bef8ce63e8b1d5acd23",
+    "bytes": 28880
+  },
+  {
+    "file": "crates/city-storage/examples/town_housing_income.rs",
+    "sha256": "6c29dee82703ca56037df7ceabe161dfdeca072972f0936f5928755d97fc3e91",
+    "bytes": 13270
+  },
+  {
+    "file": "crates/city-storage/examples/town_housing_income_move.rs",
+    "sha256": "85111701175451a1397fcf008e217d7f297fdb6e36a0c4af98bba54ece6c6f94",
+    "bytes": 32522
+  },
+  {
+    "file": "crates/city-storage/examples/town_housing_move.rs",
+    "sha256": "d5fd898332f993f791c541a0e884f00cf268bf47b061e3a49832cde5adf73e80",
+    "bytes": 26029
+  },
+  {
+    "file": "crates/city-storage/examples/town_lifelines.rs",
+    "sha256": "7c7fb2db032d715966e81401425851554a4ce12428d9919fa703fa8882ba3948",
+    "bytes": 72531
+  },
+  {
+    "file": "crates/city-storage/examples/town_suspend.rs",
+    "sha256": "2e27edffba99ca101f8a7ab7f34ed18bbd3a42bce6849c6dee040797d8a315f2",
+    "bytes": 16969
+  },
+  {
+    "file": "crates/city-storage/examples/town_transport.rs",
+    "sha256": "a2c5c68e98a1c9d6df4d7ef0db0caf0a2ac5803a90dc32fbf671e9f30d652099",
+    "bytes": 107109
+  },
+  {
+    "file": "crates/city-storage/src/background.rs",
+    "sha256": "591793fa824db3c03ad2c7f20e19ed8230af6a447b5fd9302fe9a15f8ba88fa5",
+    "bytes": 26317
+  },
+  {
+    "file": "crates/city-storage/src/bin/construction_utilities.rs",
+    "sha256": "a0445205b24a0c66a7c91e16ac5cde73638a29ce9a07ad4df507fbb7e1073d20",
+    "bytes": 9570
+  },
+  {
+    "file": "crates/city-storage/src/bin/mycity-storage-worker.rs",
+    "sha256": "85b5be573db7b1ab2e389f724866d09f4c13e42a04fe599eba6d0ac61e8475aa",
+    "bytes": 7726
+  },
+  {
+    "file": "crates/city-storage/src/capacity.rs",
+    "sha256": "7470e15578736556104c89c0c1abd561fa9fde5ace38ea37e3a549c9f73f6d56",
+    "bytes": 7817
+  },
+  {
+    "file": "crates/city-storage/src/capacity_read.rs",
+    "sha256": "639edbdf640d6898f5805bdb924c8960f92d10bc9d83de23160284e204777553",
+    "bytes": 7381
+  },
+  {
+    "file": "crates/city-storage/src/checkpoint.rs",
+    "sha256": "9a03cd678ce52829aa00029da487a3f353862ca3bc65cf25928ae1e649b26d4e",
+    "bytes": 21747
+  },
+  {
+    "file": "crates/city-storage/src/checkpoint/receipt_decode.rs",
+    "sha256": "2ab92056a4e7d8e40e31e95b5c7603fc478df8f5e9fd221c34719b8729636446",
+    "bytes": 45657
+  },
+  {
+    "file": "crates/city-storage/src/checkpoint/retained.rs",
+    "sha256": "f56c75c270fdd84f94b0e6793993bcb72dc342525e6aeb000467cfd63622869f",
+    "bytes": 4132
+  },
+  {
+    "file": "crates/city-storage/src/checkpoint_v2.rs",
+    "sha256": "cb2c109e3a7bd1ed3363b70c157abdd58ee9f4079cace842ee242edb81da1fff",
+    "bytes": 19366
+  },
+  {
+    "file": "crates/city-storage/src/checkpoint_v2/receipts.rs",
+    "sha256": "6b1f777b7de85bcf96837142b019f6b191a42b8cab1d035e7b3515a691c2fbd3",
+    "bytes": 9367
+  },
+  {
+    "file": "crates/city-storage/src/continuation.rs",
+    "sha256": "a371af922b15d376f66e45bfdfc7458de5ce8454434a468fb00cd344635e5d7a",
+    "bytes": 7096
+  },
+  {
+    "file": "crates/city-storage/src/genesis.rs",
+    "sha256": "744f1a02fde7dd345f705d322e61bffc865f109c9600cee4d4c6d8109f607a6b",
+    "bytes": 2018
+  },
+  {
+    "file": "crates/city-storage/src/lib.rs",
+    "sha256": "a55956b109cc8995a6ee3765136fe42fb0eb909b1507082a2034352484cfa4c3",
+    "bytes": 191803
+  },
+  {
+    "file": "crates/city-storage/src/metadata.rs",
+    "sha256": "9a96ef4fe4919d7f03aa56979987678c2658a4591cb18e2d4da144406beee4e6",
+    "bytes": 12481
+  },
+  {
+    "file": "crates/city-storage/src/metadata/lexical.rs",
+    "sha256": "f76ca186865a142edf088f9dee8974425f342e1488fc5287f0265657a3cc21bd",
+    "bytes": 21208
+  },
+  {
+    "file": "crates/city-storage/src/metadata/reader.rs",
+    "sha256": "a19c6a240e94f1a5c03e5bfbc5284843b82879094e285579fbd3f21de0bcebd9",
+    "bytes": 11178
+  },
+  {
+    "file": "crates/city-storage/src/model_capacity.rs",
+    "sha256": "b02b644ed9ae5e767ac9139f8f6455a6b81e51d38ba86047d84dd33683202b0f",
+    "bytes": 12834
+  },
+  {
+    "file": "crates/city-storage/src/opening_input.rs",
+    "sha256": "4ccfe8f1bef942bc02c5fce6a06ba9fb99ec63fe27e0a71d021b464748d99ffe",
+    "bytes": 3601
+  },
+  {
+    "file": "crates/city-storage/src/outbox.rs",
+    "sha256": "61fe7be0f2930277c8761dc2c41d43e4810ae56253229647ffcb668c107c41b2",
+    "bytes": 11613
+  },
+  {
+    "file": "crates/city-storage/src/prepared.rs",
+    "sha256": "9df7a1f2bb6dc76e03274c2b5eacac1be95ef2373ebc4c0b2ad5bc63165f44c7",
+    "bytes": 1178
+  },
+  {
+    "file": "crates/city-storage/src/query.rs",
+    "sha256": "e085ffaebd6474eb2b23e0fc278b3404978bd49017e10c6b46794da5520f5c46",
+    "bytes": 22091
+  },
+  {
+    "file": "crates/city-storage/src/query_reference_before_page_projection.rs",
+    "sha256": "6d8eab112e1e53b889d0242affa70e4cc069d8f03a514d024a05af56f149b5b0",
+    "bytes": 9248
+  },
+  {
+    "file": "crates/city-storage/src/spatial.rs",
+    "sha256": "57ae63fb607054b73b0d0b2187ac2efc1b7502d4b98ccfc909751b86d5ee7de0",
+    "bytes": 8719
+  },
+  {
+    "file": "crates/city-storage/src/spatial_geometry_updates.rs",
+    "sha256": "12bed07c6b02486eba1f7410e9196bbb67cf4c2cabd4d52f037f61fb12275257",
+    "bytes": 8839
+  },
+  {
+    "file": "crates/city-storage/src/spatial_transport_updates.rs",
+    "sha256": "4998305ed97e7849e9680dc384c2d47f374ed856c03f237e67d639e385d2cc97",
+    "bytes": 90561
+  },
+  {
+    "file": "crates/city-storage/src/stream.rs",
+    "sha256": "152827427f76143b8c91c45a454677a11aece535e80bdc7014ff8ab503b62b71",
+    "bytes": 9214
+  },
+  {
+    "file": "crates/city-storage/src/town_transport.rs",
+    "sha256": "d9bb6ab40f1ec17cef956bb1ad52fc8018a3082746e6583928f9a37ddc026f00",
+    "bytes": 37144
+  },
+  {
+    "file": "crates/city-storage/src/wal.rs",
+    "sha256": "5acda34f34fca59f5ac947ba18db7b85852fc44a6d8415e19bb852a36e86c5f9",
+    "bytes": 9790
+  },
+  {
+    "file": "crates/city-storage/tests/asset_capital_store.rs",
+    "sha256": "64debf9738772d4b4985950f4e55ef923490d6e33e8c0745d43370914fd87d87",
+    "bytes": 20904
+  },
+  {
+    "file": "crates/city-storage/tests/background.rs",
+    "sha256": "c84522bb7ef0a418e8303e11d99a612f7a2768a1d32a11af7459a1fd358cf4c4",
+    "bytes": 29996
+  },
+  {
+    "file": "crates/city-storage/tests/boot.rs",
+    "sha256": "d9031a6d30344a269c335cd6f96fb89be6f4bfe93fa27657074dd14b246fed54",
+    "bytes": 8585
+  },
+  {
+    "file": "crates/city-storage/tests/boot_partition.rs",
+    "sha256": "06358a0bb00d0817cd33055f9e550df54aab811eaba1ebd5457d686254987a0d",
+    "bytes": 9461
+  },
+  {
+    "file": "crates/city-storage/tests/capacity_read.rs",
+    "sha256": "c787471cb50776b81796923d53e8278050302bbdea9ae6746cab77242838de13",
+    "bytes": 11004
+  },
+  {
+    "file": "crates/city-storage/tests/checkpoint.rs",
+    "sha256": "866fb53be425f51fcd86ff58a3439a6853bf0730e85372ff16af593cd6101615",
+    "bytes": 7828
+  },
+  {
+    "file": "crates/city-storage/tests/checkpoint_v2.rs",
+    "sha256": "8934ac6a7142fb53ea28c5cb7c4dd07debbb878454c47718ed57f64e72ffddb7",
+    "bytes": 14578
+  },
+  {
+    "file": "crates/city-storage/tests/construction.rs",
+    "sha256": "4dfd56c81ad9f7f3796a15dca9edf374b06d196dd14bcc815e394f512dca61c6",
+    "bytes": 24000
+  },
+  {
+    "file": "crates/city-storage/tests/construction_boot_stock_isolation.rs",
+    "sha256": "e5561b48a41dfb5ecde3e9022e02dc1e021eab55bc15a7843250581510abd9d6",
+    "bytes": 4302
+  },
+  {
+    "file": "crates/city-storage/tests/construction_compensation.rs",
+    "sha256": "4f0f59904f4bf9c8bfb98858dfc60ccb8afc893a7c0e2072ff672d452f5dbcc2",
+    "bytes": 12176
+  },
+  {
+    "file": "crates/city-storage/tests/construction_material_retry.rs",
+    "sha256": "f0e67ae74038ab5d298bf6509d1af9e8b5732a6d3646649b93313f60418d4e5c",
+    "bytes": 15111
+  },
+  {
+    "file": "crates/city-storage/tests/construction_retry_policy.rs",
+    "sha256": "4bccff9da6f7046686dbaa628b9362a92bb5f2d0d43c44eaf94a1894cfd2023a",
+    "bytes": 18848
+  },
+  {
+    "file": "crates/city-storage/tests/construction_utilities.rs",
+    "sha256": "6b24af5b140768379cab5f8fbc103ac05a364733a75792246201b6f853578533",
+    "bytes": 80930
+  },
+  {
+    "file": "crates/city-storage/tests/continuous_supply_store.rs",
+    "sha256": "6a4a187e2a5eac58b582eefc868d28e23ee818caf5ee6aff74b916fa44a3cdbe",
+    "bytes": 7186
+  },
+  {
+    "file": "crates/city-storage/tests/economy.rs",
+    "sha256": "ebbee821e6b2f191f6e76873b0a2b519ebfc9a2e1777dbf82dbb1bcb03c973cd",
+    "bytes": 6843
+  },
+  {
+    "file": "crates/city-storage/tests/education_authority.rs",
+    "sha256": "d2d833524b35fc72210f7683b800b735a3cfe9719654a4a338ffc5a1979ea9ab",
+    "bytes": 21308
+  },
+  {
+    "file": "crates/city-storage/tests/equity_creditor_residual.rs",
+    "sha256": "419b2fd2e3616225d9ce184513902e3eaae512d66d67adf9c10ba897c434120e",
+    "bytes": 16108
+  },
+  {
+    "file": "crates/city-storage/tests/equity_dividend_liquidation.rs",
+    "sha256": "dac671b11b50895591bd493b427f44e2028f49d78d6d0a12b196af11f73e4adc",
+    "bytes": 18234
+  },
+  {
+    "file": "crates/city-storage/tests/equity_runtime.rs",
+    "sha256": "6cb546f8d7d88d072191c057a21c8061bc31ffedae25454c62b6d6f1c07f63cd",
+    "bytes": 23436
+  },
+  {
+    "file": "crates/city-storage/tests/exchange.rs",
+    "sha256": "5854895bd924d5ca47f6b4adc1c45d3a8f06df9e6bfc2e172e34ae207035bf90",
+    "bytes": 12712
+  },
+  {
+    "file": "crates/city-storage/tests/facility_operation_store.rs",
+    "sha256": "a2b8b42be2a42df9d76ea48c643cba48f50f1e0e135433eace8063027ca98df9",
+    "bytes": 11742
+  },
+  {
+    "file": "crates/city-storage/tests/finite_city_asset_store.rs",
+    "sha256": "0987485a6f1d765867268d14820c4c4703abb8fa60594d100124417af70e13d5",
+    "bytes": 18585
+  },
+  {
+    "file": "crates/city-storage/tests/finite_city_road.rs",
+    "sha256": "19f84190a364efb808140728f846d8990cafdb624a50518c78a0f6dbf2e2070e",
+    "bytes": 24556
+  },
+  {
+    "file": "crates/city-storage/tests/finite_city_store.rs",
+    "sha256": "54e1e927a1130627602a0086ec40931ec6b716a196dccd88d7da5935e4b3133f",
+    "bytes": 11095
+  },
+  {
+    "file": "crates/city-storage/tests/fixtures/education-store/free-offline-v1.json",
+    "sha256": "978e4536cba6ce391767bf47bdaafa1e5576a0408beb5eeeb2c1187be3a9befd",
+    "bytes": 3583
+  },
+  {
+    "file": "crates/city-storage/tests/fixtures/opening-input-store/boot.json",
+    "sha256": "d2505d4b292ee8745de0266178168853f09a0a71a767b8e74598bf0f105f12da",
+    "bytes": 2612
+  },
+  {
+    "file": "crates/city-storage/tests/fixtures/opening-input-store/e0.json",
+    "sha256": "6756555697457b3de5307086610a108c88d15650c6e668da0cdf990ca52b874c",
+    "bytes": 857
+  },
+  {
+    "file": "crates/city-storage/tests/fixtures/opening-input-store/expected-ledgers.json",
+    "sha256": "e730f9d05284e4ef273b8433a8ddc15585eaf864b0a8d14c5d54c5039a1236a5",
+    "bytes": 2205
+  },
+  {
+    "file": "crates/city-storage/tests/fixtures/opening-input-store/flat16.png",
+    "sha256": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8",
+    "bytes": 207
+  },
+  {
+    "file": "crates/city-storage/tests/fixtures/opening-input-store/source-manifest.json",
+    "sha256": "405938585870636a72d36eb4ef7fb605b57a4881bc79990e7a821a4371ee537e",
+    "bytes": 2210
+  },
+  {
+    "file": "crates/city-storage/tests/fixtures/opening-input-store/spatial.json",
+    "sha256": "1891b68e1190fac29e3dc83a1d5d96ba3fa972cc7594fb8106ccbe179cdd29d6",
+    "bytes": 3679
+  },
+  {
+    "file": "crates/city-storage/tests/fixtures/opening-input-store/town.json",
+    "sha256": "c9d3713d817fada2054641260c220447f7f2496d64f1ac5340bfa3e1cba4e2a0",
+    "bytes": 15917
+  },
+  {
+    "file": "crates/city-storage/tests/fixtures/opening-venue-store/managed-people-service-needs-v1-profile.json",
+    "sha256": "e4f34210ea92479f606cf9c18cff3f81bfae081dc0c4c70f9fc92ac235e01871",
+    "bytes": 236
+  },
+  {
+    "file": "crates/city-storage/tests/fixtures/opening-venue-store/managed-people-v1-opening.json",
+    "sha256": "eb8529e57b6b3af3550656a17275dc34b02a0674c31b9e13cbf8756d6dc812b8",
+    "bytes": 3346
+  },
+  {
+    "file": "crates/city-storage/tests/fixtures/venue-checkpoint-before-receipt-fix/CURRENT.json",
+    "sha256": "92af16c52da1356775fa52b5cf8f46b7a95029fce072525483ad3f24201d75f8",
+    "bytes": 123
+  },
+  {
+    "file": "crates/city-storage/tests/fixtures/venue-checkpoint-before-receipt-fix/LOCK",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  },
+  {
+    "file": "crates/city-storage/tests/fixtures/venue-checkpoint-before-receipt-fix/checkpoint-5.json",
+    "sha256": "cbb8d7867d803369084b8535d51b546c85105e6355d6e1a6522e9eb99919a77c",
+    "bytes": 35572
+  },
+  {
+    "file": "crates/city-storage/tests/fixtures/venue-checkpoint-before-receipt-fix/checkpoint-index-5.json",
+    "sha256": "36cbeba7b6fac821534ee083f0421182b4f1ea36b7af43185c771984f476202c",
+    "bytes": 121
+  },
+  {
+    "file": "crates/city-storage/tests/fixtures/venue-checkpoint-before-receipt-fix/genesis.json",
+    "sha256": "086f33a9c918cfc75e75122e673cf789d7ff2e7c4bec425b57dae9a8d94d2810",
+    "bytes": 12124
+  },
+  {
+    "file": "crates/city-storage/tests/fixtures/venue-checkpoint-before-receipt-fix/root-0.json",
+    "sha256": "0c0eef1d432332cfc160eb720ec2c7046a5a5a8b6b04f68b5dc5b4aec9d881d5",
+    "bytes": 424
+  },
+  {
+    "file": "crates/city-storage/tests/fixtures/venue-checkpoint-before-receipt-fix/root-1.json",
+    "sha256": "b83f80ccb87ea7504d50c5b94242fd32976d9c4a984c3a794b9150f86b84bd90",
+    "bytes": 509
+  },
+  {
+    "file": "crates/city-storage/tests/fixtures/venue-checkpoint-before-receipt-fix/wal-5.bin",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  },
+  {
+    "file": "crates/city-storage/tests/household_wage_spatial_equity.rs",
+    "sha256": "947e104866f04ea8aa75e19d0c52ef701dae69665e569759f2504fbc637bfa87",
+    "bytes": 3440
+  },
+  {
+    "file": "crates/city-storage/tests/housing_equity_spatial.rs",
+    "sha256": "f47efae4ebfb937558b318d22f6afbee5e0e5445f708283db85656cdd6b7b297",
+    "bytes": 43493
+  },
+  {
+    "file": "crates/city-storage/tests/housing_move_store_runtime.rs",
+    "sha256": "a4372afc1590cb9cb41b556b07f6c033d8725bb36c0631a79e80040e49fd385c",
+    "bytes": 45604
+  },
+  {
+    "file": "crates/city-storage/tests/housing_no_candidate_wait_store.rs",
+    "sha256": "f951a433b0a33c8887355fccf29d3969f61a1a950f07b6e2754540649a04dedc",
+    "bytes": 22290
+  },
+  {
+    "file": "crates/city-storage/tests/housing_runtime.rs",
+    "sha256": "2e16cdc75a5d1c0c4610643dbb5a0ac6564687f495cf84b69c533c1d98b5c7a8",
+    "bytes": 25454
+  },
+  {
+    "file": "crates/city-storage/tests/housing_wage_window_runtime.rs",
+    "sha256": "85f4b677a8ea7a4924d762a6b727ef9c8b8a34b56687783f8730e1a015c18561",
+    "bytes": 23177
+  },
+  {
+    "file": "crates/city-storage/tests/inbox.rs",
+    "sha256": "148b076b11adf09ebf87f3a5d1b5027478560618ba01fac0ea261185c618ce85",
+    "bytes": 28432
+  },
+  {
+    "file": "crates/city-storage/tests/member_authority.rs",
+    "sha256": "5c25b868a27aae42d14025cb4b78feaeead8f1530b9da55ee3188db5753eaf6b",
+    "bytes": 10796
+  },
+  {
+    "file": "crates/city-storage/tests/metadata.rs",
+    "sha256": "cb08402c13da4fc3b8122754b6e87e2a5930f2b207367a60e2c490901267932d",
+    "bytes": 9918
+  },
+  {
+    "file": "crates/city-storage/tests/opening_continuous_supply_store.rs",
+    "sha256": "b08bb1e2917cefe721d85477a5f821bcaca7cb50545fbbe01cdba628615bd644",
+    "bytes": 12705
+  },
+  {
+    "file": "crates/city-storage/tests/opening_input_store.rs",
+    "sha256": "4cef3b4b4426e47bdd931d3ba4f2a87daaa36b1162acf46b5e7f867cbbc1ebc6",
+    "bytes": 20930
+  },
+  {
+    "file": "crates/city-storage/tests/opening_service_needs_store.rs",
+    "sha256": "90f7b1243a02d85a2443c048acd374ccbf1d364d96268f7d54ee4840e972ccb7",
+    "bytes": 19087
+  },
+  {
+    "file": "crates/city-storage/tests/opening_typed_provider_store.rs",
+    "sha256": "67618bafe8a07e22e1630206fe504f86abeed77508b19c1cf0df0b0618f54194",
+    "bytes": 12730
+  },
+  {
+    "file": "crates/city-storage/tests/opening_venue_store.rs",
+    "sha256": "7994efa342148302fc8c0fdf4112da7b45143af811f3a60b2b11407a8ec817d6",
+    "bytes": 24562
+  },
+  {
+    "file": "crates/city-storage/tests/payroll_exit.rs",
+    "sha256": "bccf132a98e8473b1a1388e4f767e98608fbc2bd602c0bca6e4cb8c44815d759",
+    "bytes": 10123
+  },
+  {
+    "file": "crates/city-storage/tests/payroll_members_store.rs",
+    "sha256": "1162c62518d230792ad6ca442a9d5ea43504480aeea8bf98aa5bab65eb77bfa0",
+    "bytes": 20258
+  },
+  {
+    "file": "crates/city-storage/tests/qualification_authority.rs",
+    "sha256": "f91b768115aea353beac1ed96e6811c7d46998e878eeb0517a6a4b53b8c63994",
+    "bytes": 30224
+  },
+  {
+    "file": "crates/city-storage/tests/recovery.rs",
+    "sha256": "dfb845f9029f85ff9b66e9fc90d8e9d98d8842fe2a9511fbf062bacd6ff05b6f",
+    "bytes": 20410
+  },
+  {
+    "file": "crates/city-storage/tests/scale_assembly.rs",
+    "sha256": "c6514407caba2118eb58b8371bb24e711425fbb5525767626512f440c109f1f7",
+    "bytes": 6953
+  },
+  {
+    "file": "crates/city-storage/tests/service_delivery_store.rs",
+    "sha256": "e41f1252ccc10257feba34b54d6c13b595fec54b093d922437a972ed18e8cfac",
+    "bytes": 11916
+  },
+  {
+    "file": "crates/city-storage/tests/service_needs.rs",
+    "sha256": "c5f2e2cd744e518906c2f299f6e70f744979dceecede1ed6c5e29d8be5b71151",
+    "bytes": 13575
+  },
+  {
+    "file": "crates/city-storage/tests/service_recovery_store.rs",
+    "sha256": "78ac5d47fd123d379d33bfb60eb48ea487555392f47c04bb2f310cc6ca56b58d",
+    "bytes": 13165
+  },
+  {
+    "file": "crates/city-storage/tests/spatial.rs",
+    "sha256": "88b1087e40517cafdc143e9b942a004ee5b185b1a8a86af49051bc9e4de4d2c3",
+    "bytes": 16102
+  },
+  {
+    "file": "crates/city-storage/tests/spatial_transport_market.rs",
+    "sha256": "81c23c3189e6d43b9bd5cdb60a56ccba1093a02fa621630e1abd06e3ae831ba9",
+    "bytes": 16880
+  },
+  {
+    "file": "crates/city-storage/tests/spatial_transport_updates.rs",
+    "sha256": "4abd7d12613b151fc8562cebbd9bb10feb5695027b52386c21b601548c868341",
+    "bytes": 64804
+  },
+  {
+    "file": "crates/city-storage/tests/time_capacity_store.rs",
+    "sha256": "a9c6d0ad0c4cc095e150eb3e088984e2bfa97773af0f4445eaef379d8677b406",
+    "bytes": 19003
+  },
+  {
+    "file": "crates/city-storage/tests/timeline.rs",
+    "sha256": "711a9953e88135dbd1fa60942a3c88dc61395759bfdbadd8e2bf7f33cc7b49ca",
+    "bytes": 17017
+  },
+  {
+    "file": "crates/city-storage/tests/timeline_cancel_emergency.rs",
+    "sha256": "86eed0370084212e4071f39a5d3163ce7d465a3b181a3c2b851a9bcb41dd33d9",
+    "bytes": 21002
+  },
+  {
+    "file": "crates/city-storage/tests/town_business_exit.rs",
+    "sha256": "773cf7830c6a39ca9e93d4521d03feca24d46692f20b2af5fa8cf9f279566a18",
+    "bytes": 22072
+  },
+  {
+    "file": "crates/city-storage/tests/town_equity_28d.rs",
+    "sha256": "700cdbbda5bf9ff182b6b71fde848a6dcc708dd559a855b50c443ead4c274328",
+    "bytes": 4074
+  },
+  {
+    "file": "crates/city-storage/tests/town_market.rs",
+    "sha256": "0e0f518f226786417cdfb2591bd4db46d5a0859e039471c13bee2c9ffa77370b",
+    "bytes": 16387
+  },
+  {
+    "file": "crates/city-storage/tests/town_suspend.rs",
+    "sha256": "3cb9f400fb51c23be8bd4d689c9784e3292fcdb25478e74192cd5ed549799281",
+    "bytes": 17823
+  },
+  {
+    "file": "crates/city-storage/tests/town_utility_recovery.rs",
+    "sha256": "8405dc65816d387a740fa2d0ba94304af3aa38c44222717475a2cb78f10b8fee",
+    "bytes": 14718
+  },
+  {
+    "file": "crates/city-storage/tests/unfinished_clearance.rs",
+    "sha256": "4bdec9ada99dbaba20621579daf86782d676c4d2ef965c90223104c283e2d281",
+    "bytes": 26031
+  },
+  {
+    "file": "crates/city-storage/tests/venue_capacity.rs",
+    "sha256": "269132dae76b11c5cf158d8b7b807c0670bedc68684f0cd0180e5fde3212b779",
+    "bytes": 20514
+  },
+  {
+    "file": "crates/city-storage/tests/water_treatment_store.rs",
+    "sha256": "bb63925f5998a98239b02792df79f756a15ebd4ccaa958c0350fd94a3c32b627",
+    "bytes": 13189
+  },
+  {
+    "file": "fixtures/air/run36-cpu.json",
+    "sha256": "b6c8d12a7ead70d31636f0f8cfb64cc74b48c3a6cc5c1d57491133249b250724",
+    "bytes": 555
+  },
+  {
+    "file": "fixtures/core-town-utility-opening.json",
+    "sha256": "c9d3713d817fada2054641260c220447f7f2496d64f1ac5340bfa3e1cba4e2a0",
+    "bytes": 15917
+  },
+  {
+    "file": "fixtures/m0-background-joint-opening.json",
+    "sha256": "8f9b0281a4855eb568de58baa1b569a36c9c3cf9d6522d94f6b18abde108ec0c",
+    "bytes": 13466
+  },
+  {
+    "file": "fixtures/m0-background-joint-policy.json",
+    "sha256": "03a85ca36ea26100632ce9f4f058cdc22def9e067b83b341d8874a9b64bce413",
+    "bytes": 1269
+  },
+  {
+    "file": "fixtures/m0-boot-opening.json",
+    "sha256": "d2505d4b292ee8745de0266178168853f09a0a71a767b8e74598bf0f105f12da",
+    "bytes": 2612
+  },
+  {
+    "file": "fixtures/m0-bootstrap.json",
+    "sha256": "f56047a1a7fc1a08a25053117467487c61bf98363c07934725e0a7298603e5ba",
+    "bytes": 110
+  },
+  {
+    "file": "fixtures/m0-e0-opening.json",
+    "sha256": "6756555697457b3de5307086610a108c88d15650c6e668da0cdf990ca52b874c",
+    "bytes": 857
+  },
+  {
+    "file": "fixtures/m0-economy-opening.json",
+    "sha256": "964ee93769377f4d2ecae7e4b20bdfb191c61acbf1960f8a89109b3507771f94",
+    "bytes": 8688
+  },
+  {
+    "file": "fixtures/m0-exchange-opening.json",
+    "sha256": "e8471dd9b12a69fc5710dcb13fb43860ced9be046c07ec72e7ba6d3f45da6fe9",
+    "bytes": 13118
+  },
+  {
+    "file": "fixtures/m0-exchange-spatial.json",
+    "sha256": "1891b68e1190fac29e3dc83a1d5d96ba3fa972cc7594fb8106ccbe179cdd29d6",
+    "bytes": 3679
+  },
+  {
+    "file": "fixtures/m0-model-lifecycle-347-events.jsonl",
+    "sha256": "05bd941d1b744753f417efb2ae10ac9bcca820d682f5423a189a3c4f415b76fd",
+    "bytes": 4535
+  },
+  {
+    "file": "fixtures/m0-region-opening.json",
+    "sha256": "b654f042638d2efd3b058b87590a1c0446dcec2112faa99f10f6eefafed91544",
+    "bytes": 2300
+  },
+  {
+    "file": "fixtures/m0-spatial.json",
+    "sha256": "d7a3d9ebeeb2c92ac0a6dba3ac0683639c3cc360d7d1cf1c01d249ecb82b8da2",
+    "bytes": 3679
+  },
+  {
+    "file": "fixtures/m0-t13a-acceptance.json",
+    "sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+    "bytes": 7308
+  },
+  {
+    "file": "fixtures/m0-t13a-expected-oracle-candidate.json",
+    "sha256": "00fa0827d11023bab75571c83d586d9436e4f72c93300be20c5fd9ab4cd1ed8f",
+    "bytes": 4400
+  },
+  {
+    "file": "fixtures/m0-t13a-full-opening-candidate.json",
+    "sha256": "04c113c62b0b682f94f9abfbde7618b87bd972f3931504366be9e07c130b4726",
+    "bytes": 29012
+  },
+  {
+    "file": "fixtures/m0-t13a-medium-opening.json",
+    "sha256": "14bd82d8d1e196d810fa8fbdf25bf67da6092f24496b6581aa6dbe8ff825f144",
+    "bytes": 33020
+  },
+  {
+    "file": "fixtures/m0-t13a-medium-oracle.json",
+    "sha256": "ee45d61e7492cd33d779478920832504d608cddbac6760828df365ef5cb476e3",
+    "bytes": 2543
+  },
+  {
+    "file": "fixtures/m0-t13a-medium-policy.json",
+    "sha256": "f12c78b6baff5313c99a43085b9e6355d938123e322f724c68bd575b6daa69a1",
+    "bytes": 9617
+  },
+  {
+    "file": "fixtures/m0-t13a-real-policy-candidate.json",
+    "sha256": "614ac01e912bf932fad4f5bb33f8254b03f1ac3cba71c93106d2739655dfd4b0",
+    "bytes": 9008
+  },
+  {
+    "file": "fixtures/m0-t13a-small-opening.json",
+    "sha256": "ade6196df652a917c800fbefbf89d0e97da4188012abf367713e074f9c8103ae",
+    "bytes": 23372
+  },
+  {
+    "file": "fixtures/m0-t13a-small-oracle.json",
+    "sha256": "818110310f8d4d4ee9f6d188487f67bb44a35c238a20920e388a8e86a9578196",
+    "bytes": 1530
+  },
+  {
+    "file": "fixtures/m0-t13a-small-policy.json",
+    "sha256": "6a8380c45aa15699d6bb228bc49e9e8798666199d9cc5a794ad44cd1e5395065",
+    "bytes": 4905
+  },
+  {
+    "file": "fixtures/m0-t13a-tier-manifest.json",
+    "sha256": "2ef40eb4dec0fd092c74dd3a5dd699e5a4f3774475fc4a4834d734238fbed56f",
+    "bytes": 2684
+  },
+  {
+    "file": "fixtures/regressions/t13a-legacy-stack-world.zip",
+    "sha256": "08cb6317ddf74c04a05cf517510f0cc09861d1c01406c09776e422bf623e3b15",
+    "bytes": 159215
+  },
+  {
+    "file": "fixtures/terrain/m0-flat16.png",
+    "sha256": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8",
+    "bytes": 207
+  },
+  {
+    "file": "fixtures/terrain/m0-overexpanded8.png",
+    "sha256": "261ee77b6437f6524c792b159f878be3965e84a36fe1a9db3917e0f273349f62",
+    "bytes": 1096
+  },
+  {
+    "file": "rust-toolchain.toml",
+    "sha256": "b323b19900e4b811af0a8facce5ec11249ed135ae5a46ff5c0be90067521e11f",
+    "bytes": 86
+  },
+  {
+    "file": "tests/fixtures/continuous-supply/opening.rs",
+    "sha256": "5858842b01ee200d1f8bd337d4d0084dc73d0508b70ad838956bb4514db1acd2",
+    "bytes": 3692
+  },
+  {
+    "file": "tests/fixtures/facility-work/electric-v1-opening.json",
+    "sha256": "abb1ac550be6909eb05641726475965842990e214c06231edcfc7d6ae63ef76d",
+    "bytes": 5413
+  },
+  {
+    "file": "tests/fixtures/facility-work/electric-v2-opening.json",
+    "sha256": "d95900e07f4536f839b66e332aa0ad1d429984c7103642f8d1aec63e5af495a0",
+    "bytes": 5444
+  },
+  {
+    "file": "tests/fixtures/facility-work/legacy-housing18-opening.json",
+    "sha256": "fcab623a2c23c5d40c3b3b6d4992449ad1f14353864eea855785d3b71d4f5a98",
+    "bytes": 8018
+  },
+  {
+    "file": "tests/fixtures/facility-work/legacy-housing2-opening.json",
+    "sha256": "94dd9808bf27a937ed442bb16b1aeecf831a37d8f8f548dd1dc5b1c23f2af461",
+    "bytes": 3985
+  },
+  {
+    "file": "tests/fixtures/facility-work/opening.rs",
+    "sha256": "d42bcd9f1d1774765d132d73256ecd18f034b4ca9790f22c26392d945914decf",
+    "bytes": 5181
+  },
+  {
+    "file": "tests/fixtures/finite-city/asset_opening.rs",
+    "sha256": "cbbd10d653335d1e999a1632e095982df39b3de785daa1ed3e78b98ca5eb11e8",
+    "bytes": 2873
+  },
+  {
+    "file": "tests/fixtures/finite-city/maintenance_opening.rs",
+    "sha256": "a2b170d03f3c973806d9dd0ccdcc3dc52785c222312ad9f18a20280f83063d2b",
+    "bytes": 4621
+  },
+  {
+    "file": "tests/fixtures/finite-city/opening.rs",
+    "sha256": "9005a2da9383d5de2721c5a399cbc95466ce2c16f3aa88b7d160420f709e182e",
+    "bytes": 3678
+  },
+  {
+    "file": "tests/fixtures/finite-city/transport_opening.rs",
+    "sha256": "d7c96d66dc5160f6a6eaf5c48ab80cb6cd135b12e3076b022d50ee71c45ded4b",
+    "bytes": 4479
+  },
+  {
+    "file": "tests/fixtures/issue-101/air-empty-sources-30.json",
+    "sha256": "03178f78324b6bba9e82cadc3633e51764109e92179ba5b6358aa525ed26db64",
+    "bytes": 198
+  },
+  {
+    "file": "tests/fixtures/issue-101/air-empty-sources.json",
+    "sha256": "1a436b88b17530d637f25d9b7b5f0fefe0f43e068544990d08292d8890527667",
+    "bytes": 198
+  },
+  {
+    "file": "tests/fixtures/issue-101/continuous-supply-due-v184.json",
+    "sha256": "97db80a1087a5b24a331f12e45fe1c1c49bd969b44f78218bf0139281726777b",
+    "bytes": 359
+  },
+  {
+    "file": "tests/fixtures/issue-101/service-needs-p5-due-v182.json",
+    "sha256": "ce163bfac1d45b62dc6774b6b5b423cfdf42fa72122648ec4ea6e18f688ff35a",
+    "bytes": 464
+  },
+  {
+    "file": "tests/fixtures/issue-101/sim-air-contract.json",
+    "sha256": "ae625e2e9f50381b6e1c4e91555325b3c1d5d3e8bae161e66a07879edb600612",
+    "bytes": 1069
+  },
+  {
+    "file": "tests/fixtures/issue-118-venue/opening.json",
+    "sha256": "23fc77de6a364c025ddd4fcb9f8b9127aebb9950eff0d2d9cefe2e70f63ba835",
+    "bytes": 2319
+  },
+  {
+    "file": "tests/fixtures/issue-57-delivery/literal.rs",
+    "sha256": "63c0848bbde9b910c716579995f4b3519027e135e96a789089603899a76fa395",
+    "bytes": 527
+  },
+  {
+    "file": "tests/fixtures/issue-57-needs/literal.rs",
+    "sha256": "41b8cd76f1dd12b06136d35b71aff6d68f4bd401a376e5737898cc44de77da6c",
+    "bytes": 394
+  },
+  {
+    "file": "tests/fixtures/issue-85/v3.rs",
+    "sha256": "ca120bf2ce134adda937cf9536572f7dc88bb307111609cfae558ddef9a60fe8",
+    "bytes": 3177
+  },
+  {
+    "file": "tests/fixtures/opening-typed/base.json",
+    "sha256": "2bccf2a14fba2a0f3c6eb7d66d3ff97bbdfb1bbe0237b98cbe729e34c1ed9a7b",
+    "bytes": 2084
+  },
+  {
+    "file": "tests/fixtures/opening-typed/boot.json",
+    "sha256": "f062693532ca4a61f03c3964a3875321b1bfe0cd4f8c4979660b288a39973982",
+    "bytes": 9033
+  },
+  {
+    "file": "tests/fixtures/opening-typed/independent-expected.json",
+    "sha256": "259d3beb724f4414e71193f84e8ce1b31771ec186e6d6fc7def3dc8a9be4b9df",
+    "bytes": 192
+  },
+  {
+    "file": "tests/fixtures/service-delivery/opening.rs",
+    "sha256": "f4e93ae38ac74e26f7505bd7d27f1cd469226e359f96d0712e6b7f65490e0178",
+    "bytes": 7865
+  },
+  {
+    "file": "tests/fixtures/water-treatment-runtime/independent-expected.json",
+    "sha256": "8fb6d97b7b9209a1d176d0e3b796e8585d682d4036d65b658bdea287bba26690",
+    "bytes": 3041
+  },
+  {
+    "file": "tests/fixtures/water-treatment-runtime/joint-v2-opening.json",
+    "sha256": "0b86c192c8df6ff82a18aece629f8548807f2d7c5e24767f72df45be959723b4",
+    "bytes": 7941
+  },
+  {
+    "file": "tests/fixtures/water-treatment-runtime/opening.rs",
+    "sha256": "5ef4ddc78b775b0e7471cfae3a2cc06d760be65d67135a39591838b24c3cddad",
+    "bytes": 553
+  },
+  {
+    "file": "tests/fixtures/water-treatment/funding-v2.json",
+    "sha256": "05d6259677d76ef070827af86c3d2f9301d7ffe5f87057ff942a6137620215f2",
+    "bytes": 956
+  },
+  {
+    "file": "tests/fixtures/water-treatment/raw-v1.json",
+    "sha256": "ebf68b1b3861fb830dd60f2bf3ad21931b9adc5c92065a1b7d1f45b72f665199",
+    "bytes": 737
+  }
+]

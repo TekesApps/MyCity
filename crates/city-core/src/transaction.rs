@@ -718,7 +718,7 @@ impl Engine {
         crate::service_needs_authority::validate(&engine.world,engine.world.service_needs.as_deref(),engine.timeline.as_ref(),engine.world.region.as_ref())?;
         check_service_boot_exports(engine.world.boot.as_ref(),engine.world.service_needs.as_deref())?;
         crate::continuous_supply::validate(&engine.world,engine.world.continuous_supply.as_deref(),engine.timeline.as_ref(),&engine.resources,&engine.leases)?;
-        crate::facility_authority::validate(&engine.world,engine.world.facility_work.as_deref(),engine.world.member_activity.as_deref(),engine.timeline.as_ref(),engine.world.continuous_supply.as_deref(),None)?;
+        crate::facility_authority::validate(&engine.world,engine.world.facility_work.as_deref(),engine.world.member_activity.as_deref(),engine.timeline.as_ref(),engine.world.continuous_supply.as_deref(),None,engine.world.asset_capital.as_deref().and_then(|r|r.state))?;
         validate_payroll_members(&engine.world,engine.world.payroll_members.as_deref(),engine.timeline.as_ref(),engine.world.member_activity.as_deref(),engine.world.revision)?;
         if let Some(q)=engine.world.qualification.as_deref(){q.validate(&engine.world)?;}
         validate_construction_binding(
@@ -1156,7 +1156,7 @@ impl Engine {
         check_service_boot_exports(self.world.boot.as_ref(),self.world.service_needs.as_deref())?;
         if self.world.continuous_supply.is_some()&&self.owned_capacity_bytes().checked_add(crate::continuous_supply::MAX_WORKSPACE_BYTES).is_none_or(|n|n>ENGINE_BYTE_BUDGET){return Err(TxError::WorkingLimit);}
         crate::continuous_supply::validate(&self.world,self.world.continuous_supply.as_deref(),self.timeline.as_ref(),&self.resources,&self.leases)?;
-        crate::facility_authority::validate(&self.world,self.world.facility_work.as_deref(),self.world.member_activity.as_deref(),self.timeline.as_ref(),self.world.continuous_supply.as_deref(),None)?;
+        crate::facility_authority::validate(&self.world,self.world.facility_work.as_deref(),self.world.member_activity.as_deref(),self.timeline.as_ref(),self.world.continuous_supply.as_deref(),None,self.world.asset_capital.as_deref().and_then(|r|r.state))?;
         check_facility_protection(&self.world,self.world.facility_work.as_deref(),self.world.economy.as_ref(),&[])?;
         crate::facility_authority::validate_income_window(self.world.facility_work.as_deref(),self.world.housing.as_deref().and_then(|h|h.paid_wages.as_deref()),self.timeline.as_ref())?;
         if let Some(d)=self.world.service_needs.as_deref().and_then(|n|n.delivery.as_deref()){
@@ -1372,6 +1372,8 @@ impl Engine {
         state.ready = true;
         Ok(())
     }
+    /// A narrow actual commissioning fact; no work or service completion is implied.
+    pub fn maintenance_summary(&self)->Option<crate::maintenance_authority::View>{self.world.facility_work.as_deref().and_then(|r|r.maintenance.as_deref()).and_then(crate::maintenance_authority::view)}
     pub fn facility_work_is_authenticated(&self)->bool{self.world.facility_work.as_deref().is_none_or(|r|r.is_ready())}
     pub fn facility_work_registration(&self)->Option<[u8;32]>{self.world.facility_work.as_deref().map(|r|r.registration().expect("validated facility registration"))}
     pub fn facility_work_receipt_operations(&self)->[Option<u64>;crate::facility_authority::MAX_ANCHORS]{crate::facility_authority::restore_operations(&self.world)}
@@ -2228,7 +2230,9 @@ impl Engine {
                 .saturating_add(self.world.education.as_ref().map_or(0,|_|crate::education_authority::candidate_bytes()))
                 .saturating_add(self.world.qualification.as_ref().map_or(0,|_|crate::qualification_authority::candidate_bytes()))
                 .saturating_add(self.world.venue.as_ref().map_or(0,|_|crate::venue_runtime::UseCandidate::payload_bytes()));
-            crate::facility_authority::check_peak(joint,ENGINE_BYTE_BUDGET)?;
+            let maintenance_copy=self.world.facility_work.as_deref().and_then(|r|r.maintenance.as_deref())
+                .map_or(0,|r|r.owned_bytes());
+            crate::facility_authority::check_peak(joint.saturating_add(maintenance_copy),ENGINE_BYTE_BUDGET)?;
         }
         let mut facility_work=self.world.facility_work.clone();
         if self.world.asset_capital.is_some() && self.owned_capacity_bytes().checked_add(crate::asset_cost_authority::Runtime::workspace_bytes()).is_none_or(|n|n>ENGINE_BYTE_BUDGET) { return Err(TxError::WorkingLimit); }
@@ -2686,6 +2690,12 @@ impl Engine {
                         if self.world.region.is_some() { return Err(TxError::InvalidOperation); }
                         crate::asset_cost_authority::construction_transition(asset.opening, &mut asset.state,
                             &before, p, env.operation_id, timeline.as_ref())?;
+                        if !before.operating_published&&p.operating_published {
+                            if let Some(m)=facility_work.as_deref_mut().and_then(|r|r.maintenance.as_deref_mut()) {
+                                let state=asset.state.ok_or(TxError::InvalidOperation)?;
+                                m.commissioned(state,state.commissioned_at,env.operation_id)?;
+                            }
+                        }
                     }
                 }
                 Action::HousingLease {
@@ -4515,7 +4525,7 @@ impl Engine {
         let projected=projected.saturating_add(continuous_supply.as_deref().map_or(0,|r|r.owned_bytes()+crate::continuous_supply::MAX_WORKSPACE_BYTES));
         let projected=projected.saturating_add(asset_capital.as_ref().map_or(0, |_|crate::asset_cost_authority::Runtime::workspace_bytes()));
         let projected=projected.saturating_add(payroll_members.as_deref().map_or(0,|r|r.owned_bytes()+crate::payroll_members::Runtime::workspace_bytes()));
-        let projected=projected.saturating_add(facility_work.as_ref().map_or(0,|_|crate::facility_authority::Runtime::owned_bytes()+crate::member_activity::Ledger::owned_bytes()+crate::facility_authority::MAX_WORKSPACE_BYTES));
+        let projected=projected.saturating_add(facility_work.as_ref().map_or(0,|r|r.total_owned_bytes()+crate::member_activity::Ledger::owned_bytes()+crate::facility_authority::MAX_WORKSPACE_BYTES));
         let projected = projected.saturating_add(service_needs.as_ref().map_or(0, |_|
             service_needs.as_deref().map_or(0,|n|n.owned_capacity_bytes()+n.candidate_bytes_for())));
         let projected = projected.saturating_add(venue.as_ref().map_or(0, |_| crate::venue_runtime::UseCandidate::payload_bytes()));
@@ -4620,7 +4630,7 @@ impl Engine {
         if env.actions.iter().any(|a|!matches!(a,Action::Timeline{..})){if let Some(d)=service_needs.as_deref_mut().and_then(|n|n.delivery.as_deref_mut()){d.wake_after_input_change();}}
         crate::education_authority::validate_candidate(&self.world,timeline.as_ref(),education.as_ref(),venue.as_ref(),facility_member.as_deref(),facility_work.as_deref(),service_needs.as_deref().and_then(|n|n.delivery.as_deref()))?;
         validate_payroll_members(&self.world,payroll_members.as_deref(),timeline.as_ref(),facility_member.as_deref().or(education.as_ref().map(|e|&*e.ledger)).or(self.world.member_activity.as_deref()),next_revision)?;
-        crate::facility_authority::validate(&self.world,facility_work.as_deref(),facility_member.as_deref().or(education.as_ref().map(|e|&*e.ledger)).or(self.world.member_activity.as_deref()),timeline.as_ref(),continuous_supply.as_deref(),venue.as_ref())?;
+        crate::facility_authority::validate(&self.world,facility_work.as_deref(),facility_member.as_deref().or(education.as_ref().map(|e|&*e.ledger)).or(self.world.member_activity.as_deref()),timeline.as_ref(),continuous_supply.as_deref(),venue.as_ref(),asset_capital.as_deref().and_then(|r|r.state))?;
         check_facility_protection(&self.world,facility_work.as_deref(),economy.as_ref(),&accounts)?;
         crate::service_needs_authority::validate(&self.world,service_needs.as_deref(),timeline.as_ref(),region.as_ref())?;
         check_service_boot_exports(boot.as_ref(),service_needs.as_deref())?;

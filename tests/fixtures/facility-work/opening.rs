@@ -108,6 +108,7 @@ pub fn input() -> Value {
     offer["window"]["end"] = json!(7200);
     raw["facility_work"] = serde_json::to_value(mycity_core::facility_authority::Opening {
         authority_version: 2,
+        maintenance: None,
         work: w::Opening {
             binding: w::Binding {
                 scope,

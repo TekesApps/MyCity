@@ -1,5 +1,9 @@
 # 当前执行清单
 
+**当前v0.5.229进行中检查点：**root唯一共享#159，活动准备0。新维修登记/独立场地与原建设投运起点已接通；实际同场景旧公服到返、原票重复、checkpoint读回及旧18/Journal/同槽/默认栈、旧Store和normal兼容通过。[固定结果、失败与差项](evidence/maintenance-runtime-20261029/REGISTRATION.md)。完整due→停机→实际工料/费用→复位及maintenance恢复仍未闭合，159/36/117开放；本阶段新验收/历史/缺陷关闭0，积压18不核销。#151原合同已关闭，不重做。暂缓94/替换/Bridge/自动事故/多档/GPU；不扩派工或M0门。
+
+<details><summary>v227/228阶段历史结论</summary>
+
 **当前唯一共享在制：#159 单资产电气保养的真实工料/停机接线，root唯一writer。**基线v0.5.226；原36/94只读核对已结束，原36候选和专属输入两项准备已交付冻结（活动准备0）。本轮先原18/Journal廉价兼容和来源/工资内核检查，未将候选或单元当作维护验收。[有限合同](asset-maintenance-runtime.md)、所有权/留证预算见`work/maintenance-runtime-20261029/execution-card.json`。
 
 当前在v227检查点后补维护专属Stop/Resume的空档与来源：原工资连续区间假定不能支持停工再续。resume01固定程序20项内核、原13设施劳动、原18/Journal先行门通过；compat-store01旧WAL/checkpoint/丢回复通过。原normal池初次启动路径过长失败保留，缩短同外卷目录后同一固定exe通过（compat-store02），不是模型回归或新维护已通过。首次begin/应得/已付/余数和旧生产终态规则不重置。[当前固定结果](evidence/maintenance-runtime-20261029/RESUME.md)。
@@ -9,6 +13,8 @@
 剩余明确差项：project7在实际投运61200+30DAY后的维护现场真实Accept/Enter、临时停机/资源互斥、维护工单区间/原member与资金/材料、维护费用原Town消费、部分退出和原票/Store/normal门。不能拿旧场地offer/施工工秒/Payroll或非零ID补造这些事实；原151/158已关闭不重开，159/36/117仍开放。
 
 原M0/Wait/预算及24 WIP/失败和恢复原件不变，唯一外置SSD target/work串行；无新tree/计时器。暂缓94、替换/Bridge/自动事故/多档/GPU。新验收业务0/历史0/缺陷0，18源码包未整包核销。
+
+</details>
 
 <details><summary>历史执行结论（仅对应标明版本，不代表当前源码）</summary>
 

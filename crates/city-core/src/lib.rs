@@ -8,6 +8,8 @@ pub mod air;
 pub mod arena;
 pub mod assembly;
 pub mod asset_cost;
+mod asset_maintenance;
+pub mod maintenance_authority;
 pub mod asset_cost_authority;
 pub mod boot;
 mod bounded_decode;

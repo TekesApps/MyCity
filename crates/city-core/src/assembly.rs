@@ -1267,13 +1267,13 @@ impl World {
             + self.qualification.as_ref().map_or(0, |_| crate::qualification_authority::Runtime::owned_bytes())
             + self.service_needs.as_deref().map_or(0,crate::service_needs::Runtime::owned_capacity_bytes)
             + self.continuous_supply.as_deref().map_or(0, crate::continuous_supply::Runtime::owned_bytes)
-            + self.facility_work.as_ref().map_or(0, |_| crate::facility_authority::Runtime::owned_bytes())
+            + self.facility_work.as_ref().map_or(0, |r| r.total_owned_bytes())
             + self.asset_capital.as_ref().map_or(0, |_| crate::asset_cost_authority::Runtime::owned_bytes())
             + self.payroll_members.as_deref().map_or(0,crate::payroll_members::Runtime::owned_bytes))
             .and_then(|base| base.checked_add(validation_scratch))
             .is_some_and(|base| base <= WORLD_BYTE_BUDGET)
             && self.continuous_supply.as_deref().is_none_or(|r|r.owned_bytes()<=crate::continuous_supply::MAX_OWNED_BYTES)
-            && self.facility_work.as_ref().is_none_or(|_|crate::facility_authority::Runtime::owned_bytes()<=crate::facility_authority::MAX_OWNED_BYTES)
+            && self.facility_work.as_ref().is_none_or(|r|r.total_owned_bytes()<=crate::facility_authority::MAX_OWNED_BYTES)
             && self.payroll_members.as_deref().is_none_or(|r|r.owned_bytes()<=crate::payroll_members::MAX_OWNED_BYTES)
             && venue_owned <= crate::venue_runtime::Runtime::max_owned_bytes()
             && self.service_needs.as_deref().is_none_or(|n|n.owned_capacity_bytes()<=crate::service_needs_authority::MAX_OWNED_BYTES+n.delivery_extra_bytes())
@@ -1292,7 +1292,7 @@ impl World {
             + self.qualification.as_ref().map_or(0, |_| crate::qualification_authority::Runtime::owned_bytes())
             + self.service_needs.as_deref().map_or(0,crate::service_needs::Runtime::owned_capacity_bytes)
             + self.continuous_supply.as_deref().map_or(0, crate::continuous_supply::Runtime::owned_bytes)
-            + self.facility_work.as_ref().map_or(0, |_| crate::facility_authority::Runtime::owned_bytes())
+            + self.facility_work.as_ref().map_or(0, |r| r.total_owned_bytes())
             + self.asset_capital.as_ref().map_or(0, |_| crate::asset_cost_authority::Runtime::owned_bytes())
             + self.payroll_members.as_deref().map_or(0,crate::payroll_members::Runtime::owned_bytes)
             + self.operating_owned_bytes()
@@ -1438,6 +1438,11 @@ impl World {
                 "owned_capacity_bytes".into(),
                 self.owned_capacity_bytes().into(),
             );
+        }
+        if let Some(r)=self.facility_work.as_deref() {
+            let object=layout.as_object_mut().expect("layout object");
+            object.insert("facility_work_owned_bytes".into(),r.total_owned_bytes().into());
+            if let Some(m)=r.maintenance.as_deref(){object.insert("maintenance_owned_bytes".into(),m.owned_bytes().into());}
         }
         if self.asset_capital.is_some() {
             let object=layout.as_object_mut().expect("layout object");
@@ -1845,7 +1850,7 @@ fn assemble_opening_into(mut input: OpeningDecode, world: &mut World) -> Result<
         crate::asset_cost_authority::validate(world).map_err(str::to_owned)?;
     }
     if let Some(opening)=input.facility_work {
-        if world.owned_capacity_bytes().checked_add(crate::facility_authority::Runtime::owned_bytes()+crate::facility_authority::MAX_WORKSPACE_BYTES+world.pending_operating_header_bytes()).is_none_or(|n|n>crate::transaction::ENGINE_BYTE_BUDGET){return Err("facility_work_opening_budget".into());}
+        if world.owned_capacity_bytes().checked_add(crate::facility_authority::Runtime::owned_bytes()+opening.maintenance.map_or(0,|_|crate::maintenance_authority::MAX_OWNED_BYTES)+crate::facility_authority::MAX_WORKSPACE_BYTES+world.pending_operating_header_bytes()).is_none_or(|n|n>crate::transaction::ENGINE_BYTE_BUDGET){return Err("facility_work_opening_budget".into());}
         *world.facility_work_slot_mut()=Some(crate::facility_authority::initialize(*opening,world)?);
     }
     if let Some(opening)=input.payroll_members {

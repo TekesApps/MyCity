@@ -1,6 +1,12 @@
 # MyCity 当前实际派工与交接
 
+**当前v0.5.229进行中检查点：**root唯一共享#159，活动准备0。新维修登记/独立场地与原建设投运起点已接通；实际同场景旧公服到返、原票重复、checkpoint读回及旧18/Journal/同槽/默认栈、旧Store和normal兼容通过。[固定结果、失败与差项](evidence/maintenance-runtime-20261029/REGISTRATION.md)。完整due→停机→实际工料/费用→复位及maintenance恢复仍未闭合，159/36/117开放；本阶段新验收/历史/缺陷关闭0，积压18不核销。#151原合同已关闭，不重做。暂缓94/替换/Bridge/自动事故/多档/GPU；不扩派工或M0门。
+
+<details><summary>v228工资兼容阶段（历史）</summary>
+
 **当前v0.5.228进行中检查点：**root唯一共享159，活动准备0；维护工资内核现保留停工空档/最近续办来源和原累计，原生产终态/旧wire不变。原18/Journal、内核/旧设施、旧Store冷恢复与原normal角色有限兼容通过，[具体结果/失败及仍未接线](evidence/maintenance-runtime-20261029/RESUME.md)。实际维护现场、停机、工料/费用和maintenance恢复门未完成，159/36/117开放，本阶段关闭0/积压18。
+
+</details>
 
 <details><summary>v226已结束阶段（历史结论）</summary>
 

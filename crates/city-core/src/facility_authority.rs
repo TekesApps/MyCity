@@ -8,16 +8,23 @@ use sha2::{Digest,Sha256};
 pub const MAX_OWNED_BYTES:usize=8*1024;
 pub const MAX_WORKSPACE_BYTES:usize=64*1024;
 pub const AUTHORITY_VERSION:u32=2;
+pub const MAINTENANCE_AUTHORITY_VERSION:u32=3;
 #[derive(Clone,Copy,Debug,PartialEq,Eq,Serialize,Deserialize)]
 #[serde(deny_unknown_fields)]
-pub struct Opening {pub authority_version:u32,pub work:w::Opening}
+pub struct Opening {pub authority_version:u32,pub work:w::Opening,
+    #[serde(default,skip_serializing_if="Option::is_none")]
+    pub maintenance:Option<crate::maintenance_authority::Opening>}
+
 
 #[derive(Clone,Copy,Debug,PartialEq,Eq,Serialize,Deserialize)]
 #[serde(tag="kind",rename_all="snake_case",deny_unknown_fields)]
 pub enum Command { Begin{contract_id:u64}, Stop{contract_id:u64}, Pay{contract_id:u64,cents:u64} }
 #[derive(Clone,Debug,Serialize,Deserialize)]
 #[serde(deny_unknown_fields)]
-pub(crate) struct Runtime { version:u32, pub(crate) state:w::Runtime, begin_revisions:[Option<u64>;4], runs:[Option<StartedRun>;4], income_window_anchor:Option<IncomeWindowAnchor>, #[serde(skip)] ready:bool }
+pub(crate) struct Runtime { version:u32, pub(crate) state:w::Runtime, begin_revisions:[Option<u64>;4], runs:[Option<StartedRun>;4], income_window_anchor:Option<IncomeWindowAnchor>,
+    #[serde(default,skip_serializing_if="Option::is_none")]
+    pub(crate) maintenance:Option<Box<crate::maintenance_authority::Runtime>>,
+    #[serde(skip)] ready:bool }
 #[derive(Clone,Copy,Debug,Serialize,Deserialize)]
 #[serde(deny_unknown_fields)]
 struct IncomeWindowAnchor {operation_id:u64,revision:u64,at:u64,hash:[u8;32]}
@@ -34,8 +41,10 @@ fn root_encoded_bound()->Result<usize,TxError>{
 }
 impl Runtime {
     pub(crate) const fn owned_bytes()->usize{std::mem::size_of::<Self>()}
+    pub(crate) fn total_owned_bytes(&self)->usize{Self::owned_bytes()+self.maintenance.as_deref().map_or(0,|m|m.owned_bytes())}
     pub(crate) fn is_ready(&self)->bool{self.ready}
-    pub(crate) fn registration(&self)->Result<[u8;32],TxError>{digest(&("facility-work-authority-v2",self.version,self.state.opening()))}
+    pub(crate) fn registration(&self)->Result<[u8;32],TxError>{if self.version==AUTHORITY_VERSION{digest(&("facility-work-authority-v2",self.version,self.state.opening()))}
+        else{digest(&("facility-work-authority-v3",self.version,self.state.opening(),self.maintenance.as_ref().map(|m|m.opening)))}}
 }
 #[derive(Clone,Debug,PartialEq,Eq,Serialize)]
 pub struct ContractView {
@@ -91,7 +100,7 @@ pub(crate) fn record_actual_wages(world:&World,before:PaidSnapshot,r:&Runtime,op
 /// Contract eligibility is separate from actual cash received. Late pay remains
 /// income on the payment day even if the old contract no longer overlaps a window.
 pub(crate) fn wage_contracts(r:Option<&Runtime>,account:u32,start:u64,end:u64,now:u64)->Result<(u16,u16,bool),TxError>{
-    let Some(r)=r else{return Ok((0,0,false));};if !r.ready||r.version!=AUTHORITY_VERSION{return Err(TxError::InvalidOperation);}
+    let Some(r)=r else{return Ok((0,0,false));};if !r.ready||![AUTHORITY_VERSION,MAINTENANCE_AUTHORITY_VERSION].contains(&r.version){return Err(TxError::InvalidOperation);}
     let mut qualifying=0u16;let mut active=0u16;let mut arrears=false;
     for c in r.state.opening().contracts.iter().flatten(){if c.employee_account!=account{continue;}let(_,a)=contract(r,c.id)?;if a.phase==w::Phase::Pending{continue;}
         let through=if a.phase==w::Phase::Stopped{a.settled}else{c.end};if a.started<end&&through>start{qualifying=qualifying.checked_add(1).ok_or(TxError::Overflow)?;}
@@ -148,6 +157,7 @@ fn registered_venue(world:&World,c:w::Contract)->Result<(),TxError>{
     if o.operator!=c.employer_account||d.operator!=c.employer_account||o.partition.member_range_start!=c.members.start||o.partition.member_range_end!=c.members.end
         ||o.window.start>c.start||o.window.end<c.end||u64::from(o.population.staff)!=c.members.end-c.members.start
         ||o.population.learners!=0||o.population.teachers!=0||o.population.visitors!=0 {return Err(TxError::InvalidOperation);}
+    if c.role==w::Role::ElectricalMaintenance && (d.purpose.0!=crate::maintenance_authority::PURPOSE||o.purpose.0!=crate::maintenance_authority::PURPOSE||d.owner!=c.employer_account){return Err(TxError::InvalidOperation);}
     Ok(())
 }
 fn presence(world:&World,c:w::Contract,from:u64,until:u64,proposed:Option<&crate::venue_runtime::UseCandidate>)->Result<(),TxError>{
@@ -183,21 +193,27 @@ pub(crate) fn required_protection(r:Option<&Runtime>,account:u32)->Result<Money,
     }money(n)
 }
 pub(crate) fn initialize(input:Opening,world:&World)->Result<Box<Runtime>,String>{
-    if input.authority_version!=AUTHORITY_VERSION{return Err("facility_authority_version".into());}let opening=input.work;
+    let expected_version=if input.maintenance.is_some(){MAINTENANCE_AUTHORITY_VERSION}else{AUTHORITY_VERSION};
+    if input.authority_version!=expected_version{return Err("facility_authority_version".into());}let opening=input.work;
+    if let Some(m)=input.maintenance{m.validate(world,&opening).map_err(|_|"maintenance_opening_binding")?;}
+    else if opening.contracts.iter().flatten().any(|c|c.role==w::Role::ElectricalMaintenance){return Err("maintenance_source_missing".into());}
     if opening.binding!=expected(world).map_err(|_|"facility_binding_missing")?{return Err("facility_opening_binding".into());}
     for c in opening.contracts.iter().flatten(){employee(world,*c).map_err(|_|"facility_employee")?;registered_venue(world,*c).map_err(|_|"facility_venue")?;}
-    let encoded=w::Runtime::terminal_encoded_bound_bytes(&opening).map_err(|_|"facility_encoded_bound")?.checked_add(root_encoded_bound().map_err(|_|"facility_root_encoded_bound")?).ok_or("facility_encoded_overflow")?; // {"state": ...}; ready is skipped.
+    let encoded=w::Runtime::terminal_encoded_bound_bytes(&opening).map_err(|_|"facility_encoded_bound")?.checked_add(root_encoded_bound().map_err(|_|"facility_root_encoded_bound")?)
+        .and_then(|n|n.checked_add(input.maintenance.map_or(0,|_|crate::maintenance_authority::MAX_ENCODED_BYTES+20))).ok_or("facility_encoded_overflow")?; // {"state": ...}; ready is skipped.
     if encoded>MAX_OWNED_BYTES{return Err("facility_encoded_budget".into());}
     let state=w::Runtime::new(opening).map_err(|_|"facility_opening_state")?;
     if Runtime::owned_bytes()>MAX_OWNED_BYTES{return Err("facility_owned_budget".into());}
-    Ok(Box::new(Runtime{version:AUTHORITY_VERSION,state,begin_revisions:[None;4],runs:[None;4],income_window_anchor:None,ready:true}))
+    let maintenance=input.maintenance.map(|m|Box::new(crate::maintenance_authority::Runtime::new(m)));
+    let result=Box::new(Runtime{version:expected_version,state,begin_revisions:[None;4],runs:[None;4],income_window_anchor:None,maintenance,ready:true});
+    if result.total_owned_bytes()>MAX_OWNED_BYTES{return Err("maintenance_owned_budget".into());}Ok(result)
 }
 pub(crate) fn check_peak(base:usize,limit:usize)->Result<(),TxError>{
     if base.checked_add(Runtime::owned_bytes()).and_then(|n|n.checked_add(m::Ledger::owned_bytes())).and_then(|n|n.checked_add(MAX_WORKSPACE_BYTES)).is_none_or(|n|n>limit){Err(TxError::WorkingLimit)}else{Ok(())}
 }
 pub(crate) fn validate_rows(world:&World,r:Option<&Runtime>,l:Option<&m::Ledger>,completed:u64)->Result<(),TxError>{
     let Some(r)=r else{return if l.is_some_and(|l|l.active().iter().any(|a|a.kind==m::Kind::FacilityOperation)){Err(TxError::InvalidOperation)}else{Ok(())};};
-    if r.version!=AUTHORITY_VERSION{return Err(TxError::InvalidOperation);}
+    if ![AUTHORITY_VERSION,MAINTENANCE_AUTHORITY_VERSION].contains(&r.version){return Err(TxError::InvalidOperation);}
     if r.state.opening().binding!=expected(world)?{return Err(TxError::InvalidOperation);}
     r.state.validate_binding(r.state.opening(),completed).map_err(rule)?;
     let l=l.ok_or(TxError::InvalidOperation)?;let mut count=0;
@@ -210,11 +226,12 @@ pub(crate) fn validate_rows(world:&World,r:Option<&Runtime>,l:Option<&m::Ledger>
     }
     if l.active().iter().filter(|a|a.kind==m::Kind::FacilityOperation).count()!=count{return Err(TxError::InvalidOperation);}Ok(())
 }
-pub(crate) fn validate(world:&World,r:Option<&Runtime>,l:Option<&m::Ledger>,timeline:Option<&Timeline>,supply:Option<&crate::continuous_supply::Runtime>,venue:Option<&crate::venue_runtime::UseCandidate>)->Result<(),TxError>{
+pub(crate) fn validate(world:&World,r:Option<&Runtime>,l:Option<&m::Ledger>,timeline:Option<&Timeline>,supply:Option<&crate::continuous_supply::Runtime>,venue:Option<&crate::venue_runtime::UseCandidate>,capital:Option<crate::asset_cost_authority::State>)->Result<(),TxError>{
     validate_rows(world,r,l,tick(timeline))?;let Some(r)=r else{
         if supply.or(world.continuous_supply.as_deref()).is_some_and(|s|s.view().is_ok_and(|v|v.operator_labor_basis!=Money::ZERO)){return Err(TxError::InvalidOperation);}return Ok(());
     };
     for c in r.state.opening().contracts.iter().flatten(){employee(world,*c)?;registered_venue(world,*c)?;let(_,a)=contract(r,c.id)?;
+        if c.role==w::Role::ElectricalMaintenance{r.maintenance.as_deref().ok_or(TxError::InvalidOperation)?.validate(world,capital)?;continue;}
         if a.phase==w::Phase::Pending{continue;}
         presence(world,*c,a.started,a.settled,venue)?;
         let source=provider(world,*c,supply)?;

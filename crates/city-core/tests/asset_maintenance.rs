@@ -218,3 +218,30 @@ fn malformed_restored_carry_and_credit_are_refused() {
     let bad: Snapshot = serde_json::from_value(value).unwrap();
     assert_eq!(bad.validate(), Err(Error::Invalid));
 }
+
+#[test]
+fn explicit_maintenance_only_profile_preserves_old_replacement_contract() {
+    let mut p=profile(Kind::OrdinaryEquipment);p.revision=MAINTENANCE_ONLY_REVISION;
+    p.replacement_worker_seconds=0;p.replacement_material=Quantity::ZERO;
+    let s=Snapshot::commissioned(1,147,t(0),p.clone(),&[(1,Carry::new(0,1).unwrap(),Carry::new(0,1).unwrap())],Carry::new(0,1).unwrap()).unwrap();
+    let candidate=advance(&s,Exposure{to:t(30),development_seconds:30*DAY,obligation_seconds:30*DAY,parts:&[(1,0,0)]}).unwrap();
+    let ready=candidate.against(&s).unwrap();
+    assert_eq!(deliver(ready,&delivery(1,Action::Replace,1,500,200)),Err(Error::Unknown));
+    let service=apply(ready,&delivery(1,Action::Service,1,100,20));
+    assert_eq!(service.component_generation(1),Some(0));
+    let mut old=p.clone();old.revision=REVISION;
+    assert!(Snapshot::commissioned(1,147,t(0),old,&[(1,Carry::new(0,1).unwrap(),Carry::new(0,1).unwrap())],Carry::new(0,1).unwrap()).is_err());
+    // An unsupported replacement must not be silently supplied with invented inputs.
+    p.replacement_worker_seconds=1;
+    assert!(Snapshot::commissioned(1,147,t(0),p,&[(1,Carry::new(0,1).unwrap(),Carry::new(0,1).unwrap())],Carry::new(0,1).unwrap()).is_err());
+}
+
+#[test]
+fn saved_component_rows_are_bounded_before_restoration() {
+    let initial=initial(Kind::OrdinaryEquipment);let mut wire=serde_json::to_value(&initial).unwrap();
+    let row=wire["components"][0].clone();wire["components"]=serde_json::json!((0..=MAX_COMPONENTS).map(|_|row.clone()).collect::<Vec<_>>());
+    let result=serde_json::from_value::<Snapshot>(wire);
+    assert!(result.unwrap_err().to_string().contains("maintenance_component_limit"));
+    let restored:Snapshot=serde_json::from_slice(&serde_json::to_vec(&initial).unwrap()).unwrap();
+    assert_eq!(restored,initial);assert!(restored.owned_capacity_bytes()>=initial.owned_capacity_bytes());
+}

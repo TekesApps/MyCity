@@ -4,6 +4,8 @@ use crate::units::{ArithmeticError, Carry, GameTime, Quantity};
 use serde::{Deserialize, Serialize};
 
 pub const REVISION: u32 = 1;
+/// Explicit repair/inspection-only profile; replacement source is unavailable.
+pub const MAINTENANCE_ONLY_REVISION: u32 = 2;
 pub const MAX_COMPONENTS: usize = 8;
 pub const MAX_PAGE: usize = 16;
 const FULL: u16 = 10_000; // condition/damage basis points, not percent
@@ -52,10 +54,11 @@ impl Profile {
         self.facility.check()?;
         self.maintenance.check()?;
         self.material.check()?;
-        if self.revision != REVISION || self.inspection_period_seconds == 0
+        if ![REVISION,MAINTENANCE_ONLY_REVISION].contains(&self.revision) || self.inspection_period_seconds == 0
             || self.service_period_seconds == 0 || self.inspection_worker_seconds == 0
             || self.service_worker_seconds == 0 || self.service_material == Quantity::ZERO
-            || self.replacement_worker_seconds == 0 || self.replacement_material == Quantity::ZERO
+            || (self.revision==REVISION && (self.replacement_worker_seconds==0 || self.replacement_material==Quantity::ZERO))
+            || (self.revision==MAINTENANCE_ONLY_REVISION && (self.replacement_worker_seconds!=0 || self.replacement_material!=Quantity::ZERO))
             || self.service_improvement_bps > FULL {
             return Err(Error::Unknown);
         }
@@ -100,8 +103,32 @@ pub struct Snapshot {
     obligation_elapsed: u64,
     #[serde(deserialize_with = "restore_carry")]
     annual_fee: Carry,
+    #[serde(deserialize_with = "restore_components")]
     components: Vec<Component>,
     profile: Profile,
+}
+// The original candidate is now loaded through the real checkpoint boundary.
+// Bound allocation there, before materializing a ninth component.
+fn restore_components<'de,D:serde::Deserializer<'de>>(d:D)->Result<Vec<Component>,D::Error>{
+    struct Components;
+    impl<'de> serde::de::Visitor<'de> for Components {
+        type Value=Vec<Component>;
+        fn expecting(&self,f:&mut std::fmt::Formatter)->std::fmt::Result{write!(f,"at most {MAX_COMPONENTS} maintenance components")}
+        fn visit_seq<A:serde::de::SeqAccess<'de>>(self,mut rows:A)->Result<Self::Value,A::Error>{
+            let mut result=Vec::new();
+            result.try_reserve_exact(MAX_COMPONENTS).map_err(|_|serde::de::Error::custom("maintenance_restore_capacity"))?;
+            for _ in 0..MAX_COMPONENTS {
+                match rows.next_element()? {Some(c)=>result.push(c),None=>return Ok(result)}
+            }
+            struct RejectExtra;
+            impl<'de> serde::de::DeserializeSeed<'de> for RejectExtra {
+                type Value=();
+                fn deserialize<T:serde::Deserializer<'de>>(self,_:T)->Result<(),T::Error>{Err(serde::de::Error::custom("maintenance_component_limit"))}
+            }
+            rows.next_element_seed(RejectExtra)?;Ok(result)
+        }
+    }
+    d.deserialize_seq(Components)
 }
 fn add(a: u64, b: u64) -> Result<u64, Error> { a.checked_add(b).ok_or(Error::Overflow) }
 fn bound_points(value: u64) -> u16 { value.min(u64::from(FULL)) as u16 }
@@ -166,6 +193,8 @@ impl Snapshot {
     pub fn age_seconds(&self) -> u64 { self.age_seconds }
     pub fn clock_origin(&self) -> GameTime { self.origin }
     /// Read-only identity fields for the existing maintenance authority adapter.
+    pub(crate) fn owned_capacity_bytes(&self)->usize{std::mem::size_of::<Self>()+self.components.capacity()*std::mem::size_of::<Component>()}
+    pub(crate) fn single_component(&self,id:u64)->bool{self.components.len()==1&&self.components[0].id==id}
     pub(crate) fn asset_id(&self) -> u64 { self.asset }
     pub(crate) fn source_snapshot(&self) -> u64 { self.source_snapshot }
     pub(crate) fn at(&self) -> GameTime { self.at }
@@ -333,6 +362,7 @@ pub fn deliver(base: &Snapshot, d: &Delivery) -> Result<Candidate, Error> {
             }
         }
         Action::Replace => {
+            if p.revision==MAINTENANCE_ONLY_REVISION{return Err(Error::Unknown);}
             if d.due_ordinal != 0 || d.worker_seconds != p.replacement_worker_seconds
                 || d.quantity != p.replacement_material || c.service_work != 0
                 || c.service_material != Quantity::ZERO || c.inspection_work != 0 { return Err(Error::Invalid); }

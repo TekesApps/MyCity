@@ -68,3 +68,29 @@ pub fn resources() -> Vec<Resource> {
     }
     resources
 }
+
+/// Explicit initial four-person servicing bay, distinct from the asset's output
+/// capacity. This new game source is not the old production offer or a predicted
+/// arrival. Actual Accept/Enter must still be committed by the original host.
+pub fn registered_input()->Value {
+    let mut v=base_input();let binding=&v["member_activity"];
+    v["facility_work"]=json!({"authority_version":3,"work":{"binding":{
+        "scope":binding["scope"],"population_origin":binding["population_origin"],
+        "member_version":1,"people":10,"epoch":1},"contracts":[{
+        "id":22,"version":2,"device_id":7,"role":"ElectricalMaintenance",
+        "members":{"start":0,"end":4},"employer_account":7,"employee_account":2,
+        "venue_use_id":1591,"hourly_cents_per_member":2000,
+        "start":30*DAY+17*3600,"end":MAINTENANCE_END},null,null,null]},
+        "maintenance":{"version":1,"project":7,"component":1,"contract_id":22,"material_stock":15}});
+    v["venue"]=json!({"profile":"managed_people_v1","population_source":"housing_genesis_v1",
+        "venues":[{"venue_id":1591,"resource_id":1592,"owner":7,"operator":7,
+            "purpose":159,"permit_version":1,"aliases":[null,null,null,null]}],
+        "limits":[{"resource_id":1592,"maximum_people":4}],
+        "offers":[{"use_id":1591,"accepted_version":1,"venue_id":1591,"operator":7,
+            "group_id":7,"purpose":159,"window":{"start":30*DAY+17*3600,"end":MAINTENANCE_END},
+            "population":{"staff":4,"visitors":0,"learners":0,"teachers":0,"enrollment":0},
+            "partition":{"group_id":7,"member_range_start":0,"member_range_end":4,"partition_source_id":1,"partition_version":1},
+            "source_refs":[{"kind":"genesis","scope":{"world":1,"branch":1},"source_id":7001,
+                "revision":0,"operation_id":0,"event_id":0},null,null,null]}]});v
+}
+pub fn registered_resources()->Vec<Resource>{let mut r=resources();r.push(Resource::new(1592,4).unwrap());r}

@@ -79,7 +79,13 @@ pub(super) fn validate(world: &World, resources: &[Resource], leases: &[Option<L
             p.owner != venue.owner || p.operator != venue.operator || p.permit_version != venue.permit_version || !p.open || p.revoked) {
             return Err(TxError::InvalidOperation);
         }
-        if !matches!(venue.purpose.0, 1 | 2) { return Err(TxError::InvalidOperation); }
+        let registered_maintenance=venue.purpose.0==crate::maintenance_authority::PURPOSE
+            &&world.facility_work.as_deref().is_some_and(|r|r.maintenance.is_some()
+                &&r.state.opening().contracts.iter().flatten().any(|c|
+                    c.role==crate::facility_work::Role::ElectricalMaintenance
+                    &&c.employer_account==venue.owner&&c.employer_account==venue.operator
+                    &&runtime.opening.offers.iter().any(|o|o.use_id==c.venue_use_id&&o.venue_id==venue.venue_id)));
+        if !matches!(venue.purpose.0, 1 | 2)&&!registered_maintenance { return Err(TxError::InvalidOperation); }
 
     }
     let states = candidate.map_or(&runtime.states[..], |c| &c.states[..]);
