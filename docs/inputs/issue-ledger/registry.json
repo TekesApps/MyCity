@@ -1,7 +1,7 @@
 {
   "schema": "mycity-issue-ledger-v1",
   "date": "2026-10-28",
-  "release": "v0.5.213",
+  "release": "v0.5.214",
   "scope": "完整既定产品；v190有限业务132与缺陷148真实验收关闭，v191仅同步台账，UI单独延期",
   "coordination": "当前root唯一共享writer/串行验证；旧主会话停用",
   "states": [
@@ -3692,7 +3692,7 @@
       "title": "[业务子任务] 自有工程资本、期间折旧与原税基恢复闭环",
       "url": "https://github.com/TekesApps/MyCity/issues/151",
       "parent": 117,
-      "stage": "待验证",
+      "stage": "完成",
       "owner": "root唯一共享writer/集成/串行验收",
       "write_authority": [
         "crates/city-core/src/asset_cost.rs",
@@ -3714,19 +3714,20 @@
         "原票及WAL/checkpoint冷恢复",
         "受影响共享、默认栈和资源门"
       ],
-      "remaining": "Necessary runtime checks passed; publish and actual Issue closure receipt pending",
+      "remaining": "Finite contract/defect closed; parent scopes and hardware remain separate",
       "evidence": "docs/evidence/asset-capital-runtime-20261028/STATUS.md; external full originals in work/asset-capital-runtime-20261028",
-      "implementation_tags": "v0.5.213 pending publication",
+      "implementation_tags": "c886a4461df283e563ad896b71616389725fda4b / v0.5.213",
       "pr": "No PR, direct root integration",
       "execution_state": "developing",
-      "execution_contract": "docs/inputs/issue-ledger/execution-flow.json"
+      "execution_contract": "docs/inputs/issue-ledger/execution-flow.json",
+      "closure_evidence": "docs/evidence/asset-capital-runtime-20261028/closure.json"
     },
     {
       "issue": 152,
       "title": "原企业留存收益分配默认栈溢出",
       "url": "https://github.com/TekesApps/MyCity/issues/152",
       "parent": null,
-      "stage": "待验证",
+      "stage": "完成",
       "owner": "当前root；#151同一共享窗口，不新增在制线",
       "write_authority": [
         "既有共享核心与对应原兼容测试，root唯一writer"
@@ -3738,17 +3739,18 @@
       "acceptance": [
         "原红例、受影响业务/原票/恢复、必要默认栈和资源门"
       ],
-      "remaining": "Necessary runtime checks passed; publish and actual Issue closure receipt pending",
+      "remaining": "Finite contract/defect closed; parent scopes and hardware remain separate",
       "evidence": "docs/evidence/asset-capital-runtime-20261028/STATUS.md; external full originals in work/asset-capital-runtime-20261028",
-      "implementation_tags": "v0.5.213 pending publication",
-      "pr": "No PR, direct root integration"
+      "implementation_tags": "c886a4461df283e563ad896b71616389725fda4b / v0.5.213",
+      "pr": "No PR, direct root integration",
+      "closure_evidence": "docs/evidence/asset-capital-runtime-20261028/closure.json"
     },
     {
       "issue": 153,
       "title": "可选资产原18单元World容量回归",
       "url": "https://github.com/TekesApps/MyCity/issues/153",
       "parent": null,
-      "stage": "待验证",
+      "stage": "完成",
       "owner": "当前root；#151同一共享窗口，不新增在制线",
       "write_authority": [
         "既有共享核心与对应原兼容测试，root唯一writer"
@@ -3760,17 +3762,18 @@
       "acceptance": [
         "原红例、受影响业务/原票/恢复、必要默认栈和资源门"
       ],
-      "remaining": "Necessary runtime checks passed; publish and actual Issue closure receipt pending",
+      "remaining": "Finite contract/defect closed; parent scopes and hardware remain separate",
       "evidence": "docs/evidence/asset-capital-runtime-20261028/STATUS.md; external full originals in work/asset-capital-runtime-20261028",
-      "implementation_tags": "v0.5.213 pending publication",
-      "pr": "No PR, direct root integration"
+      "implementation_tags": "c886a4461df283e563ad896b71616389725fda4b / v0.5.213",
+      "pr": "No PR, direct root integration",
+      "closure_evidence": "docs/evidence/asset-capital-runtime-20261028/closure.json"
     },
     {
       "issue": 154,
       "title": "原JournalRecord常驻上下文越过4096B兼容门",
       "url": "https://github.com/TekesApps/MyCity/issues/154",
       "parent": null,
-      "stage": "待验证",
+      "stage": "完成",
       "owner": "当前root；#151同一共享窗口，不新增在制线",
       "write_authority": [
         "既有共享核心与对应原兼容测试，root唯一writer"
@@ -3782,10 +3785,11 @@
       "acceptance": [
         "原红例、受影响业务/原票/恢复、必要默认栈和资源门"
       ],
-      "remaining": "Necessary runtime checks passed; publish and actual Issue closure receipt pending",
+      "remaining": "Finite contract/defect closed; parent scopes and hardware remain separate",
       "evidence": "docs/evidence/asset-capital-runtime-20261028/STATUS.md; external full originals in work/asset-capital-runtime-20261028",
-      "implementation_tags": "v0.5.213 pending publication",
-      "pr": "No PR, direct root integration"
+      "implementation_tags": "c886a4461df283e563ad896b71616389725fda4b / v0.5.213",
+      "pr": "No PR, direct root integration",
+      "closure_evidence": "docs/evidence/asset-capital-runtime-20261028/closure.json"
     }
   ],
   "capability_edges": [

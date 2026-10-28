@@ -1,6 +1,6 @@
 # MyCity 当前实际派工与交接
 
-**当前唯一执行状态：#151有限合同已完成必要验证，root正在发布/回填（1共享、0准备）。** 结果及未测范围见[证据](evidence/asset-capital-runtime-20261028/STATUS.md)；#117完整父范围继续开放。下一只消费已有交付，固定一份住房/劳动/企业/供给/公服/交通的共同输入，补直接阻断；只读输入准备已冻结，不启新源码批次、精细档/通用框架或GPU线。旧版本“当前”均为对应历史，不覆盖[当前执行](execution-current.md)。
+**当前唯一执行状态：#151/#152/#153/#154已实际验收关闭，游戏v0.5.213，回执同步v0.5.214。** [结果](evidence/asset-capital-runtime-20261028/STATUS.md)／[回执](evidence/asset-capital-runtime-20261028/closure.json)。父117开放。root唯一共享writer，当前0接线+0准备；下一只固定已有业务的两日有限城市共同输入与真实来源，不派新源码批次。旧快照不覆盖[当前执行](execution-current.md)。
 
 <details><summary>历史派工快照</summary>
 

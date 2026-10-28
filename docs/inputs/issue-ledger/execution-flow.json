@@ -1,62 +1,16 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-28T10:52:40.341178+00:00",
-  "source_head": "v0.5.212 + uncommitted #151/#152/#153/#154",
-  "candidate": "#151 budget29 original18/3488B/full14/16cold passed; stack27 financial default2 passed; final30 affected shared/default/normal compiling; no closure",
+  "last_snapshot_at": "2026-10-28T11:30:00.455254+00:00",
+  "source_head": "v0.5.213 game implementation; v0.5.214 closure documentation",
+  "candidate": "No current code blocker; #151/#152/#153/#154 accepted and actually closed; next finite-city input card pending root review",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
   "limits": {
     "shared_core_lanes": 1,
     "independent_preparations": 2,
     "reason_for_adjustment_required": true
   },
-  "active_shared_work": [
-    {
-      "issue": 151,
-      "parent": 117,
-      "execution_state": "developing",
-      "implementation_owner_session": "01a166fc-e444-7602-ad22-3a8551dda487",
-      "integration_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
-      "files_or_activation_boundary": [
-        "crates/city-core/src/lib.rs",
-        "crates/city-core/src/asset_cost.rs",
-        "crates/city-core/tests/asset_cost.rs",
-        "docs/core-equity-integration.md",
-        "docs/execution-current.md",
-        "docs/core-task-dispatch-current.md",
-        "docs/issue-execution-ledger.md",
-        "docs/inputs/issue-ledger/execution-flow.json",
-        "docs/inputs/issue-ledger/registry.json",
-        "README.md",
-        "AUDIT_HANDOFF.md",
-        "crates/city-core/src/asset_cost_authority.rs",
-        "crates/city-core/src/assembly.rs",
-        "crates/city-core/src/town_runtime.rs",
-        "crates/city-core/src/transaction.rs",
-        "crates/city-core/src/assembly/typed_opening.rs (only absent asset field in existing constructor)"
-      ],
-      "actual_seams": [
-        "original Construction Prepared commission/withdraw",
-        "original TownSettle assessment and retained earnings"
-      ],
-      "dependencies": [
-        "existing actual construction spend and operating publication",
-        "original completed single-city Timeline",
-        "existing Town tax and original Store receipt"
-      ],
-      "remaining": [
-        "final affected shared regressions",
-        "final default restore and normal role resources",
-        "contract audit, publish and Issue closure"
-      ],
-      "evidence": "work/asset-capital-runtime-20261028",
-      "remaining_gaps": [
-        "final affected shared regressions",
-        "final default restore and normal role resources",
-        "contract audit, publish and Issue closure"
-      ]
-    }
-  ],
+  "active_shared_work": [],
   "active_independent_preparations": [],
   "counting_rules": {
     "parents_are_not_active_work": true,
@@ -942,5 +896,20 @@
     "owner": "/root/finite_city_existing_inputs",
     "scope": "specific existing fixture identities for one finite-city acceptance card",
     "write_authority": []
+  },
+  "latest_completed_batch": {
+    "business": [
+      151
+    ],
+    "defects": [
+      152,
+      153,
+      154
+    ],
+    "historical": [],
+    "source_handoff_backlog_delta": 0,
+    "full_source_handoff_backlog": 18,
+    "evidence": "docs/evidence/asset-capital-runtime-20261028/closure.json",
+    "reliable_cycle_start": "unknown; do not use issue creation or close window as development duration"
   }
 }

@@ -1,0 +1,29 @@
+{
+  "at": "2026-10-28T11:26:29.709162+00:00",
+  "implementation_commit": "c886a4461df283e563ad896b71616389725fda4b",
+  "implementation_tag": "v0.5.213",
+  "pr": null,
+  "issues": [
+    {
+      "number": 151,
+      "closed_at": "2026-10-28T11:25:56Z",
+      "url": "https://github.com/TekesApps/MyCity/issues/151"
+    },
+    {
+      "number": 152,
+      "closed_at": "2026-10-28T11:26:07Z",
+      "url": "https://github.com/TekesApps/MyCity/issues/152"
+    },
+    {
+      "number": 153,
+      "closed_at": "2026-10-28T11:26:19Z",
+      "url": "https://github.com/TekesApps/MyCity/issues/153"
+    },
+    {
+      "number": 154,
+      "closed_at": "2026-10-28T11:26:30Z",
+      "url": "https://github.com/TekesApps/MyCity/issues/154"
+    }
+  ],
+  "parent117_open_required": true
+}

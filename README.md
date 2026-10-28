@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.213`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.214`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.214 仅同步[#151及三项具体回归的实际关闭回执](docs/evidence/asset-capital-runtime-20261028/closure.json)与当前执行状态；游戏实现/验证见v213。父117仍开放，原完整M0和真实16GB产品容量不变。下一只固定已有业务的有限城市共同输入，不新增模型批次。
 
 v0.5.213 完成[#151自有工程资本与原日税有限闭环](docs/evidence/asset-capital-runtime-20261028/STATUS.md)：真实工料投运、折旧、停用与实际关闭成本、原票及保存恢复，旧18单元/128KiB与4096B收据门、默认栈和原normal角色通过。#117完整资产领域仍开放；Issue关闭按实际回执同步，原M0/真实16GB产品容量未扩张。
 
