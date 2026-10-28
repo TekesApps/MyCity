@@ -963,8 +963,7 @@
   "phase_counts": {
     "new_business_closed": 0,
     "historical_backfill_closed": 0,
-    "defect_closed": 0,
-    "defect_ready_to_close": 158,
+    "defect_closed": 1,
     "pending_source_packages_before": 18,
     "pending_source_packages_after": 18,
     "full_implementation_cycle": "unknown",
@@ -981,5 +980,7 @@
       "crates/city-storage/tests/boot_partition.rs"
     ],
     "shared01": []
-  }
+  },
+  "issue_closed_at": "2026-10-28T18:08:19Z",
+  "closure_ledger_release": "v0.5.226"
 }

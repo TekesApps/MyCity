@@ -1,34 +1,16 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-28T18:06:37.106915+00:00",
-  "source_head": "v0.5.225 verified source, publication pending",
-  "candidate": "158 full scoped acceptance passed; root publication/issue closure only",
+  "last_snapshot_at": "2026-10-28T18:10:47.541312+00:00",
+  "source_head": "v0.5.226 closure ledger; game v0.5.225 c65fb229654f9f313e8c5394d6472c43ad636c9c",
+  "candidate": "158 accepted/closed; next36 single asset maintenance real-source contract not yet activated",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
   "limits": {
     "shared_core_lanes": 1,
     "independent_preparations": 2,
     "reason_for_adjustment_required": true
   },
-  "active_shared_work": [
-    {
-      "issue": 158,
-      "owner": "root",
-      "stage": "待验证",
-      "scope": "explicit new local pool cumulative-cost version; legacy facts/replay unchanged",
-      "file_ownership": [
-        "crates/city-core/src/boot.rs",
-        "crates/city-core/src/lib.rs label only",
-        "crates/city-core/src/service_delivery_authority.rs binding only",
-        "crates/city-core/src/transaction.rs binding only",
-        "crates/city-storage/tests/boot_partition.rs",
-        "crates/city-headless/tests/finite_city_role.rs",
-        "linked design/evidence/issue"
-      ],
-      "acceptance_card": "work/boot-partition-20261029/execution-card.json",
-      "remaining": "all required gates passed; publish fixed phase and record actual issue closure"
-    }
-  ],
+  "active_shared_work": [],
   "active_independent_preparations": [],
   "counting_rules": {
     "parents_are_not_active_work": true,
@@ -1018,5 +1000,19 @@
         "reliable_cycle_start": "unknown"
       }
     }
-  ]
+  ],
+  "last_closed_defect": {
+    "issue": 158,
+    "closed_at": "2026-10-28T18:08:19Z",
+    "evidence": "docs/evidence/boot-cost-partition-20261029/closure.json"
+  },
+  "next_existing_delivery": {
+    "issue": 36,
+    "owner": "root integration/acceptance, no new source write authority yet",
+    "stage": "source-contract preparation not activated",
+    "deliverable": "one commissioned asset actual exposure -> earliest maintenance due -> real worker-seconds/material receipt; no fake construction-to-maintenance reuse",
+    "current_gap": "maintenance profile/component mapping, actual exposure and maintenance labor/material receipts missing",
+    "read_only_preparation": "docs/evidence/boot-cost-partition-20261029/next-existing-source-seam.md",
+    "deferred": 94
+  }
 }

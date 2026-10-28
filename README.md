@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.225`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.226`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.226 仅同步[#158实际关闭及父任务/执行台账](docs/evidence/boot-cost-partition-20261029/closure.json)，游戏源码和验证仍为v225；完整领域与真实硬件门未关闭。
 
 v0.5.225 修复[#158合法暂停改变成本分摊](docs/evidence/boot-cost-partition-20261029/STATUS.md)：新开局显式本地v2按原pool累计差额取成本，旧profile/原票保留旧账；实际同城补货、冷恢复、默认栈及原预算门通过。完整#21与真实16GB/长期容量仍开放。
 

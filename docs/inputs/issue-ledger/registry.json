@@ -1,7 +1,7 @@
 {
   "schema": "mycity-issue-ledger-v1",
   "date": "2026-10-29",
-  "release": "v0.5.218 closure ledger; game implementation v0.5.217",
+  "release": "v0.5.226 closure ledger; game v0.5.225",
   "scope": "完整既定产品；v190有限业务132与缺陷148真实验收关闭，v191仅同步台账，UI单独延期",
   "coordination": "当前root唯一共享writer/串行验证；旧主会话停用",
   "states": [
@@ -3882,7 +3882,7 @@
       "title": "同一Boot消费合法时间分段成本差异：显式新pool策略及旧账兼容",
       "url": "https://github.com/TekesApps/MyCity/issues/158",
       "parent": 8,
-      "stage": "待验证",
+      "stage": "完成",
       "owner": "当前root，与21同一共享窗口",
       "write_authority": [
         "boot.rs profile/new/shape/validate/input/export",
@@ -3902,10 +3902,11 @@
         "真实共同城市合池再消费及旧原件恢复",
         "原18/Journal/旧无配置/直接回归/default及normal预算"
       ],
-      "remaining": "全部有限必要门通过，待发布回填实际关闭；完整父域/硬件保留开放",
-      "evidence": "docs/evidence/boot-cost-partition-20261029/STATUS.md",
-      "pr": "本阶段无PR；尚未发布",
-      "implementation_tags": "v0.5.225 planned"
+      "remaining": "完整有限合同通过并已关闭；旧版本分段限制/父域及真实硬件范围保留",
+      "evidence": "docs/evidence/boot-cost-partition-20261029/closure.json",
+      "pr": "本阶段无PR；root直接集成",
+      "implementation_tags": "v0.5.225 c65fb229654f9f313e8c5394d6472c43ad636c9c",
+      "closed_at": "2026-10-28T18:08:19Z"
     }
   ],
   "capability_edges": [
@@ -4073,14 +4074,14 @@
     }
   ],
   "unpublished_execution_update": {
-    "source_baseline": "v0.5.224; 158 fixed source validation",
-    "shared_core_in_progress": 1,
+    "source_baseline": "v0.5.225 c65fb229654f9f313e8c5394d6472c43ad636c9c",
+    "shared_core_in_progress": 0,
     "independent_preparations_active": 0,
     "limits": [
       1,
       2
     ],
-    "note": "158 scoped acceptance passed; publication/issue closure pending; source packages18 unchanged"
+    "note": "158 actually closed; readonly existing36/94 preparation frozen, source gates explicit; no new code modules, packages18 unchanged"
   },
   "historical_execution_updates": [
     {
