@@ -25,7 +25,11 @@ pub(crate) struct AirTaskObservation<'a> {
     pub page_metrics: Option<&'a crate::air_page_metrics::Summary>,
     pub page_metrics_error: Option<&'static str>,
     pub owner_retired_now: bool,
+    pub current_resources: resource_observation::CurrentOwner,
+    pub historical_contract_capacity: Option<resource_observation::Capacity>,
 }
+#[path = "worker_resource_observation.rs"]
+mod resource_observation;
 /// IPC readers only decode fixed, non-recursive protocol records (at most one
 /// `CONTROL_BYTES` frame); do not reserve the platform's default thread stack
 /// for each long-lived reader. This is a requested stack reservation, not a
@@ -941,6 +945,9 @@ impl Worker {
             page_metrics: self.page_metrics.as_ref(),
             page_metrics_error: self.page_metrics_error,
             owner_retired_now: self.is_empty(),
+            current_resources: resource_observation::current(self),
+            historical_contract_capacity: self.observation.as_ref().and_then(|o|o.latest())
+                .map(|o|resource_observation::capacity(o.execution.allocation)),
         }
     }
     pub fn task_observation(&self) -> serde_json::Value {
@@ -948,6 +955,9 @@ impl Worker {
         serde_json::json!({"schema":"mycity-cpu-task-observation-v4",
             "state":if self.observation_error.is_some() {"unavailable"} else if data.is_some() {"observed"} else {"not_yet_observed"},
             "reason":self.observation_error, "data":data,
+            "current_resources":resource_observation::current(self),
+            "historical_contract_capacity":data.map(|o|resource_observation::capacity(o.execution.allocation)),
+            "historical_capacity_scope":"latest data.execution only; never current held credit",
             "owner_retired_now":self.is_empty(), "retained_last_attempt":true,
             "authority":"observation_only_not_grant_store_acceptance_or_resource_return",
             "queue_age":"unknown_not_instrumented",

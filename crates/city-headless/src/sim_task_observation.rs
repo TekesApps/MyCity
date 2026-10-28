@@ -118,8 +118,13 @@ pub(super) struct SimReport {
 pub(super) struct Recorder {
     latest: Option<Box<SimReport>>,
     unavailable: Option<&'static str>,
+    role: Option<(u64,crate::normal_pool::broker::RoleAdmission)>,
 }
 impl Recorder {
+    /// Called only after the original role acknowledgement succeeds.
+    pub(super) fn new(epoch:u64,admission:crate::normal_pool::broker::RoleAdmission)->Self {
+        Self{latest:None,unavailable:None,role:Some((epoch,admission))}
+    }
     /// The bracket is exactly the original execute call, including diagnostic IO.
     /// A failed observation never changes the returned original business result.
     pub(super) fn execute(&mut self, store:&mut Store, caller:Caller, envelope:Envelope,
@@ -163,12 +168,36 @@ impl Recorder {
     }
     pub(super) fn report(&self, worker:&Worker) -> Value {
         #[derive(Serialize)]
+        struct RoleResources<'a> {
+            schema:&'static str,
+            pid:u32,
+            process_instance:String,
+            sample_start_elapsed_ns:u64,
+            original_role_epoch:Option<u64>,
+            admission:Option<&'a crate::normal_pool::broker::RoleAdmission>,
+            arena:mycity_role_allocator::Snapshot,
+            scope:&'static str,
+            task_scratch:&'static str,
+            cpu_grant:&'static str,
+            native_footprint:&'static str,
+            authority:&'static str,
+        }
+        let clock=crate::heap_meter::clock_reading();
+        let resources=RoleResources{schema:"mycity-sim-role-resource-observation-v1",pid:clock.pid,
+            process_instance:clock.instance_unix_ns.to_string(),sample_start_elapsed_ns:clock.elapsed_ns,
+            original_role_epoch:self.role.as_ref().map(|r|r.0),admission:self.role.as_ref().map(|r|&r.1),
+            arena:crate::heap_meter::arena_snapshot(),
+            scope:"whole_original_sim_role_including_tasks_and_reports; requested_heap_and_arena_are_not_additive; not_a_per_task_grant",
+            task_scratch:"unknown_not_attempt_instrumented",cpu_grant:"unknown_no_cpu_quota_authorization",native_footprint:"unknown_external_observer_required",
+            authority:"observation_only_not_parent_wait_or_role_return_proof"};
+        #[derive(Serialize)]
         #[serde(tag="execution",content="observation",rename_all="snake_case")]
         enum Execution<'a> { AirWorker(compute_worker::AirTaskObservation<'a>), SimTimelinePage(&'a SimReport) }
         // Two bounded latest owners, not a chronological history or two allocations.
         let air=Execution::AirWorker(worker.common_task_observation());
         let sim=self.latest.as_deref().map(Execution::SimTimelinePage);
         let value=json!({"schema":"mycity-task-execution-observation-v1","air":air,"sim":sim,
+            "sim_role_resources":resources,
             "sim_unavailable":self.unavailable,"retained_latest_only":true,"authority":"observation_only_no_store_completion_grant_or_refund",
             "units":"air_sources_cells_integration_segments_pages_separate; sim_committed_advance_operations_not_domain_work",
             "metadata_plan_bytes":METADATA_PLAN_BYTES,"metadata_plan_is_peak_proof":false});

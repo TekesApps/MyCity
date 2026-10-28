@@ -1,3 +1,9 @@
+# Current MyCity audit entry: v0.5.212
+
+[原资源来源观测的实现与48项实际结果](docs/evidence/task-resource-facts-20261028/STATUS.md)。Sim保留实际Authorize回执，Air固定合同容量依原同源成功owner；当前owner、历史执行、全角色arena独立，未确认停止不冒充退休。没有新授额或返额权限。全部460构建输入与source01完整原件/固定程序/实际SourceSHA一致。
+
+当前有限阶段冻结0+0；完整102/103/104继续开放，业务/历史/缺陷关闭增量0、18源码包积压不变。完整恢复原件保留HP P900 work/task-resource-facts-20261028与work/rf102，1GiB预算内，无关24WIP字节不变。原M0、target/work、16GB/native/GPU未验状态保留。以下为原固定版本历史。
+
 # Current MyCity audit entry: v0.5.211 evidence / v0.5.210 game
 
 [当前证据](docs/evidence/bound-air-pages-20261028/STATUS.md)：对实际v210游戏源码补验source04的3项真实页面场景，458个递归构建输入与源码包逐字节一致，运行SourceSHA也等于实际输入计算值。源码标识参与Store规则，故没有仅凭测试EOF空行语义不变省略这次补验。v211只同步文档，游戏代码未变。

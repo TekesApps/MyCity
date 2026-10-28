@@ -986,11 +986,10 @@ fn run_inner(
 fn run_owned(
     world: &Path, create: bool, probe_enabled: bool, profile: Profile, worker: &mut Worker,
 ) -> Result<(), String> {
-    let epoch =
-        crate::normal_pool::broker::activate_role(crate::normal_pool::workspace::Kind::SimCodec)?;
+    let (epoch, role_admission) =
+        crate::normal_pool::broker::activate_role_observed(crate::normal_pool::workspace::Kind::SimCodec)?;
     let mut codec = Codec::new(epoch)?;
     let timings = SimTimings::new();
-    let mut task_observations = task_observation::Recorder::default();
     let workspace = mycity_storage::StoreWorkspace::new().map_err(err)?;
     let rules = profile.rules();
     let (mut store, pre_open_memory) = if create {
@@ -1051,6 +1050,7 @@ fn run_owned(
             codec.air_input.identity(),
         ),
     )?;
+    let mut task_observations = task_observation::Recorder::new(epoch, role_admission);
     let mut diag = if crate::cpu_log::enabled() {
         Some(crate::cpu_log::CpuLog::create(
             &world

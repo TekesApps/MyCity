@@ -1,9 +1,9 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-28T04:22:02.940310+00:00",
-  "source_head": "v0.5.211 evidence only, v210 game bytes: exact source04 input/program proof; source02 unchanged production regression scope reused",
-  "candidate": "finite bound exact-page increment verified/frozen",
+  "last_snapshot_at": "2026-10-28T04:53:00.293192+00:00",
+  "source_head": "v0.5.212 source01 original role/Air-owner resource facts",
+  "candidate": "finite resource-facts increment verified/frozen",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
   "limits": {
     "shared_core_lanes": 1,
@@ -836,21 +836,17 @@
   },
   "queued_next_102": {
     "owner": "root",
-    "state": "activated-owner-files-fixed",
-    "capability": "common capability/refinement/grant interface and direct observational fault cutpoints",
-    "note": "do not count whole open102 as active worker; fix exact files and acceptance before next activation"
+    "state": "not_activated",
+    "capability": "remaining task cost/authorized resource and model refinement contracts; full103/104 have separate scopes",
+    "note": "inspect exact current provider before choosing next seam; no batch module dispatch, no new grant or inferred cost from observations"
   },
   "latest_finite_increment": {
     "issue": 102,
-    "release": "v0.5.211 evidence/v0.5.210 game",
+    "release": "v0.5.212",
     "status": "verified-frozen-full102-open",
-    "parent_tests": 26,
-    "sources": [
-      "source04 exact published game pages3",
-      "source02 identical production digest1/protocol9/Air13"
-    ],
-    "evidence": "docs/evidence/bound-air-pages-20261028/STATUS.md",
-    "remaining": "actual model refinement/grant/cost-source coverage; full103/104 separate",
+    "parent_tests": 48,
+    "source": "source01",
+    "evidence": "docs/evidence/task-resource-facts-20261028/STATUS.md",
     "business_close_delta": 0
   }
 }

@@ -704,8 +704,25 @@ pub(crate) fn codec_epoch_from_env() -> Result<Option<u64>, String> {
     )?;
     Ok(Some(binding.generation))
 }
+#[derive(Serialize)]
+#[serde(tag = "source", rename_all = "snake_case")]
+pub(crate) enum RoleAdmission {
+    StandaloneLocalActivation { role_kind: workspace::Kind, local_arena_bytes: usize },
+    BrokerAuthorizeReceipt { role_kind: workspace::Kind,
+        #[serde(serialize_with = "serialize_pool_boot")]
+        pool_boot: u128,
+        generation: u64, authorized_bytes: usize },
+}
+fn serialize_pool_boot<S: serde::Serializer>(boot: &u128, serializer: S) -> Result<S::Ok, S::Error> {
+    serializer.serialize_str(&boot.to_string())
+}
 pub(crate) fn activate_role(kind: workspace::Kind) -> Result<u64, String> {
+    activate_role_observed(kind).map(|(epoch, _)| epoch)
+}
+/// Retain the original successful authorization, never reconstruct it from env.
+pub(crate) fn activate_role_observed(kind: workspace::Kind) -> Result<(u64, RoleAdmission), String> {
     let epoch = codec_epoch_from_env()?.unwrap_or(1);
+    let mut authorized = None;
     if let Some(raw) = std::env::var_os("MYCITY_BROKER_SESSION") {
         let b: Binding =
             crate::control_data::decode(raw.to_str().ok_or("normal_binding_utf8")?.as_bytes())?;
@@ -727,7 +744,10 @@ pub(crate) fn activate_role(kind: workspace::Kind) -> Result<u64, String> {
                 Ok(Receipt::Authorized {
                     generation,
                     capacity,
-                }) if generation == epoch && capacity == kind.bytes() => break,
+                }) if generation == epoch && capacity == kind.bytes() => {
+                    authorized = Some((ready.boot, generation, capacity));
+                    break;
+                },
                 Err(e)
                     if e == "normal_workspace_sim_unbound"
                         && began.elapsed() < Duration::from_secs(5) =>
@@ -739,13 +759,20 @@ pub(crate) fn activate_role(kind: workspace::Kind) -> Result<u64, String> {
             }
         }
     }
-    crate::heap_meter::activate_role(kind.bytes())?;
+    let activation = crate::heap_meter::activate_role(kind.bytes())?;
     if std::env::var_os("MYCITY_ROLE_CONSTRUCTION_OOM").is_some() {
         let bytes = vec![0u8; kind.bytes() * 2];
         std::hint::black_box(bytes);
         return Err("role_construction_oom_probe_unexpected_success".into());
     }
-    Ok(epoch)
+    let admission = match authorized {
+        Some((boot, generation, capacity)) => RoleAdmission::BrokerAuthorizeReceipt {
+            role_kind: kind, pool_boot: boot, generation, authorized_bytes: capacity,
+        },
+        None => RoleAdmission::StandaloneLocalActivation { role_kind: kind,
+            local_arena_bytes: activation.grant_bytes },
+    };
+    Ok((epoch, admission))
 }
 pub(crate) fn acknowledge_role(epoch: u64, backing: &impl Serialize) -> Result<(), String> {
     let arena = crate::heap_meter::arena_snapshot();
@@ -797,6 +824,7 @@ pub struct Lease {
     id: u64,
     pid: u32,
     stopped: Option<ExitStatus>,
+    stop_attempted: bool,
 }
 /// Start request owner exists before RPC. An unconfirmed Start is never replayed:
 /// broker may already own a Child; only the original supervisor session can retire it.
@@ -849,7 +877,7 @@ impl PendingStart {
         if lease == 0 || pid == 0 { return Err("normal_broker_start_identity".into()); }
         self.confirmed = true;
         Ok(Lease { root: std::mem::take(&mut self.root), ready: self.ready,
-            binding: self.binding, id: lease, pid, stopped: None })
+            binding: self.binding, id: lease, pid, stopped: None, stop_attempted: false })
     }
     pub fn accept(&mut self) -> Result<UnixStream, String> {
         if !self.confirmed { return Err("normal_broker_start_unconfirmed".into()); }
@@ -875,6 +903,10 @@ impl Drop for PendingStart {
     }
 }
 impl Lease {
+    /// Observation only; no returned value permits Reap or another refund.
+    pub(crate) fn stop_observation(&self) -> (bool, bool) {
+        (self.stop_attempted, self.stopped.is_some())
+    }
     /// Non-secret identity of this exact acknowledged lease; not a wait or return permit.
     pub(crate) fn observation_identity(&self) -> (u128, u64, u64) {
         (self.ready.boot, self.binding.generation, self.id)
@@ -886,10 +918,16 @@ impl Lease {
         self.id
     }
     pub fn stop(&mut self, kill: bool) -> Result<ExitStatus, String> {
+        self.stop_via(kill, rpc)
+    }
+    // Keep transport uncertainty separate from the original Stop's wait/return effects.
+    fn stop_via(&mut self, kill: bool,
+        send: impl FnOnce(&Path, Ready, Op) -> Result<Receipt, String>) -> Result<ExitStatus, String> {
         if let Some(s) = self.stopped {
             return Ok(s);
         }
-        let r = rpc(
+        self.stop_attempted = true;
+        let r = send(
             &self.root,
             self.ready,
             Op::Stop {
@@ -914,6 +952,48 @@ impl Lease {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn resource_stop_observation_keeps_lost_reply_unconfirmed_until_original_retry() {
+        // Component fixture: a real owned child and original pool mutations, not a city/Sim workload.
+        let root = PathBuf::from(std::env::var_os("MYCITY_RESOURCE_TEST_ROOT").expect("retained evidence root"))
+            .join(format!("stop-reply-{}", std::process::id()));
+        fs::create_dir(&root).unwrap();
+        let mut pool = Pool::new(&root).unwrap();
+        let supervisor = secret().unwrap();
+        let Receipt::Registered { generation, key } = pool.broker_action(Op::Register {
+            supervisor, kind:workspace::Kind::SimCodec, expected_generation:1 }).unwrap() else { panic!("registration") };
+        let grant_key = secret().unwrap();
+        let (id, _) = pool.legacy_action(super::super::Op::Prepare {
+            parent:std::process::id(), parent_instance:heap_meter::process_instance(), key:grant_key }).unwrap();
+        let id=id.unwrap();
+        let child=Command::new("/bin/sleep").arg("30").spawn().unwrap();
+        let pid=child.id();
+        pool.broker.owned=Some(OwnedWorker {child, lease:id});
+        pool.legacy_action(super::super::Op::Attach{id,key:grant_key,pid}).unwrap();
+        let mut lease=Lease {root:root.clone(),ready:pool.ready,binding:Binding {generation,key},id,pid,
+            stopped:None,stop_attempted:false};
+        assert_eq!(lease.stop_observation(),(false,false));
+        assert!(lease.stop_via(true, |_,_,op| {
+            pool.broker_action(op).map_err(|e|format!("{e:?}"))?;
+            Err("fixture_reply_lost_after_original_wait".into())
+        }).is_err());
+        assert_eq!(lease.stop_observation(),(true,false));
+        assert_eq!(pool.summary.returns,1);
+        assert!(pool.broker.owned.is_none());
+        let after_lost=pool.summary;
+        lease.stop_via(true, |_,_,op| pool.broker_action(op).map_err(|e|format!("{e:?}"))).unwrap();
+        assert_eq!(lease.stop_observation(),(true,true));
+        assert_eq!(pool.summary.returns,after_lost.returns);
+        lease.stop_via(true, |_,_,_|panic!("acknowledged retry must not send")).unwrap();
+        pool.broker_action(Op::Cancel{generation,key:supervisor}).unwrap();
+        assert_eq!(pool.summary.available_touched_bytes,BYTES);
+        assert_eq!(pool.summary.workspace_grants,pool.summary.workspace_returns);
+        fs::write(root.join("result.json"),serde_json::to_vec_pretty(&serde_json::json!({
+            "after_lost_reply":after_lost,"final":pool.summary,
+            "fixture_scope":"original_broker_component_real_owned_child_not_real_Sim_or_Air_execution",
+            "lost_reply_observation":"retirement_unconfirmed","after_original_retry":"acknowledged"
+        })).unwrap()).unwrap();
+    }
     #[test]
     fn exact_registration_replay_never_reallocates_or_resurrects_closed_epochs() {
         let root = std::env::temp_dir().join(format!("mc-register-epochs-{}-{}", std::process::id(), heap_meter::process_instance()));

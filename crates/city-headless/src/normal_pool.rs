@@ -878,6 +878,8 @@ impl Grant {
     pub(crate) fn protocol_identity(&self) -> (u128, u64) {
         (self.ready.boot, self.id)
     }
+    /// Original acknowledgement state only, not an independent refund capability.
+    pub(crate) fn return_acknowledged(&self) -> bool { self.returned }
     /// Original unspawned cancellation, acknowledged before the caller clears its owner.
     /// A failed Attach has already saved pid and can never use this path.
     pub fn abort_unspawned(&mut self) -> Result<(), String> {

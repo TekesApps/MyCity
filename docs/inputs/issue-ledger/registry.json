@@ -1,7 +1,7 @@
 {
   "schema": "mycity-issue-ledger-v1",
   "date": "2026-10-26",
-  "release": "v0.5.211",
+  "release": "v0.5.212",
   "scope": "完整既定产品；v190有限业务132与缺陷148真实验收关闭，v191仅同步台账，UI单独延期",
   "coordination": "当前root唯一共享writer/串行验证；旧主会话停用",
   "states": [
@@ -2347,9 +2347,12 @@
       "stage": "开发中",
       "owner": "root 01a166fc-e444-7602-ad22-3a8551dda487",
       "write_authority": [
-        "crates/city-headless/src/task_execution_protocol.rs",
+        "crates/city-headless/src/normal_pool/broker.rs",
+        "crates/city-headless/src/normal_pool.rs",
+        "crates/city-headless/src/compute_worker.rs",
+        "crates/city-headless/src/worker_resource_observation.rs",
+        "crates/city-headless/src/sim_task_observation.rs",
         "crates/city-headless/src/sim_host.rs",
-        "crates/city-headless/tests/task_execution_protocol.rs",
         "docs/SOFTWARE_ARCHITECTURE.md",
         "docs/execution-current.md",
         "docs/core-task-dispatch-current.md",
@@ -2358,10 +2361,8 @@
         "docs/inputs/issue-ledger/registry.json",
         "README.md",
         "AUDIT_HANDOFF.md",
-        "crates/city-headless/tests/task_execution_pages.rs",
-        "docs/handoffs/issue-102-exact-pages-test-preparation.md",
-        "docs/evidence/bound-air-pages-20261028/STATUS.md",
-        "docs/evidence/bound-air-pages-20261028/verification-summary.json"
+        "crates/city-headless/tests/task_resource_observation.rs",
+        "docs/handoffs/issue-102-resource-fact-test-preparation.md"
       ],
       "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
       "required_capabilities": [
@@ -2371,11 +2372,11 @@
         "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
       ],
       "remaining": "actual model refinement and extra-grant interfaces; scratch/residency/switch-cost sources and wider generic coverage;103/104 separate",
-      "evidence": "docs/evidence/bound-air-pages-20261028/STATUS.md",
-      "implementation_tags": "v210 exact-pages game; v211 exact published build-fingerprint evidence sync; previous evidence retained; full102 open",
+      "evidence": "docs/evidence/task-resource-facts-20261028/STATUS.md",
+      "implementation_tags": "v212 original resource facts and same-source48; prior phases remain fixed evidence; full102 open",
       "pr": "No PR; root direct integration",
-      "issue_body_sha256": "34e01e7f8d3a4f0fe2b08f75dd167ce775984ad5acffca1876ae622bbf809559",
-      "execution_state": "finite-exact-pages-stage-frozen:full102-open"
+      "issue_body_sha256": "4829e6b85cd4bb274b012d04eb2987e4d5320f5c390d217a1707451f76012326",
+      "execution_state": "finite-resource-facts-frozen:full102-open"
     },
     {
       "issue": 103,

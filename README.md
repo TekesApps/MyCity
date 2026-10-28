@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.211`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.212`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.212 接入[原Sim角色与Air owner资源来源观测](docs/evidence/task-resource-facts-20261028/STATUS.md)：当前owner、历史执行及全角色arena分开，48项同源限定检查通过，原授权/实际wait归还不变。完整#102/103/104仍开放，不增加业务关闭或M0/16GB结论。
 
 v0.5.211 仅同步[游戏v210发布源码的准确指纹补验](docs/evidence/bound-air-pages-20261028/STATUS.md)：458个构建输入与固定程序指纹一致，3项限定补验通过，原23项按版本复用；不新增业务或改变游戏代码。
 

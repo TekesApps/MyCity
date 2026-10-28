@@ -195,3 +195,13 @@ v0.5.50执行更新：[联合托管](evidence/m0-t13a-joint-endurance/STATUS.md)
 
 
 #102 v208 successor (unpublished/not_run): production observation uses the original process-clock and cpu_log::execute functions through a private dependency seam. Tests may supply an unavailable clock or the existing Store write-observer callback to execute real retained transactions under interruption; no product request/env fault switch exists. Unknown observation never changes the original outcome; CurrentRenamed uncertainty is not proof of no commit. The next shared request interface is bound to the original current selection, never arbitrary task/target selection or resource authority.
+
+## #102 原资源来源观测（v212有限接线已验证）
+
+SimHost 只在原 acknowledge 成功后保存 Authorize 实际回执的角色、pool boot、generation 与 capacity；standalone 只报告本地 arena 激活。共同报告新增独立版本的 `sim_role_resources`：全角色 Rust arena 当前/生命周期峰值与采样起点，不冒充每任务 scratch、CPU 配额或物理内存，也不与59MiB角色容量重复相加。
+
+Air 报告分当前 owner 和历史 execution。原同源码、固定 `normal-pool-v1` Prepare/Started 成功 owner 对应固定输入/候选槽及 typed Air 工作区合同容量；这不是 RPC 返回实测用量或进程内存上限。pending 未确认不能推导容量，停止请求发出而原回执未确认保留 retirement_unconfirmed；实际 wait/ACK 原 owner 仍是唯一返额路径。退休后历史 CPU/合同来源可以保留，但当前 owner 为空，不能继续计为活授额。新 attempt 需原新身份。无 key 进入报告；原12KiB报告界限和64KiB元数据规划收费不变。
+
+验证入口为实际 pooled Sim/broker Air、standalone、direct Prepare/Attach 子进程；原池真实停止丢回复/恢复与限定组件 lost-reply 对照。只读观察不改变业务收据、取消、池账和恢复权限。额外资源请求/GPU/全局授额仍未接线，完整102/103/104未完成。
+
+本有限接线的同源48项实际检查和未验证范围见[资源来源证据](evidence/task-resource-facts-20261028/STATUS.md)；完整102继续开放，观察不是新增资源授权。

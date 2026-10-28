@@ -1,0 +1,305 @@
+{
+  "issue": 102,
+  "release": "v0.5.212",
+  "baseline": "v0.5.211 61267fbfb90c66fd147dbe78be2f1082205f1090",
+  "phase_start": "2026-10-28T04:35:15.448106+00:00",
+  "phase_end": "2026-10-28T04:51:26.882983+00:00",
+  "phase_window_not_full_issue_cycle": true,
+  "parent_tests_passed": 48,
+  "results": [
+    {
+      "label": "resources01",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/task-resource-facts-20261028/source01-task_resource_observation-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "source": "source01-manifest.json",
+      "exit_code": 0,
+      "seconds": 15.22565975,
+      "at": "2026-10-28T04:48:23.322968+00:00",
+      "default_stack": true,
+      "passed": 3,
+      "failed": 0,
+      "ignored": 1
+    },
+    {
+      "label": "ownerunit01",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/task-resource-facts-20261028/source01-mycity_headless-unit-fixed",
+        "normal_pool::broker::tests",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "source": "source01-manifest.json",
+      "exit_code": 0,
+      "seconds": 10.293316542000001,
+      "at": "2026-10-28T04:48:33.617316+00:00",
+      "default_stack": true,
+      "passed": 4,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "label": "startup01",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/task-resource-facts-20261028/source01-mycity_headless-unit-fixed",
+        "normal_pool::startup_owner_tests",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "source": "source01-manifest.json",
+      "exit_code": 0,
+      "seconds": 0.00816033399999938,
+      "at": "2026-10-28T04:48:33.626556+00:00",
+      "default_stack": true,
+      "passed": 3,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "label": "digest01",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/task-resource-facts-20261028/source01-mycity_headless-unit-fixed",
+        "sim_host::execution_protocol::exact_request_binding_tests",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "source": "source01-manifest.json",
+      "exit_code": 0,
+      "seconds": 0.005729709000000582,
+      "at": "2026-10-28T04:48:33.633422+00:00",
+      "default_stack": true,
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "label": "pages01",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/task-resource-facts-20261028/source01-task_execution_pages-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "source": "source01-manifest.json",
+      "exit_code": 0,
+      "seconds": 26.354839750000004,
+      "at": "2026-10-28T04:48:59.989501+00:00",
+      "default_stack": true,
+      "passed": 3,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "label": "protocol01",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/task-resource-facts-20261028/source01-task_execution_protocol-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "source": "source01-manifest.json",
+      "exit_code": 0,
+      "seconds": 27.044058208000003,
+      "at": "2026-10-28T04:49:27.034677+00:00",
+      "default_stack": true,
+      "passed": 9,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "label": "air01",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/task-resource-facts-20261028/source01-air_turn_control-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "source": "source01-manifest.json",
+      "exit_code": 0,
+      "seconds": 75.645673,
+      "at": "2026-10-28T04:50:42.680843+00:00",
+      "default_stack": true,
+      "passed": 13,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "label": "loststart01",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/task-resource-facts-20261028/source01-broker-fixed",
+        "lost_started_reply_exits_session_without_another_command_then_cold_retries",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "source": "source01-manifest.json",
+      "exit_code": 0,
+      "seconds": 10.884690916000011,
+      "at": "2026-10-28T04:50:53.567418+00:00",
+      "default_stack": true,
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "label": "loststop01",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/task-resource-facts-20261028/source01-broker-fixed",
+        "lost_stopped_reply_retries_original_lease_without_duplicate_credit_or_lost_receipt",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "source": "source01-manifest.json",
+      "exit_code": 0,
+      "seconds": 10.241727541999978,
+      "at": "2026-10-28T04:51:03.809825+00:00",
+      "default_stack": true,
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "label": "simobservation01",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/task-resource-facts-20261028/source01-mycity_headless-unit-fixed",
+        "sim_host::task_observation::tests",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "source": "source01-manifest.json",
+      "exit_code": 0,
+      "seconds": 7.328700250000001,
+      "at": "2026-10-28T04:51:26.874486+00:00",
+      "default_stack": true,
+      "passed": 5,
+      "failed": 0,
+      "ignored": 1
+    },
+    {
+      "label": "airprojection01",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/task-resource-facts-20261028/source01-mycity_headless-unit-fixed",
+        "compute_worker::protocol_observation::tests",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "source": "source01-manifest.json",
+      "exit_code": 0,
+      "seconds": 0.006585999999999537,
+      "at": "2026-10-28T04:51:26.882983+00:00",
+      "default_stack": true,
+      "passed": 5,
+      "failed": 0,
+      "ignored": 0
+    }
+  ],
+  "source_sha256": "f73d690584adc0aa284ed77b795ffa693c44885af680cdfe4e458a21f9c84cb3",
+  "build_input_files": 460,
+  "actual_sim_sessions": [
+    {
+      "file": "resources01/standalone-17907-4/events.jsonl",
+      "pid": 18021
+    },
+    {
+      "file": "resources01/pooled-17907-2/events.jsonl",
+      "pid": 17990
+    }
+  ],
+  "observed_resources": {
+    "sim_original_authorized_bytes": 61865984,
+    "air_original_fixed_contract_bytes": 5242880,
+    "role_peak_requested_max": 56805038,
+    "allocation_failures": 0,
+    "pooled_final": {
+      "capacity_bytes": 67108864,
+      "available_touched_bytes": 67108864,
+      "granted_capacity_bytes": 0,
+      "workspace_capacity_bytes": 0,
+      "workspace_grants": 1,
+      "workspace_returns": 1,
+      "workspace_fills": 1,
+      "grants": 2,
+      "returns": 2,
+      "fill_acknowledgements": 2,
+      "scans": 17,
+      "rejected_requests": 0,
+      "maximum_prepare_to_fill_or_reap_ns": 549307584
+    },
+    "direct_final": {
+      "capacity_bytes": 67108864,
+      "available_touched_bytes": 67108864,
+      "granted_capacity_bytes": 0,
+      "workspace_capacity_bytes": 0,
+      "workspace_grants": 0,
+      "workspace_returns": 0,
+      "workspace_fills": 0,
+      "grants": 2,
+      "returns": 2,
+      "fill_acknowledgements": 2,
+      "scans": 16,
+      "rejected_requests": 0,
+      "maximum_prepare_to_fill_or_reap_ns": 1069358250
+    },
+    "lost_reply_component": {
+      "after_lost_reply": {
+        "available_touched_bytes": 5242880,
+        "capacity_bytes": 67108864,
+        "fill_acknowledgements": 0,
+        "granted_capacity_bytes": 61865984,
+        "grants": 1,
+        "maximum_prepare_to_fill_or_reap_ns": 30186750,
+        "rejected_requests": 0,
+        "returns": 1,
+        "scans": 6,
+        "workspace_capacity_bytes": 61865984,
+        "workspace_fills": 0,
+        "workspace_grants": 1,
+        "workspace_returns": 0
+      },
+      "after_original_retry": "acknowledged",
+      "final": {
+        "available_touched_bytes": 67108864,
+        "capacity_bytes": 67108864,
+        "fill_acknowledgements": 0,
+        "granted_capacity_bytes": 0,
+        "grants": 1,
+        "maximum_prepare_to_fill_or_reap_ns": 498509250,
+        "rejected_requests": 0,
+        "returns": 1,
+        "scans": 7,
+        "workspace_capacity_bytes": 0,
+        "workspace_fills": 0,
+        "workspace_grants": 1,
+        "workspace_returns": 1
+      },
+      "fixture_scope": "original_broker_component_real_owned_child_not_real_Sim_or_Air_execution",
+      "lost_reply_observation": "retirement_unconfirmed"
+    },
+    "not_native_or_per_task_scratch_peak": true
+  },
+  "reused_evidence": "No test results reused for affected report/startup paths; unchanged core/Store business algorithms retain their fixed prior acceptance, not claimed rerun current full suite",
+  "advisor": "focused architectural consultation accepts retained original admissions and same-source fixed contract capacity; not execution proof or whole implementation audit",
+  "new_business_acceptance": 0,
+  "historical_close": 0,
+  "defect_close": 0,
+  "source_delivery_backlog": 18,
+  "pending_validation_backlog": 0,
+  "full102": "open",
+  "full103": "open",
+  "full104": "open",
+  "not_run": [
+    "per-task scratch/residency/switch-cost calibration",
+    "model approximation/refinement",
+    "extra CPU/memory authorization",
+    "global allocator/fairness",
+    "all-domain generic tasks",
+    "GPU",
+    "real16GB",
+    "native/process peak",
+    "long-term representative-city speed",
+    "full M0 frozen acceptance",
+    "UI"
+  ],
+  "hardware": "Mac16,1 32GiB macOS26.6.2 HP P900 USB/APFS existing sole target/work",
+  "protected_wip_files": 24,
+  "evidence_disk_budget_bytes": 1073741824,
+  "no_new_worktree_target_timer": true
+}
