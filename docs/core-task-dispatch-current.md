@@ -1,6 +1,6 @@
 # MyCity 当前实际派工与交接
 
-**当前v0.5.223，root0接线＋0活动准备，下一补货独立预期已冻结：**同一共同城市4日耗尽、工资结束、税/未来租金责任/折旧及冷恢复、原Sim资源门已实测；生产代码不变，本阶段无新关闭业务/历史/缺陷，完整18包不机械核销。下一只复用原Boot成功后Idle的真实Generator批次补货，先核Town已消费后的basis/原票，不造#144→Boot桥。[当前事实](execution-current.md)与[结果](evidence/finite-city-depletion-20261029/STATUS.md)。
+**当前v0.5.224，0接线/0准备：**#21原Boot在Town消费后真实重复批次的准时/迟到、输入费用/WIP/同库存basis/必要费用与原票/冷恢复/Sim预算已通过；生产代码未改，完整21/117/115开放。本阶段无新业务/历史/缺陷关闭，完整18包不机械核销。下一仅构造同一pool合法时间分段最小对照，先实际证据再判断，不新增模型框架。[当前执行](execution-current.md)、[结果](evidence/finite-city-refill-20261029/STATUS.md)。
 
 <details><summary>此前执行快照，仅对标明版本有效</summary>
 

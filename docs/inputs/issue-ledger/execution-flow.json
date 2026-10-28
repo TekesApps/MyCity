@@ -1,8 +1,8 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-28T16:36:41.171115+00:00",
-  "source_head": "v0.5.223 test-only4day; production unchanged fromv221",
+  "last_snapshot_at": "2026-10-28T17:08:46.608015+00:00",
+  "source_head": "v0.5.224 test-only refill; production unchanged fromv221",
   "candidate": "21 finite asset/common city accepted; full21 remains open",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
   "limits": {
@@ -872,8 +872,8 @@
     "defects_accepted": 0,
     "issue_closures_pending": false,
     "whole_packages_retired": 0,
-    "proof": "docs/evidence/finite-city-depletion-20261029/STATUS.md",
-    "cycles": "unknown reliable start; not verification window"
+    "proof": "docs/evidence/finite-city-refill-20261029/STATUS.md",
+    "cycles": "unknown reliable start; not verification time"
   },
   "queued_next_102": {
     "owner": "root",
@@ -883,23 +883,19 @@
   },
   "latest_finite_increment": {
     "issue": 21,
-    "release": "v0.5.223",
+    "release": "v0.5.224",
     "state": "verified frozen full parents open",
-    "evidence": "docs/evidence/finite-city-depletion-20261029/STATUS.md",
+    "evidence": "docs/evidence/finite-city-refill-20261029/STATUS.md",
     "production_changed": false,
     "business_close_delta": 0
   },
   "latest_active_evidence": null,
   "near_term_objective": "consume integrated deliveries into sustainable finite city;151/155 closed; next real road proof consumer, no new model batch",
   "next_acceptance_preparation": {
-    "issue": 21,
-    "owner": "/root/asset_cost_intake",
-    "scope": "existing Boot Generator refill after actual Town consumption, independent quantities/basis/cash",
-    "write_authority": [
-      "work/finite-city-refill-20261029/independent-expectations.md"
-    ],
-    "compile_test_authority": false,
-    "state": "completed frozen; preparation only"
+    "state": "read-only source extraction complete, not runtime proof",
+    "owner": "/root/finite_city_existing_inputs",
+    "scope": "legacy pool rounding coverage and next real counterexample only",
+    "write_authority": []
   },
   "latest_completed_batch": {
     "business": [],
@@ -914,12 +910,11 @@
   },
   "next_finite_city": {
     "issue": 21,
-    "owner": "root; not yet activated",
-    "scope": "existing same Boot generator repeat after consumed electric pool; actual in-flight/complete inputs and basis before next Town consumer",
+    "owner": "root; not activated",
+    "scope": "minimum actual same-business/no-new-pool segmentation cost comparison before claiming equivalent batching",
     "dependencies": [
-      "v223 open-road common city",
-      "existing Boot success→Idle/repeatGenerator",
-      "original fuel/cooling/fee and reserve gates"
+      "current old nonfuel pool policy and original service export path",
+      "fixed original business inputs and independent time-only split"
     ],
     "write_authority": [],
     "no_new_model_batches": true

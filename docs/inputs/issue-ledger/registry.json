@@ -4042,14 +4042,14 @@
     }
   ],
   "unpublished_execution_update": {
-    "source_baseline": "v0.5.223 same productionv221",
+    "source_baseline": "v0.5.224 same productionv221",
     "shared_core_in_progress": 0,
     "independent_preparations_active": 0,
     "limits": [
       1,
       2
     ],
-    "note": "21 actual4day depletion verified; next original Boot refill oracle frozen, not implementation; no new model/provider bridge"
+    "note": "21 actual original-Generator refill verified ontime/late; next bounded same-pool partition probe not activated; no new model"
   },
   "historical_execution_updates": [
     {

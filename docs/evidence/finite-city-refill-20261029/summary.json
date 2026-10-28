@@ -1,0 +1,2232 @@
+{
+  "schema": "mycity-finite-city-refill-v1",
+  "issue": 21,
+  "baseline": "v0.5.223 fd82eca4f492679e2f0e9b1f8cd0645d3a0d78e2",
+  "release": "v0.5.224",
+  "verification_window": {
+    "start": "2026-10-28T17:08:46.608015+00:00",
+    "end": "2026-10-28T17:25:47.210180+00:00",
+    "meaning": "verification window not development time"
+  },
+  "store": {
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/finite-city-refill-20261029/store01-city-storage-finite_city_road-fixed",
+      "--exact",
+      "actual_generator_refill_after_consumption_preserves_pool_costs_and_cannot_supply_the_past",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit": 0,
+    "seconds": 20.439774167,
+    "program_sha256": "07301c276f1618b4407b2c458cc8fbc9a8c4d74a1dfed29f7aad5e6abddcdc13"
+  },
+  "cases": [
+    {
+      "case": "refill-ontime",
+      "directory": "refill-ontime-85064-1793207620402438000",
+      "observations": {
+        "before-refill": {
+          "all_boot_basis": 2600,
+          "boot": {
+            "contractor": 4,
+            "exported_basis": 612,
+            "exports": [
+              332000,
+              18000
+            ],
+            "failed_expense": 0,
+            "fees": 500,
+            "fuel_used": 1000,
+            "initial": [
+              5000,
+              100000,
+              0,
+              6000000,
+              0,
+              0
+            ],
+            "initial_basis": 2100,
+            "initial_cash": 3100000,
+            "jobs": [
+              {
+                "completed": 1,
+                "cost": 0,
+                "due": 60,
+                "failed": 0,
+                "identity": 1,
+                "inputs": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "phase": "Idle",
+                "started": 0,
+                "tokens": [
+                  0,
+                  0
+                ]
+              },
+              {
+                "completed": 1,
+                "cost": 0,
+                "due": 120,
+                "failed": 0,
+                "identity": 2,
+                "inputs": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "phase": "Idle",
+                "started": 60,
+                "tokens": [
+                  0,
+                  0
+                ]
+              }
+            ],
+            "limits": [
+              5000,
+              2000000,
+              6000000,
+              6000000,
+              6000000,
+              10000000
+            ],
+            "local_construction_basis": [
+              14,
+              4
+            ],
+            "local_construction_exported": [
+              8000,
+              8000
+            ],
+            "local_electricity_basis": 355,
+            "local_electricity_exported": 194000,
+            "next_job": 3,
+            "operator": 3,
+            "profile": "pboot-local-development-v1",
+            "resources": [
+              3101,
+              3102
+            ],
+            "stocks": [
+              3001,
+              3002,
+              3003,
+              3004,
+              3005,
+              3006
+            ],
+            "time": 172800
+          },
+          "cash3": 598310,
+          "cash4": 1229300,
+          "electric": {
+            "basis": 126,
+            "commodity": "electricity",
+            "id": 3002,
+            "lot_id": 22002,
+            "offset": 0,
+            "origin_basis": 126,
+            "origin_quantity": 68000,
+            "owner": 3,
+            "quantity": 68000
+          },
+          "facts": {
+            "capital": {
+              "basis": 28916,
+              "charge_operation": 74,
+              "charged": 516,
+              "charged_at": 172800,
+              "charged_retirement_cost": 0,
+              "charged_subsequent_expense": 0,
+              "commission_operation": 41,
+              "commissioned_at": 61200,
+              "last_change_operation": 74,
+              "retired_at": null,
+              "retirement_cost": 0,
+              "retirement_operation": 0,
+              "stop_operation": 0,
+              "stopped_at": null,
+              "subsequent_expense": 0
+            },
+            "cash_total": 3100000,
+            "company_cash": 72495,
+            "payroll": [
+              56100,
+              155,
+              3000
+            ],
+            "retained": 441,
+            "sales": 100,
+            "stock_basis": [
+              [
+                15,
+                706
+              ],
+              [
+                16,
+                0
+              ]
+            ],
+            "stocks": [
+              [
+                15,
+                706
+              ],
+              [
+                16,
+                0
+              ],
+              [
+                3002,
+                68000
+              ],
+              [
+                3003,
+                522000
+              ]
+            ],
+            "summary": {
+              "actual_sales": 100,
+              "day": 2,
+              "disposal": 0,
+              "freight": 700,
+              "goods_payments": 1000,
+              "idle_labor_expense": 0,
+              "labor_basis": 80,
+              "market_demand": 100,
+              "operation_id": 74,
+              "produced": 100,
+              "reference_need": 100,
+              "unmet_market_demand": 0,
+              "utilities": 100,
+              "wages_accrued": 80,
+              "waste": 0
+            },
+            "tax": 440
+          },
+          "fuel": {
+            "basis": 1600,
+            "commodity": "fuel",
+            "id": 3001,
+            "lot_id": 22001,
+            "offset": 1000,
+            "origin_basis": 2000,
+            "origin_quantity": 5000,
+            "owner": 3,
+            "quantity": 4000
+          },
+          "heat": {
+            "basis": 0,
+            "commodity": "heat",
+            "id": 3006,
+            "lot_id": 22006,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 700000,
+            "owner": 3,
+            "quantity": 700000
+          },
+          "raw_water": {
+            "basis": 0,
+            "commodity": "raw_water",
+            "id": 3004,
+            "lot_id": 22004,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 5400000,
+            "owner": 3,
+            "quantity": 5400000
+          },
+          "waste": {
+            "basis": 0,
+            "commodity": "waste_water",
+            "id": 3005,
+            "lot_id": 22005,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 60000,
+            "owner": 3,
+            "quantity": 60000
+          },
+          "water": {
+            "basis": 262,
+            "commodity": "water",
+            "id": 3003,
+            "lot_id": 22003,
+            "offset": 0,
+            "origin_basis": 262,
+            "origin_quantity": 522000,
+            "owner": 3,
+            "quantity": 522000
+          }
+        },
+        "running": {
+          "all_boot_basis": 2900,
+          "boot": {
+            "contractor": 4,
+            "exported_basis": 612,
+            "exports": [
+              332000,
+              18000
+            ],
+            "failed_expense": 0,
+            "fees": 800,
+            "fuel_used": 1000,
+            "initial": [
+              5000,
+              100000,
+              0,
+              6000000,
+              0,
+              0
+            ],
+            "initial_basis": 2100,
+            "initial_cash": 3100000,
+            "jobs": [
+              {
+                "completed": 1,
+                "cost": 0,
+                "due": 60,
+                "failed": 0,
+                "identity": 1,
+                "inputs": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "phase": "Idle",
+                "started": 0,
+                "tokens": [
+                  0,
+                  0
+                ]
+              },
+              {
+                "completed": 1,
+                "cost": 730,
+                "due": 172860,
+                "failed": 0,
+                "identity": 3,
+                "inputs": [
+                  1000,
+                  0,
+                  60000,
+                  0,
+                  0,
+                  0
+                ],
+                "phase": "Running",
+                "started": 172800,
+                "tokens": [
+                  13,
+                  14
+                ]
+              }
+            ],
+            "limits": [
+              5000,
+              2000000,
+              6000000,
+              6000000,
+              6000000,
+              10000000
+            ],
+            "local_construction_basis": [
+              14,
+              4
+            ],
+            "local_construction_exported": [
+              8000,
+              8000
+            ],
+            "local_electricity_basis": 355,
+            "local_electricity_exported": 194000,
+            "next_job": 4,
+            "operator": 3,
+            "profile": "pboot-local-development-v1",
+            "resources": [
+              3101,
+              3102
+            ],
+            "stocks": [
+              3001,
+              3002,
+              3003,
+              3004,
+              3005,
+              3006
+            ],
+            "time": 172800
+          },
+          "cash3": 598010,
+          "cash4": 1229600,
+          "electric": {
+            "basis": 126,
+            "commodity": "electricity",
+            "id": 3002,
+            "lot_id": 22002,
+            "offset": 0,
+            "origin_basis": 126,
+            "origin_quantity": 68000,
+            "owner": 3,
+            "quantity": 68000
+          },
+          "facts": {
+            "capital": {
+              "basis": 28916,
+              "charge_operation": 74,
+              "charged": 516,
+              "charged_at": 172800,
+              "charged_retirement_cost": 0,
+              "charged_subsequent_expense": 0,
+              "commission_operation": 41,
+              "commissioned_at": 61200,
+              "last_change_operation": 74,
+              "retired_at": null,
+              "retirement_cost": 0,
+              "retirement_operation": 0,
+              "stop_operation": 0,
+              "stopped_at": null,
+              "subsequent_expense": 0
+            },
+            "cash_total": 3100000,
+            "company_cash": 72495,
+            "payroll": [
+              56100,
+              155,
+              3000
+            ],
+            "retained": 441,
+            "sales": 100,
+            "stock_basis": [
+              [
+                15,
+                706
+              ],
+              [
+                16,
+                0
+              ]
+            ],
+            "stocks": [
+              [
+                15,
+                706
+              ],
+              [
+                16,
+                0
+              ],
+              [
+                3002,
+                68000
+              ],
+              [
+                3003,
+                462000
+              ]
+            ],
+            "summary": {
+              "actual_sales": 100,
+              "day": 2,
+              "disposal": 0,
+              "freight": 700,
+              "goods_payments": 1000,
+              "idle_labor_expense": 0,
+              "labor_basis": 80,
+              "market_demand": 100,
+              "operation_id": 74,
+              "produced": 100,
+              "reference_need": 100,
+              "unmet_market_demand": 0,
+              "utilities": 100,
+              "wages_accrued": 80,
+              "waste": 0
+            },
+            "tax": 440
+          },
+          "fuel": {
+            "basis": 1200,
+            "commodity": "fuel",
+            "id": 3001,
+            "lot_id": 22001,
+            "offset": 2000,
+            "origin_basis": 2000,
+            "origin_quantity": 5000,
+            "owner": 3,
+            "quantity": 3000
+          },
+          "heat": {
+            "basis": 0,
+            "commodity": "heat",
+            "id": 3006,
+            "lot_id": 22006,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 700000,
+            "owner": 3,
+            "quantity": 700000
+          },
+          "raw_water": {
+            "basis": 0,
+            "commodity": "raw_water",
+            "id": 3004,
+            "lot_id": 22004,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 5400000,
+            "owner": 3,
+            "quantity": 5400000
+          },
+          "waste": {
+            "basis": 0,
+            "commodity": "waste_water",
+            "id": 3005,
+            "lot_id": 22005,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 60000,
+            "owner": 3,
+            "quantity": 60000
+          },
+          "water": {
+            "basis": 232,
+            "commodity": "water",
+            "id": 3003,
+            "lot_id": 22003,
+            "offset": 0,
+            "origin_basis": 232,
+            "origin_quantity": 462000,
+            "owner": 3,
+            "quantity": 462000
+          }
+        },
+        "finished": {
+          "all_boot_basis": 2900,
+          "boot": {
+            "contractor": 4,
+            "exported_basis": 612,
+            "exports": [
+              332000,
+              18000
+            ],
+            "failed_expense": 0,
+            "fees": 800,
+            "fuel_used": 2000,
+            "initial": [
+              5000,
+              100000,
+              0,
+              6000000,
+              0,
+              0
+            ],
+            "initial_basis": 2100,
+            "initial_cash": 3100000,
+            "jobs": [
+              {
+                "completed": 1,
+                "cost": 0,
+                "due": 60,
+                "failed": 0,
+                "identity": 1,
+                "inputs": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "phase": "Idle",
+                "started": 0,
+                "tokens": [
+                  0,
+                  0
+                ]
+              },
+              {
+                "completed": 2,
+                "cost": 0,
+                "due": 172860,
+                "failed": 0,
+                "identity": 3,
+                "inputs": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "phase": "Idle",
+                "started": 172800,
+                "tokens": [
+                  0,
+                  0
+                ]
+              }
+            ],
+            "limits": [
+              5000,
+              2000000,
+              6000000,
+              6000000,
+              6000000,
+              10000000
+            ],
+            "local_construction_basis": [
+              14,
+              4
+            ],
+            "local_construction_exported": [
+              8000,
+              8000
+            ],
+            "local_electricity_basis": 355,
+            "local_electricity_exported": 194000,
+            "next_job": 4,
+            "operator": 3,
+            "profile": "pboot-local-development-v1",
+            "resources": [
+              3101,
+              3102
+            ],
+            "stocks": [
+              3001,
+              3002,
+              3003,
+              3004,
+              3005,
+              3006
+            ],
+            "time": 172860
+          },
+          "cash3": 598010,
+          "cash4": 1229600,
+          "electric": {
+            "basis": 856,
+            "commodity": "electricity",
+            "id": 3002,
+            "lot_id": 22002,
+            "offset": 0,
+            "origin_basis": 856,
+            "origin_quantity": 468000,
+            "owner": 3,
+            "quantity": 468000
+          },
+          "facts": {
+            "capital": {
+              "basis": 28916,
+              "charge_operation": 74,
+              "charged": 516,
+              "charged_at": 172800,
+              "charged_retirement_cost": 0,
+              "charged_subsequent_expense": 0,
+              "commission_operation": 41,
+              "commissioned_at": 61200,
+              "last_change_operation": 74,
+              "retired_at": null,
+              "retirement_cost": 0,
+              "retirement_operation": 0,
+              "stop_operation": 0,
+              "stopped_at": null,
+              "subsequent_expense": 0
+            },
+            "cash_total": 3100000,
+            "company_cash": 72495,
+            "payroll": [
+              56100,
+              155,
+              3000
+            ],
+            "retained": 441,
+            "sales": 100,
+            "stock_basis": [
+              [
+                15,
+                706
+              ],
+              [
+                16,
+                0
+              ]
+            ],
+            "stocks": [
+              [
+                15,
+                706
+              ],
+              [
+                16,
+                0
+              ],
+              [
+                3002,
+                468000
+              ],
+              [
+                3003,
+                462000
+              ]
+            ],
+            "summary": {
+              "actual_sales": 100,
+              "day": 2,
+              "disposal": 0,
+              "freight": 700,
+              "goods_payments": 1000,
+              "idle_labor_expense": 0,
+              "labor_basis": 80,
+              "market_demand": 100,
+              "operation_id": 74,
+              "produced": 100,
+              "reference_need": 100,
+              "unmet_market_demand": 0,
+              "utilities": 100,
+              "wages_accrued": 80,
+              "waste": 0
+            },
+            "tax": 440
+          },
+          "fuel": {
+            "basis": 1200,
+            "commodity": "fuel",
+            "id": 3001,
+            "lot_id": 22001,
+            "offset": 2000,
+            "origin_basis": 2000,
+            "origin_quantity": 5000,
+            "owner": 3,
+            "quantity": 3000
+          },
+          "heat": {
+            "basis": 0,
+            "commodity": "heat",
+            "id": 3006,
+            "lot_id": 22006,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 1300000,
+            "owner": 3,
+            "quantity": 1300000
+          },
+          "raw_water": {
+            "basis": 0,
+            "commodity": "raw_water",
+            "id": 3004,
+            "lot_id": 22004,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 5400000,
+            "owner": 3,
+            "quantity": 5400000
+          },
+          "waste": {
+            "basis": 0,
+            "commodity": "waste_water",
+            "id": 3005,
+            "lot_id": 22005,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 120000,
+            "owner": 3,
+            "quantity": 120000
+          },
+          "water": {
+            "basis": 232,
+            "commodity": "water",
+            "id": 3003,
+            "lot_id": 22003,
+            "offset": 0,
+            "origin_basis": 232,
+            "origin_quantity": 462000,
+            "owner": 3,
+            "quantity": 462000
+          }
+        },
+        "end": {
+          "all_boot_basis": 2900,
+          "boot": {
+            "contractor": 4,
+            "exported_basis": 794,
+            "exports": [
+              432000,
+              18000
+            ],
+            "failed_expense": 0,
+            "fees": 800,
+            "fuel_used": 2000,
+            "initial": [
+              5000,
+              100000,
+              0,
+              6000000,
+              0,
+              0
+            ],
+            "initial_basis": 2100,
+            "initial_cash": 3100000,
+            "jobs": [
+              {
+                "completed": 1,
+                "cost": 0,
+                "due": 60,
+                "failed": 0,
+                "identity": 1,
+                "inputs": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "phase": "Idle",
+                "started": 0,
+                "tokens": [
+                  0,
+                  0
+                ]
+              },
+              {
+                "completed": 2,
+                "cost": 0,
+                "due": 172860,
+                "failed": 0,
+                "identity": 3,
+                "inputs": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "phase": "Idle",
+                "started": 172800,
+                "tokens": [
+                  0,
+                  0
+                ]
+              }
+            ],
+            "limits": [
+              5000,
+              2000000,
+              6000000,
+              6000000,
+              6000000,
+              10000000
+            ],
+            "local_construction_basis": [
+              14,
+              4
+            ],
+            "local_construction_exported": [
+              8000,
+              8000
+            ],
+            "local_electricity_basis": 537,
+            "local_electricity_exported": 294000,
+            "next_job": 4,
+            "operator": 3,
+            "profile": "pboot-local-development-v1",
+            "resources": [
+              3101,
+              3102
+            ],
+            "stocks": [
+              3001,
+              3002,
+              3003,
+              3004,
+              3005,
+              3006
+            ],
+            "time": 345600
+          },
+          "cash3": 598110,
+          "cash4": 1229600,
+          "electric": {
+            "basis": 674,
+            "commodity": "electricity",
+            "id": 3002,
+            "lot_id": 22002,
+            "offset": 0,
+            "origin_basis": 674,
+            "origin_quantity": 368000,
+            "owner": 3,
+            "quantity": 368000
+          },
+          "facts": {
+            "capital": {
+              "basis": 28916,
+              "charge_operation": 128,
+              "charged": 1200,
+              "charged_at": 345600,
+              "charged_retirement_cost": 0,
+              "charged_subsequent_expense": 0,
+              "commission_operation": 41,
+              "commissioned_at": 61200,
+              "last_change_operation": 128,
+              "retired_at": null,
+              "retirement_cost": 0,
+              "retirement_operation": 0,
+              "stop_operation": 0,
+              "stopped_at": null,
+              "subsequent_expense": 0
+            },
+            "cash_total": 3100000,
+            "company_cash": 72995,
+            "payroll": [
+              84900,
+              235,
+              3000
+            ],
+            "retained": 317,
+            "sales": 0,
+            "stock_basis": [
+              [
+                15,
+                606
+              ],
+              [
+                16,
+                0
+              ]
+            ],
+            "stocks": [
+              [
+                15,
+                606
+              ],
+              [
+                16,
+                0
+              ],
+              [
+                3002,
+                368000
+              ],
+              [
+                3003,
+                462000
+              ]
+            ],
+            "summary": {
+              "actual_sales": 0,
+              "day": 4,
+              "disposal": 0,
+              "freight": 0,
+              "goods_payments": 0,
+              "idle_labor_expense": 0,
+              "labor_basis": 0,
+              "market_demand": 0,
+              "operation_id": 128,
+              "produced": 0,
+              "reference_need": 100,
+              "unmet_market_demand": 0,
+              "utilities": 0,
+              "wages_accrued": 0,
+              "waste": 0
+            },
+            "tax": 600
+          },
+          "fuel": {
+            "basis": 1200,
+            "commodity": "fuel",
+            "id": 3001,
+            "lot_id": 22001,
+            "offset": 2000,
+            "origin_basis": 2000,
+            "origin_quantity": 5000,
+            "owner": 3,
+            "quantity": 3000
+          },
+          "heat": {
+            "basis": 0,
+            "commodity": "heat",
+            "id": 3006,
+            "lot_id": 22006,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 1300000,
+            "owner": 3,
+            "quantity": 1300000
+          },
+          "raw_water": {
+            "basis": 0,
+            "commodity": "raw_water",
+            "id": 3004,
+            "lot_id": 22004,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 5400000,
+            "owner": 3,
+            "quantity": 5400000
+          },
+          "waste": {
+            "basis": 0,
+            "commodity": "waste_water",
+            "id": 3005,
+            "lot_id": 22005,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 120000,
+            "owner": 3,
+            "quantity": 120000
+          },
+          "water": {
+            "basis": 232,
+            "commodity": "water",
+            "id": 3003,
+            "lot_id": 22003,
+            "offset": 0,
+            "origin_basis": 232,
+            "origin_quantity": 462000,
+            "owner": 3,
+            "quantity": 462000
+          }
+        }
+      },
+      "cold": [
+        {
+          "file": "refill-ontime-85064-1793207620402438000/day4-checkpoint-cold-result.json",
+          "result": {
+            "exit": 0,
+            "seconds": 0.871314792
+          }
+        },
+        {
+          "file": "refill-ontime-85064-1793207620402438000/finished-checkpoint-cold-result.json",
+          "result": {
+            "exit": 0,
+            "seconds": 0.884685291
+          }
+        },
+        {
+          "file": "refill-ontime-85064-1793207620402438000/one-second-before-due-cold-result.json",
+          "result": {
+            "exit": 0,
+            "seconds": 0.818153208
+          }
+        },
+        {
+          "file": "refill-ontime-85064-1793207620402438000/running-cold-result.json",
+          "result": {
+            "exit": 0,
+            "seconds": 0.789674542
+          }
+        }
+      ],
+      "artifact_conservation_check": {
+        "energy_model_coordinates": 5100000,
+        "water_model_coordinates": 6000000,
+        "all_boot_basis": 2900
+      }
+    },
+    {
+      "case": "refill-late",
+      "directory": "refill-late-85064-1793207628683094000",
+      "observations": {
+        "before-refill": {
+          "all_boot_basis": 2600,
+          "boot": {
+            "contractor": 4,
+            "exported_basis": 612,
+            "exports": [
+              332000,
+              18000
+            ],
+            "failed_expense": 0,
+            "fees": 500,
+            "fuel_used": 1000,
+            "initial": [
+              5000,
+              100000,
+              0,
+              6000000,
+              0,
+              0
+            ],
+            "initial_basis": 2100,
+            "initial_cash": 3100000,
+            "jobs": [
+              {
+                "completed": 1,
+                "cost": 0,
+                "due": 60,
+                "failed": 0,
+                "identity": 1,
+                "inputs": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "phase": "Idle",
+                "started": 0,
+                "tokens": [
+                  0,
+                  0
+                ]
+              },
+              {
+                "completed": 1,
+                "cost": 0,
+                "due": 120,
+                "failed": 0,
+                "identity": 2,
+                "inputs": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "phase": "Idle",
+                "started": 60,
+                "tokens": [
+                  0,
+                  0
+                ]
+              }
+            ],
+            "limits": [
+              5000,
+              2000000,
+              6000000,
+              6000000,
+              6000000,
+              10000000
+            ],
+            "local_construction_basis": [
+              14,
+              4
+            ],
+            "local_construction_exported": [
+              8000,
+              8000
+            ],
+            "local_electricity_basis": 355,
+            "local_electricity_exported": 194000,
+            "next_job": 3,
+            "operator": 3,
+            "profile": "pboot-local-development-v1",
+            "resources": [
+              3101,
+              3102
+            ],
+            "stocks": [
+              3001,
+              3002,
+              3003,
+              3004,
+              3005,
+              3006
+            ],
+            "time": 172800
+          },
+          "cash3": 598310,
+          "cash4": 1229300,
+          "electric": {
+            "basis": 126,
+            "commodity": "electricity",
+            "id": 3002,
+            "lot_id": 22002,
+            "offset": 0,
+            "origin_basis": 126,
+            "origin_quantity": 68000,
+            "owner": 3,
+            "quantity": 68000
+          },
+          "facts": {
+            "capital": {
+              "basis": 28916,
+              "charge_operation": 74,
+              "charged": 516,
+              "charged_at": 172800,
+              "charged_retirement_cost": 0,
+              "charged_subsequent_expense": 0,
+              "commission_operation": 41,
+              "commissioned_at": 61200,
+              "last_change_operation": 74,
+              "retired_at": null,
+              "retirement_cost": 0,
+              "retirement_operation": 0,
+              "stop_operation": 0,
+              "stopped_at": null,
+              "subsequent_expense": 0
+            },
+            "cash_total": 3100000,
+            "company_cash": 72495,
+            "payroll": [
+              56100,
+              155,
+              3000
+            ],
+            "retained": 441,
+            "sales": 100,
+            "stock_basis": [
+              [
+                15,
+                706
+              ],
+              [
+                16,
+                0
+              ]
+            ],
+            "stocks": [
+              [
+                15,
+                706
+              ],
+              [
+                16,
+                0
+              ],
+              [
+                3002,
+                68000
+              ],
+              [
+                3003,
+                522000
+              ]
+            ],
+            "summary": {
+              "actual_sales": 100,
+              "day": 2,
+              "disposal": 0,
+              "freight": 700,
+              "goods_payments": 1000,
+              "idle_labor_expense": 0,
+              "labor_basis": 80,
+              "market_demand": 100,
+              "operation_id": 74,
+              "produced": 100,
+              "reference_need": 100,
+              "unmet_market_demand": 0,
+              "utilities": 100,
+              "wages_accrued": 80,
+              "waste": 0
+            },
+            "tax": 440
+          },
+          "fuel": {
+            "basis": 1600,
+            "commodity": "fuel",
+            "id": 3001,
+            "lot_id": 22001,
+            "offset": 1000,
+            "origin_basis": 2000,
+            "origin_quantity": 5000,
+            "owner": 3,
+            "quantity": 4000
+          },
+          "heat": {
+            "basis": 0,
+            "commodity": "heat",
+            "id": 3006,
+            "lot_id": 22006,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 700000,
+            "owner": 3,
+            "quantity": 700000
+          },
+          "raw_water": {
+            "basis": 0,
+            "commodity": "raw_water",
+            "id": 3004,
+            "lot_id": 22004,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 5400000,
+            "owner": 3,
+            "quantity": 5400000
+          },
+          "waste": {
+            "basis": 0,
+            "commodity": "waste_water",
+            "id": 3005,
+            "lot_id": 22005,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 60000,
+            "owner": 3,
+            "quantity": 60000
+          },
+          "water": {
+            "basis": 262,
+            "commodity": "water",
+            "id": 3003,
+            "lot_id": 22003,
+            "offset": 0,
+            "origin_basis": 262,
+            "origin_quantity": 522000,
+            "owner": 3,
+            "quantity": 522000
+          }
+        },
+        "running": {
+          "all_boot_basis": 2900,
+          "boot": {
+            "contractor": 4,
+            "exported_basis": 612,
+            "exports": [
+              332000,
+              18000
+            ],
+            "failed_expense": 0,
+            "fees": 800,
+            "fuel_used": 1000,
+            "initial": [
+              5000,
+              100000,
+              0,
+              6000000,
+              0,
+              0
+            ],
+            "initial_basis": 2100,
+            "initial_cash": 3100000,
+            "jobs": [
+              {
+                "completed": 1,
+                "cost": 0,
+                "due": 60,
+                "failed": 0,
+                "identity": 1,
+                "inputs": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "phase": "Idle",
+                "started": 0,
+                "tokens": [
+                  0,
+                  0
+                ]
+              },
+              {
+                "completed": 1,
+                "cost": 730,
+                "due": 259230,
+                "failed": 0,
+                "identity": 3,
+                "inputs": [
+                  1000,
+                  0,
+                  60000,
+                  0,
+                  0,
+                  0
+                ],
+                "phase": "Running",
+                "started": 259170,
+                "tokens": [
+                  13,
+                  14
+                ]
+              }
+            ],
+            "limits": [
+              5000,
+              2000000,
+              6000000,
+              6000000,
+              6000000,
+              10000000
+            ],
+            "local_construction_basis": [
+              14,
+              4
+            ],
+            "local_construction_exported": [
+              8000,
+              8000
+            ],
+            "local_electricity_basis": 355,
+            "local_electricity_exported": 194000,
+            "next_job": 4,
+            "operator": 3,
+            "profile": "pboot-local-development-v1",
+            "resources": [
+              3101,
+              3102
+            ],
+            "stocks": [
+              3001,
+              3002,
+              3003,
+              3004,
+              3005,
+              3006
+            ],
+            "time": 259170
+          },
+          "cash3": 598010,
+          "cash4": 1229600,
+          "electric": {
+            "basis": 126,
+            "commodity": "electricity",
+            "id": 3002,
+            "lot_id": 22002,
+            "offset": 0,
+            "origin_basis": 126,
+            "origin_quantity": 68000,
+            "owner": 3,
+            "quantity": 68000
+          },
+          "facts": {
+            "capital": {
+              "basis": 28916,
+              "charge_operation": 74,
+              "charged": 516,
+              "charged_at": 172800,
+              "charged_retirement_cost": 0,
+              "charged_subsequent_expense": 0,
+              "commission_operation": 41,
+              "commissioned_at": 61200,
+              "last_change_operation": 74,
+              "retired_at": null,
+              "retirement_cost": 0,
+              "retirement_operation": 0,
+              "stop_operation": 0,
+              "stopped_at": null,
+              "subsequent_expense": 0
+            },
+            "cash_total": 3100000,
+            "company_cash": 72495,
+            "payroll": [
+              84900,
+              155,
+              3000
+            ],
+            "retained": 441,
+            "sales": 100,
+            "stock_basis": [
+              [
+                15,
+                706
+              ],
+              [
+                16,
+                0
+              ]
+            ],
+            "stocks": [
+              [
+                15,
+                706
+              ],
+              [
+                16,
+                0
+              ],
+              [
+                3002,
+                68000
+              ],
+              [
+                3003,
+                462000
+              ]
+            ],
+            "summary": {
+              "actual_sales": 100,
+              "day": 2,
+              "disposal": 0,
+              "freight": 700,
+              "goods_payments": 1000,
+              "idle_labor_expense": 0,
+              "labor_basis": 80,
+              "market_demand": 100,
+              "operation_id": 74,
+              "produced": 100,
+              "reference_need": 100,
+              "unmet_market_demand": 0,
+              "utilities": 100,
+              "wages_accrued": 80,
+              "waste": 0
+            },
+            "tax": 440
+          },
+          "fuel": {
+            "basis": 1200,
+            "commodity": "fuel",
+            "id": 3001,
+            "lot_id": 22001,
+            "offset": 2000,
+            "origin_basis": 2000,
+            "origin_quantity": 5000,
+            "owner": 3,
+            "quantity": 3000
+          },
+          "heat": {
+            "basis": 0,
+            "commodity": "heat",
+            "id": 3006,
+            "lot_id": 22006,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 700000,
+            "owner": 3,
+            "quantity": 700000
+          },
+          "raw_water": {
+            "basis": 0,
+            "commodity": "raw_water",
+            "id": 3004,
+            "lot_id": 22004,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 5400000,
+            "owner": 3,
+            "quantity": 5400000
+          },
+          "waste": {
+            "basis": 0,
+            "commodity": "waste_water",
+            "id": 3005,
+            "lot_id": 22005,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 60000,
+            "owner": 3,
+            "quantity": 60000
+          },
+          "water": {
+            "basis": 232,
+            "commodity": "water",
+            "id": 3003,
+            "lot_id": 22003,
+            "offset": 0,
+            "origin_basis": 232,
+            "origin_quantity": 462000,
+            "owner": 3,
+            "quantity": 462000
+          }
+        },
+        "finished": {
+          "all_boot_basis": 2900,
+          "boot": {
+            "contractor": 4,
+            "exported_basis": 738,
+            "exports": [
+              400000,
+              18000
+            ],
+            "failed_expense": 0,
+            "fees": 800,
+            "fuel_used": 2000,
+            "initial": [
+              5000,
+              100000,
+              0,
+              6000000,
+              0,
+              0
+            ],
+            "initial_basis": 2100,
+            "initial_cash": 3100000,
+            "jobs": [
+              {
+                "completed": 1,
+                "cost": 0,
+                "due": 60,
+                "failed": 0,
+                "identity": 1,
+                "inputs": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "phase": "Idle",
+                "started": 0,
+                "tokens": [
+                  0,
+                  0
+                ]
+              },
+              {
+                "completed": 2,
+                "cost": 0,
+                "due": 259230,
+                "failed": 0,
+                "identity": 3,
+                "inputs": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "phase": "Idle",
+                "started": 259170,
+                "tokens": [
+                  0,
+                  0
+                ]
+              }
+            ],
+            "limits": [
+              5000,
+              2000000,
+              6000000,
+              6000000,
+              6000000,
+              10000000
+            ],
+            "local_construction_basis": [
+              14,
+              4
+            ],
+            "local_construction_exported": [
+              8000,
+              8000
+            ],
+            "local_electricity_basis": 481,
+            "local_electricity_exported": 262000,
+            "next_job": 4,
+            "operator": 3,
+            "profile": "pboot-local-development-v1",
+            "resources": [
+              3101,
+              3102
+            ],
+            "stocks": [
+              3001,
+              3002,
+              3003,
+              3004,
+              3005,
+              3006
+            ],
+            "time": 259230
+          },
+          "cash3": 598078,
+          "cash4": 1229600,
+          "electric": {
+            "basis": 730,
+            "commodity": "electricity",
+            "id": 3002,
+            "lot_id": 22002,
+            "offset": 0,
+            "origin_basis": 730,
+            "origin_quantity": 400000,
+            "owner": 3,
+            "quantity": 400000
+          },
+          "facts": {
+            "capital": {
+              "basis": 28916,
+              "charge_operation": 102,
+              "charged": 916,
+              "charged_at": 259200,
+              "charged_retirement_cost": 0,
+              "charged_subsequent_expense": 0,
+              "commission_operation": 41,
+              "commissioned_at": 61200,
+              "last_change_operation": 102,
+              "retired_at": null,
+              "retirement_cost": 0,
+              "retirement_operation": 0,
+              "stop_operation": 0,
+              "stopped_at": null,
+              "subsequent_expense": 0
+            },
+            "cash_total": 3100000,
+            "company_cash": 72867,
+            "payroll": [
+              84900,
+              235,
+              3000
+            ],
+            "retained": 473,
+            "sales": 68,
+            "stock_basis": [
+              [
+                15,
+                638
+              ],
+              [
+                16,
+                0
+              ]
+            ],
+            "stocks": [
+              [
+                15,
+                638
+              ],
+              [
+                16,
+                0
+              ],
+              [
+                3002,
+                400000
+              ],
+              [
+                3003,
+                462000
+              ]
+            ],
+            "summary": {
+              "actual_sales": 68,
+              "day": 3,
+              "disposal": 0,
+              "freight": 476,
+              "goods_payments": 680,
+              "idle_labor_expense": 26,
+              "labor_basis": 54,
+              "market_demand": 100,
+              "operation_id": 102,
+              "produced": 68,
+              "reference_need": 100,
+              "unmet_market_demand": 32,
+              "utilities": 68,
+              "wages_accrued": 80,
+              "waste": 0
+            },
+            "tax": 472
+          },
+          "fuel": {
+            "basis": 1200,
+            "commodity": "fuel",
+            "id": 3001,
+            "lot_id": 22001,
+            "offset": 2000,
+            "origin_basis": 2000,
+            "origin_quantity": 5000,
+            "owner": 3,
+            "quantity": 3000
+          },
+          "heat": {
+            "basis": 0,
+            "commodity": "heat",
+            "id": 3006,
+            "lot_id": 22006,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 1300000,
+            "owner": 3,
+            "quantity": 1300000
+          },
+          "raw_water": {
+            "basis": 0,
+            "commodity": "raw_water",
+            "id": 3004,
+            "lot_id": 22004,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 5400000,
+            "owner": 3,
+            "quantity": 5400000
+          },
+          "waste": {
+            "basis": 0,
+            "commodity": "waste_water",
+            "id": 3005,
+            "lot_id": 22005,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 120000,
+            "owner": 3,
+            "quantity": 120000
+          },
+          "water": {
+            "basis": 232,
+            "commodity": "water",
+            "id": 3003,
+            "lot_id": 22003,
+            "offset": 0,
+            "origin_basis": 232,
+            "origin_quantity": 462000,
+            "owner": 3,
+            "quantity": 462000
+          }
+        },
+        "end": {
+          "all_boot_basis": 2900,
+          "boot": {
+            "contractor": 4,
+            "exported_basis": 738,
+            "exports": [
+              400000,
+              18000
+            ],
+            "failed_expense": 0,
+            "fees": 800,
+            "fuel_used": 2000,
+            "initial": [
+              5000,
+              100000,
+              0,
+              6000000,
+              0,
+              0
+            ],
+            "initial_basis": 2100,
+            "initial_cash": 3100000,
+            "jobs": [
+              {
+                "completed": 1,
+                "cost": 0,
+                "due": 60,
+                "failed": 0,
+                "identity": 1,
+                "inputs": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "phase": "Idle",
+                "started": 0,
+                "tokens": [
+                  0,
+                  0
+                ]
+              },
+              {
+                "completed": 2,
+                "cost": 0,
+                "due": 259230,
+                "failed": 0,
+                "identity": 3,
+                "inputs": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "phase": "Idle",
+                "started": 259170,
+                "tokens": [
+                  0,
+                  0
+                ]
+              }
+            ],
+            "limits": [
+              5000,
+              2000000,
+              6000000,
+              6000000,
+              6000000,
+              10000000
+            ],
+            "local_construction_basis": [
+              14,
+              4
+            ],
+            "local_construction_exported": [
+              8000,
+              8000
+            ],
+            "local_electricity_basis": 481,
+            "local_electricity_exported": 262000,
+            "next_job": 4,
+            "operator": 3,
+            "profile": "pboot-local-development-v1",
+            "resources": [
+              3101,
+              3102
+            ],
+            "stocks": [
+              3001,
+              3002,
+              3003,
+              3004,
+              3005,
+              3006
+            ],
+            "time": 345600
+          },
+          "cash3": 598078,
+          "cash4": 1229600,
+          "electric": {
+            "basis": 730,
+            "commodity": "electricity",
+            "id": 3002,
+            "lot_id": 22002,
+            "offset": 0,
+            "origin_basis": 730,
+            "origin_quantity": 400000,
+            "owner": 3,
+            "quantity": 400000
+          },
+          "facts": {
+            "capital": {
+              "basis": 28916,
+              "charge_operation": 129,
+              "charged": 1200,
+              "charged_at": 345600,
+              "charged_retirement_cost": 0,
+              "charged_subsequent_expense": 0,
+              "commission_operation": 41,
+              "commissioned_at": 61200,
+              "last_change_operation": 129,
+              "retired_at": null,
+              "retirement_cost": 0,
+              "retirement_operation": 0,
+              "stop_operation": 0,
+              "stopped_at": null,
+              "subsequent_expense": 0
+            },
+            "cash_total": 3100000,
+            "company_cash": 72835,
+            "payroll": [
+              84900,
+              235,
+              3000
+            ],
+            "retained": 189,
+            "sales": 0,
+            "stock_basis": [
+              [
+                15,
+                638
+              ],
+              [
+                16,
+                0
+              ]
+            ],
+            "stocks": [
+              [
+                15,
+                638
+              ],
+              [
+                16,
+                0
+              ],
+              [
+                3002,
+                400000
+              ],
+              [
+                3003,
+                462000
+              ]
+            ],
+            "summary": {
+              "actual_sales": 0,
+              "day": 4,
+              "disposal": 0,
+              "freight": 0,
+              "goods_payments": 0,
+              "idle_labor_expense": 0,
+              "labor_basis": 0,
+              "market_demand": 0,
+              "operation_id": 129,
+              "produced": 0,
+              "reference_need": 100,
+              "unmet_market_demand": 0,
+              "utilities": 0,
+              "wages_accrued": 0,
+              "waste": 0
+            },
+            "tax": 472
+          },
+          "fuel": {
+            "basis": 1200,
+            "commodity": "fuel",
+            "id": 3001,
+            "lot_id": 22001,
+            "offset": 2000,
+            "origin_basis": 2000,
+            "origin_quantity": 5000,
+            "owner": 3,
+            "quantity": 3000
+          },
+          "heat": {
+            "basis": 0,
+            "commodity": "heat",
+            "id": 3006,
+            "lot_id": 22006,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 1300000,
+            "owner": 3,
+            "quantity": 1300000
+          },
+          "raw_water": {
+            "basis": 0,
+            "commodity": "raw_water",
+            "id": 3004,
+            "lot_id": 22004,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 5400000,
+            "owner": 3,
+            "quantity": 5400000
+          },
+          "waste": {
+            "basis": 0,
+            "commodity": "waste_water",
+            "id": 3005,
+            "lot_id": 22005,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 120000,
+            "owner": 3,
+            "quantity": 120000
+          },
+          "water": {
+            "basis": 232,
+            "commodity": "water",
+            "id": 3003,
+            "lot_id": 22003,
+            "offset": 0,
+            "origin_basis": 232,
+            "origin_quantity": 462000,
+            "owner": 3,
+            "quantity": 462000
+          }
+        }
+      },
+      "cold": [
+        {
+          "file": "refill-late-85064-1793207628683094000/day4-checkpoint-cold-result.json",
+          "result": {
+            "exit": 0,
+            "seconds": 0.938012542
+          }
+        },
+        {
+          "file": "refill-late-85064-1793207628683094000/finished-checkpoint-cold-result.json",
+          "result": {
+            "exit": 0,
+            "seconds": 0.935998958
+          }
+        },
+        {
+          "file": "refill-late-85064-1793207628683094000/late-close-still-running-cold-result.json",
+          "result": {
+            "exit": 0,
+            "seconds": 0.96168475
+          }
+        },
+        {
+          "file": "refill-late-85064-1793207628683094000/one-second-before-due-cold-result.json",
+          "result": {
+            "exit": 0,
+            "seconds": 0.94249825
+          }
+        },
+        {
+          "file": "refill-late-85064-1793207628683094000/running-cold-result.json",
+          "result": {
+            "exit": 0,
+            "seconds": 1.093744625
+          }
+        }
+      ],
+      "artifact_conservation_check": {
+        "energy_model_coordinates": 5100000,
+        "water_model_coordinates": 6000000,
+        "all_boot_basis": 2900
+      }
+    }
+  ],
+  "normal_roles": [
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/finite-city-refill-20261029/role01-city-headless-finite_city_role-fixed",
+        "--exact",
+        "depleted_inputs_and_ended_payroll_keep_original_normal_role_budget",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "source": "role01-source-manifest.json",
+      "program_sha256": "4166a59f12c5c661d025a2ad4926615465ec6e813bfc75e234ee5a365957b1d2",
+      "exit": 0,
+      "seconds": 15.584294374999999,
+      "summaries": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/finite-city-refill-20261029/role01-city-headless-finite_city_role-fixed",
+        "--exact",
+        "actual_refill_after_town_consumption_keeps_original_normal_role_budget",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "source": "role01-source-manifest.json",
+      "program_sha256": "4166a59f12c5c661d025a2ad4926615465ec6e813bfc75e234ee5a365957b1d2",
+      "exit": 0,
+      "seconds": 17.048541584000002,
+      "summaries": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/finite-city-refill-20261029/role01-city-headless-finite_city_role-fixed",
+        "--exact",
+        "late_refill_keeps_old_close_and_original_normal_role_budget",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "source": "role01-source-manifest.json",
+      "program_sha256": "4166a59f12c5c661d025a2ad4926615465ec6e813bfc75e234ee5a365957b1d2",
+      "exit": 0,
+      "seconds": 16.851757415999998,
+      "summaries": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ]
+    }
+  ],
+  "metrics": [
+    {
+      "case_index": 0,
+      "arena_used_observed_max": 55798480,
+      "engine_owned_bytes": 3690456,
+      "not_native_16gb_speed_or_m0_acceptance": true,
+      "pool": {
+        "available_touched_bytes": 67108864,
+        "capacity_bytes": 67108864,
+        "fill_acknowledgements": 0,
+        "granted_capacity_bytes": 0,
+        "grants": 0,
+        "maximum_prepare_to_fill_or_reap_ns": 692755542,
+        "rejected_requests": 0,
+        "returns": 0,
+        "scans": 17,
+        "workspace_capacity_bytes": 0,
+        "workspace_fills": 2,
+        "workspace_grants": 2,
+        "workspace_returns": 2
+      },
+      "reference_and_creator_outside_shipping_role": true,
+      "store_owned_bytes": 42008791
+    },
+    {
+      "case_index": 1,
+      "arena_used_observed_max": 55798480,
+      "engine_owned_bytes": 3690456,
+      "not_native_16gb_speed_or_m0_acceptance": true,
+      "pool": {
+        "available_touched_bytes": 67108864,
+        "capacity_bytes": 67108864,
+        "fill_acknowledgements": 0,
+        "granted_capacity_bytes": 0,
+        "grants": 0,
+        "maximum_prepare_to_fill_or_reap_ns": 974993292,
+        "rejected_requests": 0,
+        "returns": 0,
+        "scans": 22,
+        "workspace_capacity_bytes": 0,
+        "workspace_fills": 3,
+        "workspace_grants": 3,
+        "workspace_returns": 3
+      },
+      "reference_and_creator_outside_shipping_role": true,
+      "store_owned_bytes": 42008791
+    },
+    {
+      "case_index": 2,
+      "arena_used_observed_max": 55798480,
+      "engine_owned_bytes": 3690456,
+      "not_native_16gb_speed_or_m0_acceptance": true,
+      "pool": {
+        "available_touched_bytes": 67108864,
+        "capacity_bytes": 67108864,
+        "fill_acknowledgements": 0,
+        "granted_capacity_bytes": 0,
+        "grants": 0,
+        "maximum_prepare_to_fill_or_reap_ns": 1150193042,
+        "rejected_requests": 0,
+        "returns": 0,
+        "scans": 22,
+        "workspace_capacity_bytes": 0,
+        "workspace_fills": 3,
+        "workspace_grants": 3,
+        "workspace_returns": 3
+      },
+      "reference_and_creator_outside_shipping_role": true,
+      "store_owned_bytes": 42008791
+    }
+  ],
+  "production_changed": false,
+  "tracked_build_inputs_changed": [
+    "crates/city-headless/tests/finite_city_role.rs",
+    "crates/city-storage/tests/finite_city_road.rs"
+  ],
+  "final_build_files_matched": 503,
+  "preserved_wip_unchanged": 24,
+  "disk_logical_bytes": 343264829,
+  "disk_budget_bytes": 1073741824,
+  "business_closed": 0,
+  "historical_closed": 0,
+  "defects_closed": 0,
+  "whole_source_packages_retired": 0,
+  "whole_source_packages_remaining": 18,
+  "parents_open": [
+    21,
+    117,
+    115
+  ],
+  "pr": "none; direct main",
+  "reliable_development_start": "unknown; do not substitute issue/tag time",
+  "evidence_root": "/Volumes/HP P900/dev/MyCity/work/finite-city-refill-20261029",
+  "not_proven": [
+    "automatic resupply or continuous144 plant",
+    "ongoing employment renewal",
+    "new primitive segmentation-cost equivalence",
+    "low-cash arrears/output-full combined fixture",
+    "whole21/117/115/long-term self-supply",
+    "actual16GB/native total memory/product capacity/speed/fullM0/GPU/UI/Windows"
+  ]
+}

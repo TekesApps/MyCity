@@ -101,3 +101,162 @@ fn depleted_power_and_expired_payroll_keep_actual_costs_due_payments_and_restore
         }
     }
 }
+
+fn refill_observation(s: &Store) -> Value {
+    let view = s.engine().unwrap().world().view();
+    let boot = view.boot.unwrap();
+    let stock = |id| view.stocks.iter().find(|x| x.id == id).unwrap();
+    let cash = |id| view.accounts.iter().find(|x| x.id == id).unwrap().cash.value();
+    let all_basis = view.stocks.iter().filter(|x| boot.stocks.contains(&x.id)).map(|x| x.basis.value()).sum::<i64>()
+        + boot.exported_basis.value() + boot.failed_expense.value()
+        + boot.jobs.iter().map(|job| job.cost.value()).sum::<i64>();
+    json!({"boot":boot,"fuel":stock(3001),"electric":stock(3002),"water":stock(3003),
+        "raw_water":stock(3004),"waste":stock(3005),"heat":stock(3006),
+        "cash3":cash(3),"cash4":cash(4),"facts":facts(s),"all_boot_basis":all_basis})
+}
+
+/// A late batch may finish after the market close. Its planned electricity is
+/// never used by that close, and finishing cannot rewrite the original tax.
+#[test]
+fn actual_generator_refill_after_consumption_preserves_pool_costs_and_cannot_supply_the_past() {
+    for late in [false, true] {
+        let (p, mut s) = create(if late { "refill-late" } else { "refill-ontime" }, fixture::Scenario::Open);
+        let mut last_market = 0;
+        for day in 1..=2 {
+            advance(&mut s, day * DAY);
+            last_market = s.committed_sequence() + 1;
+            assert!(s.settle_town_market(last_market).unwrap().model.is_ok());
+        }
+        let before = refill_observation(&s);
+        assert_eq!(before["electric"]["quantity"], json!(68_000));
+        assert_eq!(before["water"]["quantity"], json!(522_000));
+        assert_eq!(before["fuel"]["quantity"], json!(4_000));
+        assert_eq!(before["all_boot_basis"], json!(2_600));
+        let old_e = before["electric"]["basis"].as_i64().unwrap();
+        let old_w = before["water"]["basis"].as_i64().unwrap();
+        assert!((261..=266).contains(&old_w));
+        fs::write(p.join("before-refill.json"), serde_json::to_vec_pretty(&before).unwrap()).unwrap();
+        let start = if late { 3 * DAY - 30 } else { 2 * DAY };
+        if late { advance(&mut s, start); }
+        let (scope, revision) = s.engine().unwrap().world().scope_revision();
+        let ticket = Envelope { world: scope.world(), branch: scope.branch(),
+            operation_id: s.committed_sequence() + 1, expected_revision: revision,
+            actions: vec![Action::Boot { command: B::Start { facility: Facility::Generator, reverse_request: true } }] };
+        assert!(s.execute(Caller::System, ticket.clone()).unwrap().model.is_ok());
+        let running = refill_observation(&s);
+        assert_eq!(running["electric"], before["electric"]);
+        assert_eq!(running["fuel"]["quantity"], json!(3_000));
+        assert_eq!(running["fuel"]["basis"], json!(1_200));
+        assert_eq!((running["fuel"]["origin_quantity"].as_i64(), running["fuel"]["origin_basis"].as_i64(), running["fuel"]["offset"].as_i64()), (Some(5000), Some(2000), Some(2000)));
+        assert_eq!(running["water"]["quantity"], json!(462_000));
+        assert_eq!(running["water"]["basis"], json!(old_w - 30));
+        assert_eq!(running["cash3"].as_i64().unwrap(), before["cash3"].as_i64().unwrap() - 300);
+        assert_eq!(running["cash4"].as_i64().unwrap(), before["cash4"].as_i64().unwrap() + 300);
+        assert_eq!(running["boot"]["fees"], json!(800));
+        assert_eq!(running["boot"]["fuel_used"], json!(1000));
+        let job = &running["boot"]["jobs"][1];
+        assert_eq!(job["phase"], json!("Running"));
+        assert_eq!(job["cost"], json!(730));
+        assert_eq!(job["inputs"], json!([1000, 0, 60000, 0, 0, 0]));
+        assert_eq!((job["started"].as_u64(), job["due"].as_u64()), (Some(start), Some(start + 60)));
+        assert_eq!(running["all_boot_basis"], json!(2900));
+        assert_eq!(running["boot"]["exports"], before["boot"]["exports"]);
+        for id in [3101, 3102] {
+            assert_eq!(s.engine().unwrap().resources().iter().find(|r| r.id == id).unwrap().occupied, 1);
+        }
+        let hash = s.state_hash().unwrap(); let sequence = s.committed_sequence();
+        assert!(s.execute(Caller::System, ticket.clone()).unwrap().model.is_ok());
+        assert_eq!(s.state_hash().unwrap(), hash); assert_eq!(s.committed_sequence(), sequence);
+        fs::write(p.join("running.json"), serde_json::to_vec_pretty(&running).unwrap()).unwrap();
+        cold(&p, s, last_market, "running");
+        s = Store::open(&p.join("world"), RULES).unwrap();
+        assert_eq!(refill_observation(&s), running);
+
+        if late {
+            advance(&mut s, 3 * DAY);
+            last_market = s.committed_sequence() + 1;
+            assert!(s.settle_town_market(last_market).unwrap().model.is_ok());
+            let before_finish = refill_observation(&s);
+            assert_eq!(before_finish["facts"]["sales"], json!(68));
+            assert_eq!(before_finish["facts"]["tax"], json!(472));
+            assert_eq!(before_finish["facts"]["company_cash"], json!(72867));
+            assert_eq!(before_finish["electric"]["quantity"], json!(0));
+            assert_eq!(before_finish["electric"]["basis"], json!(0));
+            assert_eq!(before_finish["boot"]["jobs"][1]["cost"], json!(730));
+            cold(&p, s, last_market, "late-close-still-running");
+            s = Store::open(&p.join("world"), RULES).unwrap();
+            assert_eq!(refill_observation(&s), before_finish);
+        }
+        advance(&mut s, start + 59);
+        let pre_due = refill_observation(&s);
+        assert_eq!(pre_due["electric"]["quantity"], json!(if late { 0 } else { 68_000 }));
+        assert_eq!(pre_due["boot"]["jobs"][1]["phase"], json!("Running"));
+        cold(&p, s, last_market, "one-second-before-due");
+        s = Store::open(&p.join("world"), RULES).unwrap();
+        assert_eq!(refill_observation(&s), pre_due);
+        advance(&mut s, start + 60);
+        let finished = refill_observation(&s);
+        let added_basis = if late { 730 } else { old_e + 730 };
+        let added_quantity = if late { 400_000 } else { 468_000 };
+        assert_eq!(finished["electric"]["quantity"], json!(added_quantity));
+        assert_eq!(finished["electric"]["basis"], json!(added_basis));
+        assert_eq!(finished["electric"]["origin_quantity"], json!(added_quantity));
+        assert_eq!(finished["electric"]["origin_basis"], json!(added_basis));
+        assert_eq!(finished["electric"]["offset"], json!(0));
+        for key in ["id", "owner", "commodity", "lot_id", "opening_source_id", "opening_basis"] {
+            assert_eq!(finished["electric"][key], before["electric"][key]);
+        }
+        assert_eq!(finished["boot"]["jobs"][1]["phase"], json!("Idle"));
+        assert_eq!(finished["boot"]["jobs"][1]["completed"], json!(2));
+        assert_eq!(finished["boot"]["jobs"][1]["inputs"], json!([0, 0, 0, 0, 0, 0]));
+        assert_eq!(finished["boot"]["jobs"][1]["cost"], json!(0));
+        assert_eq!(finished["boot"]["jobs"][1]["tokens"], json!([0, 0]));
+        assert_eq!(finished["boot"]["fuel_used"], json!(2000));
+        assert_eq!(finished["waste"]["quantity"], json!(120000));
+        assert_eq!(finished["heat"]["quantity"], json!(1300000));
+        assert_eq!(finished["all_boot_basis"], json!(2900));
+        for id in [3101, 3102] {
+            assert_eq!(s.engine().unwrap().resources().iter().find(|r| r.id == id).unwrap().occupied, 0);
+        }
+        let hash = s.state_hash().unwrap(); let sequence = s.committed_sequence();
+        assert!(s.execute(Caller::System, ticket.clone()).unwrap().model.is_ok());
+        assert_eq!(s.state_hash().unwrap(), hash); assert_eq!(s.committed_sequence(), sequence);
+        assert_eq!(refill_observation(&s), finished);
+        fs::write(p.join("finished.json"), serde_json::to_vec_pretty(&finished).unwrap()).unwrap();
+        s.checkpoint().unwrap(); cold(&p, s, last_market, "finished-checkpoint");
+        s = Store::open(&p.join("world"), RULES).unwrap();
+        for day in if late { vec![4] } else { vec![3, 4] } {
+            advance(&mut s, day * DAY);
+            last_market = s.committed_sequence() + 1;
+            assert!(s.settle_town_market(last_market).unwrap().model.is_ok());
+            let f = facts(&s);
+            let (sales, freight, tax, retained, cash) = match (late, day) {
+                (false, 3) => (100, 700, 600, 601, 73155),
+                (false, 4) => (0, 0, 600, 317, 72995),
+                (true, 4) => (0, 0, 472, 189, 72835),
+                _ => unreachable!(),
+            };
+            assert_eq!(f["sales"], json!(sales)); assert_eq!(f["summary"]["freight"], json!(freight));
+            assert_eq!((f["tax"].as_i64(), f["retained"].as_i64(), f["company_cash"].as_i64()), (Some(tax), Some(retained), Some(cash)));
+            assert_eq!(f["cash_total"], json!(3100000));
+            fs::write(p.join(format!("day{day}-facts.json")), serde_json::to_vec_pretty(&f).unwrap()).unwrap();
+        }
+        let end = refill_observation(&s);
+        let consumed_basis = if late { old_e } else { (old_e + 730) * 100000 / 468000 };
+        assert_eq!(end["electric"]["quantity"], json!(if late { 400000 } else { 368000 }));
+        assert_eq!(end["electric"]["basis"], json!(if late { 730 } else { old_e + 730 - consumed_basis }));
+        assert_eq!(end["facts"]["stocks"], json!([[15, if late { 638 } else { 606 }], [16, 0], [3002, if late { 400000 } else { 368000 }], [3003, 462000]]));
+        assert_eq!(end["boot"]["exports"], json!([if late { 400000 } else { 432000 }, 18000]));
+        assert_eq!(end["boot"]["exported_basis"].as_i64().unwrap(), before["boot"]["exported_basis"].as_i64().unwrap() + consumed_basis);
+        assert_eq!(end["boot"]["local_electricity_basis"].as_i64().unwrap(), before["boot"]["local_electricity_basis"].as_i64().unwrap() + consumed_basis);
+        assert_eq!(end["boot"]["local_construction_exported"], before["boot"]["local_construction_exported"]);
+        assert_eq!(end["boot"]["local_construction_basis"], before["boot"]["local_construction_basis"]);
+        assert_eq!(end["all_boot_basis"], json!(2900));
+        let t = s.engine().unwrap().timeline().unwrap();
+        assert_eq!((t.payroll[0].work_seconds, t.payroll[0].paid.value(), t.payroll[0].remainder), (84900, 235, 3000));
+        assert!(!t.payroll[0].working); assert_eq!(t.payroll[0].next_due, None);
+        assert!(t.claims.iter().all(|c| c.due > 4 * DAY || c.paid == c.principal));
+        fs::write(p.join("end.json"), serde_json::to_vec_pretty(&end).unwrap()).unwrap();
+        s.checkpoint().unwrap(); cold(&p, s, last_market, "day4-checkpoint");
+    }
+}

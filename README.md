@@ -1,8 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.223`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.224`。已开始Rust模型与headless CLI，当前不做UI。
 
-v0.5.223 沿原共同城市验证4日投入耗尽、工资自然到期、前日税支付/未来租金保留及折旧尾差；生产代码和原输入不变，实际Store冷恢复/Sim原资源门通过。完整#21/#117/#115开放。[结果与复用依据](docs/evidence/finite-city-depletion-20261029/STATUS.md)。
+v0.5.224 验证Town消费后原发电批次真实补货：准时/迟到、WIP/原料费用/同库存basis及冷恢复/原Sim预算门通过；生产代码/原输入未改，不称连续电厂或长期自给。完整#21/#117/#115开放。[结果与边界](docs/evidence/finite-city-refill-20261029/STATUS.md)。
 
 v0.5.217 完成[#155实际岗位工时与公服成员共存](docs/evidence/payroll-members-runtime-20261028/STATUS.md)，修复#156正常存档恢复入口。共享/默认栈与原normal角色有限门通过；旧回收长例本次超时不计通过，复用范围单列。Issue关闭按后续回执，完整城市/16GB/M0长期仍未验收。
 
