@@ -1,8 +1,8 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-28T20:01:03.704770+00:00",
-  "source_head": "v0.5.229 partial159 registration and actual commissioning; not acceptance",
+  "last_snapshot_at": "2026-10-28T20:04:53.081773+00:00",
+  "source_head": "v0.5.229 code;v0.5.230 status/issue receipt only;159 incomplete",
   "candidate": "159 actual maintenance execution chain in progress; no full acceptance",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
   "limits": {

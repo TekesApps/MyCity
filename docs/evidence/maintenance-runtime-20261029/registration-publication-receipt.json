@@ -1,0 +1,15 @@
+{
+  "code_commit": "a402e6f49ea5be68b4c6f77c3edba6b71e66e4b0",
+  "code_tag": "v0.5.229",
+  "tag_object": "95522057a07e0ad1b40178d28cb7434e2b7f3002",
+  "remote_main_and_peeled_tag_checked": true,
+  "issue159_state": "OPEN",
+  "issue159_body_sha256": "d82fd59dbe5aa63d5892241940901e9bf23fd6bd4f7643396ef040b0148587d3",
+  "parent36_state": "OPEN",
+  "parent36_body_sha256": "837067277eda5f327964a73b82bcf135579bc8723fc9c0f02d34d53c6b86c492",
+  "pr": null,
+  "acceptance": "incomplete; full159/36/117 open",
+  "at": "2026-10-28T20:04:53.081773+00:00",
+  "issue159_url": "https://github.com/TekesApps/MyCity/issues/159",
+  "issue36_url": "https://github.com/TekesApps/MyCity/issues/36"
+}
