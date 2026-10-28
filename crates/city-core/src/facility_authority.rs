@@ -261,7 +261,7 @@ pub(crate) fn validate(world:&World,r:Option<&Runtime>,l:Option<&m::Ledger>,time
         }}
     }
     for(i,a)in r.state.records().iter().enumerate(){if a.is_some_and(|a|a.begin.is_some())!=r.begin_revisions[i].is_some(){return Err(TxError::InvalidOperation);}}
-    if let Some(t)=timeline {for p in &t.payroll{check_payroll(Some(r),p.spec.payee,p.started,p.spec.ends_at,p.working)?;}}
+    if let Some(t)=timeline {for p in &t.payroll{if world.payroll_members.as_deref().is_some_and(|r|r.registered(&p.spec)){continue;}check_payroll(Some(r),p.spec.payee,p.started,p.spec.ends_at,p.working)?;}}
     Ok(())
 }
 pub(crate) fn prepare(world:&World,timeline:Option<&Timeline>,caller:Caller,command:Command,op:u64,funds:&mut impl Funds)->Result<Candidate,TxError>{
@@ -278,7 +278,7 @@ pub(crate) fn prepare(world:&World,timeline:Option<&Timeline>,caller:Caller,comm
             if r.state.opening().contracts.iter().flatten().any(|other|other.id!=id&&other.device_id==c.device_id&&contract(&r,other.id).is_ok_and(|(_,r)|r.phase==w::Phase::Active)){return Err(TxError::InvalidOperation);}
             presence(world,c,at,at,None)?;let v=world.venue.as_deref().ok_or(TxError::InvalidOperation)?;
             if !v.states.iter().any(|s|s.use_id==c.venue_use_id&&s.status==UseStatus::Actual){return Err(TxError::InvalidOperation);}
-            if timeline.is_some_and(|t|t.payroll.iter().any(|p|p.spec.payee==c.employee_account&&p.working&&p.started<c.end&&p.spec.ends_at>at)){return Err(TxError::InvalidOperation);}
+            if timeline.is_some_and(|t|t.payroll.iter().any(|p|!world.payroll_members.as_deref().is_some_and(|r|r.registered(&p.spec))&&p.spec.payee==c.employee_account&&p.working&&p.started<c.end&&p.spec.ends_at>at)){return Err(TxError::InvalidOperation);}
             let q=qualified(world,c,at)?;if q.status!=q::JobStatus::Eligible{return Err(TxError::Unauthorized);}
             let event=member_source(&r,&l,op,at)?;let pc=l.prepare_begin(event,at,id,m::Kind::FacilityOperation,[Some(c.members),None]).map_err(fail)?;
             *l=pc.into_next(&l).map_err(fail)?;

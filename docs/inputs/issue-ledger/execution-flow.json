@@ -1,9 +1,9 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-28T13:05:13.703567+00:00",
-  "source_head": "v0.5.216 finite Boot-service source bridge",
-  "candidate": "Boot-service bridge verified; next finite Payroll member/time source binding contract pending concrete API",
+  "last_snapshot_at": "2026-10-28T15:20:20.462841+00:00",
+  "source_head": "v0.5.217 verified candidate on v216 baseline",
+  "candidate": "#155/#156 finite contracts verified; publication/issue closure pending, no new coding",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
   "limits": {
     "shared_core_lanes": 1,
@@ -850,29 +850,13 @@
     }
   ],
   "phase_result": {
-    "phase": "102 common execution observations finite increment",
-    "published_version": "v0.5.208",
-    "verification_window": {
-      "start": "2026-10-26T11:35:41.124495+00:00",
-      "end": "2026-10-26T12:04:38.948444+00:00",
-      "meaning": "current finite implementation/verification interval, not full102 delivery latency"
-    },
-    "business_accepted": 0,
-    "historical_closed": 0,
-    "defects_closed": 0,
-    "backlog_pending_integration": 18,
-    "backlog_pending_validation": 0,
-    "root_in_progress": 0,
-    "independent_preparation": 0,
-    "full_issue_102_accepted": false,
-    "evidence": "docs/evidence/task-execution-report-20261026/STATUS.md",
-    "remaining": [
-      "common capabilities/refinement/grant interfaces and explicit unsupported/unknown fields",
-      "actual residency/scratch/switch-cost sources and their honest generic report interface",
-      "103 compatibility closure and104 global fairness/multidimensional budget/speed backpressure remain separate",
-      "actual clock-unavailable and unconfirmed-IO observer branch injection"
-    ],
-    "no_m0_budget_change": true
+    "business_accepted": 1,
+    "historical_backfill": 0,
+    "defects_accepted": 1,
+    "issue_closures_pending": true,
+    "whole_packages_retired": 0,
+    "proof": "docs/evidence/payroll-members-runtime-20261028/STATUS.md",
+    "cycles": "unknown reliable start; verification window is not development time"
   },
   "queued_next_102": {
     "owner": "root",
@@ -925,5 +909,9 @@
     ],
     "write_authority": "not yet expanded; fix finite contract and exact files before implementation",
     "no_new_model_batches": true
-  }
+  },
+  "publication_pending": [
+    155,
+    156
+  ]
 }

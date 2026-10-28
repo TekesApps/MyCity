@@ -1,0 +1,421 @@
+{
+  "schema": "mycity-payroll-members-acceptance-v1",
+  "issues": [
+    155,
+    156
+  ],
+  "baseline": "v0.5.216 / 1c017d305f4d6f5d9150797f43fa94ce009f46d4",
+  "release_pending": "v0.5.217",
+  "finite_contract_accepted_at": "2026-10-28T15:16:13.287992+00:00",
+  "verification_window": {
+    "start": "2026-10-28T14:07:27.193075+00:00",
+    "end": "2026-10-28T15:16:13.287992+00:00",
+    "meaning": "recorded validation window only, not development cycle"
+  },
+  "business_accepted": 1,
+  "historical_backfill": 0,
+  "defects_accepted": 1,
+  "closures_pending": true,
+  "whole_source_packages_retired": 0,
+  "whole_source_packages_remaining": 18,
+  "cycle_start": "unknown; do not substitute issue/tag or window times",
+  "core": [
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/payroll-members-runtime-20261028/shared14-city-core-mycity_core-fixed",
+        "--skip",
+        "layout_pressure::restore_into::tests::full_native_target_reuses_all_ten_backings_after_errors_and_reordered_fields",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "source": "shared14-source-manifest.json",
+      "program_sha256": "c3a22b2fded48fecd0454cdcf988fb90b1cda41b529016b52fdc699f8dc7137d",
+      "exit": 0,
+      "seconds": 12.745358125000001,
+      "summaries": [
+        [
+          "ok",
+          "313",
+          "0",
+          "1"
+        ]
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/payroll-members-runtime-20261028/shared14-city-core-payroll_members-fixed",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "source": "shared14-source-manifest.json",
+      "program_sha256": "18f9b1bbe8c13255ce60700ace3244e24aac4c81bb91921a02c43847c5b407ac",
+      "exit": 0,
+      "seconds": 2.041467958,
+      "summaries": [
+        [
+          "ok",
+          "9",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/payroll-members-runtime-20261028/shared14-city-core-timeline-fixed",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "source": "shared14-source-manifest.json",
+      "program_sha256": "c1481a5398e7ea92acaa4748047a9f1b2e40423917a2f9dfce088507a4c907ab",
+      "exit": 0,
+      "seconds": 52.080468042,
+      "summaries": [
+        [
+          "ok",
+          "16",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/payroll-members-runtime-20261028/shared14-city-core-facility_operation-fixed",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "source": "shared14-source-manifest.json",
+      "program_sha256": "881d5470e6d6999861a327b02b5119c6cc9873a0cb3f955c411620ee6b9779db",
+      "exit": 0,
+      "seconds": 4.923434458999992,
+      "summaries": [
+        [
+          "ok",
+          "13",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/payroll-members-runtime-20261028/shared14-city-core-construction_engine-fixed",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "source": "shared14-source-manifest.json",
+      "program_sha256": "5d2b894a1d14b9e890f06247ae90951b02f1f5176942c850e719031361ef8428",
+      "exit": 0,
+      "seconds": 1.771834708,
+      "summaries": [
+        [
+          "ok",
+          "16",
+          "0",
+          "0"
+        ]
+      ]
+    }
+  ],
+  "storage": [
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/payroll-members-runtime-20261028/storage15-city-storage-mycity_storage-fixed",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "source": "storage15-source-manifest.json",
+      "program_sha256": "6bbd3c19e8d81a97af8f4d561641a96cafd778dff662ec3080e05d01c1674c30",
+      "exit": 0,
+      "seconds": 55.223080666,
+      "summaries": [
+        [
+          "ok",
+          "36",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/payroll-members-runtime-20261028/storage15-city-storage-timeline-fixed",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "source": "storage15-source-manifest.json",
+      "program_sha256": "6f5303e2e219da2b491abadecaf5bb120e4149390001440a3b630a0adceb6d24",
+      "exit": 0,
+      "seconds": 61.98094275,
+      "summaries": [
+        [
+          "ok",
+          "7",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/payroll-members-runtime-20261028/storage15-city-storage-payroll_exit-fixed",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "source": "storage15-source-manifest.json",
+      "program_sha256": "1440987a189092c281efbc9fd8e8cf48a9d3877aef3763132d2642d62589519a",
+      "exit": 0,
+      "seconds": 11.149191291000008,
+      "summaries": [
+        [
+          "ok",
+          "3",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/payroll-members-runtime-20261028/storage15-city-storage-timeline_cancel_emergency-fixed",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "source": "storage15-source-manifest.json",
+      "program_sha256": "9ced1b43aa377aea30d51ae986148fcebac0c143e5791267dc2f71d69022ed1a",
+      "exit": 0,
+      "seconds": 17.38305783300001,
+      "summaries": [
+        [
+          "ok",
+          "4",
+          "0",
+          "1"
+        ]
+      ]
+    }
+  ],
+  "storage_followup": [
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/payroll-members-runtime-20261028/storage15-city-storage-service_delivery_store-fixed",
+        "--skip",
+        "reclaimed_finished_tasks_retain_cash_totals_and_recent_income_eligibility",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "source": "storage15-source-manifest.json",
+      "program_sha256": "1a0326b829b15aa14289a3633f12ad389d9180473bdd9edd43ac12c0899cca0c",
+      "exit": 0,
+      "seconds": 7.299788916000001,
+      "summaries": [
+        [
+          "ok",
+          "4",
+          "0",
+          "1"
+        ]
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/payroll-members-runtime-20261028/storage15-city-storage-payroll_members_store-fixed",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "source": "storage15-source-manifest.json",
+      "program_sha256": "fda4c22199d5105c44f04e14ed11a80ca757bc9df8330623e4e22842382f0ee3",
+      "exit": 0,
+      "seconds": 21.490703292,
+      "summaries": [
+        [
+          "ok",
+          "5",
+          "0",
+          "2"
+        ]
+      ]
+    }
+  ],
+  "retained_original_probe": {
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/payroll-members-runtime-20261028/store13-city-storage-payroll_members_store-fixed",
+      "--ignored",
+      "--exact",
+      "retained_payroll_checkpoint_restore_stage_probe",
+      "--nocapture",
+      "--test-threads=1"
+    ],
+    "source": "store13-source-manifest.json",
+    "program_sha256": "f1975f36f05e62af6c611d1014fc0dcf34eebf734bd3aa1d16be50070f3131f7",
+    "exit": 0,
+    "seconds": 0.981301417,
+    "summaries": [
+      [
+        "ok",
+        "1",
+        "0",
+        "0"
+      ]
+    ]
+  },
+  "legacy_reclaim_timeout": {
+    "status": "timeout_not_passed",
+    "timeout_seconds": 240,
+    "source": "storage15-source-manifest.json",
+    "program_sha256": "1a0326b829b15aa14289a3633f12ad389d9180473bdd9edd43ac12c0899cca0c",
+    "log": "storage15-service_delivery_store-run.log",
+    "unfinished": "reclaimed_finished_tasks_retain_cash_totals_and_recent_income_eligibility",
+    "partial_world": "storage15-service_delivery_store-evidence/five-natural-jobs-58262",
+    "reason": "Root selected whole old regression group including an unaffected 720-day functional reclaim case; actual legacy full run took ~422s. No current pass claim; preserve interruption and reuse only specifically justified prior evidence."
+  },
+  "reuse": {
+    "specific_timeout": "storage15-timeout.json",
+    "current_short_path": "storage15-followup-results.json",
+    "prior_exact_case": "work/service-recovery-20261026/store16-result.json",
+    "prior_exact_program": "work/service-recovery-20261026/source16-service_delivery_store-fixed",
+    "prior_exact_log": "work/service-recovery-20261026/store16.stdout",
+    "prior_v216_actual_boot_case": "work/finite-city-runtime-20261028/compat-reclaim-results.json",
+    "scope": "Reuse reclaim domain/history behavior only, not current total memory/native/timing. New Payroll registration absent in this old input, payroll P5/step/forced-page additions return zero; original house has actual entry, so old/new auto-empty guard both skip. New optional carrier header is separately covered by current ownership/normal gates. No broad claim all production files unchanged.",
+    "files": [
+      {
+        "file": "crates/city-storage/tests/service_delivery_store.rs",
+        "current_sha256": "e41f1252ccc10257feba34b54d6c13b595fec54b093d922437a972ed18e8cfac",
+        "same_as_exact_legacy_case_v206": false,
+        "same_as_v216_complete_boot_reclaim": true
+      },
+      {
+        "file": "tests/fixtures/service-delivery/opening.rs",
+        "current_sha256": "f4e93ae38ac74e26f7505bd7d27f1cd469226e359f96d0712e6b7f65490e0178",
+        "same_as_exact_legacy_case_v206": true,
+        "same_as_v216_complete_boot_reclaim": true
+      },
+      {
+        "file": "crates/city-core/src/service_delivery_runtime.rs",
+        "current_sha256": "59707e121a8ab4d76ba75a306a9706f8ba3af6ab1c1fe822ea8ad580344d80b9",
+        "same_as_exact_legacy_case_v206": true,
+        "same_as_v216_complete_boot_reclaim": true
+      },
+      {
+        "file": "crates/city-core/src/service_delivery_authority.rs",
+        "current_sha256": "f59c3e451c6183032a2707b23058f27c09ed1c599e7cc9b700a9e9b04d00c060",
+        "same_as_exact_legacy_case_v206": false,
+        "same_as_v216_complete_boot_reclaim": true
+      },
+      {
+        "file": "crates/city-core/src/service_delivery_recovery.rs",
+        "current_sha256": "00e248fc4719e862d5b92e182b9a02986077430d1810121c3e721f4cd1b76884",
+        "same_as_exact_legacy_case_v206": true,
+        "same_as_v216_complete_boot_reclaim": true
+      },
+      {
+        "file": "crates/city-core/src/service_needs.rs",
+        "current_sha256": "dc4803f2ae0b2a90b2cef43fe821e0666065b09b7a37767f523072810165d2c2",
+        "same_as_exact_legacy_case_v206": false,
+        "same_as_v216_complete_boot_reclaim": true
+      },
+      {
+        "file": "crates/city-core/src/service_needs_authority.rs",
+        "current_sha256": "a82884e2f981097bcc545ddc06d898016b712ad14a7600cdc39f7e03be905a6c",
+        "same_as_exact_legacy_case_v206": false,
+        "same_as_v216_complete_boot_reclaim": true
+      }
+    ],
+    "exact_legacy_case_body": {
+      "unchanged": true,
+      "old_sha256": "db6bd88b2da477f533806bcc5a5b1532de4dfb328c3cec81d87fba8f0b0823ac",
+      "current_sha256": "db6bd88b2da477f533806bcc5a5b1532de4dfb328c3cec81d87fba8f0b0823ac"
+    }
+  },
+  "role_default": [
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/payroll-members-runtime-20261028/role16-city-headless-stack_restore-fixed",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "source": "role16-source-manifest.json",
+      "program_sha256": "c16aa49ba307f95b2902439ac85536723e725f067b32f0c74812f240c4e6003e",
+      "exit": 0,
+      "seconds": 1.861730916,
+      "summaries": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/payroll-members-runtime-20261028/role16-city-headless-finite_city_role-fixed",
+        "--exact",
+        "actual_payroll_members_and_public_service_keep_original_normal_role_budget",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "source": "role16-source-manifest.json",
+      "program_sha256": "242cc04f58d3ea5d03d2d8b5c691bc0860a50d5d56e891a50e57b86f35bc5cbe",
+      "exit": 0,
+      "seconds": 12.003866458,
+      "summaries": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ]
+    }
+  ],
+  "role_resources": {
+    "arena_used_observed_max": 55798280,
+    "engine_owned_bytes": 3690248,
+    "not_native_16gb_speed_or_m0_acceptance": true,
+    "pool": {
+      "available_touched_bytes": 67108864,
+      "capacity_bytes": 67108864,
+      "fill_acknowledgements": 0,
+      "granted_capacity_bytes": 0,
+      "grants": 0,
+      "maximum_prepare_to_fill_or_reap_ns": 546290208,
+      "rejected_requests": 0,
+      "returns": 0,
+      "scans": 13,
+      "workspace_capacity_bytes": 0,
+      "workspace_fills": 2,
+      "workspace_grants": 2,
+      "workspace_returns": 2
+    },
+    "reference_and_creator_outside_shipping_role": true,
+    "store_owned_bytes": 42008586
+  },
+  "resource_source": "work/payroll-members-runtime-20261028/role16-finite_city_role-evidence/normal-role-59782/resources.json",
+  "allocator_grant_bytes": 61865984,
+  "role_pool_bytes": 67108864,
+  "owned_store_includes_engine": true,
+  "final_source_files": 498,
+  "final_source_matches_worktree": true,
+  "unrelated_wip_files_unchanged": 24,
+  "disk_budget_bytes": 3221225472,
+  "disk_actual_kib": 2098848,
+  "hardware": {
+    "model": "Mac16,1",
+    "ram_bytes": 34359738368,
+    "os": "26.6.2",
+    "storage": "HP P900 USB/APFS; existing target/work"
+  },
+  "not_verified": [
+    "real 16GB",
+    "whole process/native total footprint",
+    "full M0 stress/long run",
+    "product population/city upper bound or sustainable speed",
+    "GPU/UI/Windows",
+    "full hiring/commuting/labor law/qualification issuance",
+    "current full old 720-day reclaim case; timeout remains not passed"
+  ],
+  "pr": null,
+  "advisor": "original advisor read-only targeted architecture and blocker reviews; no independent execution"
+}

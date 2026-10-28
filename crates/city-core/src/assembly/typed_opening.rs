@@ -458,7 +458,7 @@ pub(super) fn decode(bytes: &[u8], actual: &[Resource]) -> Result<Opening, Strin
         service_needs: None,
         continuous_supply: None,
         facility_work: None,
-        asset_capital: None,
+        asset_capital: None, payroll_members: None,
     })
 }
 

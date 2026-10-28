@@ -106,7 +106,11 @@ impl Store {
                         .progress
                         .last_complete,
         );
-        let pages = steps.div_ceil(usize::from(limit)) + barrier;
+        // A job-group Begin is one original member event per Envelope. Wide
+        // pages still need these commits; steps alone cannot price that barrier.
+        let pages = steps.div_ceil(usize::from(limit)).checked_add(barrier)
+            .and_then(|n|n.checked_add(self.engine.payroll_begin_page_breaks(progress.at)))
+            .ok_or(Error::Invalid("timeline_page_bound_overflow"))?;
         if pages == 0 || pages > CONTINUATION_MAX_PAGES as usize {
             return Err(Error::Invalid("timeline_page_limit_too_small"));
         }

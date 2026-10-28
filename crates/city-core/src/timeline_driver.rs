@@ -36,6 +36,9 @@ pub(super) struct Frame<'a, 'd> {
     pub continuous_supply: &'a mut Option<Box<crate::continuous_supply::Runtime>>,
     pub facility_work: &'a mut Option<Box<crate::facility_authority::Runtime>>,
     pub facility_member: &'a mut Option<Box<crate::member_activity::Ledger>>,
+    pub payroll_members: &'a mut Option<Box<crate::payroll_members::Runtime>>,
+    pub begin_used: bool,
+    pub yield_requested: bool,
     pub operation_id: u64,
     pub service_working_base: usize,
     pub town: &'a mut Option<crate::town_runtime::MarketState>,
@@ -288,7 +291,7 @@ impl Frame<'_, '_> {
                 }
             }
             C::AddPayroll { spec } => {
-                crate::facility_authority::check_payroll(self.facility_work.as_deref(),spec.payee,t.progress.last_complete,spec.ends_at,true)?;
+                if self.payroll_members.is_none(){crate::facility_authority::check_payroll(self.facility_work.as_deref(),spec.payee,t.progress.last_complete,spec.ends_at,true)?;}
                 if self.town.as_ref().is_some_and(|state| {
                     crate::transaction::market_is_suspended(Some(state), spec.payer)
                         || crate::transaction::market_is_exiting(Some(state), spec.payer)
@@ -335,6 +338,8 @@ impl Frame<'_, '_> {
                     .map_err(|_| TxError::WorkingLimit)?;
                 t.payroll
                     .push(t::Payroll::new(spec, t.progress.last_complete)?);
+                if let Some(r)=self.payroll_members.as_deref_mut(){r.admit(spec,self.operation_id,self.world.revision.checked_add(1).ok_or(TxError::Overflow)?,t.progress.last_complete)?;}
+                self.coordinate_payroll_command(t)?;
             }
             C::StopWork { id }
             | C::ChangeCycle { id, .. }
@@ -404,6 +409,10 @@ impl Frame<'_, '_> {
                     let payee = c.spec.payee;
                     self.record_household_payroll_payment(payee, paid, t.progress.last_complete)?;
                 }
+                if matches!(command,C::StopWork{..}|C::Terminate{..}|C::EndForExit{..}){
+                    if let Some(r)=self.payroll_members.as_deref_mut(){r.dirty(id)?;}
+                    self.coordinate_payroll_command(t)?;
+                }
             }
             C::SettleClaim { id } => {
                 let index = t
@@ -465,7 +474,7 @@ impl Frame<'_, '_> {
                         break;
                     }
                     self.one(t)?;
-                    if t.progress.phase.is_none() {
+                    if t.progress.phase.is_none() || self.yield_requested {
                         break;
                     }
                 }
@@ -485,6 +494,16 @@ impl Frame<'_, '_> {
         }
         Ok(())
     }
+    fn coordinate_payroll_command(&mut self,t:&Timeline)->Result<(),TxError>{
+        if let Some(r)=self.payroll_members.as_deref_mut(){
+            let ledger=self.facility_member.as_deref_mut().ok_or(TxError::InvalidOperation)?;
+            loop {match r.coordinate_one(t,ledger,t.progress.last_complete,self.operation_id,self.world.revision.checked_add(1).ok_or(TxError::Overflow)?,&mut self.begin_used)?{
+                crate::payroll_members::Step::Done=>break,
+                crate::payroll_members::Step::Progress{member_event}=>{let _=member_event;},
+                crate::payroll_members::Step::Yield=>return Err(TxError::WorkingLimit),
+            }}
+        }Ok(())
+    }
     fn boundary(&mut self, t: &mut Timeline) -> Result<(), TxError> {
         let now = t.progress.last_complete;
         let mut at = t
@@ -499,6 +518,7 @@ impl Frame<'_, '_> {
             at = at.min(due);
             Ok(())
         };
+        if let Some(r)=self.payroll_members.as_deref(){take(r.next_shift_boundary(now)?)?;}
         if let Some(supply)=self.continuous_supply.as_deref(){
             let mut ledger=ledger!(self);
             if let Some(due)=supply.boundary(&mut ledger,now)?{take(due)?;}
@@ -679,7 +699,8 @@ impl Frame<'_, '_> {
             P::P0 => {
                 if (p.cursor as usize) < t.payroll.len() {
                     let c = &mut t.payroll[p.cursor as usize];
-                    c.accrue(at, self.region.as_ref().map(|r| r.active_city))?;
+                    let admitted=if let Some(r)=self.payroll_members.as_deref(){r.work_allowed(c,c.last_accrual,at,self.facility_member.as_deref().ok_or(TxError::InvalidOperation)?)?}else{true};
+                    c.accrue_with_work(at, self.region.as_ref().map(|r| r.active_city),admitted)?;
                     t.progress.cursor += 1;
                 } else {
                     let delta = at - p.last_complete;
@@ -831,6 +852,13 @@ impl Frame<'_, '_> {
                     if self.service_needs.as_deref().is_some_and(|n|n.delivery.is_some()){
                         let ledger=ledger!(self);
                         apply_service_delivery(self.world,self.service_needs,self.facility_member,ledger,self.boot,at,self.operation_id,Caller::System,None,self.housing_wage_window)?;
+                    }
+                    if let Some(r)=self.payroll_members.as_deref_mut(){
+                        match r.coordinate_one(t,self.facility_member.as_deref_mut().ok_or(TxError::InvalidOperation)?,at,self.operation_id,self.world.revision.checked_add(1).ok_or(TxError::Overflow)?,&mut self.begin_used)?{
+                            crate::payroll_members::Step::Done=>{},
+                            crate::payroll_members::Step::Progress{member_event}=>{if member_event{t.progress.page_sources=t.progress.page_sources.checked_add(1).ok_or(TxError::Overflow)?;}return Ok(());},
+                            crate::payroll_members::Step::Yield=>{self.yield_requested=true;return Ok(());},
+                        }
                     }
                     t.progress.last_complete = at;
                     t.progress.phase = None;

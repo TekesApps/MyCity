@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.216`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.217`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.217 完成[#155实际岗位工时与公服成员共存](docs/evidence/payroll-members-runtime-20261028/STATUS.md)，修复#156正常存档恢复入口。共享/默认栈与原normal角色有限门通过；旧回收长例本次超时不计通过，复用范围单列。Issue关闭按后续回执，完整城市/16GB/M0长期仍未验收。
 
 v0.5.216 接通[#21原Boot输出→实际Police消费](docs/evidence/finite-city-runtime-20261028/BRIDGE.md)，与Town同源用电、原票/中断/冷恢复、5任务回收及原normal资源门通过；账户Payroll成员时窗仍未接，完整城市/21/115开放。
 

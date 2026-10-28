@@ -101,6 +101,7 @@ pub struct Opening {
     pub continuous_supply: Option<crate::continuous_supply::Opening>,
     pub facility_work: Option<crate::facility_authority::Opening>,
     pub asset_capital: Option<Box<crate::asset_cost_authority::Opening>>,
+    pub payroll_members: Option<Box<crate::payroll_members::Opening>>,
 }
 
 // Decode-only backing reduces the derived visitor's aggregate stack temporaries.
@@ -146,6 +147,7 @@ mod private_openingdecode {
         #[serde(default)]
         pub(super) facility_work: Option<Box<crate::facility_authority::Opening>>,
         pub(super) asset_capital: Option<Box<crate::asset_cost_authority::Opening>>,
+        pub(super) payroll_members: Option<Box<crate::payroll_members::Opening>>,
     }
 
     impl Opening {
@@ -172,6 +174,7 @@ mod private_openingdecode {
                 continuous_supply: value.continuous_supply.map(Box::new),
                 facility_work: value.facility_work.map(Box::new),
                 asset_capital: value.asset_capital,
+                payroll_members: value.payroll_members,
             }
         }
         #[inline(never)]
@@ -196,6 +199,7 @@ mod private_openingdecode {
                 continuous_supply: self.continuous_supply.map(|value| *value),
                 facility_work: self.facility_work.map(|value| *value),
                 asset_capital: self.asset_capital,
+                payroll_members: self.payroll_members,
                 member_activity: self.member_activity.map(|value| *value),
             }
         }
@@ -316,14 +320,16 @@ pub struct OperatingModels {
     pub(crate) facility_work: Option<Box<crate::facility_authority::Runtime>>,
     #[serde(skip_serializing_if="Option::is_none")]
     pub(crate) asset_capital: Option<Box<crate::asset_cost_authority::Runtime>>,
+    #[serde(skip_serializing_if="Option::is_none")]
+    pub(crate) payroll_members: Option<Box<crate::payroll_members::Runtime>>,
 }
 impl OperatingModels {
-    fn empty(&self)->bool{self.service_needs.is_none()&&self.continuous_supply.is_none()&&self.facility_work.is_none()&&self.asset_capital.is_none()}
-    fn pack(service_needs:Option<Box<crate::service_needs::Runtime>>,continuous_supply:Option<Box<crate::continuous_supply::Runtime>>,facility_work:Option<Box<crate::facility_authority::Runtime>>,asset_capital:Option<Box<crate::asset_cost_authority::Runtime>>)->Option<Box<Self>>{
-        let value=Self{service_needs,continuous_supply,facility_work,asset_capital};if value.empty(){None}else{Some(Box::new(value))}
+    fn empty(&self)->bool{self.service_needs.is_none()&&self.continuous_supply.is_none()&&self.facility_work.is_none()&&self.asset_capital.is_none()&&self.payroll_members.is_none()}
+    fn pack(service_needs:Option<Box<crate::service_needs::Runtime>>,continuous_supply:Option<Box<crate::continuous_supply::Runtime>>,facility_work:Option<Box<crate::facility_authority::Runtime>>,asset_capital:Option<Box<crate::asset_cost_authority::Runtime>>,payroll_members:Option<Box<crate::payroll_members::Runtime>>)->Option<Box<Self>>{
+        let value=Self{service_needs,continuous_supply,facility_work,asset_capital,payroll_members};if value.empty(){None}else{Some(Box::new(value))}
     }
 }
-static EMPTY_OPERATING_MODELS:OperatingModels=OperatingModels{service_needs:None,continuous_supply:None,facility_work:None,asset_capital:None};
+static EMPTY_OPERATING_MODELS:OperatingModels=OperatingModels{service_needs:None,continuous_supply:None,facility_work:None,asset_capital:None,payroll_members:None};
 
 #[derive(Serialize)]
 #[serde(deny_unknown_fields)]
@@ -367,14 +373,16 @@ impl World {
     fn continuous_supply_slot_mut(&mut self)->&mut Option<Box<crate::continuous_supply::Runtime>>{&mut self.operating_models.get_or_insert_with(||Box::new(OperatingModels::default())).continuous_supply}
     fn facility_work_slot_mut(&mut self)->&mut Option<Box<crate::facility_authority::Runtime>>{&mut self.operating_models.get_or_insert_with(||Box::new(OperatingModels::default())).facility_work}
     fn asset_capital_slot_mut(&mut self)->&mut Option<Box<crate::asset_cost_authority::Runtime>>{&mut self.operating_models.get_or_insert_with(||Box::new(OperatingModels::default())).asset_capital}
+    fn payroll_members_slot_mut(&mut self)->&mut Option<Box<crate::payroll_members::Runtime>>{&mut self.operating_models.get_or_insert_with(||Box::new(OperatingModels::default())).payroll_members}
+    pub(crate) fn payroll_members_mut(&mut self)->Option<&mut crate::payroll_members::Runtime>{self.operating_models.as_deref_mut()?.payroll_members.as_deref_mut()}
     pub(crate) fn asset_capital_mut(&mut self)->Option<&mut crate::asset_cost_authority::Runtime>{self.operating_models.as_deref_mut()?.asset_capital.as_deref_mut()}
     pub(crate) const fn operating_header_bytes()->usize{size_of::<OperatingModels>()}
     fn pending_operating_header_bytes(&self)->usize{if self.operating_models.is_none(){Self::operating_header_bytes()}else{0}}
     fn operating_owned_bytes(&self)->usize{self.operating_models.as_ref().map_or(0,|_|Self::operating_header_bytes())}
-    pub(crate) fn commit_operating_states(&mut self,service_needs:Option<Box<crate::service_needs::Runtime>>,continuous_supply:Option<Box<crate::continuous_supply::Runtime>>,facility_work:Option<Box<crate::facility_authority::Runtime>>,asset_capital:Option<Box<crate::asset_cost_authority::Runtime>>){
-        if service_needs.is_none()&&continuous_supply.is_none()&&facility_work.is_none()&&asset_capital.is_none(){self.operating_models=None;}
-        else if let Some(models)=self.operating_models.as_deref_mut(){models.service_needs=service_needs;models.continuous_supply=continuous_supply;models.facility_work=facility_work;models.asset_capital=asset_capital;}
-        else{self.operating_models=OperatingModels::pack(service_needs,continuous_supply,facility_work,asset_capital);}
+    pub(crate) fn commit_operating_states(&mut self,service_needs:Option<Box<crate::service_needs::Runtime>>,continuous_supply:Option<Box<crate::continuous_supply::Runtime>>,facility_work:Option<Box<crate::facility_authority::Runtime>>,asset_capital:Option<Box<crate::asset_cost_authority::Runtime>>,payroll_members:Option<Box<crate::payroll_members::Runtime>>){
+        if service_needs.is_none()&&continuous_supply.is_none()&&facility_work.is_none()&&asset_capital.is_none()&&payroll_members.is_none(){self.operating_models=None;}
+        else if let Some(models)=self.operating_models.as_deref_mut(){models.service_needs=service_needs;models.continuous_supply=continuous_supply;models.facility_work=facility_work;models.asset_capital=asset_capital;models.payroll_members=payroll_members;}
+        else{self.operating_models=OperatingModels::pack(service_needs,continuous_supply,facility_work,asset_capital,payroll_members);}
     }
     pub(crate) fn service_needs_mut(&mut self)->Option<&mut crate::service_needs::Runtime>{self.operating_models.as_deref_mut()?.service_needs.as_deref_mut()}
     pub(crate) fn continuous_supply_mut(&mut self)->Option<&mut crate::continuous_supply::Runtime>{self.operating_models.as_deref_mut()?.continuous_supply.as_deref_mut()}
@@ -422,6 +430,8 @@ mod private_worlddecode {
         facility_work: Option<Box<crate::facility_authority::Runtime>>,
         #[serde(default)]
         asset_capital: Option<Box<crate::asset_cost_authority::Runtime>>,
+        #[serde(default)]
+        payroll_members: Option<Box<crate::payroll_members::Runtime>>,
     }
 
     impl World {
@@ -447,7 +457,7 @@ mod private_worlddecode {
                 education: self.education,
                 member_activity: self.member_activity,
                 qualification: self.qualification,
-                operating_models:OperatingModels::pack(self.service_needs,self.continuous_supply,self.facility_work,self.asset_capital),
+                operating_models:OperatingModels::pack(self.service_needs,self.continuous_supply,self.facility_work,self.asset_capital,self.payroll_members),
             }
         }
     }
@@ -613,6 +623,8 @@ pub(crate) struct BusinessWorld<'a> {
     facility_work: &'a Option<Box<crate::facility_authority::Runtime>>,
     #[serde(skip_serializing_if="Option::is_none")]
     asset_capital: &'a Option<Box<crate::asset_cost_authority::Runtime>>,
+    #[serde(skip_serializing_if="Option::is_none")]
+    payroll_members: &'a Option<Box<crate::payroll_members::Runtime>>,
 }
 #[derive(Serialize)]
 pub(crate) struct BorrowedWorldView<'a> {
@@ -649,6 +661,8 @@ pub(crate) struct BorrowedWorldView<'a> {
     facility_work: &'a Option<Box<crate::facility_authority::Runtime>>,
     #[serde(skip_serializing_if="Option::is_none")]
     asset_capital: &'a Option<Box<crate::asset_cost_authority::Runtime>>,
+    #[serde(skip_serializing_if="Option::is_none")]
+    payroll_members: &'a Option<Box<crate::payroll_members::Runtime>>,
 }
 struct AccountViews<'a>(&'a World);
 impl Serialize for AccountViews<'_> {
@@ -803,6 +817,7 @@ impl World {
             continuous_supply: &self.continuous_supply,
             facility_work: &self.facility_work,
             asset_capital: &self.asset_capital,
+            payroll_members: &self.payroll_members,
         }
     }
     pub(crate) fn borrowed_view(&self) -> BorrowedWorldView<'_> {
@@ -849,6 +864,7 @@ impl World {
             continuous_supply: &self.continuous_supply,
             facility_work: &self.facility_work,
             asset_capital: &self.asset_capital,
+            payroll_members: &self.payroll_members,
         }
     }
     pub(crate) fn restore_capacity(&mut self) -> Result<(), String> {
@@ -1238,7 +1254,7 @@ impl World {
         self.construction
     }
     pub fn state_hash(&self) -> String {
-        if self.asset_capital.is_some() { return sha256(&serde_json::to_vec(&self.borrowed_view()).expect("finite exact world")); }
+        if self.asset_capital.is_some() || self.payroll_members.is_some() { return sha256(&serde_json::to_vec(&self.borrowed_view()).expect("finite exact world")); }
         sha256(&serde_json::to_vec(&self.view()).expect("finite exact world"))
     }
     /// Legacy base+Housing retains its original 128KiB gate. The explicit optional venue
@@ -1252,11 +1268,13 @@ impl World {
             + self.service_needs.as_deref().map_or(0,crate::service_needs::Runtime::owned_capacity_bytes)
             + self.continuous_supply.as_deref().map_or(0, crate::continuous_supply::Runtime::owned_bytes)
             + self.facility_work.as_ref().map_or(0, |_| crate::facility_authority::Runtime::owned_bytes())
-            + self.asset_capital.as_ref().map_or(0, |_| crate::asset_cost_authority::Runtime::owned_bytes()))
+            + self.asset_capital.as_ref().map_or(0, |_| crate::asset_cost_authority::Runtime::owned_bytes())
+            + self.payroll_members.as_deref().map_or(0,crate::payroll_members::Runtime::owned_bytes))
             .and_then(|base| base.checked_add(validation_scratch))
             .is_some_and(|base| base <= WORLD_BYTE_BUDGET)
             && self.continuous_supply.as_deref().is_none_or(|r|r.owned_bytes()<=crate::continuous_supply::MAX_OWNED_BYTES)
             && self.facility_work.as_ref().is_none_or(|_|crate::facility_authority::Runtime::owned_bytes()<=crate::facility_authority::MAX_OWNED_BYTES)
+            && self.payroll_members.as_deref().is_none_or(|r|r.owned_bytes()<=crate::payroll_members::MAX_OWNED_BYTES)
             && venue_owned <= crate::venue_runtime::Runtime::max_owned_bytes()
             && self.service_needs.as_deref().is_none_or(|n|n.owned_capacity_bytes()<=crate::service_needs_authority::MAX_OWNED_BYTES+n.delivery_extra_bytes())
             && total_world_owned.checked_add(validation_scratch)
@@ -1276,6 +1294,7 @@ impl World {
             + self.continuous_supply.as_deref().map_or(0, crate::continuous_supply::Runtime::owned_bytes)
             + self.facility_work.as_ref().map_or(0, |_| crate::facility_authority::Runtime::owned_bytes())
             + self.asset_capital.as_ref().map_or(0, |_| crate::asset_cost_authority::Runtime::owned_bytes())
+            + self.payroll_members.as_deref().map_or(0,crate::payroll_members::Runtime::owned_bytes)
             + self.operating_owned_bytes()
             + self
                 .housing
@@ -1829,6 +1848,11 @@ fn assemble_opening_into(mut input: OpeningDecode, world: &mut World) -> Result<
         if world.owned_capacity_bytes().checked_add(crate::facility_authority::Runtime::owned_bytes()+crate::facility_authority::MAX_WORKSPACE_BYTES+world.pending_operating_header_bytes()).is_none_or(|n|n>crate::transaction::ENGINE_BYTE_BUDGET){return Err("facility_work_opening_budget".into());}
         *world.facility_work_slot_mut()=Some(crate::facility_authority::initialize(*opening,world)?);
     }
+    if let Some(opening)=input.payroll_members {
+        let extra=opening.runtime_owned_bytes()+crate::payroll_members::Runtime::workspace_bytes()+world.pending_operating_header_bytes();
+        if world.owned_capacity_bytes().checked_add(extra).is_none_or(|n|n>crate::transaction::ENGINE_BYTE_BUDGET){return Err("payroll_members_opening_budget".into());}
+        *world.payroll_members_slot_mut()=Some(crate::payroll_members::initialize(opening,world)?);
+    }
     let housing_scratch = if world.housing.is_some() {
         crate::housing::MAX_VALIDATION_SCRATCH_BYTES
     } else {
@@ -1904,6 +1928,7 @@ impl crate::restore_into::Restore for World {
         continuous_supply,20=>Into(continuous_supply_slot_mut),
         facility_work,21=>Into(facility_work_slot_mut),
         asset_capital,22=>Into(asset_capital_slot_mut),
+        payroll_members,23=>Into(payroll_members_slot_mut),
         });
         // Explicit null model fields must not leave an empty allocation in a legacy root.
         if self.operating_models.as_deref().is_some_and(OperatingModels::empty){self.operating_models=None;}

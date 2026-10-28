@@ -22,7 +22,8 @@
     150,
     152,
     153,
-    154
+    154,
+    156
   ],
   "hardware_issue": 114,
   "issues": [
@@ -3791,6 +3792,56 @@
       "implementation_tags": "c886a4461df283e563ad896b71616389725fda4b / v0.5.213",
       "pr": "No PR, direct root integration",
       "closure_evidence": "docs/evidence/asset-capital-runtime-20261028/closure.json"
+    },
+    {
+      "issue": 155,
+      "title": "有限岗位群组实际工时：原Payroll与公服共享成员账及工资恢复",
+      "url": "https://github.com/TekesApps/MyCity/issues/155",
+      "parent": 21,
+      "stage": "待验证",
+      "owner": "当前root唯一共享writer",
+      "write_authority": [
+        "Issue155精确文件清单",
+        "原worker仅专属测试源码"
+      ],
+      "scope": "有限实际岗位群组、成员排他、工秒工资与经营产量、Store恢复",
+      "required_capabilities": [
+        "v216供给及公服实际责任",
+        "原129成员账EPOCH1",
+        "原Payroll与Town实际工秒"
+      ],
+      "acceptance": [
+        "原廉价兼容门",
+        "实际正常/冲突/边界/退出及工资余数",
+        "P5续页/原票/保存恢复/受影响共享/normal资源"
+      ],
+      "remaining": "finite contract verified; pending publication, actual issue backfill/close and readback",
+      "evidence": "docs/evidence/payroll-members-runtime-20261028/STATUS.md",
+      "pr": "本阶段未创建"
+    },
+    {
+      "issue": 156,
+      "title": "无入住但已有收入原票时，公服空状态恢复入口错误拒绝正常存档",
+      "url": "https://github.com/TekesApps/MyCity/issues/156",
+      "parent": null,
+      "stage": "待验证",
+      "owner": "当前root，与155同一共享验收窗口",
+      "write_authority": [
+        "core transaction.rs empty guard",
+        "155专属恢复测试及既有台账"
+      ],
+      "scope": "引用不为空时交原Store lookup，不以未入住冒充空状态",
+      "required_capabilities": [
+        "原service receipt恢复路径"
+      ],
+      "acceptance": [
+        "保留正常存档红例的raw/Store恢复",
+        "全空旧来源仍自动恢复",
+        "双P5/原票/受影响共享和normal资源"
+      ],
+      "remaining": "finite contract verified; pending publication, actual issue backfill/close and readback",
+      "evidence": "docs/evidence/payroll-members-runtime-20261028/STATUS.md",
+      "pr": "无PR"
     }
   ],
   "capability_edges": [
@@ -3947,6 +3998,14 @@
         150
       ],
       "reason": "current default regression blocks complete137 acceptance"
+    },
+    {
+      "consumer": 155,
+      "requires": [
+        129,
+        134
+      ],
+      "reason": "原成员账及实际公服责任，不要求父域全部完成"
     }
   ],
   "unpublished_execution_update": {

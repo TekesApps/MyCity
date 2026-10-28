@@ -63,3 +63,20 @@ target/release/mycity-headless timeline-probe /tmp/mycity-t05b-fresh
 ## 7. 主体事件视图与后续架构整理
 
 主体可关联待办和历史，但权威是业务状态、唯一事实及其主体引用；共享事件不按参与者复制执行。当前Claims／Payroll／到期业务表和receipt只是有限实现，不是已建好每个主体的独立incoming queue及无限history。连续劳动／流量按区间积分，事件与边界触发计算，不生成逐人逐秒日志。未来worker只计算冻结输入的候选，排程与提交仍归Sim，共享文件按版本发布且单writer。详见[A55主体澄清](process-worker-and-render-architecture.md#10-主体待办与历史的统一视角v0521澄清)；用户要求完成本阶段后另作总体软件架构梳理，当前不扩worker／通用事件API。
+
+## 有限岗位群组实际劳动接线（#155实现中，尚未完整验收）
+
+承接#21同存档有限城市，登记原Payroll与住房人口namespace内的精确成员群组，不从收款账户猜员工。新增显式`LocalDevelopmentActualJobGroupV1`开局登记（可选boxed `payroll_members`）；费率为**整个登记岗位群组每小时金额**，不暗乘人数。登记包含scope、人口origin/member_version、原PayrollSpec及成员范围、明确不可变游戏来源ID/版本；AddPayroll只接纳匹配的原合同。原无登记输入保持显式旧prototype范围，不补造其历史成员身份。招聘、通勤、资格发放、薪资协商/劳动法与完整劳动市场另归原Issue，不被这个来源声明替代。
+
+P0只按此前完成边界已真实持有的`PayrollWork`活动覆盖计工秒；无活动的已知冲突区间推进覆盖但新增工秒/工资为0，不碰原accrued/billed/paid/remainder。P5在原公服/设施截至本边界的工作及释放之后结算/关闭岗位活动并决定下一段：先占有者优先、不抢占；已知成员冲突等待并在后续合法完成边界再试，不追认过去。缺来源、账异常或执行额度不足必须保留未完成覆盖、沿原页背压，不能当成零工作或实际劳动力短缺。9:00、17:00与合同结束加入既有边界切分；StopWork/Terminate/EndForExit在原完成边界停止未来劳动，保留所有既有欠薪和余数，付款仍沿原实际付款日收入。
+
+状态放既有按需OperatingModels backing，只保存有界登记/每合同原票与活动身份、已协调边界；不扩World或每条Payroll内联结构，不加成员账、钱包、时钟或独立调度器。按原Payroll上限有界，不逐人常驻模拟。多个群组同刻开始须遵守原member Begin操作身份：每原Envelope最多一次Begin，P5每步协调一行；需要下次Begin则提前提交yield，保留target/at/P5和行进度，不提前last_complete，不伪造页工作量。Frame只保留本票transient begin_used/yield状态，恢复沿持久行状态与原continuation；原票重试不再执行。
+
+已有Town执行路径使用实际worked_seconds和worker_output余数，可消费部分班次，不另改日产模型。设施旧账户级Payroll保护在未知成员时保留；双方有可信范围时沿同一成员账裁决实际冲突，不按同账户合并工人或钱包。Owned/候选深clone/成员候选/恢复重叠须计费；先跑原18单元128KiB、原票4096B、无登记旧业务、null/copy/同槽和默认栈，再扩新业务/恢复/normal。原M0不变。
+
+有限验收：正常不重叠群组；公服跨9点占用导致岗位等待、退出后仅从新claim计工；反向岗位占有阻止重叠公服；两个以上群组同票yield/部分P5冷恢复；17点/合同结束释放；已欠工资、余数与实际付款收入；P0/P3/P5页保存/原票/写入中断；部分工时传到Town产量/税/库存；旧prototype与新登记输入分开报告。设计/候选不代表实现或验收通过。
+
+
+#155真实Store反例补充：原core内存双群组可续，但Store按`ceil(steps/page_limit)`只预留一票，9点必须第二次Begin时失败`timeline_reservation_exhausted`（store09固定原件保留）。沿原continuation预算增加两种独立成本：已准入n组P5协调/Done/yield的保守步骤`2*n+1`，以及该已选boundary.at可能Begin且非Holding的组数减1的必要分票。现在忙也计入可能Begin上界，因为前序公服可能恰好释放；不按最终target推算。新票数经checked加法、原96页/收据/磁盘门事前预留；续页和冷恢复只消费原remaining_pages，不重新授额。原无登记模式新增成本为0，不改原M0负载/预算。新profile尚未发布，失败实验不静默补足旧预留。
+
+成员序号只在真实Begin/Settle/Close才申请，纯Idle/Waiting覆盖不耗序号。状态和immutable登记摘要使用有长度限的流式hash，不分配Vec编码缓冲；工作区显式计prepared成员副本和临时事件候选两份Ledger，以及HashWriter/RestoreCheck/State。Store复用现有genesis登记前后比对，再沿原receipt完成ready；缺省/null/copy不能把已配置状态悄悄读作旧prototype。

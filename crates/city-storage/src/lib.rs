@@ -1183,6 +1183,7 @@ impl Store {
         let original_continuous_supply_registration=genesis_engine.continuous_supply_registration();
         let original_facility_registration=genesis_engine.facility_work_registration();
         let original_asset_capital_registration=genesis_engine.asset_capital_registration();
+        let original_payroll_members_registration=genesis_engine.payroll_members_registration();
         let (mut sequence, mut chain) = if let Some(reference) = &root.checkpoint_v2 {
             let (sequence, chain) = checkpoint_v2::open_into(
                 dir,
@@ -1220,6 +1221,7 @@ impl Store {
         }
         if genesis_engine.continuous_supply_registration()!=original_continuous_supply_registration{return Err(Error::Invalid("continuous_supply_genesis_registration_mismatch"));}
         if genesis_engine.asset_capital_registration()!=original_asset_capital_registration{return Err(Error::Invalid("asset_capital_genesis_registration_mismatch"));}
+        if genesis_engine.payroll_members_registration()!=original_payroll_members_registration{return Err(Error::Invalid("payroll_members_genesis_registration_mismatch"));}
         if genesis_engine.facility_work_registration()!=original_facility_registration{return Err(Error::Invalid("facility_work_genesis_registration_mismatch"));}
         if genesis_engine.service_needs_registration()!=original_service_needs_registration {
             return Err(Error::Invalid("service_needs_genesis_registration_mismatch"));
@@ -1295,6 +1297,16 @@ impl Store {
                 }
             }
             genesis_engine.finish_asset_capital_restore(check).map_err(Error::Model)?;
+        }
+
+        if !genesis_engine.payroll_members_is_ready(){
+            let refs=genesis_engine.payroll_members_receipt_operations();
+            let mut check=genesis_engine.begin_payroll_members_restore().map_err(Error::Model)?;
+            for (index,operation) in refs.into_iter().enumerate(){if let Some(operation)=operation{
+                let original=checkpoint::lookup_archived_at(dir,&root,operation,&mut metadata)?.ok_or(Error::Invalid("payroll_members_original_missing"))?;
+                genesis_engine.check_payroll_members_original(&mut check,index,&original).map_err(Error::Model)?;
+            }}
+            genesis_engine.finish_payroll_members_restore(check).map_err(Error::Model)?;
         }
 
         let wal_base_sequence = sequence;

@@ -34,6 +34,8 @@ mod old_opening {
         pub service_needs: Option<crate::service_needs::Opening>,
         pub continuous_supply: Option<crate::continuous_supply::Opening>,
         pub facility_work: Option<crate::facility_authority::Opening>,
+        pub asset_capital: Option<Box<crate::asset_cost_authority::Opening>>,
+        pub payroll_members: Option<Box<crate::payroll_members::Opening>>,
     }
 }
 use old_opening::Opening as MirrorOpening;
@@ -75,6 +77,10 @@ mod old_world {
         pub(crate) continuous_supply: Option<Box<crate::continuous_supply::Runtime>>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         pub(crate) facility_work: Option<Box<crate::facility_authority::Runtime>>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub(crate) asset_capital: Option<Box<crate::asset_cost_authority::Runtime>>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub(crate) payroll_members: Option<Box<crate::payroll_members::Runtime>>,
     }
 }
 use old_world::World as MirrorWorld;
@@ -375,14 +381,14 @@ fn optional_operating_carrier_preserves_flat_wire_copy_and_null_restore() {
     assert!(value.get("operating_models").is_none());
     assert!(value.get("continuous_supply").is_some());
     assert!(value.get("facility_work").is_some());
-    assert_eq!(active.operating_owned_bytes(),3*size_of::<usize>());
+    assert_eq!(active.operating_owned_bytes(),5*size_of::<usize>());
     for bytes in cases(&value){compare_world(&bytes);}
 
     let empty=assemble(include_bytes!("../../../fixtures/m0-e0-opening.json")).unwrap();
     let empty_bytes=serde_json::to_vec(&empty).unwrap();
     assert!(empty.operating_models.is_none());
     let mut explicit_null:Value=serde_json::from_slice(&empty_bytes).unwrap();
-    for key in ["service_needs","continuous_supply","facility_work"]{explicit_null[key]=Value::Null;}
+    for key in ["service_needs","continuous_supply","facility_work","asset_capital","payroll_members"]{explicit_null[key]=Value::Null;}
     let explicit_null=serde_json::to_vec(&explicit_null).unwrap();
     let decoded:World=serde_json::from_slice(&explicit_null).unwrap();
     assert!(decoded.operating_models.is_none());

@@ -144,13 +144,16 @@ impl Payroll {
         })
     }
     pub(crate) fn accrue(&mut self, to: u64, active_city: Option<u32>) -> Result<(), TxError> {
+        self.accrue_with_work(to,active_city,true)
+    }
+    pub(crate) fn accrue_with_work(&mut self,to:u64,active_city:Option<u32>,admitted:bool)->Result<(),TxError>{
         if to < self.last_accrual || to - self.last_accrual > 3600 {
             return Err(TxError::Timeline(Error::Cursor));
         }
         let end = to.min(self.spec.ends_at);
         let mut t = self.last_accrual;
         let mut seconds = 0u64;
-        if self.working && (self.spec.home_city == 0 || active_city == Some(self.spec.home_city)) {
+        if admitted && self.working && (self.spec.home_city == 0 || active_city == Some(self.spec.home_city)) {
             while t < end {
                 let midnight = t / DAY * DAY;
                 let until = end.min(midnight + DAY);

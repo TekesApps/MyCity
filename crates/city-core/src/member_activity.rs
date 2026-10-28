@@ -173,7 +173,7 @@ mod tests {
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
-pub(crate) enum Kind { EducationPreparation, EducationInstruction, ServiceWork, FacilityOperation }
+pub(crate) enum Kind { EducationPreparation, EducationInstruction, ServiceWork, FacilityOperation, PayrollWork }
 
 /// Identity of a successfully ADMITTED ledger event, not an arbitrary provider ID.
 /// The serial root host uses the next ordinal only after resolving the previous
