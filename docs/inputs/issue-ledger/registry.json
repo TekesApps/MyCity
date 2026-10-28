@@ -3852,7 +3852,7 @@
       "title": "道路proof日结携带资产折旧原票被拒且不能恢复",
       "url": "https://github.com/TekesApps/MyCity/issues/157",
       "parent": 117,
-      "stage": "待验证",
+      "stage": "完成",
       "owner": "当前root，与21同一共享窗口",
       "write_authority": [
         "transaction.rs asset action gate",
@@ -3870,9 +3870,11 @@
         "旧普通TownSettle与旧无资产道路",
         "原18预算/default/受影响共享/normal"
       ],
-      "remaining": "road04共同业务及冷恢复已过；受影响共享终态/Sim新入口/default/normal待齐",
-      "evidence": "work/finite-city-road-intake-20261029",
-      "pr": "本阶段无PR；尚未发布"
+      "remaining": "完整有限缺陷合同已验收关闭；父域/硬件和明确排除范围保持开放",
+      "evidence": "docs/evidence/finite-city-road-intake-20261029/closure.json",
+      "pr": "本阶段无PR；尚未发布",
+      "implementation_tags": "v0.5.221 2454b22f1de4d2b4740edc04677a595d1da4cf13",
+      "closed_at": "2026-10-28T16:27:44Z"
     }
   ],
   "capability_edges": [
@@ -4040,14 +4042,14 @@
     }
   ],
   "unpublished_execution_update": {
-    "source_baseline": "v0.5.220",
-    "shared_core_in_progress": 1,
+    "source_baseline": "v0.5.221 2454b22f1de4d2b4740edc04677a595d1da4cf13",
+    "shared_core_in_progress": 0,
     "independent_preparations_active": 0,
     "limits": [
       1,
       2
     ],
-    "note": "21 real road proof common city and157 narrow original-context repair; no new models"
+    "note": "21 finite joint road consumer and157 accepted;157 actually closed; full parents open, no new dispatch"
   },
   "historical_execution_updates": [
     {

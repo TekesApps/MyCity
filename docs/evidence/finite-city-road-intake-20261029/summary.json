@@ -497,7 +497,7 @@
   "business_closed": 0,
   "historical_backfill": 0,
   "defects_contract_accepted": 1,
-  "defect_closure_pending": true,
+  "defect_closure_pending": false,
   "whole_source_packages_retired": 0,
   "whole_source_packages_remaining": 18,
   "cycle_start": "unknown reliable start; not issue/tag time",
@@ -510,5 +510,6 @@
     "actual16GB/native total memory/product capacity/speed/full M0 long-run/GPU/Windows/UI"
   ],
   "pr": "none; direct main integration",
-  "evidence_root": "/Volumes/HP P900/dev/MyCity/work/finite-city-road-intake-20261029"
+  "evidence_root": "/Volumes/HP P900/dev/MyCity/work/finite-city-road-intake-20261029",
+  "closure": "closure.json"
 }

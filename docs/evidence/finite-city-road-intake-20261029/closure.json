@@ -1,0 +1,29 @@
+{
+  "schema": "mycity-finite-road-defect-closure-v1",
+  "implementation_commit": "2454b22f1de4d2b4740edc04677a595d1da4cf13",
+  "implementation_tag": "v0.5.221",
+  "publication_main_and_tag_readback": true,
+  "defects": [
+    {
+      "issue": 157,
+      "state": "CLOSED",
+      "closed_at": "2026-10-28T16:27:44Z",
+      "labels": [
+        "stage:done"
+      ]
+    }
+  ],
+  "parents_remaining_open": [
+    21,
+    117,
+    115
+  ],
+  "business_closed": 0,
+  "historical_closed": 0,
+  "defects_closed": 1,
+  "whole_source_packages_retired": 0,
+  "whole_source_packages_remaining": 18,
+  "pr": "none; direct main",
+  "at": "2026-10-28T16:28:37.513936+00:00",
+  "parent_issue_readback": true
+}

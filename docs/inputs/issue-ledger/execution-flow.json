@@ -1,8 +1,8 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-28T16:03:18.232541+00:00",
-  "source_head": "v0.5.221 road proof/asset context candidate verified; publication pending",
+  "last_snapshot_at": "2026-10-28T16:28:37.513936+00:00",
+  "source_head": "v0.5.221 2454b22f1de4d2b4740edc04677a595d1da4cf13",
   "candidate": "21 finite asset/common city accepted; full21 remains open",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
   "limits": {
@@ -10,23 +10,7 @@
     "independent_preparations": 2,
     "reason_for_adjustment_required": true
   },
-  "active_shared_work": [
-    {
-      "issue": 21,
-      "owner": "root",
-      "stage": "待验证",
-      "scope": "bind existing real spatial allocation to common151/155/219 city; existing Store managed proof settlement and minimal Sim call, no new transport solver",
-      "file_ownership": [
-        "tests/fixtures/finite-city/transport_opening.rs",
-        "crates/city-storage/tests/finite_city_road.rs",
-        "crates/city-headless/src/sim_host.rs",
-        "crates/city-headless/tests/finite_city_role.rs",
-        "linked current docs/issue"
-      ],
-      "acceptance_card": "work/finite-city-road-intake-20261029/execution-card.json",
-      "remaining": "all finite contract checks pass; publish and issue157 actual closure only"
-    }
-  ],
+  "active_shared_work": [],
   "active_independent_preparations": [],
   "counting_rules": {
     "parents_are_not_active_work": true,
@@ -106,7 +90,8 @@
       152,
       153,
       154,
-      156
+      156,
+      157
     ]
   },
   "near_term_contracts": [
@@ -875,7 +860,7 @@
     "business_accepted": 0,
     "historical_backfill": 0,
     "defects_accepted": 1,
-    "issue_closures_pending": true,
+    "issue_closures_pending": false,
     "whole_packages_retired": 0,
     "proof": "docs/evidence/finite-city-road-intake-20261029/STATUS.md",
     "cycles": "unknown reliable start; verification window not development duration"
@@ -890,30 +875,27 @@
     "issue": 21,
     "defect": 157,
     "release": "v0.5.221",
-    "state": "finite verified; full parents open;157 closure pending",
+    "state": "verified frozen;157 actually closed; full parents open",
     "evidence": "docs/evidence/finite-city-road-intake-20261029/STATUS.md",
     "business_close_delta": 0
   },
   "latest_active_evidence": null,
   "near_term_objective": "consume integrated deliveries into sustainable finite city;151/155 closed; next real road proof consumer, no new model batch",
   "next_acceptance_preparation": {
-    "state": "read-only active",
-    "owner": "/root/finite_city_existing_inputs",
-    "scope": "existing road/town proof consumer and versioned minimal input differences againstv219",
-    "write_authority": [],
-    "compile_test_authority": false
+    "state": "not dispatched",
+    "owner": "root judgment",
+    "scope": "finite common city across existing input exhaustion and actual mandatory obligations",
+    "write_authority": []
   },
   "latest_completed_batch": {
-    "business": [
-      155
-    ],
+    "business": [],
     "defects": [
-      156
+      157
     ],
     "historical": [],
     "full_source_handoff_backlog": 18,
     "source_handoff_backlog_delta": 0,
-    "evidence": "docs/evidence/payroll-members-runtime-20261028/closure.json",
+    "evidence": "docs/evidence/finite-city-road-intake-20261029/closure.json",
     "reliable_cycle_start": "unknown"
   },
   "next_finite_city": {
@@ -991,6 +973,21 @@
         "scope": "existing151 actual asset daily costs into21 common scene; determine inputs and direct missing boundary first",
         "owner": "root judgment before any scoped preparation",
         "write_authority": []
+      }
+    },
+    {
+      "latest_completed_batch": {
+        "business": [
+          155
+        ],
+        "defects": [
+          156
+        ],
+        "historical": [],
+        "full_source_handoff_backlog": 18,
+        "source_handoff_backlog_delta": 0,
+        "evidence": "docs/evidence/payroll-members-runtime-20261028/closure.json",
+        "reliable_cycle_start": "unknown"
       }
     }
   ]
