@@ -1,23 +1,24 @@
 {
   "issue": 102,
-  "release": "v0.5.210",
+  "release": "v0.5.211",
+  "implementation_release": "v0.5.210",
   "baseline": "v0.5.209 1eb9e368d437467ddc7abaa74454fe40a7ae8d14",
   "phase_start": "2026-10-28T03:50:21.434563+00:00",
-  "phase_end": "2026-10-28T04:08:34.590498+00:00",
+  "phase_end": "2026-10-28T04:20:02.293039+00:00",
   "phase_window_not_full_issue_delivery_cycle": true,
   "parent_tests_passed": 26,
   "results": [
     {
-      "label": "pages03",
+      "label": "pages04",
       "command": [
-        "/Users/frankqin/dev/MyCity/work/bound-air-pages-20261028/source03-task_execution_pages-fixed",
+        "/Users/frankqin/dev/MyCity/work/bound-air-pages-20261028/source04-task_execution_pages-fixed",
         "--test-threads=1",
         "--nocapture"
       ],
-      "source": "source03-manifest.json",
+      "source": "source04-manifest.json",
       "exit_code": 0,
-      "seconds": 30.575374999999998,
-      "at": "2026-10-28T04:08:34.590498+00:00",
+      "seconds": 34.481083459000004,
+      "at": "2026-10-28T04:20:02.293039+00:00",
       "default_stack": true,
       "passed": 3,
       "failed": 0,
@@ -73,12 +74,12 @@
       "ignored": 0
     }
   ],
-  "reused_evidence": "source02 digest1/common9/Air13 reused: final source03 changes test session logging and cancelled checkpoint retention only; production byte equal; original source/program mapping retained",
+  "reused_evidence": "source02 digest1/common9/Air13 reused: production files byte-equal to final source04; only test log/cancelled-copy/EOF and documentation changed; do not claim these23 reran on source04",
   "initial_failure": "source01 pages2pass/1fail: test expected transfer accepted during original P4 busy; corrected to expect recorded busy refusal; product gate unchanged",
-  "evidence_followup": "source02 all26 pass; raw review found cancelled session logs overwritten by test; source03 pages3 rerun preserves both sessions and full cancelled world; no production changes",
+  "evidence_followup": "source02 all26 pass; source03 pages3 fixes log retention; final source04 pages3 rerun actual published v210 bytes because EOF whitespace changes the build fingerprint used by Store rules; no production algorithm changes",
   "observed_resource": {
     "grant_bytes": 61865984,
-    "role_peak_requested_max": 58294434,
+    "role_peak_requested_max": 58294439,
     "allocation_failures": 0,
     "pool_restored_bytes": 67108864,
     "not_native_or_process_peak": true
@@ -108,14 +109,14 @@
   "no_new_worktree_target_timer": true,
   "protected_wip_files": 24,
   "evidence_disk_budget_bytes": 1073741824,
-  "publication_whitespace_only_delta": {
-    "at": "2026-10-28T04:15:12.935128+00:00",
-    "failed_guard": "git diff --cached --check: new blank line at EOF",
-    "commit_created": false,
-    "file": "crates/city-headless/tests/task_execution_pages.rs",
-    "change": "remove trailing empty line only",
-    "relevant_semantics_unchanged": true,
-    "tests_not_repeated": true,
-    "compiled_original": "source03-full.zip"
-  }
+  "published_game_source_proof": {
+    "build_input_files": 458,
+    "all_recursive_build_inputs_in_zip": true,
+    "current_release_bytes_equal_zip": true,
+    "compiled_ready_source_sha256": "15c2b10f29acb50c0d6a75bfdf3820b29e4a837acf4b042292cc7b57432e24c9",
+    "all_ready_sources_match": true,
+    "source": "source04-full.zip",
+    "implementation_release": "v0.5.210"
+  },
+  "publication_whitespace_followup": "EOF whitespace changes MYCITY_SOURCE_SHA256 used by Store rules. Published v210 game bytes were rebuilt and pages3 passed as source04; v211 only synchronizes evidence, leaving all recursive game build bytes unchanged."
 }

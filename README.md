@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.210`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.211`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.211 仅同步[游戏v210发布源码的准确指纹补验](docs/evidence/bound-air-pages-20261028/STATUS.md)：458个构建输入与固定程序指纹一致，3项限定补验通过，原23项按版本复用；不新增业务或改变游戏代码。
 
 v0.5.210 接入[共同绑定的Air精确分页请求](docs/evidence/bound-air-pages-20261028/STATUS.md)：显式等价页计划复用原控制/票据/owner，初始实际quota有独立执行摘要。26项按版本对应的检查通过；完整#102/103/104仍开放。
 

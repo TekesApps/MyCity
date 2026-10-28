@@ -1,3 +1,9 @@
+# Current MyCity audit entry: v0.5.211 evidence / v0.5.210 game
+
+[当前证据](docs/evidence/bound-air-pages-20261028/STATUS.md)：对实际v210游戏源码补验source04的3项真实页面场景，458个递归构建输入与源码包逐字节一致，运行SourceSHA也等于实际输入计算值。源码标识参与Store规则，故没有仅凭测试EOF空行语义不变省略这次补验。v211只同步文档，游戏代码未变。
+
+唯一验收集合仍为26项：source04页面3项、生产字节一致的source02原23项，均保留各自固定程序/输入/结果；不重复计数。原失败、source03日志修复、最终完整取消态和两会话原件全部保留。完整102/103/104开放，root0+0；原M0/WIP/外置target/work和盘预算不变。以下入口为对应历史。
+
 # Current MyCity audit entry: v0.5.210
 
 #102共同绑定入口已支持原Air精确页计划：[接口、26项结果、失败及复用依据](docs/evidence/bound-air-pages-20261028/STATUS.md)。它只改变等价执行粒度，不是模型近似或新授额。初始实际intent/plan/quota单独绑定执行摘要；后续Continue仍经原ticket/turn/instance。3项最终source03重验保留分会话日志及完整取消态，23项生产字节未变的source02回归按原固定程序复用。原票、normal角色及退休责任不变。

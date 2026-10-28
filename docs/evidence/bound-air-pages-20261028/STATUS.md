@@ -1,4 +1,4 @@
-# v0.5.210：共同绑定的 Air 精确页计划（#102 有限增量）
+# v0.5.211 证据同步：游戏实现v0.5.210，共同绑定的 Air 精确页计划（#102 有限增量）
 
 共同入口现在能显式请求已有精确分页执行；完整102/103/104保持开放。本增量不是新模型精细化、新授额器或新增业务子任务验收。root唯一共享writer，独立测试准备交付后由root核对并收口；当前冻结0+0，无PR。
 
@@ -16,14 +16,14 @@
 
 |结果|固定来源|证明范围|
 |---|---|---|
-|3项新实际场景通过|source03最终程序|共同入口到真实分页暂停、Observe/ReceiptProof、不同合法quota的Continue及原非分页精确参考；取消/checkpoint/不同Sim冷恢复/显式续办；旧capability、plan、三个quota下界、非Air及来源过期拒绝|
+|3项新实际场景通过|source04最终程序|共同入口到真实分页暂停、Observe/ReceiptProof、不同合法quota的Continue及原非分页精确参考；取消/checkpoint/不同Sim冷恢复/显式续办；旧capability、plan、三个quota下界、非Air及来源过期拒绝|
 |1项执行摘要测试通过|source02|相同选择摘要下，ExecuteOriginal与精确页计划、三个初始quota字段改变均改变执行摘要|
 |9项原共同协议通过|source02|四条原路由、原票碰撞、拒绝/过期/重复/丢终态/不确定发送、同页公服与供水、原normal角色；增加实际自然零窗Sim分支的exact-pages拒绝|
 |13项原Air控制/恢复通过|source02|原暂停、合法及错误/重复turn、取消、自动Continue、不确定发送、原broker/实际退休与恢复|
 
-source02的完整26项通过后，原始证据检查发现新测试的重启会覆盖同名事件日志。最终source03仅改变该测试的分会话日志和取消态完整存档副本；**生产文件字节不变**。因此只重跑3项受影响场景，23项回归保留source02原程序/输入/结果，不冒充在source03重跑。提交时仅删除新测试EOF多余空行，语义不变，原编译源保留且不重测。构建来源身份因测试文件改变而变化，各原程序对应其原规则身份；[机器结果](verification-summary.json)及work内source02-to03-reuse.json记录边界。
+source02的完整26项通过后，原始证据检查发现新测试的重启会覆盖同名事件日志。最终source04只涉及该测试的分会话日志、取消态完整存档副本和EOF格式；**生产文件字节不变**。因此只重跑3项受影响场景，23项回归保留source02原程序/输入/结果，不冒充在source04重跑。提交时去掉测试EOF空行虽然不改算法，但构建源标识参与Store规则，因此已对v210实际发布源码重新构建并限定重跑3项场景。458个实际递归构建输入逐字节等于source04源码包；运行进程报告源指纹也等于重新计算值，详见work内release-source04-build-input-proof.json。v211仅同步该证据，不改游戏构建输入。构建来源身份因测试文件改变而变化，各原程序对应其原规则身份；[机器结果](verification-summary.json)及work内source02-to03-reuse.json记录边界。
 
-原始事件另核实：非分页参考和分页候选都是非空对象且完全相等，不是两个null；取消前后两个完整会话日志对应不同Sim PID，并保留`cancelled-original/CURRENT.json`、完整checkpoint/WAL/空间输入。所有正常角色观测allocation failures0，原grant61865984B，已观测Rust请求峰58294434B；参考与分页两次workspace grant/return后池67108864B全部可用。这是有限Rust角色证据，不是native/进程峰值或城市规模承载证明。
+原始事件另核实：非分页参考和分页候选都是非空对象且完全相等，不是两个null；取消前后两个完整会话日志对应不同Sim PID，并保留`cancelled-original/CURRENT.json`、完整checkpoint/WAL/空间输入。所有正常角色观测allocation failures0，原grant61865984B，已观测Rust请求峰58294439B；参考与分页两次workspace grant/return后池67108864B全部可用。这是有限Rust角色证据，不是native/进程峰值或城市规模承载证明。
 
 首次source01为2通过/1失败：测试预期在原P4必要任务等待中转账成功，真实原Timeline正确记录busy拒绝。测试改为检查该真实拒绝推进Store序号，从而使旧绑定失效；没有放宽游戏门或认定转账发生。source01程序、失败World与日志完整保留。独立worker初稿也保留，首次执行前root修正了边界循环和状态对比，源码交付不当作通过。
 

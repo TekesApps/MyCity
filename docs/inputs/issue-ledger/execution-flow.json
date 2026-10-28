@@ -1,8 +1,8 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-28T04:11:55.331083+00:00",
-  "source_head": "v0.5.210: source03 final pages; source02 identical production regression evidence",
+  "last_snapshot_at": "2026-10-28T04:22:02.940310+00:00",
+  "source_head": "v0.5.211 evidence only, v210 game bytes: exact source04 input/program proof; source02 unchanged production regression scope reused",
   "candidate": "finite bound exact-page increment verified/frozen",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
   "limits": {
@@ -842,12 +842,12 @@
   },
   "latest_finite_increment": {
     "issue": 102,
-    "release": "v0.5.210",
+    "release": "v0.5.211 evidence/v0.5.210 game",
     "status": "verified-frozen-full102-open",
     "parent_tests": 26,
     "sources": [
-      "source03 pages3",
-      "source02 digest1/protocol9/Air13"
+      "source04 exact published game pages3",
+      "source02 identical production digest1/protocol9/Air13"
     ],
     "evidence": "docs/evidence/bound-air-pages-20261028/STATUS.md",
     "remaining": "actual model refinement/grant/cost-source coverage; full103/104 separate",
