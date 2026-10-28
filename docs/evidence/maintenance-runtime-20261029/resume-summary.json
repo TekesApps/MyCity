@@ -1,0 +1,254 @@
+{
+  "schema": "mycity-maintenance-resume-progress-v1",
+  "issue": 159,
+  "baseline": "v0.5.227 c8a5e07c8858422402badfb589ab6ee4fde234e0",
+  "release": "v0.5.228 partial checkpoint only",
+  "full_maintenance_accepted": false,
+  "verification_window": {
+    "start": "2026-10-28T18:58:15.950805+00:00",
+    "end": "2026-10-28T19:22:31.779868+00:00",
+    "meaning": "build terminal through actual checks, not development cycle"
+  },
+  "resume_checks": [
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/maintenance-runtime-20261029/resume01-city-core-facility_operation-fixed",
+        "--exact",
+        "legacy_housing_header_stays_legal_before_the_original_wait_boundary",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit": 0,
+      "seconds": 0.829784916,
+      "program_sha256": "7c37072f90477af081f76ddabde4c67b4b222475ff80de1ce4444611c9f168cc",
+      "source": "resume01-source-manifest.json",
+      "summaries": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/maintenance-runtime-20261029/resume01-city-core-construction_engine-fixed",
+        "--exact",
+        "construction_action_and_journal_records_stay_inside_frozen_engine_budget",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit": 0,
+      "seconds": 0.7058458340000001,
+      "program_sha256": "e560a393dc5a7713d186ca837b73631bcef05b4c5f3917d8f100bfebee9780ab",
+      "source": "resume01-source-manifest.json",
+      "summaries": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/maintenance-runtime-20261029/resume01-city-core-mycity_core-fixed",
+        "facility_work::tests::",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit": 0,
+      "seconds": 0.7544573749999999,
+      "program_sha256": "9ee58ea3c923f536b85dca5a508de0c674fb4631d47690f7fa3e56f49ece02a0",
+      "source": "resume01-source-manifest.json",
+      "summaries": [
+        [
+          "ok",
+          "20",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/maintenance-runtime-20261029/resume01-city-core-facility_operation-fixed",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit": 0,
+      "seconds": 4.207644834,
+      "program_sha256": "7c37072f90477af081f76ddabde4c67b4b222475ff80de1ce4444611c9f168cc",
+      "source": "resume01-source-manifest.json",
+      "summaries": [
+        [
+          "ok",
+          "13",
+          "0",
+          "0"
+        ]
+      ]
+    }
+  ],
+  "old_store_and_initial_pool_failure": [
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/maintenance-runtime-20261029/compat-store01-city-storage-facility_operation_store-fixed",
+        "--exact",
+        "original_wal_checkpoint_retry_and_stopped_fraction_are_once",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit": 0,
+      "seconds": 3.550848917,
+      "program_sha256": "ea047401d77e67fd05cc3a1d709c81d4cfbf9c771b7feb47fa90d7fb852e1d7d",
+      "source": "compat-store01-source-manifest.json",
+      "summaries": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/maintenance-runtime-20261029/compat-store01-city-storage-facility_operation_store-fixed",
+        "--exact",
+        "lost_publication_reply_reopens_original_committed_work_once",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit": 0,
+      "seconds": 0.8527452499999999,
+      "program_sha256": "ea047401d77e67fd05cc3a1d709c81d4cfbf9c771b7feb47fa90d7fb852e1d7d",
+      "source": "compat-store01-source-manifest.json",
+      "summaries": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/maintenance-runtime-20261029/compat-store01-city-headless-water_treatment_due-fixed",
+        "--exact",
+        "actual_v2_normal_role_retains_production_move_save_and_returns_original_pool",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit": 101,
+      "seconds": 2.434929917,
+      "program_sha256": "9e742932d7320359eef5eba479b0500d22a716308d2c65b1351a20b77990d401",
+      "source": "compat-store01-source-manifest.json",
+      "summaries": [
+        [
+          "FAILED",
+          "0",
+          "1",
+          "0"
+        ]
+      ]
+    }
+  ],
+  "same_binary_short_path_retry": [
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/maintenance-runtime-20261029/compat-store01-city-headless-water_treatment_due-fixed",
+        "--exact",
+        "actual_v2_normal_role_retains_production_move_save_and_returns_original_pool",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit": 0,
+      "seconds": 12.154829874999999,
+      "program_sha256": "9e742932d7320359eef5eba479b0500d22a716308d2c65b1351a20b77990d401",
+      "source": "compat-store01-source-manifest.json",
+      "summaries": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ]
+    }
+  ],
+  "normal": {
+    "directory": "/Volumes/HP P900/dev/MyCity/work/m159w02/water-rundue-6438-1793214632556286000",
+    "observed_role": [
+      {
+        "used": 55725952,
+        "grant": 61865984,
+        "failures": 0
+      },
+      {
+        "used": 55725952,
+        "grant": 61865984,
+        "failures": 0
+      },
+      {
+        "used": 55822080,
+        "grant": 61865984,
+        "failures": 0
+      },
+      {
+        "used": 55725952,
+        "grant": 61865984,
+        "failures": 0
+      },
+      {
+        "used": 55726040,
+        "grant": 61865984,
+        "failures": 0
+      }
+    ],
+    "max_arena_used": 55822080,
+    "pool": {
+      "capacity_bytes": 67108864,
+      "available_touched_bytes": 67108864,
+      "granted_capacity_bytes": 0,
+      "workspace_capacity_bytes": 0,
+      "workspace_grants": 3,
+      "workspace_returns": 3,
+      "workspace_fills": 3,
+      "grants": 0,
+      "returns": 0,
+      "fill_acknowledgements": 0,
+      "scans": 16,
+      "rejected_requests": 0,
+      "maximum_prepare_to_fill_or_reap_ns": 915059125
+    }
+  },
+  "short_path_plan": {
+    "root": "/Volumes/HP P900/dev/MyCity/work/m159w02",
+    "reason": "actual AF_UNIX SUN_LEN startup failure, no model execution; retry same fixed program with shorter evidence root",
+    "max_socket_example_bytes": 96,
+    "retained_under_same_hp_work": true,
+    "extra_disk_budget_included_in_phase": true
+  },
+  "reused_v227": [
+    "unchanged maintenance source fixture and qualifications when no facility-work runtime",
+    "unchanged asset_maintenance candidate module and literal inputs"
+  ],
+  "not_run": [
+    "real maintenance venue/order/outage/material",
+    "maintenance original receipt and actual cold recovery",
+    "whole shared regression",
+    "actual16GB/native/long/GPU/UI"
+  ],
+  "phase_counts": {
+    "new_business_closed": 0,
+    "historical_closed": 0,
+    "defects_closed": 0,
+    "source_packages_before": 18,
+    "source_packages_after": 18
+  },
+  "owned_and_workspace": "Record physical bytes included by original sizeof Runtime/candidate/restore; wire max envelope includes all maintenance resume fields; no budget raised"
+}

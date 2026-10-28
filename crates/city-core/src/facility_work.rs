@@ -186,6 +186,7 @@ impl Payment {
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(crate) enum Command {
     Begin(Admission),
+    ResumeMaintenance(Admission),
     Stop { contract_id: u64, activity_id: u64 },
 }
 
@@ -211,6 +212,16 @@ pub(crate) struct PaymentRecord {
     pub cash_operation_id: u64,
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub(crate) struct MaintenanceResume {
+    pub source: EventRef,
+    pub previous_stop: EventRef,
+    pub activity_id: u64,
+    pub qualification_source: ReadSource,
+}
+fn zero_seconds(n: &u64) -> bool { *n == 0 }
+
 /// One reserved responsibility per immutable contract, never evicted on Stop.
 /// Only the last detail is retained; original full history remains in Store receipts.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -230,12 +241,17 @@ pub(crate) struct Record {
     pub last_interval: Option<IntervalRecord>,
     pub last_payment: Option<PaymentRecord>,
     pub stopped: Option<EventRef>,
+    // Present only for the explicit non-continuous maintenance contract.
+    #[serde(default, skip_serializing_if="zero_seconds")]
+    pub idle_seconds: u64,
+    #[serde(default, skip_serializing_if="Option::is_none")]
+    pub last_resume: Option<MaintenanceResume>,
 }
 impl Record {
     fn pending(contract_id: u64) -> Self {
         Self { contract_id, phase: Phase::Pending, activity_id: 0, begin: None,
             qualification_source: None, started: 0, settled: 0, work_seconds: 0,
-            earned: 0, paid: 0, remainder: 0, last_interval: None, last_payment: None, stopped: None }
+            earned: 0, paid: 0, remainder: 0, last_interval: None, last_payment: None, stopped: None, idle_seconds:0, last_resume:None }
     }
     pub fn due(&self) -> u64 { self.earned - self.paid }
 }
@@ -329,6 +345,10 @@ impl Runtime {
                 ledger_operation_id: u64::MAX, device_operation_id: u64::MAX, timeline_operation_id: u64::MAX }),
             last_payment: Some(PaymentRecord { source: last, cents: MAX_CENTS, cash_operation_id: u64::MAX }),
             stopped: Some(last),
+            idle_seconds: if c.role==Role::ElectricalMaintenance {u64::MAX}else{0},
+            last_resume: (c.role==Role::ElectricalMaintenance).then_some(MaintenanceResume {
+                source:last, previous_stop:last, activity_id:u64::MAX, qualification_source:q,
+            }),
         }));
         Ok(Self { version: 1, opening: *opening, records, last_ordinal: u64::MAX,
             last_operation_id: u64::MAX, last_tick: u64::MAX })
@@ -399,6 +419,27 @@ impl Runtime {
                 r.phase = Phase::Active; r.activity_id = a.activity_id;
                 r.begin = Some(s.into()); r.qualification_source = Some(a.qualification_source);
                 r.started = s.occurred_at; r.settled = s.occurred_at;
+            }
+            Command::ResumeMaintenance(a) => {
+                let i = self.index(a.contract.id)?;
+                let c = self.opening.contracts[i].ok_or(Error::Invalid)?;
+                if a.contract != c { return Err(Error::Binding); }
+                let r = next.records[i].as_mut().ok_or(Error::Invalid)?;
+                if c.role != Role::ElectricalMaintenance || r.phase != Phase::Stopped { return Err(Error::State); }
+                if a.activity_id == 0 || s.occurred_at < c.start || s.occurred_at >= c.end {
+                    return Err(Error::Invalid);
+                }
+                if self.records.iter().flatten().any(|old| old.activity_id == a.activity_id) { return Err(Error::Binding); }
+                check_qualification_binding(a.qualification_source,s)?;
+                let previous_stop=r.stopped.ok_or(Error::State)?;
+                let gap=s.occurred_at.checked_sub(r.settled).ok_or(Error::Invalid)?;
+                r.idle_seconds=r.idle_seconds.checked_add(gap).ok_or(Error::Overflow)?;
+                r.last_resume=Some(MaintenanceResume {source:s.into(),previous_stop,
+                    activity_id:a.activity_id,qualification_source:a.qualification_source});
+                r.settled=s.occurred_at; r.activity_id=a.activity_id;
+                r.phase=Phase::Active; r.stopped=None;
+                // Original start, earned/paid cents, fractional remainder and
+                // consumed work remain intact; the gap earns no wage.
             }
             Command::Stop { contract_id, activity_id } => {
                 let i = self.index(contract_id)?;
@@ -475,7 +516,7 @@ impl Runtime {
             check_qualification_binding(r.qualification_source.ok_or(Error::Invalid)?, begin.source(original.binding))?;
             if r.activity_id == 0 || r.started != begin.occurred_at || r.started < c.start
                 || r.started >= c.end || r.settled < r.started || r.settled > c.end
-                || r.settled > self.last_tick || r.work_seconds != r.settled - r.started
+                || r.settled > self.last_tick || r.work_seconds.checked_add(r.idle_seconds) != r.settled.checked_sub(r.started)
                 || r.paid > r.earned || r.earned > MAX_CENTS || u128::from(r.remainder) >= DENOMINATOR {
                 return Err(Error::Invalid);
             }
@@ -484,11 +525,32 @@ impl Runtime {
             }
             let (earned, remainder) = wage(c, r.work_seconds, 0)?;
             if earned != r.earned || remainder != r.remainder { return Err(Error::Invalid); }
-            let mut sources = [Some(begin), None, None, None];
+            let mut sources = [Some(begin), None, None, None, None, None];
+            if c.role != Role::ElectricalMaintenance && (r.idle_seconds != 0 || r.last_resume.is_some()) {
+                return Err(Error::Invalid);
+            }
+            match r.last_resume {
+                None if r.idle_seconds != 0 => return Err(Error::Invalid),
+                Some(resume) => {
+                    if c.role != Role::ElectricalMaintenance || resume.activity_id != r.activity_id
+                        || resume.source.ordinal <= resume.previous_stop.ordinal || resume.previous_stop.ordinal <= begin.ordinal
+                        || resume.previous_stop.occurred_at < r.started
+                        || resume.source.occurred_at < resume.previous_stop.occurred_at
+                        || resume.source.occurred_at > r.settled
+                        || r.idle_seconds < resume.source.occurred_at-resume.previous_stop.occurred_at {
+                        return Err(Error::Invalid);
+                    }
+                    check_qualification_binding(resume.qualification_source,resume.source.source(original.binding))?;
+                    sources[4]=Some(resume.source);sources[5]=Some(resume.previous_stop);
+                }
+                None => {}
+            }
             match r.last_interval {
                 None if r.work_seconds != 0 => return Err(Error::Invalid),
                 Some(v) => {
-                    if v.from < r.started || v.from >= v.until || v.until != r.settled
+                    if v.from < r.started || v.from >= v.until
+                        || (v.until != r.settled && !r.last_resume.is_some_and(|resume|
+                            v.until <= resume.previous_stop.occurred_at && r.settled==resume.source.occurred_at))
                         || v.until > v.source.occurred_at || v.source.ordinal <= begin.ordinal
                         || v.ledger_operation_id == 0 || v.device_operation_id == 0 || v.timeline_operation_id == 0 {
                         return Err(Error::Invalid);
@@ -503,6 +565,9 @@ impl Runtime {
                     if p.cents == 0 || p.cents > r.paid || p.cash_operation_id == 0 || p.source.ordinal <= begin.ordinal {
                         return Err(Error::Invalid);
                     }
+                    // Calendar span is only an upper structural bound for a
+                    // paused order. Original root payment receipts establish
+                    // the actual earned amount at that past payment.
                     let paid_through = p.source.occurred_at.min(r.settled);
                     if paid_through < r.started || wage(c, paid_through - r.started, 0)?.0 < r.paid {
                         return Err(Error::Invalid);
@@ -533,7 +598,8 @@ impl Runtime {
                     // An original stream ordinal cannot belong to two records.
                     for other in self.records[..i].iter().flatten() {
                         let other_sources = [other.begin, other.last_interval.map(|v| v.source),
-                            other.last_payment.map(|p| p.source), other.stopped];
+                            other.last_payment.map(|p| p.source), other.stopped,
+                            other.last_resume.map(|v|v.source),other.last_resume.map(|v|v.previous_stop)];
                         for p in other_sources.iter().flatten() {
                             if p.ordinal == source.ordinal
                                 || (p.ordinal < source.ordinal && p.occurred_at > source.occurred_at)
@@ -612,6 +678,31 @@ mod tests {
         let c = r.opening.contracts[0].unwrap();
         let candidate = r.confirm_payment(source(r, at), Payment::from_root(c, cents, cash)).unwrap();
         commit(r, candidate);
+    }
+
+    #[test]
+    fn maintenance_resume_keeps_paid_work_and_excludes_the_idle_gap() {
+        let mut o=opening(2000,4);let c=o.contracts[0].as_mut().unwrap();c.role=Role::ElectricalMaintenance;c.version=2;
+        let mut r=Runtime::new(o).unwrap();begin(&mut r,1,50,0);let contract=r.opening.contracts[0].unwrap();
+        let work=ObservedInterval::from_maintenance_root(contract,50,0,1800,101,201,301);
+        let candidate=r.record_interval(source(&r,1800),work).unwrap();commit(&mut r,candidate);
+        stop(&mut r,1,1800);pay(&mut r,1000,401,2000);
+        let before=r.records[0].unwrap();let event=source(&r,2400);
+        let candidate=r.prepare(event,Command::ResumeMaintenance(Admission::from_root(contract,51,qualification(event)))).unwrap();commit(&mut r,candidate);
+        let after=r.records[0].unwrap();assert_eq!((after.started,after.work_seconds,after.earned,after.paid,after.remainder),
+            (before.started,before.work_seconds,before.earned,before.paid,before.remainder));
+        assert_eq!((after.idle_seconds,after.settled,after.activity_id),(600,2400,51));
+        let bytes=serde_json::to_vec(&r).unwrap();let mut r:Runtime=serde_json::from_slice(&bytes).unwrap();
+        r.validate_binding(&r.opening,2400).unwrap();
+        let work=ObservedInterval::from_maintenance_root(contract,51,2400,4200,102,202,302);
+        let candidate=r.record_interval(source(&r,4200),work).unwrap();commit(&mut r,candidate);
+        assert_eq!((r.records[0].unwrap().work_seconds,r.records[0].unwrap().earned,r.records[0].unwrap().remainder),(3600,8000,0));
+        stop(&mut r,1,4200);pay(&mut r,7000,402,4200);assert_eq!(r.records[0].unwrap().due(),0);
+        let mut old=Runtime::new(opening(2000,4)).unwrap();begin(&mut old,1,50,0);accrue(&mut old,1,0,1800);stop(&mut old,1,1800);
+        let original=old.clone();let event=source(&old,2400);let contract=old.opening.contracts[0].unwrap();
+        assert!(matches!(old.prepare(event,Command::ResumeMaintenance(Admission::from_root(contract,51,qualification(event)))),Err(Error::State)));
+        assert_eq!(old,original);let value=serde_json::to_value(&old).unwrap();
+        assert!(value["records"][0].get("idle_seconds").is_none());assert!(value["records"][0].get("last_resume").is_none());
     }
 
     #[test]

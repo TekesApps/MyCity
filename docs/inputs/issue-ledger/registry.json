@@ -1,7 +1,7 @@
 {
   "schema": "mycity-issue-ledger-v1",
   "date": "2026-10-29",
-  "release": "v0.5.227 partial159 source/work-kind seam, not maintenance acceptance",
+  "release": "v0.5.228 partial159 gap/resume kernel, not maintenance acceptance",
   "scope": "完整既定产品；v190有限业务132与缺陷148真实验收关闭，v191仅同步台账，UI单独延期",
   "coordination": "当前root唯一共享writer/串行验证；旧主会话停用",
   "states": [
@@ -3936,10 +3936,10 @@
         "原票/WAL/checkpoint冷恢复与写入中断",
         "旧18/Journal/default/同槽/受影响共享/normal与owned工作区"
       ],
-      "remaining": "来源门、原候选与工资内核通过；实际venue/停机/材料/P5/费用/Store/normal尚未接完",
-      "evidence": "docs/evidence/maintenance-runtime-20261029/STATUS.md",
+      "remaining": "原来源和工资续办/旧兼容通过；实际维护venue/停机/材料/P5费用/maintenance冷恢复仍未接完",
+      "evidence": "docs/evidence/maintenance-runtime-20261029/RESUME.md",
       "pr": "本阶段无PR；root直接集成的进行中检查点",
-      "implementation_tags": "v0.5.227 partial, not full acceptance"
+      "implementation_tags": "v0.5.227/v0.5.228 partial checkpoints, not full acceptance"
     }
   ],
   "capability_edges": [

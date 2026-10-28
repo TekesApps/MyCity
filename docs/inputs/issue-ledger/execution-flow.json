@@ -1,9 +1,9 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-28T18:38:43.196133+00:00",
-  "source_head": "v0.5.226 + scoped159 candidate sources01/02",
-  "candidate": "159 maintenance actual-source and work-kind bridge in progress; full authority pending",
+  "last_snapshot_at": "2026-10-28T19:23:32.064642+00:00",
+  "source_head": "v0.5.228 partial159 maintenance resume kernel + old compatibility",
+  "candidate": "159 actual authority in progress; venue/outage/material/expense not yet implemented",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
   "limits": {
     "shared_core_lanes": 1,
@@ -22,7 +22,7 @@
         "linked design/issue/evidence"
       ],
       "acceptance_card": "work/maintenance-runtime-20261029/execution-card.json",
-      "remaining": "actual venue, temporary outage, material/member/funds/P5/expense/Store/normal gate not yet wired"
+      "remaining": "source/gap-resume primitive and old compatibility passed; next actual venue/outage authority -> material/Funds/P5/expense/Store/normal"
     }
   ],
   "active_independent_preparations": [],

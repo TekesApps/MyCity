@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.227`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.228`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.228 为[#159维护停工续做的工资内核兼容检查点](docs/evidence/maintenance-runtime-20261029/RESUME.md)：空档不计工，原累计和旧生产终态保持；旧存档与原正常角色通过。实际维护现场/停机/材料/费用仍待接线，159未验收。
 
 v0.5.227 是[#159单资产维护来源/工资内核接线的进行中检查点](docs/evidence/maintenance-runtime-20261029/STATUS.md)，不是维护验收版本；来源与原候选/劳动专项通过，实际现场、停机、工料费用和Store恢复/normal仍待完成，159/36/117保持开放。
 
