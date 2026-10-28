@@ -8,7 +8,17 @@ v0.5.14，2026-10-19。补[M0计划](m0-implementation-plan.md)P-BOOT表要求�
 
 `pboot-local-development-v1` 显式复用原六库存配方、60秒到期、成本/容量与故障合同，仅支持无Region、无Exchange、无Economy的本城开局。总Stock可为6到原MAX_STOCKS，六个Boot绑定仍唯一且有相同商品/owner/来源/容量校验；额外业务库存不属于Boot守恒池。装配与保存恢复采用同一限制。原micro与scale的精确形状和M0门保持，不把“有Town”冒充跨城joint。原typed Opening provider未新增此profile分支，当前只有显式原JSON输入。
 
-Timeline启用后复用已有timeline_driver到期切段、P3完成和Boot.time推进；不新建时钟或自动产出，未完成作业不可消费。公服若消费Boot输出必须沿原出口分类和同一成本池记一次；普通直接扣Stock不能冒充该接线。当前共同fixture公服仍用显式有限期初库存，供给消费桥待完成。有限两日场景不是无限供给、完整网络、经济平衡或产品容量通过。验证终态见后续#21证据，当前未验收。
+Timeline启用后复用已有timeline_driver到期切段、P3完成和Boot.time推进；不新建时钟或自动产出，未完成作业不可消费。公服若消费Boot输出必须沿原出口分类和同一成本池记一次；普通直接扣Stock不能冒充该接线。v216起显式PoliceBootV3沿原Boot真实电水出口消费，v219–224同场工程/工资/住房/道路日结及第二次Generator有限批次已验证，见[有限补货证据](evidence/finite-city-refill-20261029/STATUS.md)。不等于无限供给、完整网络、经济平衡或产品容量通过。完整#21保持开放。
+
+### 本城pool成本策略版本（#158）
+
+合法暂停对照probe01已观察：同一实际警方旅程，直接推进与增加29130/29160/29190暂停点，数量、现金、工时相同，电成本分别235/234分、余池495/496分。原v1按每次剩余数量/成本重新取整，因此不能声明其成本分段等价；原票、旧账与恢复仍保留该历史语义，不能为了修复而重新计算已发生事实。
+
+新开局可显式选择 `pboot-local-development-v2`。物理配方、费用、owner、容量、共同writer和到期边界与v1一致，仅六个Boot池的成本消费改为原`frozen_lot_basis_delta`：一次取得q的成本为累计floor(B*(offset+q)/Q)-floor(B*offset/Q)，使用既有Stock origin_quantity/origin_basis/offset，不增字段或第二账。所有Boot出口及Pump/Generator实际输入用同一策略；不能只修公服而漏内部冷却水/用电。
+
+只有实际新产出与余池合并时沿原put_pool记录新的Q/B且offset=0。暂停、查询、普通消费、保存加载和重试不重置；池耗尽仍保留原Q/B及终游标。装配/恢复与运行提交核对quantity=Q-offset、basis=B-floor(B*offset/Q)，零原池四项量/成本/游标须为零。统一池消费顺序及真实合池边界不变时，任意分段具有相同累计成本；交换不同消费者先后或把消费移动到新产出前后不属于等价承诺。
+
+micro/scale/local-v1不变，旧存档不自动升级、不补造旧余数；新策略须新开局显式选择，未识别版本拒绝。当前typed Opening provider仍未提供本城profile分支，不能静默映射为v2。#158的有限修复不表示完整预算控制、多档或全产品验收。实际终态引用后续本轮证据，不以此设计定义为通过。
 
 ## 1. profile与验收范围
 

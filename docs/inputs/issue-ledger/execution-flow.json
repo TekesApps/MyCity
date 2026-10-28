@@ -1,16 +1,34 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-28T17:08:46.608015+00:00",
-  "source_head": "v0.5.224 test-only refill; production unchanged fromv221",
-  "candidate": "21 finite asset/common city accepted; full21 remains open",
+  "last_snapshot_at": "2026-10-28T18:06:37.106915+00:00",
+  "source_head": "v0.5.225 verified source, publication pending",
+  "candidate": "158 full scoped acceptance passed; root publication/issue closure only",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
   "limits": {
     "shared_core_lanes": 1,
     "independent_preparations": 2,
     "reason_for_adjustment_required": true
   },
-  "active_shared_work": [],
+  "active_shared_work": [
+    {
+      "issue": 158,
+      "owner": "root",
+      "stage": "待验证",
+      "scope": "explicit new local pool cumulative-cost version; legacy facts/replay unchanged",
+      "file_ownership": [
+        "crates/city-core/src/boot.rs",
+        "crates/city-core/src/lib.rs label only",
+        "crates/city-core/src/service_delivery_authority.rs binding only",
+        "crates/city-core/src/transaction.rs binding only",
+        "crates/city-storage/tests/boot_partition.rs",
+        "crates/city-headless/tests/finite_city_role.rs",
+        "linked design/evidence/issue"
+      ],
+      "acceptance_card": "work/boot-partition-20261029/execution-card.json",
+      "remaining": "all required gates passed; publish fixed phase and record actual issue closure"
+    }
+  ],
   "active_independent_preparations": [],
   "counting_rules": {
     "parents_are_not_active_work": true,

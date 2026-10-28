@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.224`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.225`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.225 修复[#158合法暂停改变成本分摊](docs/evidence/boot-cost-partition-20261029/STATUS.md)：新开局显式本地v2按原pool累计差额取成本，旧profile/原票保留旧账；实际同城补货、冷恢复、默认栈及原预算门通过。完整#21与真实16GB/长期容量仍开放。
 
 v0.5.224 验证Town消费后原发电批次真实补货：准时/迟到、WIP/原料费用/同库存basis及冷恢复/原Sim预算门通过；生产代码/原输入未改，不称连续电厂或长期自给。完整#21/#117/#115开放。[结果与边界](docs/evidence/finite-city-refill-20261029/STATUS.md)。
 

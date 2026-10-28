@@ -9,6 +9,12 @@ pub const PROFILE: &str = "pboot-cold-micro-v1";
 pub const SCALE_PROFILE: &str = "pboot-cold-scale-v1";
 /// Same finite recipe, scoped to a local city without Region/Exchange.
 pub const LOCAL_PROFILE: &str = "pboot-local-development-v1";
+/// Fresh-genesis policy: cumulative pool cost is independent of pause partitioning.
+/// V1 remains unchanged for replay of its already committed cost facts.
+pub const LOCAL_EXACT_PROFILE: &str = "pboot-local-development-v2";
+pub(crate) fn is_local_profile(profile: &str) -> bool {
+    matches!(profile, LOCAL_PROFILE | LOCAL_EXACT_PROFILE)
+}
 pub const SECONDS: u64 = 60;
 fn zero_quantity(value: &Quantity) -> bool {
     *value == Quantity::ZERO
@@ -166,8 +172,8 @@ pub(crate) trait Ledger {
 impl Boot {
     pub(crate) fn new(o: Opening, w: &World, joint: bool) -> Result<Self, String> {
         let scaled = o.profile == SCALE_PROFILE;
-        let local = o.profile == LOCAL_PROFILE;
-        let profile = if local { LOCAL_PROFILE } else if scaled { SCALE_PROFILE } else { PROFILE };
+        let local = is_local_profile(&o.profile);
+        let profile = if o.profile == LOCAL_EXACT_PROFILE { LOCAL_EXACT_PROFILE } else if local { LOCAL_PROFILE } else if scaled { SCALE_PROFILE } else { PROFILE };
         if o.schema != "mycity-m0-boot-v1"
             || o.profile != profile
             || (w.region.is_some() && !joint)
@@ -221,6 +227,7 @@ impl Boot {
                 || s.quantity > o.limits[i]
                 || o.limits[i] == Quantity::ZERO
                 || s.quantity.value() % 1000 != 0
+                || (profile == LOCAL_EXACT_PROFILE && !valid_pool_origin(s))
             {
                 return Err("boot_stock_profile".into());
             }
@@ -273,7 +280,7 @@ impl Boot {
             l,
             self.stocks[if index == 0 { 1 } else { 2 }],
             quantity,
-            false,
+            self.profile.as_str() == LOCAL_EXACT_PROFILE,
         )?;
         self.exports[index] = plus(self.exports[index], quantity)?;
         self.exported_basis = add(self.exported_basis, cost)?;
@@ -281,7 +288,7 @@ impl Boot {
     }
     /// The local profile has no Exchange or other export class.
     pub(crate) fn validate_local_exports(&self,service_quantity:[Quantity;2],service_basis:[Money;2])->Result<(),TxError>{
-        if self.profile.as_str()!=LOCAL_PROFILE{return Ok(());}
+        if !is_local_profile(self.profile.as_str()){return Ok(());}
         let electricity=plus(plus(self.local_electricity_exported,self.local_construction_exported[0])?,service_quantity[0])?;
         let water=plus(self.local_construction_exported[1],service_quantity[1])?;
         let basis=add(add(add(self.local_electricity_basis,self.local_construction_basis[0])?,self.local_construction_basis[1])?,add(service_basis[0],service_basis[1])?)?;
@@ -382,8 +389,8 @@ impl Boot {
             }
         }
         let scaled = self.profile.as_str() == SCALE_PROFILE;
-        let local = self.profile.as_str() == LOCAL_PROFILE;
-        if ![PROFILE, SCALE_PROFILE, LOCAL_PROFILE].contains(&self.profile.as_str())
+        let local = is_local_profile(self.profile.as_str());
+        if ![PROFILE, SCALE_PROFILE, LOCAL_PROFILE, LOCAL_EXACT_PROFILE].contains(&self.profile.as_str())
             || w.economy.is_some()
             || (w.region.is_some() && !joint)
             || (!local && !scaled && w.stock_ids.len() != if joint { 14 } else { 6 })
@@ -421,6 +428,7 @@ impl Boot {
                 || stock.commodity != *kind
                 || self.limits[i] == Quantity::ZERO
                 || stock.quantity > self.limits[i]
+                || (self.profile.as_str() == LOCAL_EXACT_PROFILE && !valid_pool_origin(stock))
             {
                 return Err("boot_stock_binding".into());
             }
@@ -500,7 +508,7 @@ impl Boot {
                 let mut cost = fee;
                 for (n, amount) in inputs.iter().enumerate() {
                     if *amount != Quantity::ZERO {
-                        cost = add(cost, take(l, self.stocks[n], *amount, n == 0)?)?
+                        cost = add(cost, take(l, self.stocks[n], *amount, n == 0 || self.profile.as_str() == LOCAL_EXACT_PROFILE)?)?
                     }
                 }
                 self.fees = add(self.fees, fee)?;
@@ -649,6 +657,7 @@ impl Boot {
             let s = l.stock(*id)?;
             if s.quantity > self.limits[n]
                 || (s.quantity == Quantity::ZERO && s.basis != Money::ZERO)
+                || (self.profile.as_str() == LOCAL_EXACT_PROFILE && !valid_pool_origin(&s))
             {
                 return Err(error(Error::Invariant));
             }
@@ -686,6 +695,18 @@ impl Boot {
         }
         Ok(())
     }
+}
+// Check the one real pool's remaining cost, not an inferred historical allocation.
+fn valid_pool_origin(s: &Stock) -> bool {
+    if s.origin_quantity == Quantity::ZERO {
+        return s.origin_basis == Money::ZERO && s.offset == Quantity::ZERO
+            && s.quantity == Quantity::ZERO && s.basis == Money::ZERO;
+    }
+    let Ok((_, consumed)) = crate::units::frozen_lot_basis_delta(
+        s.origin_quantity, s.origin_basis, Quantity::ZERO, s.offset,
+    ) else { return false; };
+    s.origin_quantity.checked_sub(s.offset).ok() == Some(s.quantity)
+        && s.origin_basis.checked_sub(consumed).ok() == Some(s.basis)
 }
 fn take(l: &mut impl Ledger, id: u32, quantity: Quantity, frozen: bool) -> Result<Money, TxError> {
     let mut s = l.stock(id)?;

@@ -11351,7 +11351,7 @@ impl crate::service_delivery_authority::Ledger for ServiceLedger<'_>{
         if quantity==0{return Ok(0);}let mut s=self.owned_stock(id,owner,electric)?;let q=Quantity::new(i64::try_from(quantity).map_err(|_|TxError::Overflow)?).map_err(|_|TxError::Stock)?;
         if let Some(b)=self.boot.as_mut(){if b.governs(id){
             let index=if electric{0}else{1};
-            if b.profile.as_str()!=crate::boot::LOCAL_PROFILE||id!=b.stocks[index+1]||owner!=b.operator{return Err(TxError::Stock);}
+            if !crate::boot::is_local_profile(b.profile.as_str())||id!=b.stocks[index+1]||owner!=b.operator{return Err(TxError::Stock);}
             let u=self.boot_use.as_mut().ok_or(TxError::InvalidOperation)?;
             let cost=b.export(index,q,&mut self.base)?;u.record(b,index,q,cost)?;
             return u64::try_from(cost.value()).map_err(|_|TxError::Overflow);

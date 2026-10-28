@@ -51,7 +51,7 @@ impl Opening {
     pub(crate) fn validate_boot_binding(&self,boot:Option<&crate::boot::Boot>)->Result<(),TxError>{
         if self.boot_bound(){
             let b=boot.ok_or(TxError::InvalidOperation)?;
-            if b.profile.as_str()!=crate::boot::LOCAL_PROFILE||self.recovery.is_some()
+            if !crate::boot::is_local_profile(b.profile.as_str())||self.recovery.is_some()
                 ||self.crews.is_empty()||self.crews.iter().any(|c|c.employer!=b.operator||c.energy_stock!=b.stocks[1]||c.water_stock!=b.stocks[2]){return Err(TxError::InvalidOperation);}
         }else if boot.is_some_and(|b|self.crews.iter().any(|c|b.governs(c.energy_stock)||b.governs(c.water_stock))||self.recovery.as_deref().is_some_and(|r|b.governs(r.energy_stock))){return Err(TxError::InvalidOperation);}
         Ok(())

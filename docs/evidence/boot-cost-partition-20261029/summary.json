@@ -1,0 +1,985 @@
+{
+  "schema": "mycity-boot-cost-partition-v1",
+  "issue": 158,
+  "baseline": "v0.5.224 56e1e2a3de9832958ad9e8d515bc2ae394627a6a",
+  "release": "v0.5.225",
+  "red_probe": {
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/boot-partition-20261029/probe01-city-storage-boot_partition-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit": 101,
+    "seconds": 3.898506,
+    "program_sha256": "aaeded596a2cdb77af03398b6b4013ae690f1a703d7c43b50de7be2c6f64d5b0"
+  },
+  "minimum_exact01": {
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/boot-partition-20261029/exact01-city-storage-boot_partition-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit": 0,
+    "seconds": 9.758088,
+    "program_sha256": "de587b40e6836d7335a0af30b2cf14296e7488e6635e5c3aa0226ebb8803faf1"
+  },
+  "cheap_compat": [
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/boot-partition-20261029/compat01-city-core-facility_operation-fixed",
+        "--exact",
+        "legacy_housing_header_stays_legal_before_the_original_wait_boundary",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit": 0,
+      "seconds": 0.6870489160000001,
+      "program_sha256": "d87a4552805494b85236d5da27bd8ea7e267f848faa2806fd870d4d6fe287216",
+      "source": "compat01-source-manifest.json",
+      "summaries": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/boot-partition-20261029/compat01-city-core-asset_capital_runtime-fixed",
+        "--exact",
+        "configured_asset_carrier_is_charged_and_original_housing_budget_refuses_atomically",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit": 0,
+      "seconds": 0.936278041,
+      "program_sha256": "feeeb2f7af5c0805aebb2b544bc591a455fee42beda7c0e4aea4533e67b2e6ea",
+      "source": "compat01-source-manifest.json",
+      "summaries": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/boot-partition-20261029/compat01-city-core-construction_engine-fixed",
+        "--exact",
+        "construction_action_and_journal_records_stay_inside_frozen_engine_budget",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit": 0,
+      "seconds": 0.683669458,
+      "program_sha256": "bf9957eef7114c2be91b78693cae2075ee934cdd5a27de93d095d81c36837e19",
+      "source": "compat01-source-manifest.json",
+      "summaries": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ]
+    }
+  ],
+  "shared_initial": [
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/boot-partition-20261029/shared01-city-storage-boot_partition-fixed",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit": 0,
+      "seconds": 13.065006333,
+      "program_sha256": "95e822434541af465870eafbcd70e4b05b8ec2e53d5bc27ec3e1308fef17961c",
+      "source": "shared01-source-manifest.json",
+      "summaries": [
+        [
+          "ok",
+          "4",
+          "0",
+          "1"
+        ]
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/boot-partition-20261029/shared01-city-core-boot-fixed",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit": 0,
+      "seconds": 2.0152108749999993,
+      "program_sha256": "f52992d87f8286252c93edcef2847a282c46586bdaeb1c786497181fce20f779",
+      "source": "shared01-source-manifest.json",
+      "summaries": [
+        [
+          "ok",
+          "13",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/boot-partition-20261029/shared01-city-core-mycity_core-fixed",
+        "--skip",
+        "layout_pressure::restore_into::tests::full_native_target_reuses_all_ten_backings_after_errors_and_reordered_fields",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit": 0,
+      "seconds": 12.995655582999998,
+      "program_sha256": "a1694eeaf00323fa260cff2b03c4ef7fe7e2e52c101bce85c7b83d3c278cdcb1",
+      "source": "shared01-source-manifest.json",
+      "summaries": [
+        [
+          "ok",
+          "313",
+          "0",
+          "1"
+        ]
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/boot-partition-20261029/shared01-city-storage-mycity_storage-fixed",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit": 101,
+      "seconds": 20.019342083999998,
+      "program_sha256": "ebc0f81ad53d51626e89c166e9f33247961394161e79d1daed432f92969a8da6",
+      "source": "shared01-source-manifest.json",
+      "summaries": [
+        [
+          "FAILED",
+          "34",
+          "2",
+          "0"
+        ]
+      ]
+    }
+  ],
+  "shared_environment_retry_and_remaining": [
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/boot-partition-20261029/shared01-city-storage-mycity_storage-fixed",
+        "--exact",
+        "query::tests::actual_offsets_limits_and_off_page_source_errors_are_not_hidden",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit": 0,
+      "seconds": 0.47279383399999997,
+      "program_sha256": "ebc0f81ad53d51626e89c166e9f33247961394161e79d1daed432f92969a8da6",
+      "source": "shared01-source-manifest.json",
+      "summaries": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/boot-partition-20261029/shared01-city-storage-mycity_storage-fixed",
+        "--exact",
+        "query::tests::actual_store_pages_match_frozen_v172_oracle_before_and_after_recovery",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit": 0,
+      "seconds": 8.130406917,
+      "program_sha256": "ebc0f81ad53d51626e89c166e9f33247961394161e79d1daed432f92969a8da6",
+      "source": "shared01-source-manifest.json",
+      "summaries": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/boot-partition-20261029/shared01-city-storage-boot-fixed",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit": 0,
+      "seconds": 64.780057333,
+      "program_sha256": "07d0f11d842d5660a8fd478e2835a5d0639144e793a30a5dd105bda3363c7c92",
+      "source": "shared01-source-manifest.json",
+      "summaries": [
+        [
+          "ok",
+          "2",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/boot-partition-20261029/shared01-city-storage-finite_city_asset_store-fixed",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit": 0,
+      "seconds": 12.023243250000007,
+      "program_sha256": "71cbc0b6d1937d87c0552dd46a7e126179b424f92304e4e5622b3a93bc902be9",
+      "source": "shared01-source-manifest.json",
+      "summaries": [
+        [
+          "ok",
+          "2",
+          "0",
+          "1"
+        ]
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/boot-partition-20261029/shared01-city-storage-finite_city_road-fixed",
+        "--exact",
+        "actual_generator_refill_after_consumption_preserves_pool_costs_and_cannot_supply_the_past",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit": 0,
+      "seconds": 20.374567125,
+      "program_sha256": "35bf759570adcdb69f4a420298f5f362d95527f625ae1a1a8772f26376a047e8",
+      "source": "shared01-source-manifest.json",
+      "summaries": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ]
+    }
+  ],
+  "role": [
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/boot-partition-20261029/role01-city-headless-finite_city_role-fixed",
+        "--exact",
+        "exact_refill_profile_keeps_independent_costs_and_original_normal_role_budget",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "source": "role01-source-manifest.json",
+      "program_sha256": "78e4e6c5e721d271c2bf6beff2b5b83ebe45538cd1ba458ca65eb22b19f09b22",
+      "exit": 0,
+      "seconds": 18.265093959,
+      "summaries": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/boot-partition-20261029/role01-city-headless-finite_city_role-fixed",
+        "--exact",
+        "actual_refill_after_town_consumption_keeps_original_normal_role_budget",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "source": "role01-source-manifest.json",
+      "program_sha256": "78e4e6c5e721d271c2bf6beff2b5b83ebe45538cd1ba458ca65eb22b19f09b22",
+      "exit": 0,
+      "seconds": 16.020502957999998,
+      "summaries": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/boot-partition-20261029/role01-city-headless-finite_city_role-fixed",
+        "--exact",
+        "actual_boot_service_and_town_normal_role_keep_original_resource_budget",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "source": "role01-source-manifest.json",
+      "program_sha256": "78e4e6c5e721d271c2bf6beff2b5b83ebe45538cd1ba458ca65eb22b19f09b22",
+      "exit": 0,
+      "seconds": 11.138841583000001,
+      "summaries": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ]
+    }
+  ],
+  "source": "source-manifest.json",
+  "source_packages_backlog": 18,
+  "preserved_wip": 24,
+  "not_run": [
+    "actual16GB",
+    "full-native-total-memory",
+    "sustainable-speed",
+    "long-M0",
+    "GPU",
+    "Windows",
+    "UI"
+  ],
+  "retention": "full source ZIP/fixed programs/red and new saved worlds remain HP P900 work/boot-partition-20261029; no new target or tree",
+  "verification_window": {
+    "start": "2026-10-28T17:42:53.930186+00:00",
+    "end": "2026-10-28T18:04:33.051738+00:00",
+    "meaning": "actual diagnosis and serial verification window, not issue development time"
+  },
+  "role_resources": [
+    {
+      "directory": "role01-0-finite_city_role-evidence/normal-role-94163/resources.json",
+      "arena_used_observed_max": 55798480,
+      "engine_owned_bytes": 3690456,
+      "not_native_16gb_speed_or_m0_acceptance": true,
+      "pool": {
+        "available_touched_bytes": 67108864,
+        "capacity_bytes": 67108864,
+        "fill_acknowledgements": 0,
+        "granted_capacity_bytes": 0,
+        "grants": 0,
+        "maximum_prepare_to_fill_or_reap_ns": 999874250,
+        "rejected_requests": 0,
+        "returns": 0,
+        "scans": 22,
+        "workspace_capacity_bytes": 0,
+        "workspace_fills": 3,
+        "workspace_grants": 3,
+        "workspace_returns": 3
+      },
+      "reference_and_creator_outside_shipping_role": true,
+      "store_owned_bytes": 42008787
+    },
+    {
+      "directory": "role01-1-finite_city_role-evidence/normal-role-94190/resources.json",
+      "arena_used_observed_max": 55798480,
+      "engine_owned_bytes": 3690456,
+      "not_native_16gb_speed_or_m0_acceptance": true,
+      "pool": {
+        "available_touched_bytes": 67108864,
+        "capacity_bytes": 67108864,
+        "fill_acknowledgements": 0,
+        "granted_capacity_bytes": 0,
+        "grants": 0,
+        "maximum_prepare_to_fill_or_reap_ns": 963390292,
+        "rejected_requests": 0,
+        "returns": 0,
+        "scans": 22,
+        "workspace_capacity_bytes": 0,
+        "workspace_fills": 3,
+        "workspace_grants": 3,
+        "workspace_returns": 3
+      },
+      "reference_and_creator_outside_shipping_role": true,
+      "store_owned_bytes": 42008787
+    },
+    {
+      "directory": "role01-2-finite_city_role-evidence/normal-role-94223/resources.json",
+      "arena_used_observed_max": 55785336,
+      "engine_owned_bytes": 3677312,
+      "not_native_16gb_speed_or_m0_acceptance": true,
+      "pool": {
+        "available_touched_bytes": 67108864,
+        "capacity_bytes": 67108864,
+        "fill_acknowledgements": 0,
+        "granted_capacity_bytes": 0,
+        "grants": 0,
+        "maximum_prepare_to_fill_or_reap_ns": 666257209,
+        "rejected_requests": 0,
+        "returns": 0,
+        "scans": 13,
+        "workspace_capacity_bytes": 0,
+        "workspace_fills": 2,
+        "workspace_grants": 2,
+        "workspace_returns": 2
+      },
+      "reference_and_creator_outside_shipping_role": true,
+      "store_owned_bytes": 41995643
+    }
+  ],
+  "same_pool_comparisons": [
+    {
+      "directory": "shared01-0-city-storage-boot_partition-evidence/same-trip-v1-93273-1793210362916991000/comparison.json",
+      "direct": {
+        "all_boot_basis": 2600,
+        "cash": [
+          [
+            1,
+            1000000,
+            0
+          ],
+          [
+            2,
+            201400,
+            0
+          ],
+          [
+            3,
+            598100,
+            0
+          ],
+          [
+            4,
+            1200500,
+            0
+          ],
+          [
+            7,
+            100000,
+            0
+          ]
+        ],
+        "export_basis": 240,
+        "exports": [
+          130000,
+          10000
+        ],
+        "quantities": [
+          [
+            1,
+            600000
+          ],
+          [
+            15,
+            1000
+          ],
+          [
+            16,
+            0
+          ],
+          [
+            3001,
+            4000
+          ],
+          [
+            3002,
+            270000
+          ],
+          [
+            3003,
+            530000
+          ],
+          [
+            3004,
+            5400000
+          ],
+          [
+            3005,
+            60000
+          ],
+          [
+            3006,
+            700000
+          ]
+        ],
+        "stock_basis": [
+          [
+            1,
+            240000
+          ],
+          [
+            15,
+            1000
+          ],
+          [
+            16,
+            0
+          ],
+          [
+            3001,
+            1600
+          ],
+          [
+            3002,
+            495
+          ],
+          [
+            3003,
+            265
+          ],
+          [
+            3004,
+            0
+          ],
+          [
+            3005,
+            0
+          ],
+          [
+            3006,
+            0
+          ]
+        ],
+        "trip": {
+          "drive_energy_mwh": 30000,
+          "fee_paid": 2000,
+          "motion": "Finished",
+          "wages_paid": [
+            1700,
+            1700,
+            0,
+            0
+          ],
+          "work_seconds": 3600
+        },
+        "usage_basis": [
+          235,
+          5
+        ],
+        "usage_quantity": [
+          130000,
+          10000
+        ]
+      },
+      "paused": {
+        "all_boot_basis": 2600,
+        "cash": [
+          [
+            1,
+            1000000,
+            0
+          ],
+          [
+            2,
+            201400,
+            0
+          ],
+          [
+            3,
+            598100,
+            0
+          ],
+          [
+            4,
+            1200500,
+            0
+          ],
+          [
+            7,
+            100000,
+            0
+          ]
+        ],
+        "export_basis": 239,
+        "exports": [
+          130000,
+          10000
+        ],
+        "quantities": [
+          [
+            1,
+            600000
+          ],
+          [
+            15,
+            1000
+          ],
+          [
+            16,
+            0
+          ],
+          [
+            3001,
+            4000
+          ],
+          [
+            3002,
+            270000
+          ],
+          [
+            3003,
+            530000
+          ],
+          [
+            3004,
+            5400000
+          ],
+          [
+            3005,
+            60000
+          ],
+          [
+            3006,
+            700000
+          ]
+        ],
+        "stock_basis": [
+          [
+            1,
+            240000
+          ],
+          [
+            15,
+            1000
+          ],
+          [
+            16,
+            0
+          ],
+          [
+            3001,
+            1600
+          ],
+          [
+            3002,
+            496
+          ],
+          [
+            3003,
+            265
+          ],
+          [
+            3004,
+            0
+          ],
+          [
+            3005,
+            0
+          ],
+          [
+            3006,
+            0
+          ]
+        ],
+        "trip": {
+          "drive_energy_mwh": 30000,
+          "fee_paid": 2000,
+          "motion": "Finished",
+          "wages_paid": [
+            1700,
+            1700,
+            0,
+            0
+          ],
+          "work_seconds": 3600
+        },
+        "usage_basis": [
+          234,
+          5
+        ],
+        "usage_quantity": [
+          130000,
+          10000
+        ]
+      }
+    },
+    {
+      "directory": "shared01-0-city-storage-boot_partition-evidence/same-trip-v2-93273-1793210357446114000/comparison.json",
+      "direct": {
+        "all_boot_basis": 2600,
+        "cash": [
+          [
+            1,
+            1000000,
+            0
+          ],
+          [
+            2,
+            201400,
+            0
+          ],
+          [
+            3,
+            598100,
+            0
+          ],
+          [
+            4,
+            1200500,
+            0
+          ],
+          [
+            7,
+            100000,
+            0
+          ]
+        ],
+        "export_basis": 242,
+        "exports": [
+          130000,
+          10000
+        ],
+        "quantities": [
+          [
+            1,
+            600000
+          ],
+          [
+            15,
+            1000
+          ],
+          [
+            16,
+            0
+          ],
+          [
+            3001,
+            4000
+          ],
+          [
+            3002,
+            270000
+          ],
+          [
+            3003,
+            530000
+          ],
+          [
+            3004,
+            5400000
+          ],
+          [
+            3005,
+            60000
+          ],
+          [
+            3006,
+            700000
+          ]
+        ],
+        "stock_basis": [
+          [
+            1,
+            240000
+          ],
+          [
+            15,
+            1000
+          ],
+          [
+            16,
+            0
+          ],
+          [
+            3001,
+            1600
+          ],
+          [
+            3002,
+            493
+          ],
+          [
+            3003,
+            265
+          ],
+          [
+            3004,
+            0
+          ],
+          [
+            3005,
+            0
+          ],
+          [
+            3006,
+            0
+          ]
+        ],
+        "trip": {
+          "drive_energy_mwh": 30000,
+          "fee_paid": 2000,
+          "motion": "Finished",
+          "wages_paid": [
+            1700,
+            1700,
+            0,
+            0
+          ],
+          "work_seconds": 3600
+        },
+        "usage_basis": [
+          237,
+          5
+        ],
+        "usage_quantity": [
+          130000,
+          10000
+        ]
+      },
+      "paused": {
+        "all_boot_basis": 2600,
+        "cash": [
+          [
+            1,
+            1000000,
+            0
+          ],
+          [
+            2,
+            201400,
+            0
+          ],
+          [
+            3,
+            598100,
+            0
+          ],
+          [
+            4,
+            1200500,
+            0
+          ],
+          [
+            7,
+            100000,
+            0
+          ]
+        ],
+        "export_basis": 242,
+        "exports": [
+          130000,
+          10000
+        ],
+        "quantities": [
+          [
+            1,
+            600000
+          ],
+          [
+            15,
+            1000
+          ],
+          [
+            16,
+            0
+          ],
+          [
+            3001,
+            4000
+          ],
+          [
+            3002,
+            270000
+          ],
+          [
+            3003,
+            530000
+          ],
+          [
+            3004,
+            5400000
+          ],
+          [
+            3005,
+            60000
+          ],
+          [
+            3006,
+            700000
+          ]
+        ],
+        "stock_basis": [
+          [
+            1,
+            240000
+          ],
+          [
+            15,
+            1000
+          ],
+          [
+            16,
+            0
+          ],
+          [
+            3001,
+            1600
+          ],
+          [
+            3002,
+            493
+          ],
+          [
+            3003,
+            265
+          ],
+          [
+            3004,
+            0
+          ],
+          [
+            3005,
+            0
+          ],
+          [
+            3006,
+            0
+          ]
+        ],
+        "trip": {
+          "drive_energy_mwh": 30000,
+          "fee_paid": 2000,
+          "motion": "Finished",
+          "wages_paid": [
+            1700,
+            1700,
+            0,
+            0
+          ],
+          "work_seconds": 3600
+        },
+        "usage_basis": [
+          237,
+          5
+        ],
+        "usage_quantity": [
+          130000,
+          10000
+        ]
+      }
+    }
+  ],
+  "cold_new_processes_partition": 8,
+  "disk_budget_bytes": 2147483648,
+  "logical_file_bytes": 1156558583,
+  "phase_counts": {
+    "new_business_closed": 0,
+    "historical_backfill_closed": 0,
+    "defect_closed": 0,
+    "defect_ready_to_close": 158,
+    "pending_source_packages_before": 18,
+    "pending_source_packages_after": 18,
+    "full_implementation_cycle": "unknown",
+    "source_delivery_to_acceptance": "unknown"
+  },
+  "final_source_matches_role_manifest": true,
+  "source_reuse_differences": {
+    "exact01": [
+      "crates/city-core/src/boot.rs",
+      "crates/city-headless/tests/finite_city_role.rs",
+      "crates/city-storage/tests/boot_partition.rs"
+    ],
+    "compat01": [
+      "crates/city-storage/tests/boot_partition.rs"
+    ],
+    "shared01": []
+  }
+}

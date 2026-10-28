@@ -1,6 +1,6 @@
 {
   "schema": "mycity-issue-ledger-v1",
-  "date": "2026-10-28",
+  "date": "2026-10-29",
   "release": "v0.5.218 closure ledger; game implementation v0.5.217",
   "scope": "完整既定产品；v190有限业务132与缺陷148真实验收关闭，v191仅同步台账，UI单独延期",
   "coordination": "当前root唯一共享writer/串行验证；旧主会话停用",
@@ -24,7 +24,8 @@
     153,
     154,
     156,
-    157
+    157,
+    158
   ],
   "hardware_issue": 114,
   "issues": [
@@ -3875,6 +3876,36 @@
       "pr": "本阶段无PR；尚未发布",
       "implementation_tags": "v0.5.221 2454b22f1de4d2b4740edc04677a595d1da4cf13",
       "closed_at": "2026-10-28T16:27:44Z"
+    },
+    {
+      "issue": 158,
+      "title": "同一Boot消费合法时间分段成本差异：显式新pool策略及旧账兼容",
+      "url": "https://github.com/TekesApps/MyCity/issues/158",
+      "parent": 8,
+      "stage": "待验证",
+      "owner": "当前root，与21同一共享窗口",
+      "write_authority": [
+        "boot.rs profile/new/shape/validate/input/export",
+        "lib.rs FrozenLabel only",
+        "service_delivery_authority.rs/transaction.rs local binding only",
+        "boot_partition.rs/finite_city_role.rs scoped tests",
+        "design/evidence/issue ledger"
+      ],
+      "scope": "新开局本地v2同消费者顺序和真实pool边界下精确分段；旧v1/micro/scale及旧存档保留旧语义",
+      "required_capabilities": [
+        "原Stock固定origin累计floor差",
+        "原Boot/Town/工程/Police出口及Store恢复/原票",
+        "现有normal Sim角色59MiB/共同64MiB"
+      ],
+      "acceptance": [
+        "红例新策略下direct/paused/cold一致",
+        "真实共同城市合池再消费及旧原件恢复",
+        "原18/Journal/旧无配置/直接回归/default及normal预算"
+      ],
+      "remaining": "全部有限必要门通过，待发布回填实际关闭；完整父域/硬件保留开放",
+      "evidence": "docs/evidence/boot-cost-partition-20261029/STATUS.md",
+      "pr": "本阶段无PR；尚未发布",
+      "implementation_tags": "v0.5.225 planned"
     }
   ],
   "capability_edges": [
@@ -4042,14 +4073,14 @@
     }
   ],
   "unpublished_execution_update": {
-    "source_baseline": "v0.5.224 same productionv221",
-    "shared_core_in_progress": 0,
+    "source_baseline": "v0.5.224; 158 fixed source validation",
+    "shared_core_in_progress": 1,
     "independent_preparations_active": 0,
     "limits": [
       1,
       2
     ],
-    "note": "21 actual original-Generator refill verified ontime/late; next bounded same-pool partition probe not activated; no new model"
+    "note": "158 scoped acceptance passed; publication/issue closure pending; source packages18 unchanged"
   },
   "historical_execution_updates": [
     {
