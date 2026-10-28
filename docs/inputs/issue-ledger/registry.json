@@ -1,7 +1,7 @@
 {
   "schema": "mycity-issue-ledger-v1",
   "date": "2026-10-28",
-  "release": "v0.5.216",
+  "release": "v0.5.218 closure ledger; game implementation v0.5.217",
   "scope": "完整既定产品；v190有限业务132与缺陷148真实验收关闭，v191仅同步台账，UI单独延期",
   "coordination": "当前root唯一共享writer/串行验证；旧主会话停用",
   "states": [
@@ -117,7 +117,7 @@
       "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
       "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
-      "issue_body_sha256": "25d03eb2f56ae5f1c952b7e428f58e8ed1dfb78ea314bcb9ba834a6be3a751f1"
+      "issue_body_sha256": "58c7a3ca0fcdbf134826c62867aac64a40cdbf7a1a037a5094ff833a439878e7"
     },
     {
       "issue": 6,
@@ -470,10 +470,9 @@
       "url": "https://github.com/TekesApps/MyCity/issues/21",
       "parent": 2,
       "stage": "开发中",
-      "owner": "当前root唯一共享writer/集成/验收；父范围持续推进，当前0编码/0准备，下一Payroll成员时窗合同待固定",
+      "owner": "当前root唯一共享writer/验收；父范围持续推进，0编码/0活动准备",
       "write_authority": [
-        "root本段: core/src/boot.rs, service_delivery_authority.rs, service_needs.rs, transaction.rs, timeline_driver.rs; finite_city core/storage/headless tests and fixture; linked docs",
-        "下一Payroll字段/API未定，不新增派工/授写"
+        "v215/216/217有限接线已验收，未另授后续未知文件写权；下一消费151前先固定输入和差项"
       ],
       "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
       "required_capabilities": [
@@ -482,11 +481,11 @@
       "acceptance": [
         "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
       ],
-      "remaining": "完整父范围开放；下一原Payroll真实成员/群组和工作时窗接入member_activity；持续供需/全交通/工程/JPROD/native/真实16GB等仍按原范围待验",
-      "evidence": "docs/evidence/finite-city-runtime-20261028/BRIDGE.md, bridge-summary.json; work/finite-city-runtime-20261028完整源码/程序/失败/恢复原件",
-      "implementation_tags": "v0.5.215本地profile共存；v0.5.216实际公服同源消费/恢复/回收/normal有限增量；完整21/115未验收",
+      "remaining": "155实际岗位工时闭环已验收；父完整范围继续开放，下一已有151资产日结共同输入；持续供需/全交通/工程/整机16GB和速度仍按原范围待验",
+      "evidence": "docs/evidence/payroll-members-runtime-20261028/closure.json；此前v215/v216证据保留",
+      "implementation_tags": "v215共同输入，v216供给实际消费，v217岗位成员实际劳动与恢复；完整21/115未验收",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
-      "issue_body_sha256": "fd31088510f903237eb002ad2c41a3b4cb168dfc643ee53ad021f2a3a55dd97b"
+      "issue_body_sha256": "e64702b132a387fa15e4b14d17a976d3aad9f705418d027c56a766994af79b14"
     },
     {
       "issue": 22,
@@ -3798,7 +3797,7 @@
       "title": "有限岗位群组实际工时：原Payroll与公服共享成员账及工资恢复",
       "url": "https://github.com/TekesApps/MyCity/issues/155",
       "parent": 21,
-      "stage": "待验证",
+      "stage": "完成",
       "owner": "当前root唯一共享writer",
       "write_authority": [
         "Issue155精确文件清单",
@@ -3815,16 +3814,18 @@
         "实际正常/冲突/边界/退出及工资余数",
         "P5续页/原票/保存恢复/受影响共享/normal资源"
       ],
-      "remaining": "finite contract verified; pending publication, actual issue backfill/close and readback",
-      "evidence": "docs/evidence/payroll-members-runtime-20261028/STATUS.md",
-      "pr": "本阶段未创建"
+      "remaining": "完整有限合同关闭；父领域/硬件及明确排除范围继续开放",
+      "evidence": "docs/evidence/payroll-members-runtime-20261028/closure.json",
+      "pr": "本阶段无PR；main直接集成",
+      "implementation_tags": "v0.5.217 bf0a9d40f532410f9315e16adc17ff189e4f9082",
+      "closed_at": "2026-10-28T15:22:30Z"
     },
     {
       "issue": 156,
       "title": "无入住但已有收入原票时，公服空状态恢复入口错误拒绝正常存档",
       "url": "https://github.com/TekesApps/MyCity/issues/156",
       "parent": null,
-      "stage": "待验证",
+      "stage": "完成",
       "owner": "当前root，与155同一共享验收窗口",
       "write_authority": [
         "core transaction.rs empty guard",
@@ -3839,9 +3840,11 @@
         "全空旧来源仍自动恢复",
         "双P5/原票/受影响共享和normal资源"
       ],
-      "remaining": "finite contract verified; pending publication, actual issue backfill/close and readback",
-      "evidence": "docs/evidence/payroll-members-runtime-20261028/STATUS.md",
-      "pr": "无PR"
+      "remaining": "完整有限合同关闭；父领域/硬件及明确排除范围继续开放",
+      "evidence": "docs/evidence/payroll-members-runtime-20261028/closure.json",
+      "pr": "本阶段无PR；main直接集成",
+      "implementation_tags": "v0.5.217 bf0a9d40f532410f9315e16adc17ff189e4f9082",
+      "closed_at": "2026-10-28T15:22:39Z"
     }
   ],
   "capability_edges": [

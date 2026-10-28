@@ -1,9 +1,9 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-28T15:20:20.462841+00:00",
-  "source_head": "v0.5.217 verified candidate on v216 baseline",
-  "candidate": "#155/#156 finite contracts verified; publication/issue closure pending, no new coding",
+  "last_snapshot_at": "2026-10-28T15:26:05.462136+00:00",
+  "source_head": "v0.5.217 bf0a9d40f532410f9315e16adc17ff189e4f9082",
+  "candidate": "155/156 accepted, published, closed/read back; no active coding; next consume existing151 into21",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
   "limits": {
     "shared_core_lanes": 1,
@@ -78,13 +78,19 @@
       134,
       135,
       136,
-      137
+      137,
+      151,
+      155
     ],
     "historical_backfill_business": [],
     "defects_closed": [
       148,
       149,
-      150
+      150,
+      152,
+      153,
+      154,
+      156
     ]
   },
   "near_term_contracts": [
@@ -853,7 +859,7 @@
     "business_accepted": 1,
     "historical_backfill": 0,
     "defects_accepted": 1,
-    "issue_closures_pending": true,
+    "issue_closures_pending": false,
     "whole_packages_retired": 0,
     "proof": "docs/evidence/payroll-members-runtime-20261028/STATUS.md",
     "cycles": "unknown reliable start; verification window is not development time"
@@ -865,53 +871,94 @@
     "note": "inspect exact current provider before choosing next seam; no batch module dispatch, no new grant or inferred cost from observations"
   },
   "latest_finite_increment": {
-    "issue": 102,
-    "release": "v0.5.212",
-    "status": "verified-frozen-full102-open",
-    "parent_tests": 48,
-    "source": "source01",
-    "evidence": "docs/evidence/task-resource-facts-20261028/STATUS.md",
-    "business_close_delta": 0
+    "issues": [
+      155,
+      156
+    ],
+    "release": "v0.5.217",
+    "status": "finite contracts closed; broad parents open",
+    "evidence": "docs/evidence/payroll-members-runtime-20261028/closure.json"
   },
-  "latest_active_evidence": "work/asset-capital-runtime-20261028/integration04-business-result.json",
+  "latest_active_evidence": null,
   "near_term_objective": "Close #151 original finite contract, then accept one sustainable finite-city business loop using existing integrated deliveries; no batch source-only models",
   "next_acceptance_preparation": {
-    "state": "completed read-only input extraction; root judgment pending",
-    "owner": "/root/finite_city_existing_inputs",
-    "scope": "specific existing fixture identities for one finite-city acceptance card",
+    "state": "not dispatched",
+    "scope": "existing151 actual asset daily costs into21 common scene; determine inputs and direct missing boundary first",
+    "owner": "root judgment before any scoped preparation",
     "write_authority": []
   },
   "latest_completed_batch": {
     "business": [
-      151
+      155
     ],
     "defects": [
-      152,
-      153,
-      154
+      156
     ],
     "historical": [],
-    "source_handoff_backlog_delta": 0,
     "full_source_handoff_backlog": 18,
-    "evidence": "docs/evidence/asset-capital-runtime-20261028/closure.json",
-    "reliable_cycle_start": "unknown; do not use issue creation or close window as development duration"
+    "source_handoff_backlog_delta": 0,
+    "evidence": "docs/evidence/payroll-members-runtime-20261028/closure.json",
+    "reliable_cycle_start": "unknown"
   },
   "next_finite_city": {
     "issue": 21,
-    "linked_labor_parent": 5,
-    "owner": "root, not newly dispatched",
-    "scope": "Payroll21 member/cohort identity plus actual 09-17 work interval on existing member_activity with ServiceWork",
-    "concrete_gap": "PayrollSpec has no member range; AddPayroll/accrual never claims member_activity",
+    "owner": "root; no new dispatch",
+    "scope": "consume existing accepted151 actual asset daily costs in common city scene, not whole asset domain",
     "dependencies": [
-      "#129 member ledger concrete API",
-      "#134 ServiceWork existing claims",
-      "existing Timeline wage facts and Store receipts"
+      "v217 actual Payroll/public-service/common Store scene",
+      "v213/214 accepted finite asset-capital contract"
     ],
-    "write_authority": "not yet expanded; fix finite contract and exact files before implementation",
+    "write_authority": [],
     "no_new_model_batches": true
   },
-  "publication_pending": [
-    155,
-    156
+  "publication_pending": [],
+  "prior_execution_snapshots": [
+    {
+      "latest_finite_increment": {
+        "issue": 102,
+        "release": "v0.5.212",
+        "status": "verified-frozen-full102-open",
+        "parent_tests": 48,
+        "source": "source01",
+        "evidence": "docs/evidence/task-resource-facts-20261028/STATUS.md",
+        "business_close_delta": 0
+      },
+      "latest_active_evidence": "work/asset-capital-runtime-20261028/integration04-business-result.json",
+      "next_acceptance_preparation": {
+        "state": "completed read-only input extraction; root judgment pending",
+        "owner": "/root/finite_city_existing_inputs",
+        "scope": "specific existing fixture identities for one finite-city acceptance card",
+        "write_authority": []
+      },
+      "latest_completed_batch": {
+        "business": [
+          151
+        ],
+        "defects": [
+          152,
+          153,
+          154
+        ],
+        "historical": [],
+        "source_handoff_backlog_delta": 0,
+        "full_source_handoff_backlog": 18,
+        "evidence": "docs/evidence/asset-capital-runtime-20261028/closure.json",
+        "reliable_cycle_start": "unknown; do not use issue creation or close window as development duration"
+      },
+      "next_finite_city": {
+        "issue": 21,
+        "linked_labor_parent": 5,
+        "owner": "root, not newly dispatched",
+        "scope": "Payroll21 member/cohort identity plus actual 09-17 work interval on existing member_activity with ServiceWork",
+        "concrete_gap": "PayrollSpec has no member range; AddPayroll/accrual never claims member_activity",
+        "dependencies": [
+          "#129 member ledger concrete API",
+          "#134 ServiceWork existing claims",
+          "existing Timeline wage facts and Store receipts"
+        ],
+        "write_authority": "not yet expanded; fix finite contract and exact files before implementation",
+        "no_new_model_batches": true
+      }
+    }
   ]
 }

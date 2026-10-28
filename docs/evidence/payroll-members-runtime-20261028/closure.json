@@ -1,0 +1,69 @@
+{
+  "schema": "mycity-issue155-156-closure-v1",
+  "release": "v0.5.217",
+  "implementation_commit": "bf0a9d40f532410f9315e16adc17ff189e4f9082",
+  "remote_publication": {
+    "release": "v0.5.217",
+    "commit": "bf0a9d40f532410f9315e16adc17ff189e4f9082",
+    "tag_object": "aa708736966e917dd3fb423d55528dba32c657d0",
+    "remote_readback": "bf0a9d40f532410f9315e16adc17ff189e4f9082\trefs/heads/main\naa708736966e917dd3fb423d55528dba32c657d0\trefs/tags/v0.5.217\nbf0a9d40f532410f9315e16adc17ff189e4f9082\trefs/tags/v0.5.217^{}\n",
+    "published_at": "2026-10-28T15:22:17.957075+00:00",
+    "pr": null
+  },
+  "issues": [
+    {
+      "closedAt": "2026-10-28T15:22:30Z",
+      "labels": [
+        {
+          "id": "LA_kwDOVOKhRs8AAAAC_GZbYw",
+          "name": "stage:done",
+          "description": "MyCity issue lifecycle / scope; definition in docs/issue-execution-ledger.md",
+          "color": "0e8a16"
+        }
+      ],
+      "number": 155,
+      "state": "CLOSED",
+      "url": "https://github.com/TekesApps/MyCity/issues/155"
+    },
+    {
+      "closedAt": "2026-10-28T15:22:39Z",
+      "labels": [
+        {
+          "id": "LA_kwDOVOKhRs8AAAAC_GZbYw",
+          "name": "stage:done",
+          "description": "MyCity issue lifecycle / scope; definition in docs/issue-execution-ledger.md",
+          "color": "0e8a16"
+        }
+      ],
+      "number": 156,
+      "state": "CLOSED",
+      "url": "https://github.com/TekesApps/MyCity/issues/156"
+    }
+  ],
+  "parents": [
+    {
+      "number": 21,
+      "state": "OPEN",
+      "url": "https://github.com/TekesApps/MyCity/issues/21"
+    },
+    {
+      "number": 5,
+      "state": "OPEN",
+      "url": "https://github.com/TekesApps/MyCity/issues/5"
+    }
+  ],
+  "phase_delta": {
+    "new_business": 1,
+    "historical": 0,
+    "defects": 1,
+    "whole_source_packages_retired": 0
+  },
+  "validation_window": {
+    "start": "2026-10-28T14:07:27.193075+00:00",
+    "end": "2026-10-28T15:16:13.287992+00:00",
+    "meaning": "recorded validation window only, not development cycle"
+  },
+  "close_window_end": "2026-10-28T15:22:39Z",
+  "reliable_development_cycle_start": "unknown",
+  "pr": null
+}
