@@ -1,8 +1,8 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-28T20:04:53.081773+00:00",
-  "source_head": "v0.5.229 code;v0.5.230 status/issue receipt only;159 incomplete",
+  "last_snapshot_at": "2026-11-19T08:36:02.522370+00:00",
+  "source_head": "v0.5.229 game code; v0.5.231 design/issue ledger sync; #159/#160 local WIP uncommitted",
   "candidate": "159 actual maintenance execution chain in progress; no full acceptance",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
   "limits": {
@@ -894,8 +894,8 @@
     "defects_accepted": 0,
     "issue_closures_pending": false,
     "whole_packages_retired": 0,
-    "proof": "docs/evidence/maintenance-runtime-20261029/REGISTRATION.md",
-    "cycles": "unknown reliable start; not verification time"
+    "proof": "docs/evidence/issue-granularity-coordination-20261119/STATUS.md",
+    "cycles": "unknown reliable start; doc/issue coordination only, not verification time"
   },
   "queued_next_102": {
     "owner": "root",

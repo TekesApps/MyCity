@@ -1,6 +1,12 @@
 # MyCity Issue 执行与验收台账
 
+**当前v0.5.231设计收敛与Issue台账同步：**本版本仅同步设计文档补充（[模型粒度收敛](model-granularity-and-convergence.md)、[概率分桶错峰](regional-probabilistic-decisions.md)）与GitHub/本地Issue台账：补登既有未关缺陷[#160](https://github.com/TekesApps/MyCity/issues/160)，并在[#6](https://github.com/TekesApps/MyCity/issues/6)与[#49](https://github.com/TekesApps/MyCity/issues/49)下新增未派工`stage:todo`有界业务子任务[#161](https://github.com/TekesApps/MyCity/issues/161)（汇点可达势场预筛）与[#162](https://github.com/TekesApps/MyCity/issues/162)（增量脏标记粗汇总层），同步更新`#6/#49/#61/#62/#73/#98/#101/#141/#142`。[统筹回执](evidence/issue-granularity-coordination-20261119/STATUS.md)。游戏源码与已发布验证仍为`v0.5.229`；工作区未提交的`#159/#160`代码及24份M0保留WIP原样保留不随本tag发布；当前唯一共享在制仍为`#159`（`1+0`），本阶段新验收业务`0`/历史补关`0`/缺陷关闭`0`/18包积压不变，可靠起点仍`unknown`。
+
+<details><summary>v229/v230投运起点检查点（游戏代码基线）</summary>
+
 **当前v0.5.229进行中检查点：**root唯一共享#159，活动准备0。新维修登记/独立场地与原建设投运起点已接通；实际同场景旧公服到返、原票重复、checkpoint读回及旧18/Journal/同槽/默认栈、旧Store和normal兼容通过。[固定结果、失败与差项](evidence/maintenance-runtime-20261029/REGISTRATION.md)。完整due→停机→实际工料/费用→复位及maintenance恢复仍未闭合，159/36/117开放；本阶段新验收/历史/缺陷关闭0，积压18不核销。#151原合同已关闭，不重做。暂缓94/替换/Bridge/自动事故/多档/GPU；不扩派工或M0门。
+
+</details>
 
 <details><summary>v228工资兼容阶段（历史）</summary>
 

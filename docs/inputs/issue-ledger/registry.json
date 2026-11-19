@@ -1,7 +1,7 @@
 {
   "schema": "mycity-issue-ledger-v1",
-  "date": "2026-10-29",
-  "release": "v0.5.230",
+  "date": "2026-11-19",
+  "release": "v0.5.231",
   "scope": "完整既定产品；v190有限业务132与缺陷148真实验收关闭，v191仅同步台账，UI单独延期",
   "coordination": "当前root唯一共享writer/串行验证；旧主会话停用",
   "states": [
@@ -25,7 +25,8 @@
     154,
     156,
     157,
-    158
+    158,
+    160
   ],
   "hardware_issue": 114,
   "issues": [
@@ -142,7 +143,7 @@
       "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
       "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
-      "issue_body_sha256": "88b713cbefaa50cdb65879cdc3d6059fdb38e2f40fe6a3172eb6a1035cae8a73"
+      "issue_body_sha256": "2e7d8cf5de754f3ed982afd820dcc9d4f1dd38b899aecabcc9211985fbf908ba"
     },
     {
       "issue": 7,
@@ -1141,7 +1142,7 @@
       "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
       "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
-      "issue_body_sha256": "c354bf2569c1c3e2574d88cb68c06321a3d39fa0381c0e52506e011709532d0f"
+      "issue_body_sha256": "3ed1b01aff0e758d4b1bf564a2dd40884bcf268307b4fa4a32ac73612173bd47"
     },
     {
       "issue": 50,
@@ -1428,7 +1429,7 @@
       "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
       "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
-      "issue_body_sha256": "2e88f17b45bf5501ed935ea6b99b31818d27caa4b7454e42b665731316201ed5"
+      "issue_body_sha256": "da7afec6bf2545ee8d26417ffb84ef6df6968ca966b43067afedda02c160aefd"
     },
     {
       "issue": 62,
@@ -1451,7 +1452,7 @@
       "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
       "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
-      "issue_body_sha256": "ae33ccc17eccc5fbf04dd46dc61d4fb70f0695e06c814f93daa3162968e9ccfb"
+      "issue_body_sha256": "fa108af8f31f6049c267bcb9010f614535e946a81849b5413819e0fe67dd1d21"
     },
     {
       "issue": 63,
@@ -1710,7 +1711,7 @@
       "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
       "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
-      "issue_body_sha256": "029f5677a30bcb82ec01fdaebd5d13737fbbfaa1238689e860fda04f87c104e8"
+      "issue_body_sha256": "48656689fdf63af787bc32f332e147f639caa2203c12977ac7ff2b38cc088a9c"
     },
     {
       "issue": 74,
@@ -2271,7 +2272,7 @@
       "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
       "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
-      "issue_body_sha256": "3474b04e35fcb5ef794ba68ec95953a3b4741055c977cd4d48b34ee954557e2c"
+      "issue_body_sha256": "9192af9ebb2f006ec1a89a87ee97921819df43b6e74be7863a5016db38f047ff"
     },
     {
       "issue": 99,
@@ -2343,7 +2344,7 @@
       "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
       "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
-      "issue_body_sha256": "415e3fd31e593365c85ca9d3454409f927e17f87bb6f122b6ba3ae21cc5e2a15"
+      "issue_body_sha256": "a8648b9002d14a7f1c5ed68d549fb811d99e7f261e4f55e5484478a56b6fc6d4"
     },
     {
       "issue": 102,
@@ -3436,7 +3437,7 @@
       "evidence": "",
       "implementation_tags": "",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
-      "issue_body_sha256": "2bb8e527b48cacb31656fbac6313aa97bf92dad474aadc66d0c335fdb984d3d9"
+      "issue_body_sha256": "ef09c8ea5c6a7f492726fd29e4d42c347632022e59db38edb514e0fc8a673c20"
     },
     {
       "issue": 142,
@@ -3464,7 +3465,7 @@
       "evidence": "",
       "implementation_tags": "",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
-      "issue_body_sha256": "9b907cc7387f79bc522a522a60b6386eaebe56db4755f1b5d8fa6904e6bf369f"
+      "issue_body_sha256": "2d63c875a0eaa5a0cb3553f5699cc2d991092333344ff79587678305f8491971"
     },
     {
       "issue": 143,
@@ -3939,7 +3940,86 @@
       "remaining": "explicit registration/bay and original actual commission/checkpoint passed; actual due/outage/work/material/expense/restart/maintenance Store/normal missing",
       "evidence": "docs/evidence/maintenance-runtime-20261029/REGISTRATION.md",
       "pr": "本阶段无PR；root直接集成的进行中检查点",
-      "implementation_tags": "v0.5.227/v0.5.228/v0.5.229 partial checkpoints, not full acceptance"
+      "implementation_tags": "v0.5.227/v0.5.228/v0.5.229 partial checkpoints, not full acceptance",
+      "issue_body_sha256": "d82fd59dbe5aa63d5892241940901e9bf23fd6bd4f7643396ef040b0148587d3"
+    },
+    {
+      "issue": 160,
+      "title": "[缺陷] 精确Boot库存耗尽后，Town空可用lot投影阻断后续日结",
+      "url": "https://github.com/TekesApps/MyCity/issues/160",
+      "parent": 21,
+      "stage": "开发中",
+      "owner": "root唯一共享writer/集成/串行验证；与#159同一共享线",
+      "write_authority": [
+        "crates/city-core/src/transaction.rs prepare_town_settlement只读InventorySnapshot投影",
+        "crates/city-core/src/town_economy.rs residual-cost unit only",
+        "crates/city-core/tests/finite_city_asset.rs",
+        "crates/city-storage/tests/maintenance_store.rs"
+      ],
+      "scope": "耗尽Boot库存后保留合法origin历史坐标，仅在Town只读可用lot投影规范化空可用lot坐标并保留spendable_basis，使day4零生产/零工资日结及后续补产恢复合法通过",
+      "required_capabilities": [
+        "#158精确pool成本边界及Stock origin坐标保留",
+        "原TownSettle、Store WAL/checkpoint冷恢复、默认栈及原normal角色门"
+      ],
+      "acceptance": [
+        "无maintenance原有限城day4真实日结通过并消费实际折旧/税，钱物守恒",
+        "耗尽Boot Stock的quantity/basis/origin/offset及累计出口成本不被改写；非空残余成本仍拒",
+        "实际Store WAL/checkpoint冷恢复后继续日结及Generator补产按新pool计价",
+        "受影响业务、默认栈、原18/128KiB、Journal4096及必要原normal角色门"
+      ],
+      "remaining": "local WIP fixed and passed final11 functional/Store/role runs; fmt/clippy, evidence publication and issue closure pending",
+      "evidence": "work/maintenance-outage-20261029/execution-card.json",
+      "implementation_tags": "uncommitted local WIP on top of v0.5.230; not released by v0.5.231",
+      "pr": "本轮无PR；当前未提交WIP，待fmt/clippy与独立发布后回填关闭",
+      "issue_body_sha256": "ab44e1f81012766223dc9724cef30733f45844337d10e356fef827619d8b33ef"
+    },
+    {
+      "issue": 161,
+      "title": "[业务子任务] 有界汇点可达势场与批次流量预筛：路网版本缓存、门禁因果与候选裁剪",
+      "url": "https://github.com/TekesApps/MyCity/issues/161",
+      "parent": 6,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；待开发未派工，不占共享或准备名额",
+      "write_authority": [],
+      "scope": "按就业区/商圈/站点汇点提供路网/门禁版本缓存的有界整数可达势场与候选裁剪，替代O(M×N)逐对寻路与随机游走，经唯一Engine接受后按批次流量计入共享路段容量",
+      "required_capabilities": [
+        "#25已验收有限空间道路/门版本与Scene指纹接口",
+        "#136原canonical物理容量/时窗共池接口"
+      ],
+      "acceptance": [
+        "同路网/门禁版本下汇点势场与精确最短路oracle在成本上限内可达集合与整数成本一致，封路/关门/单向立即生效",
+        "候选数、汇点数与步数/工作区严格有界（符合World 128KiB/Engine 4MiB/默认栈门），超预算标Unresolved",
+        "批次承诺经原事务提交后守恒计入共享容量，重试幂等、WAL/checkpoint冷恢复一致"
+      ],
+      "remaining": "待开发，尚未激活或授予源码写权；激活前先固定专属模块/测试/fixture清单",
+      "evidence": "",
+      "implementation_tags": "not_run",
+      "pr": "本轮无PR；尚未实现",
+      "issue_body_sha256": "67a5a8c6b49e949ddbb128225a5ae407eeb43a361449f2053cba9c6d264b29b1"
+    },
+    {
+      "issue": 162,
+      "title": "[业务子任务] 增量脏标记粗粒度汇总层：定长整数观测槽与快进摘要降本",
+      "url": "https://github.com/TekesApps/MyCity/issues/162",
+      "parent": 49,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；待开发未派工，不占共享或准备名额",
+      "write_authority": [],
+      "scope": "基于dirty bitset与Prepared提交边界增量维护定长整数粗粒度汇总槽（含revision/coverage_age/unknown），供日常Status/监控O(1)只读查询，消除快进全量遍历投影热点",
+      "required_capabilities": [
+        "#135已验收通用source/due/dirty目录版本与覆盖接口",
+        "v0.5.173/v0.5.176本地操作员只读分页与权限底座"
+      ],
+      "acceptance": [
+        "任意事务序列、拒绝回执与暂停续跑后，增量汇总槽与完整World独立全量重算逐字段一致，缺覆盖标unknown",
+        "常驻与快照增量严守18单元/128KiB、JournalRecord 4096B、Engine 4MiB与默认栈门",
+        "原票重试、WAL/checkpoint冷恢复与丢回复重开后汇总槽与revision一致，附同场景Status耗时对照"
+      ],
+      "remaining": "待开发，尚未激活或授予源码写权；激活前先固定专属模块/测试/fixture清单",
+      "evidence": "",
+      "implementation_tags": "not_run",
+      "pr": "本轮无PR；尚未实现",
+      "issue_body_sha256": "3c192d146ab97a8d31de46a3b21a3eb078d8de2495ae388b133c8686a32bf4e3"
     }
   ],
   "capability_edges": [
@@ -4061,9 +4141,10 @@
       "consumer": 141,
       "requires": [
         128,
-        129
+        129,
+        161
       ],
-      "missing": "actual accessibility and original funded jobs; only needed #6/#73 interface"
+      "missing": "bounded sink reachability #161 and original funded jobs; only needed #6/#73/#161 interfaces (avoid O(M*N) search)"
     },
     {
       "consumer": 142,
@@ -4104,17 +4185,32 @@
         134
       ],
       "reason": "原成员账及实际公服责任，不要求父域全部完成"
+    },
+    {
+      "consumer": 161,
+      "requires": [
+        25,
+        136
+      ],
+      "meaning": "Bounded sink reachability field over versioned scene/doors and canonical capacity; no whole-domain #6/#118 closure required"
+    },
+    {
+      "consumer": 162,
+      "requires": [
+        135
+      ],
+      "meaning": "Dirty-tracked coarse integer summary slots over generic dirty/version directory; read-only O(1) Status projection"
     }
   ],
   "unpublished_execution_update": {
-    "source_baseline": "v0.5.226 +159 sources01/02",
+    "source_baseline": "v0.5.229 code / v0.5.230 checkpoint + #159/#160 final11 local WIP pending fmt/clippy & publication",
     "shared_core_in_progress": 1,
     "independent_preparations_active": 0,
     "limits": [
       1,
       2
     ],
-    "note": "159 one actual integration in progress; 18 source packages not retired; no business/defect closure this phase"
+    "note": "v0.5.231 only coordinates design supplements and Issue ledger (#160 backfilled, #161/#162 added as stage:todo with no write authority); 0 business/defect closures this phase"
   },
   "historical_execution_updates": [
     {

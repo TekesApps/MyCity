@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.230`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.231`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.231 仅同步[粒度收敛与Issue统筹](docs/evidence/issue-granularity-coordination-20261119/STATUS.md)：在[#6](https://github.com/TekesApps/MyCity/issues/6)与[#49](https://github.com/TekesApps/MyCity/issues/49)下新增未派工`stage:todo`有界子任务[#161](https://github.com/TekesApps/MyCity/issues/161)（汇点可达势场预筛）与[#162](https://github.com/TekesApps/MyCity/issues/162)（增量脏标记粗汇总层），补登既有缺陷[#160](https://github.com/TekesApps/MyCity/issues/160)，同步更新`#6/#49/#61/#62/#73/#98/#101/#141/#142`与[模型粒度收敛](docs/model-granularity-and-convergence.md)/[概率分桶错峰](docs/regional-probabilistic-decisions.md)。游戏代码与已发布验证仍为`v0.5.229`，工作区未提交的`#159/#160`及24份M0保留WIP保持隔离不动，不构成功能或性能验收。
 
 v0.5.230同步状态与Issue回填；游戏代码/验证为v0.5.229的[#159维修登记与实际投运起点检查点](docs/evidence/maintenance-runtime-20261029/REGISTRATION.md)：独立维修来源及原投运票同提交，旧业务兼容门通过；实际到期保养/停机/工料费用与恢复仍未接完，159未验收。
 

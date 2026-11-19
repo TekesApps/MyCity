@@ -1,0 +1,123 @@
+{
+  "release": "v0.5.231",
+  "kind": "documentation_and_issue_ledger_coordination",
+  "at": "2026-11-19T08:37:36.385977+00:00",
+  "game_code_baseline": "v0.5.229 (a402e6f49ea5be68b4c6f77c3edba6b71e66e4b0)",
+  "execution_tests_run": false,
+  "m0_or_hardware_accepted": false,
+  "created_issues": [
+    {
+      "issue": 161,
+      "parent": 6,
+      "stage": "待开发",
+      "url": "https://github.com/TekesApps/MyCity/issues/161",
+      "after_body_sha256": "67a5a8c6b49e949ddbb128225a5ae407eeb43a361449f2053cba9c6d264b29b1"
+    },
+    {
+      "issue": 162,
+      "parent": 49,
+      "stage": "待开发",
+      "url": "https://github.com/TekesApps/MyCity/issues/162",
+      "after_body_sha256": "3c192d146ab97a8d31de46a3b21a3eb078d8de2495ae388b133c8686a32bf4e3"
+    }
+  ],
+  "backfilled_issues": [
+    {
+      "issue": 160,
+      "parent": 21,
+      "stage": "开发中",
+      "url": "https://github.com/TekesApps/MyCity/issues/160",
+      "body_sha256": "ab44e1f81012766223dc9724cef30733f45844337d10e356fef827619d8b33ef"
+    }
+  ],
+  "updated_issues": [
+    {
+      "issue": 6,
+      "before_body_sha256": "88b713cbefaa50cdb65879cdc3d6059fdb38e2f40fe6a3172eb6a1035cae8a73",
+      "after_body_sha256": "2e7d8cf5de754f3ed982afd820dcc9d4f1dd38b899aecabcc9211985fbf908ba"
+    },
+    {
+      "issue": 49,
+      "before_body_sha256": "c354bf2569c1c3e2574d88cb68c06321a3d39fa0381c0e52506e011709532d0f",
+      "after_body_sha256": "3ed1b01aff0e758d4b1bf564a2dd40884bcf268307b4fa4a32ac73612173bd47"
+    },
+    {
+      "issue": 61,
+      "before_body_sha256": "2e88f17b45bf5501ed935ea6b99b31818d27caa4b7454e42b665731316201ed5",
+      "after_body_sha256": "da7afec6bf2545ee8d26417ffb84ef6df6968ca966b43067afedda02c160aefd"
+    },
+    {
+      "issue": 62,
+      "before_body_sha256": "ae33ccc17eccc5fbf04dd46dc61d4fb70f0695e06c814f93daa3162968e9ccfb",
+      "after_body_sha256": "fa108af8f31f6049c267bcb9010f614535e946a81849b5413819e0fe67dd1d21"
+    },
+    {
+      "issue": 73,
+      "before_body_sha256": "029f5677a30bcb82ec01fdaebd5d13737fbbfaa1238689e860fda04f87c104e8",
+      "after_body_sha256": "48656689fdf63af787bc32f332e147f639caa2203c12977ac7ff2b38cc088a9c"
+    },
+    {
+      "issue": 98,
+      "before_body_sha256": "3474b04e35fcb5ef794ba68ec95953a3b4741055c977cd4d48b34ee954557e2c",
+      "after_body_sha256": "9192af9ebb2f006ec1a89a87ee97921819df43b6e74be7863a5016db38f047ff"
+    },
+    {
+      "issue": 101,
+      "before_body_sha256": "415e3fd31e593365c85ca9d3454409f927e17f87bb6f122b6ba3ae21cc5e2a15",
+      "after_body_sha256": "a8648b9002d14a7f1c5ed68d549fb811d99e7f261e4f55e5484478a56b6fc6d4"
+    },
+    {
+      "issue": 141,
+      "before_body_sha256": "2bb8e527b48cacb31656fbac6313aa97bf92dad474aadc66d0c335fdb984d3d9",
+      "after_body_sha256": "ef09c8ea5c6a7f492726fd29e4d42c347632022e59db38edb514e0fc8a673c20"
+    },
+    {
+      "issue": 142,
+      "before_body_sha256": "9b907cc7387f79bc522a522a60b6386eaebe56db4755f1b5d8fa6904e6bf369f",
+      "after_body_sha256": "2d63c875a0eaa5a0cb3553f5699cc2d991092333344ff79587678305f8491971"
+    }
+  ],
+  "native_subissue_links_verified": {
+    "6": [
+      73,
+      74,
+      76,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84,
+      161
+    ],
+    "21": [
+      115,
+      160
+    ],
+    "49": [
+      162
+    ]
+  },
+  "github_parity": {
+    "total_issues": 161,
+    "open": 128,
+    "closed": 33,
+    "registry_issues": 161,
+    "stage_and_state_exact_match": true
+  },
+  "doc_checks": {
+    "json_files_valid": 4,
+    "markdown_relative_links_verified": 343,
+    "final11_source_manifest_non_agents_matches": 510,
+    "final11_source_manifest_diffs": [
+      "AGENTS.md"
+    ]
+  },
+  "work_retention": {
+    "path": "/Volumes/HP P900/dev/MyCity/work/issue-granularity-coordination-20261119",
+    "disk_budget_bytes": 16777216,
+    "actual_bytes": 241266
+  }
+}
